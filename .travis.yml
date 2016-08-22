@@ -2,9 +2,14 @@ language: node_js
 node_js:
   - '4.4'
 
+addons:
+  code_climate:
+    repo_token: CODECLIMATE-REPO-TOKEN
+
 install:
   - cd  software/owh/client
   - npm install
+  - npm install -g codeclimate-test-reporter
 
 before_script:
   - export DISPLAY=:99.0
@@ -17,3 +22,5 @@ script:
   - node_modules/.bin/karma start test/unit-tests/karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
   - node_modules/.bin/protractor test/e2e-tests/protractor.conf.js --browser=firefox
 
+after_script:
+  - codeclimate-test-reporter < "coverage/PhantomJS 2.1.1 (Linux 0.0.0)/lcov.info"
