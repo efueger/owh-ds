@@ -1,0 +1,267 @@
+{
+  "yrbs": {
+    "include_in_all": false,
+    "properties": {
+      "primary_filter":{
+        "type": "string",
+        "index": "not_analyzed"
+      },
+      "10th": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "11th": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "12th": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "8th": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "ai_an": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "asian": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "black_african_american": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "count": {
+        "type": "integer"
+      },
+      "female": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "grade": {
+        "type": "string",
+        "index": "not_analyzed"
+      },
+      "hispanic": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "lower_confidence": {
+        "type": "string"
+      },
+      "male": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "multiple_race": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "nhopi": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "percent": {
+        "type": "string"
+      },
+      "question": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "index": "not_analyzed"
+          },
+          "key": {
+            "type": "string",
+            "index": "not_analyzed"
+          },
+          "label": {
+            "type": "string",
+            "index": "not_analyzed"
+          },
+          "path": {
+            "type": "string",
+            "index": "not_analyzed"
+          }
+        }
+      },
+      "race": {
+        "type": "string",
+        "index": "not_analyzed"
+      },
+      "sex": {
+        "type": "string",
+        "index": "not_analyzed"
+      },
+      "upper_confidence": {
+        "type": "string"
+      },
+      "white": {
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "lower_confidence": {
+            "type": "string"
+          },
+          "percent": {
+            "type": "string"
+          },
+          "upper_confidence": {
+            "type": "string"
+          }
+        }
+      },
+      "year": {
+        "type": "string",
+        "index": "not_analyzed"
+      }
+    }
+  }
+}

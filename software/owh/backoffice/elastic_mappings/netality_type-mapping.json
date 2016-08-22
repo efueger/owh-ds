@@ -1,0 +1,91 @@
+{
+  "2014_tier": {
+    "include_in_all": false,
+    "properties": {
+      "lmp_gestational_age_weekly": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "plurality": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "birth_place": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "mother_age": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "mother_marital_status": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "attendant_at_birth": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "mother_race": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "date_of_birth": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "birth_month": {
+        "type" : "string", "index": "not_analyzed", "enabled" : false
+      },
+      "month_prenatal_care_began": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "tobacco_use": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "birth_year": {
+        "type" : "string", "index": "not_analyzed", "enabled" : false
+      },
+      "chronic_hypertension": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "oe_gestational_age_group_1": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "oe_gestational_age_group_2": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "mother_education": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "live_birth_order": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "birth_weight": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "mother_hispanic_origin": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "diabetes": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "birth_day_of_week": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "pregnancy_associated_hypertension": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "gender": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "eclampsia": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "delivery_method": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "lmp_gestational_age_group_2": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "lmp_gestational_age_group_1": {
+        "type" : "string", "index": "not_analyzed"
+      },
+      "oe_gestational_age_weekly": {
+        "type" : "string", "index": "not_analyzed"
+      }
+    }
+  }
+}

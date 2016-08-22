@@ -1,0 +1,43 @@
+<div class="usa-grid">
+    <div class="usa-width-one-whole" ng-show="tc.selectedNodes.length > 0">
+        <label class="common-label" translate="label.tree.selected"
+               translate-values="{entityName: tc.entityName}"></label>
+        <div class="padding-left-5" style="font-size: 13px">
+            {{tc.selectedNodesText}}
+        </div>
+        <button class="action-button margin-left-5" translate="label.tree.submit" translate-values="{entityName: tc.entityName}"
+                ng-click="tc.submitClose()"></button>
+    </div>
+    <div class="usa-width-one-whole">
+        <label class="common-label" for="search_text" translate="label.tree.search"
+               translate-values="{entityName: tc.entityName}"></label>
+        <input id="search_text" class="display-inline-block" name="searchText" type="text" ng-keyup="tc.searchTree(this)">
+
+    </div>
+    <div class="usa-width-one-whole margin-bottom-20 condition-tree-hint" translate="label.tree.hint"></div>
+    <div class="usa-width-one-whole">
+        <div class="usa-width-one-whole" ng-if="$root.conditionsICD10 &&
+                        (tc.codeKey === 'ucd-chapter-10' || tc.codeKey === 'mcd-chapter-10')">
+            <div id="ucd-chapter-10" should-apply="tc.ac()" js-tree="tc.treeConfig" ng-model="$root.conditionsICD10"
+                 tree="tc.treeInstance" tree-events-obj="tc.treeEventsObj"></div>
+        </div>
+
+        <div class="usa-width-one-whole" ng-if="$root.conditionsICD10113 &&
+                        (tc.codeKey === 'ucd-icd-10-113' || tc.codeKey === 'mcd-icd-10-113')">
+            <div id="ucd-icd-10-113" should-apply="tc.ac()" js-tree="tc.treeConfig" ng-model="$root.conditionsICD10113"
+                 tree="tc.treeInstance" tree-events-obj="tc.treeEventsObj"></div>
+        </div>
+
+        <div class="usa-width-one-whole" ng-if="$root.conditionsICD10130 &&
+                (tc.codeKey === 'ucd-icd-10-130' || tc.codeKey === 'mcd-icd-10-130')">
+            <div id="ucd-icd-10-130" should-apply="tc.ac()" js-tree="tc.treeConfig" ng-model="$root.conditionsICD10130"
+                 tree="tc.treeInstance" tree-events-obj="tc.treeEventsObj"></div>
+        </div>
+
+        <div class="usa-width-one-whole" ng-if="$root.questions &&
+                (tc.codeKey === 'question' || tc.codeKey === 'question')">
+            <div id="question" should-apply="tc.ac()" js-tree="tc.treeConfig" ng-model="$root.questions"
+                 tree="tc.treeInstance" tree-events-obj="tc.treeEventsObj"></div>
+        </div>
+    </div>
+</div>

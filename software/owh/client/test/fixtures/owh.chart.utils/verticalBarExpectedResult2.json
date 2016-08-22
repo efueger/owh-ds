@@ -1,0 +1,309 @@
+{
+  "data": [
+    {
+      "key": "American Indian",
+      "values": [
+        {
+          "x": "Central American",
+          "y": 19
+        },
+        {
+          "x": "Central and South American",
+          "y": 1
+        },
+        {
+          "x": "Cuban",
+          "y": 9
+        },
+        {
+          "x": "Dominican",
+          "y": 6
+        },
+        {
+          "x": "Latin American",
+          "y": 10
+        },
+        {
+          "x": "Mexican",
+          "y": 512
+        },
+        {
+          "x": "Non-Hispanic",
+          "y": 17151
+        },
+        {
+          "x": "Other Hispanic",
+          "y": 203
+        },
+        {
+          "x": "Puerto Rican",
+          "y": 28
+        },
+        {
+          "x": "South American",
+          "y": 17
+        },
+        {
+          "x": "Spaniard",
+          "y": 11
+        },
+        {
+          "x": "Unknown",
+          "y": 64
+        }
+      ]
+    },
+    {
+      "key": "Asian or Pacific Islander",
+      "values": [
+        {
+          "x": "Central American",
+          "y": 43
+        },
+        {
+          "x": "Central and South American",
+          "y": 4
+        },
+        {
+          "x": "Cuban",
+          "y": 14
+        },
+        {
+          "x": "Dominican",
+          "y": 6
+        },
+        {
+          "x": "Latin American",
+          "y": 6
+        },
+        {
+          "x": "Mexican",
+          "y": 207
+        },
+        {
+          "x": "Non-Hispanic",
+          "y": 60942
+        },
+        {
+          "x": "Other Hispanic",
+          "y": 397
+        },
+        {
+          "x": "Puerto Rican",
+          "y": 142
+        },
+        {
+          "x": "South American",
+          "y": 35
+        },
+        {
+          "x": "Spaniard",
+          "y": 27
+        },
+        {
+          "x": "Unknown",
+          "y": 280
+        }
+      ]
+    },
+    {
+      "key": "Black",
+      "values": [
+        {
+          "x": "Central American",
+          "y": 491
+        },
+        {
+          "x": "Central and South American",
+          "y": 112
+        },
+        {
+          "x": "Cuban",
+          "y": 346
+        },
+        {
+          "x": "Dominican",
+          "y": 838
+        },
+        {
+          "x": "Latin American",
+          "y": 19
+        },
+        {
+          "x": "Mexican",
+          "y": 539
+        },
+        {
+          "x": "Non-Hispanic",
+          "y": 304107
+        },
+        {
+          "x": "Other Hispanic",
+          "y": 321
+        },
+        {
+          "x": "Puerto Rican",
+          "y": 581
+        },
+        {
+          "x": "South American",
+          "y": 93
+        },
+        {
+          "x": "Spaniard",
+          "y": 2
+        },
+        {
+          "x": "Unknown",
+          "y": 1867
+        }
+      ]
+    },
+    {
+      "key": "Other (Puerto Rico only)",
+      "values": [
+        {
+          "x": "Central American",
+          "y": 0
+        },
+        {
+          "x": "Central and South American",
+          "y": 0
+        },
+        {
+          "x": "Cuban",
+          "y": 0
+        },
+        {
+          "x": "Dominican",
+          "y": 0
+        },
+        {
+          "x": "Latin American",
+          "y": 0
+        },
+        {
+          "x": "Mexican",
+          "y": 0
+        },
+        {
+          "x": "Non-Hispanic",
+          "y": 0
+        },
+        {
+          "x": "Other Hispanic",
+          "y": 0
+        },
+        {
+          "x": "Puerto Rican",
+          "y": 0
+        },
+        {
+          "x": "South American",
+          "y": 0
+        },
+        {
+          "x": "Spaniard",
+          "y": 0
+        },
+        {
+          "x": "Unknown",
+          "y": 0
+        }
+      ]
+    },
+    {
+      "key": "White",
+      "values": [
+        {
+          "x": "Central American",
+          "y": 7026
+        },
+        {
+          "x": "Central and South American",
+          "y": 2369
+        },
+        {
+          "x": "Cuban",
+          "y": 14936
+        },
+        {
+          "x": "Dominican",
+          "y": 3013
+        },
+        {
+          "x": "Latin American",
+          "y": 716
+        },
+        {
+          "x": "Mexican",
+          "y": 95193
+        },
+        {
+          "x": "Non-Hispanic",
+          "y": 2068925
+        },
+        {
+          "x": "Other Hispanic",
+          "y": 14643
+        },
+        {
+          "x": "Puerto Rican",
+          "y": 21079
+        },
+        {
+          "x": "South American",
+          "y": 5964
+        },
+        {
+          "x": "Spaniard",
+          "y": 598
+        },
+        {
+          "x": "Unknown",
+          "y": 6888
+        }
+      ]
+    }
+  ],
+  "title": "label.title.race.hispanicOrigin",
+  "options": {
+    "chart": {
+      "type": "multiBarChart",
+      "height": 250,
+      "width": 250,
+      "margin": {
+        "top": 5,
+        "right": 5,
+        "bottom": 5,
+        "left": 5
+      },
+      "showMaxMin": false,
+      "showLegend": false,
+      "showControls": false,
+      "showValues": false,
+      "showXAxis": false,
+      "showYAxis": false,
+      "reduceXTicks": false,
+      "legend": {
+        "width": 200,
+        "expanded": true
+      },
+      "staggerLabels": true,
+      "rotateLabels": 70,
+      "clipEdge": true,
+      "duration": 500,
+      "stacked": false,
+      "xAxis": {
+        "axisLabelDistance": 20,
+        "margin": {
+          "top": 60
+        }
+      },
+      "yAxis": {},
+      "useInteractiveGuideline": false,
+      "interactive": false,
+      "tooltip": {}
+    }
+  }
+}

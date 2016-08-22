@@ -1,0 +1,97 @@
+{
+  "key": "hispanicOrigin",
+  "title": "label.filter.hispanicOrigin",
+  "queryKey": "hispanic_origin",
+  "primary": false,
+  "value": [],
+  "groupBy": "column",
+  "type": "label.filter.group.demographics",
+  "autoCompleteOptions": [
+    {
+      "key": "221-230",
+      "title": "Central American",
+      "deaths": "31,855",
+      "count": 31855,
+      "deathsPercentage": 0.25
+    },
+    {
+      "key": "220",
+      "title": "Central and South American",
+      "deaths": "19,394",
+      "count": 19394,
+      "deathsPercentage": 0.15
+    },
+    {
+      "key": "270-274",
+      "title": "Cuban",
+      "deaths": "73,151",
+      "count": 73151,
+      "deathsPercentage": 0.57
+    },
+    {
+      "key": "275-279",
+      "title": "Dominican",
+      "deaths": "16,405",
+      "count": 16405,
+      "deathsPercentage": 0.13
+    },
+    {
+      "key": "250-259",
+      "title": "Latin American",
+      "deaths": "3,025",
+      "count": 3025,
+      "deathsPercentage": 0.02
+    },
+    {
+      "key": "210-219",
+      "title": "Mexican",
+      "deaths": "445,300",
+      "count": 445300,
+      "deathsPercentage": 3.49
+    },
+    {
+      "key": "100-199",
+      "title": "Non-Hispanic",
+      "deaths": "11,946,443",
+      "count": 11946443,
+      "deathsPercentage": 93.53
+    },
+    {
+      "key": "280-299",
+      "title": "Other Hispanic",
+      "deaths": "71,941",
+      "count": 71941,
+      "deathsPercentage": 0.56
+    },
+    {
+      "key": "260-269",
+      "title": "Puerto Rican",
+      "deaths": "101,372",
+      "count": 101372,
+      "deathsPercentage": 0.79
+    },
+    {
+      "key": "231-249",
+      "title": "South American",
+      "deaths": "23,415",
+      "count": 23415,
+      "deathsPercentage": 0.18
+    },
+    {
+      "key": "200-209",
+      "title": "Spaniard",
+      "deaths": "3,216",
+      "count": 3216,
+      "deathsPercentage": 0.03
+    },
+    {
+      "key": "996-999",
+      "title": "Unknown",
+      "deaths": "36,983",
+      "count": 36983,
+      "deathsPercentage": 0.29
+    }
+  ],
+  "defaultGroup": "row",
+  "allChecked": true
+}

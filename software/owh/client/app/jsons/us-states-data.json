@@ -1,0 +1,4456 @@
+{
+  "states": [
+    {
+      "name": "CA",
+      "count": 3826,
+      "percentage": 27.57,
+      "percent": 47.57,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 1435,
+          "percentage": 10.34,
+          "percent": 30.34
+        },
+        {
+          "name": "Phase 1",
+          "count": 736,
+          "percentage": 5.3,
+          "percent": 25.3
+        },
+        {
+          "name": "Phase 3",
+          "count": 720,
+          "percentage": 5.19,
+          "percent": 25.19
+        },
+        {
+          "name": "N/A",
+          "count": 475,
+          "percentage": 3.42,
+          "percent": 23.42
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 383,
+          "percentage": 2.76,
+          "percent": 22.759999999999998
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 41,
+          "percentage": 0.3,
+          "percent": 20.3
+        },
+        {
+          "name": "Phase 4",
+          "count": 27,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "Phase 0",
+          "count": 8,
+          "percentage": 0.06,
+          "percent": 20.06
+        }
+      ]
+    },
+    {
+      "name": "TX",
+      "count": 3788,
+      "percentage": 27.3,
+      "percent": 47.3,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 1411,
+          "percentage": 10.17,
+          "percent": 30.17
+        },
+        {
+          "name": "Phase 1",
+          "count": 879,
+          "percentage": 6.34,
+          "percent": 26.34
+        },
+        {
+          "name": "Phase 3",
+          "count": 604,
+          "percentage": 4.35,
+          "percent": 24.35
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 430,
+          "percentage": 3.1,
+          "percent": 23.1
+        },
+        {
+          "name": "N/A",
+          "count": 377,
+          "percentage": 2.72,
+          "percent": 22.72
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 47,
+          "percentage": 0.34,
+          "percent": 20.34
+        },
+        {
+          "name": "Phase 4",
+          "count": 30,
+          "percentage": 0.22,
+          "percent": 20.22
+        },
+        {
+          "name": "Phase 0",
+          "count": 10,
+          "percentage": 0.07,
+          "percent": 20.07
+        }
+      ]
+    },
+    {
+      "name": "NY",
+      "count": 2988,
+      "percentage": 21.54,
+      "percent": 41.54,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 1139,
+          "percentage": 8.21,
+          "percent": 28.21
+        },
+        {
+          "name": "Phase 3",
+          "count": 579,
+          "percentage": 4.17,
+          "percent": 24.17
+        },
+        {
+          "name": "Phase 1",
+          "count": 573,
+          "percentage": 4.13,
+          "percent": 24.13
+        },
+        {
+          "name": "N/A",
+          "count": 342,
+          "percentage": 2.46,
+          "percent": 22.46
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 300,
+          "percentage": 2.16,
+          "percent": 22.16
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 41,
+          "percentage": 0.3,
+          "percent": 20.3
+        },
+        {
+          "name": "Phase 4",
+          "count": 13,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "Phase 0",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "MA",
+      "count": 2432,
+      "percentage": 17.53,
+      "percent": 37.53,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 875,
+          "percentage": 6.31,
+          "percent": 26.31
+        },
+        {
+          "name": "Phase 1",
+          "count": 515,
+          "percentage": 3.71,
+          "percent": 23.71
+        },
+        {
+          "name": "Phase 3",
+          "count": 464,
+          "percentage": 3.34,
+          "percent": 23.34
+        },
+        {
+          "name": "N/A",
+          "count": 281,
+          "percentage": 2.03,
+          "percent": 22.03
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 254,
+          "percentage": 1.83,
+          "percent": 21.83
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 28,
+          "percentage": 0.2,
+          "percent": 20.2
+        },
+        {
+          "name": "Phase 4",
+          "count": 13,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "Phase 0",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "PA",
+      "count": 2397,
+      "percentage": 17.28,
+      "percent": 37.28,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 837,
+          "percentage": 6.03,
+          "percent": 26.03
+        },
+        {
+          "name": "Phase 3",
+          "count": 510,
+          "percentage": 3.68,
+          "percent": 23.68
+        },
+        {
+          "name": "N/A",
+          "count": 419,
+          "percentage": 3.02,
+          "percent": 23.02
+        },
+        {
+          "name": "Phase 1",
+          "count": 372,
+          "percentage": 2.68,
+          "percent": 22.68
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 206,
+          "percentage": 1.48,
+          "percent": 21.48
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 33,
+          "percentage": 0.24,
+          "percent": 20.24
+        },
+        {
+          "name": "Phase 4",
+          "count": 14,
+          "percentage": 0.1,
+          "percent": 20.1
+        },
+        {
+          "name": "Phase 0",
+          "count": 6,
+          "percentage": 0.04,
+          "percent": 20.04
+        }
+      ]
+    },
+    {
+      "name": "OH",
+      "count": 2345,
+      "percentage": 16.9,
+      "percent": 36.9,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 910,
+          "percentage": 6.56,
+          "percent": 26.56
+        },
+        {
+          "name": "Phase 3",
+          "count": 494,
+          "percentage": 3.56,
+          "percent": 23.56
+        },
+        {
+          "name": "Phase 1",
+          "count": 386,
+          "percentage": 2.78,
+          "percent": 22.78
+        },
+        {
+          "name": "N/A",
+          "count": 295,
+          "percentage": 2.13,
+          "percent": 22.13
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 209,
+          "percentage": 1.51,
+          "percent": 21.51
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 38,
+          "percentage": 0.27,
+          "percent": 20.27
+        },
+        {
+          "name": "Phase 4",
+          "count": 11,
+          "percentage": 0.08,
+          "percent": 20.08
+        },
+        {
+          "name": "Phase 0",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "NC",
+      "count": 2196,
+      "percentage": 15.83,
+      "percent": 35.83,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 818,
+          "percentage": 5.9,
+          "percent": 25.9
+        },
+        {
+          "name": "Phase 3",
+          "count": 510,
+          "percentage": 3.68,
+          "percent": 23.68
+        },
+        {
+          "name": "N/A",
+          "count": 331,
+          "percentage": 2.39,
+          "percent": 22.39
+        },
+        {
+          "name": "Phase 1",
+          "count": 287,
+          "percentage": 2.07,
+          "percent": 22.07
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 197,
+          "percentage": 1.42,
+          "percent": 21.42
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 34,
+          "percentage": 0.25,
+          "percent": 20.25
+        },
+        {
+          "name": "Phase 4",
+          "count": 19,
+          "percentage": 0.14,
+          "percent": 20.14
+        }
+      ]
+    },
+    {
+      "name": "MD",
+      "count": 2159,
+      "percentage": 15.56,
+      "percent": 35.56,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 838,
+          "percentage": 6.04,
+          "percent": 26.04
+        },
+        {
+          "name": "Phase 3",
+          "count": 407,
+          "percentage": 2.93,
+          "percent": 22.93
+        },
+        {
+          "name": "Phase 1",
+          "count": 373,
+          "percentage": 2.69,
+          "percent": 22.69
+        },
+        {
+          "name": "N/A",
+          "count": 300,
+          "percentage": 2.16,
+          "percent": 22.16
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 197,
+          "percentage": 1.42,
+          "percent": 21.42
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 26,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "Phase 0",
+          "count": 10,
+          "percentage": 0.07,
+          "percent": 20.07
+        },
+        {
+          "name": "Phase 4",
+          "count": 8,
+          "percentage": 0.06,
+          "percent": 20.06
+        }
+      ]
+    },
+    {
+      "name": "MI",
+      "count": 1988,
+      "percentage": 14.33,
+      "percent": 34.33,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 739,
+          "percentage": 5.33,
+          "percent": 25.33
+        },
+        {
+          "name": "Phase 3",
+          "count": 451,
+          "percentage": 3.25,
+          "percent": 23.25
+        },
+        {
+          "name": "Phase 1",
+          "count": 379,
+          "percentage": 2.73,
+          "percent": 22.73
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 189,
+          "percentage": 1.36,
+          "percent": 21.36
+        },
+        {
+          "name": "N/A",
+          "count": 184,
+          "percentage": 1.33,
+          "percent": 21.33
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 32,
+          "percentage": 0.23,
+          "percent": 20.23
+        },
+        {
+          "name": "Phase 4",
+          "count": 12,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "Phase 0",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "IL",
+      "count": 1941,
+      "percentage": 13.99,
+      "percent": 33.99,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 800,
+          "percentage": 5.77,
+          "percent": 25.77
+        },
+        {
+          "name": "Phase 3",
+          "count": 443,
+          "percentage": 3.19,
+          "percent": 23.19
+        },
+        {
+          "name": "Phase 1",
+          "count": 283,
+          "percentage": 2.04,
+          "percent": 22.04
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 191,
+          "percentage": 1.38,
+          "percent": 21.38
+        },
+        {
+          "name": "N/A",
+          "count": 187,
+          "percentage": 1.35,
+          "percent": 21.35
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 33,
+          "percentage": 0.24,
+          "percent": 20.24
+        },
+        {
+          "name": "Phase 4",
+          "count": 4,
+          "percentage": 0.03,
+          "percent": 20.03
+        }
+      ]
+    },
+    {
+      "name": "MO",
+      "count": 1765,
+      "percentage": 12.72,
+      "percent": 32.72,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 682,
+          "percentage": 4.92,
+          "percent": 24.92
+        },
+        {
+          "name": "Phase 3",
+          "count": 432,
+          "percentage": 3.11,
+          "percent": 23.11
+        },
+        {
+          "name": "Phase 1",
+          "count": 237,
+          "percentage": 1.71,
+          "percent": 21.71
+        },
+        {
+          "name": "N/A",
+          "count": 199,
+          "percentage": 1.43,
+          "percent": 21.43
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 175,
+          "percentage": 1.26,
+          "percent": 21.26
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 30,
+          "percentage": 0.22,
+          "percent": 20.22
+        },
+        {
+          "name": "Phase 4",
+          "count": 8,
+          "percentage": 0.06,
+          "percent": 20.06
+        },
+        {
+          "name": "Phase 0",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "MN",
+      "count": 1631,
+      "percentage": 11.75,
+      "percent": 31.75,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 643,
+          "percentage": 4.63,
+          "percent": 24.63
+        },
+        {
+          "name": "Phase 3",
+          "count": 423,
+          "percentage": 3.05,
+          "percent": 23.05
+        },
+        {
+          "name": "N/A",
+          "count": 197,
+          "percentage": 1.42,
+          "percent": 21.42
+        },
+        {
+          "name": "Phase 1",
+          "count": 186,
+          "percentage": 1.34,
+          "percent": 21.34
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 144,
+          "percentage": 1.04,
+          "percent": 21.04
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 27,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "Phase 4",
+          "count": 6,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 0",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        }
+      ]
+    },
+    {
+      "name": "FL",
+      "count": 1558,
+      "percentage": 11.23,
+      "percent": 31.23,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 614,
+          "percentage": 4.43,
+          "percent": 24.43
+        },
+        {
+          "name": "Phase 3",
+          "count": 381,
+          "percentage": 2.75,
+          "percent": 22.75
+        },
+        {
+          "name": "Phase 1",
+          "count": 218,
+          "percentage": 1.57,
+          "percent": 21.57
+        },
+        {
+          "name": "N/A",
+          "count": 157,
+          "percentage": 1.13,
+          "percent": 21.13
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 152,
+          "percentage": 1.1,
+          "percent": 21.1
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 25,
+          "percentage": 0.18,
+          "percent": 20.18
+        },
+        {
+          "name": "Phase 4",
+          "count": 10,
+          "percentage": 0.07,
+          "percent": 20.07
+        },
+        {
+          "name": "Phase 0",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "WA",
+      "count": 1465,
+      "percentage": 10.56,
+      "percent": 30.560000000000002,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 533,
+          "percentage": 3.84,
+          "percent": 23.84
+        },
+        {
+          "name": "Phase 3",
+          "count": 386,
+          "percentage": 2.78,
+          "percent": 22.78
+        },
+        {
+          "name": "Phase 1",
+          "count": 220,
+          "percentage": 1.59,
+          "percent": 21.59
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 153,
+          "percentage": 1.1,
+          "percent": 21.1
+        },
+        {
+          "name": "N/A",
+          "count": 149,
+          "percentage": 1.07,
+          "percent": 21.07
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 18,
+          "percentage": 0.13,
+          "percent": 20.13
+        },
+        {
+          "name": "Phase 4",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 0",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "GA",
+      "count": 1317,
+      "percentage": 9.49,
+      "percent": 29.490000000000002,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 463,
+          "percentage": 3.34,
+          "percent": 23.34
+        },
+        {
+          "name": "Phase 3",
+          "count": 364,
+          "percentage": 2.62,
+          "percent": 22.62
+        },
+        {
+          "name": "Phase 1",
+          "count": 200,
+          "percentage": 1.44,
+          "percent": 21.44
+        },
+        {
+          "name": "N/A",
+          "count": 133,
+          "percentage": 0.96,
+          "percent": 20.96
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 122,
+          "percentage": 0.88,
+          "percent": 20.88
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 28,
+          "percentage": 0.2,
+          "percent": 20.2
+        },
+        {
+          "name": "Phase 4",
+          "count": 6,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 0",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "CO",
+      "count": 1276,
+      "percentage": 9.2,
+      "percent": 29.2,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 455,
+          "percentage": 3.28,
+          "percent": 23.28
+        },
+        {
+          "name": "Phase 3",
+          "count": 382,
+          "percentage": 2.75,
+          "percent": 22.75
+        },
+        {
+          "name": "Phase 1",
+          "count": 212,
+          "percentage": 1.53,
+          "percent": 21.53
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 99,
+          "percentage": 0.71,
+          "percent": 20.71
+        },
+        {
+          "name": "N/A",
+          "count": 93,
+          "percentage": 0.67,
+          "percent": 20.67
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 27,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "Phase 4",
+          "count": 7,
+          "percentage": 0.05,
+          "percent": 20.05
+        },
+        {
+          "name": "Phase 0",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "TN",
+      "count": 1234,
+      "percentage": 8.89,
+      "percent": 28.89,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 419,
+          "percentage": 3.02,
+          "percent": 23.02
+        },
+        {
+          "name": "Phase 3",
+          "count": 342,
+          "percentage": 2.46,
+          "percent": 22.46
+        },
+        {
+          "name": "Phase 1",
+          "count": 193,
+          "percentage": 1.39,
+          "percent": 21.39
+        },
+        {
+          "name": "N/A",
+          "count": 154,
+          "percentage": 1.11,
+          "percent": 21.11
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 95,
+          "percentage": 0.68,
+          "percent": 20.68
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 25,
+          "percentage": 0.18,
+          "percent": 20.18
+        },
+        {
+          "name": "Phase 4",
+          "count": 4,
+          "percentage": 0.03,
+          "percent": 20.03
+        },
+        {
+          "name": "Phase 0",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "IN",
+      "count": 1124,
+      "percentage": 8.1,
+      "percent": 28.1,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 468,
+          "percentage": 3.37,
+          "percent": 23.37
+        },
+        {
+          "name": "Phase 3",
+          "count": 323,
+          "percentage": 2.33,
+          "percent": 22.33
+        },
+        {
+          "name": "Phase 1",
+          "count": 116,
+          "percentage": 0.84,
+          "percent": 20.84
+        },
+        {
+          "name": "N/A",
+          "count": 112,
+          "percentage": 0.81,
+          "percent": 20.81
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 73,
+          "percentage": 0.53,
+          "percent": 20.53
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 25,
+          "percentage": 0.18,
+          "percent": 20.18
+        },
+        {
+          "name": "Phase 4",
+          "count": 6,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 0",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "WI",
+      "count": 1119,
+      "percentage": 8.06,
+      "percent": 28.060000000000002,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 442,
+          "percentage": 3.19,
+          "percent": 23.19
+        },
+        {
+          "name": "Phase 3",
+          "count": 316,
+          "percentage": 2.28,
+          "percent": 22.28
+        },
+        {
+          "name": "Phase 1",
+          "count": 135,
+          "percentage": 0.97,
+          "percent": 20.97
+        },
+        {
+          "name": "N/A",
+          "count": 120,
+          "percentage": 0.86,
+          "percent": 20.86
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 73,
+          "percentage": 0.53,
+          "percent": 20.53
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 27,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "Phase 4",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 0",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "AZ",
+      "count": 969,
+      "percentage": 6.98,
+      "percent": 26.98,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 379,
+          "percentage": 2.73,
+          "percent": 22.73
+        },
+        {
+          "name": "Phase 3",
+          "count": 289,
+          "percentage": 2.08,
+          "percent": 22.08
+        },
+        {
+          "name": "Phase 1",
+          "count": 109,
+          "percentage": 0.79,
+          "percent": 20.79
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 85,
+          "percentage": 0.61,
+          "percent": 20.61
+        },
+        {
+          "name": "N/A",
+          "count": 82,
+          "percentage": 0.59,
+          "percent": 20.59
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 20,
+          "percentage": 0.14,
+          "percent": 20.14
+        },
+        {
+          "name": "Phase 4",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        }
+      ]
+    },
+    {
+      "name": "SC",
+      "count": 915,
+      "percentage": 6.59,
+      "percent": 26.59,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 346,
+          "percentage": 2.49,
+          "percent": 22.490000000000002
+        },
+        {
+          "name": "Phase 2",
+          "count": 331,
+          "percentage": 2.39,
+          "percent": 22.39
+        },
+        {
+          "name": "N/A",
+          "count": 101,
+          "percentage": 0.73,
+          "percent": 20.73
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 63,
+          "percentage": 0.45,
+          "percent": 20.45
+        },
+        {
+          "name": "Phase 1",
+          "count": 48,
+          "percentage": 0.35,
+          "percent": 20.35
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 22,
+          "percentage": 0.16,
+          "percent": 20.16
+        },
+        {
+          "name": "Phase 4",
+          "count": 4,
+          "percentage": 0.03,
+          "percent": 20.03
+        }
+      ]
+    },
+    {
+      "name": "VA",
+      "count": 884,
+      "percentage": 6.37,
+      "percent": 26.37,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 337,
+          "percentage": 2.43,
+          "percent": 22.43
+        },
+        {
+          "name": "Phase 3",
+          "count": 310,
+          "percentage": 2.23,
+          "percent": 22.23
+        },
+        {
+          "name": "N/A",
+          "count": 116,
+          "percentage": 0.84,
+          "percent": 20.84
+        },
+        {
+          "name": "Phase 1",
+          "count": 51,
+          "percentage": 0.37,
+          "percent": 20.37
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 47,
+          "percentage": 0.34,
+          "percent": 20.34
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 16,
+          "percentage": 0.12,
+          "percent": 20.12
+        },
+        {
+          "name": "Phase 4",
+          "count": 4,
+          "percentage": 0.03,
+          "percent": 20.03
+        },
+        {
+          "name": "Phase 0",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        }
+      ]
+    },
+    {
+      "name": "IA",
+      "count": 862,
+      "percentage": 6.21,
+      "percent": 26.21,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 336,
+          "percentage": 2.42,
+          "percent": 22.42
+        },
+        {
+          "name": "Phase 3",
+          "count": 325,
+          "percentage": 2.34,
+          "percent": 22.34
+        },
+        {
+          "name": "N/A",
+          "count": 89,
+          "percentage": 0.64,
+          "percent": 20.64
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 48,
+          "percentage": 0.35,
+          "percent": 20.35
+        },
+        {
+          "name": "Phase 1",
+          "count": 41,
+          "percentage": 0.3,
+          "percent": 20.3
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 20,
+          "percentage": 0.14,
+          "percent": 20.14
+        },
+        {
+          "name": "Phase 4",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        }
+      ]
+    },
+    {
+      "name": "NJ",
+      "count": 809,
+      "percentage": 5.83,
+      "percent": 25.83,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 321,
+          "percentage": 2.31,
+          "percent": 22.31
+        },
+        {
+          "name": "Phase 3",
+          "count": 239,
+          "percentage": 1.72,
+          "percent": 21.72
+        },
+        {
+          "name": "N/A",
+          "count": 108,
+          "percentage": 0.78,
+          "percent": 20.78
+        },
+        {
+          "name": "Phase 1",
+          "count": 75,
+          "percentage": 0.54,
+          "percent": 20.54
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 43,
+          "percentage": 0.31,
+          "percent": 20.31
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 18,
+          "percentage": 0.13,
+          "percent": 20.13
+        },
+        {
+          "name": "Phase 0",
+          "count": 4,
+          "percentage": 0.03,
+          "percent": 20.03
+        },
+        {
+          "name": "Phase 4",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "OR",
+      "count": 797,
+      "percentage": 5.74,
+      "percent": 25.740000000000002,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 271,
+          "percentage": 1.95,
+          "percent": 21.95
+        },
+        {
+          "name": "Phase 2",
+          "count": 265,
+          "percentage": 1.91,
+          "percent": 21.91
+        },
+        {
+          "name": "N/A",
+          "count": 109,
+          "percentage": 0.79,
+          "percent": 20.79
+        },
+        {
+          "name": "Phase 1",
+          "count": 69,
+          "percentage": 0.5,
+          "percent": 20.5
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 56,
+          "percentage": 0.4,
+          "percent": 20.4
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 21,
+          "percentage": 0.15,
+          "percent": 20.15
+        },
+        {
+          "name": "Phase 4",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 0",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "AL",
+      "count": 773,
+      "percentage": 5.57,
+      "percent": 25.57,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 259,
+          "percentage": 1.87,
+          "percent": 21.87
+        },
+        {
+          "name": "Phase 3",
+          "count": 250,
+          "percentage": 1.8,
+          "percent": 21.8
+        },
+        {
+          "name": "Phase 1",
+          "count": 97,
+          "percentage": 0.7,
+          "percent": 20.7
+        },
+        {
+          "name": "N/A",
+          "count": 82,
+          "percentage": 0.59,
+          "percent": 20.59
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 62,
+          "percentage": 0.45,
+          "percent": 20.45
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 20,
+          "percentage": 0.14,
+          "percent": 20.14
+        },
+        {
+          "name": "Phase 4",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        }
+      ]
+    },
+    {
+      "name": "UT",
+      "count": 764,
+      "percentage": 5.51,
+      "percent": 25.509999999999998,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 246,
+          "percentage": 1.77,
+          "percent": 21.77
+        },
+        {
+          "name": "Phase 3",
+          "count": 245,
+          "percentage": 1.77,
+          "percent": 21.77
+        },
+        {
+          "name": "Phase 1",
+          "count": 102,
+          "percentage": 0.74,
+          "percent": 20.74
+        },
+        {
+          "name": "N/A",
+          "count": 76,
+          "percentage": 0.55,
+          "percent": 20.55
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 72,
+          "percentage": 0.52,
+          "percent": 20.52
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 15,
+          "percentage": 0.11,
+          "percent": 20.11
+        },
+        {
+          "name": "Phase 4",
+          "count": 6,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 0",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "CT",
+      "count": 728,
+      "percentage": 5.25,
+      "percent": 25.25,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 285,
+          "percentage": 2.05,
+          "percent": 22.05
+        },
+        {
+          "name": "Phase 3",
+          "count": 247,
+          "percentage": 1.78,
+          "percent": 21.78
+        },
+        {
+          "name": "N/A",
+          "count": 91,
+          "percentage": 0.66,
+          "percent": 20.66
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 45,
+          "percentage": 0.32,
+          "percent": 20.32
+        },
+        {
+          "name": "Phase 1",
+          "count": 39,
+          "percentage": 0.28,
+          "percent": 20.28
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 20,
+          "percentage": 0.14,
+          "percent": 20.14
+        },
+        {
+          "name": "Phase 4",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "KS",
+      "count": 725,
+      "percentage": 5.23,
+      "percent": 25.23,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 276,
+          "percentage": 1.99,
+          "percent": 21.99
+        },
+        {
+          "name": "Phase 2",
+          "count": 267,
+          "percentage": 1.92,
+          "percent": 21.92
+        },
+        {
+          "name": "N/A",
+          "count": 84,
+          "percentage": 0.61,
+          "percent": 20.61
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 42,
+          "percentage": 0.3,
+          "percent": 20.3
+        },
+        {
+          "name": "Phase 1",
+          "count": 36,
+          "percentage": 0.26,
+          "percent": 20.26
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 17,
+          "percentage": 0.12,
+          "percent": 20.12
+        },
+        {
+          "name": "Phase 4",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        }
+      ]
+    },
+    {
+      "name": "NE",
+      "count": 641,
+      "percentage": 4.62,
+      "percent": 24.62,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 255,
+          "percentage": 1.84,
+          "percent": 21.84
+        },
+        {
+          "name": "Phase 2",
+          "count": 229,
+          "percentage": 1.65,
+          "percent": 21.65
+        },
+        {
+          "name": "N/A",
+          "count": 62,
+          "percentage": 0.45,
+          "percent": 20.45
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 43,
+          "percentage": 0.31,
+          "percent": 20.31
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 27,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "Phase 1",
+          "count": 23,
+          "percentage": 0.17,
+          "percent": 20.17
+        },
+        {
+          "name": "Phase 4",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "DC",
+      "count": 629,
+      "percentage": 4.53,
+      "percent": 24.53,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 216,
+          "percentage": 1.56,
+          "percent": 21.56
+        },
+        {
+          "name": "Phase 2",
+          "count": 184,
+          "percentage": 1.33,
+          "percent": 21.33
+        },
+        {
+          "name": "Phase 1",
+          "count": 86,
+          "percentage": 0.62,
+          "percent": 20.62
+        },
+        {
+          "name": "N/A",
+          "count": 84,
+          "percentage": 0.61,
+          "percent": 20.61
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 47,
+          "percentage": 0.34,
+          "percent": 20.34
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 10,
+          "percentage": 0.07,
+          "percent": 20.07
+        },
+        {
+          "name": "Phase 0",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 4",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "NH",
+      "count": 569,
+      "percentage": 4.1,
+      "percent": 24.1,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 238,
+          "percentage": 1.72,
+          "percent": 21.72
+        },
+        {
+          "name": "Phase 2",
+          "count": 191,
+          "percentage": 1.38,
+          "percent": 21.38
+        },
+        {
+          "name": "N/A",
+          "count": 67,
+          "percentage": 0.48,
+          "percent": 20.48
+        },
+        {
+          "name": "Phase 1",
+          "count": 30,
+          "percentage": 0.22,
+          "percent": 20.22
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 26,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 14,
+          "percentage": 0.1,
+          "percent": 20.1
+        },
+        {
+          "name": "Phase 4",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        }
+      ]
+    },
+    {
+      "name": "OK",
+      "count": 547,
+      "percentage": 3.94,
+      "percent": 23.94,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 216,
+          "percentage": 1.56,
+          "percent": 21.56
+        },
+        {
+          "name": "Phase 2",
+          "count": 207,
+          "percentage": 1.49,
+          "percent": 21.49
+        },
+        {
+          "name": "N/A",
+          "count": 70,
+          "percentage": 0.5,
+          "percent": 20.5
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 20,
+          "percentage": 0.14,
+          "percent": 20.14
+        },
+        {
+          "name": "Phase 1",
+          "count": 17,
+          "percentage": 0.12,
+          "percent": 20.12
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 17,
+          "percentage": 0.12,
+          "percent": 20.12
+        }
+      ]
+    },
+    {
+      "name": "KY",
+      "count": 537,
+      "percentage": 3.87,
+      "percent": 23.87,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 233,
+          "percentage": 1.68,
+          "percent": 21.68
+        },
+        {
+          "name": "Phase 2",
+          "count": 174,
+          "percentage": 1.25,
+          "percent": 21.25
+        },
+        {
+          "name": "N/A",
+          "count": 72,
+          "percentage": 0.52,
+          "percent": 20.52
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 25,
+          "percentage": 0.18,
+          "percent": 20.18
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 17,
+          "percentage": 0.12,
+          "percent": 20.12
+        },
+        {
+          "name": "Phase 1",
+          "count": 14,
+          "percentage": 0.1,
+          "percent": 20.1
+        },
+        {
+          "name": "Phase 4",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "NM",
+      "count": 525,
+      "percentage": 3.78,
+      "percent": 23.78,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 239,
+          "percentage": 1.72,
+          "percent": 21.72
+        },
+        {
+          "name": "Phase 2",
+          "count": 165,
+          "percentage": 1.19,
+          "percent": 21.19
+        },
+        {
+          "name": "N/A",
+          "count": 63,
+          "percentage": 0.45,
+          "percent": 20.45
+        },
+        {
+          "name": "Phase 1",
+          "count": 23,
+          "percentage": 0.17,
+          "percent": 20.17
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 19,
+          "percentage": 0.14,
+          "percent": 20.14
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 16,
+          "percentage": 0.12,
+          "percent": 20.12
+        }
+      ]
+    },
+    {
+      "name": "DE",
+      "count": 447,
+      "percentage": 3.22,
+      "percent": 23.22,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 192,
+          "percentage": 1.38,
+          "percent": 21.38
+        },
+        {
+          "name": "Phase 2",
+          "count": 159,
+          "percentage": 1.15,
+          "percent": 21.15
+        },
+        {
+          "name": "N/A",
+          "count": 61,
+          "percentage": 0.44,
+          "percent": 20.44
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 15,
+          "percentage": 0.11,
+          "percent": 20.11
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 15,
+          "percentage": 0.11,
+          "percent": 20.11
+        },
+        {
+          "name": "Phase 1",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        }
+      ]
+    },
+    {
+      "name": "SD",
+      "count": 436,
+      "percentage": 3.14,
+      "percent": 23.14,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 193,
+          "percentage": 1.39,
+          "percent": 21.39
+        },
+        {
+          "name": "Phase 2",
+          "count": 152,
+          "percentage": 1.1,
+          "percent": 21.1
+        },
+        {
+          "name": "N/A",
+          "count": 54,
+          "percentage": 0.39,
+          "percent": 20.39
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 18,
+          "percentage": 0.13,
+          "percent": 20.13
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 17,
+          "percentage": 0.12,
+          "percent": 20.12
+        },
+        {
+          "name": "Phase 1",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "LA",
+      "count": 429,
+      "percentage": 3.09,
+      "percent": 23.09,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 202,
+          "percentage": 1.46,
+          "percent": 21.46
+        },
+        {
+          "name": "Phase 2",
+          "count": 140,
+          "percentage": 1.01,
+          "percent": 21.01
+        },
+        {
+          "name": "N/A",
+          "count": 62,
+          "percentage": 0.45,
+          "percent": 20.45
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 13,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 10,
+          "percentage": 0.07,
+          "percent": 20.07
+        },
+        {
+          "name": "Phase 1",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "NV",
+      "count": 406,
+      "percentage": 2.93,
+      "percent": 22.93,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 181,
+          "percentage": 1.3,
+          "percent": 21.3
+        },
+        {
+          "name": "Phase 2",
+          "count": 132,
+          "percentage": 0.95,
+          "percent": 20.95
+        },
+        {
+          "name": "N/A",
+          "count": 67,
+          "percentage": 0.48,
+          "percent": 20.48
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 14,
+          "percentage": 0.1,
+          "percent": 20.1
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 10,
+          "percentage": 0.07,
+          "percent": 20.07
+        },
+        {
+          "name": "Phase 1",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "MS",
+      "count": 401,
+      "percentage": 2.89,
+      "percent": 22.89,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 176,
+          "percentage": 1.27,
+          "percent": 21.27
+        },
+        {
+          "name": "Phase 2",
+          "count": 141,
+          "percentage": 1.02,
+          "percent": 21.02
+        },
+        {
+          "name": "N/A",
+          "count": 58,
+          "percentage": 0.42,
+          "percent": 20.42
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 12,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 11,
+          "percentage": 0.08,
+          "percent": 20.08
+        },
+        {
+          "name": "Phase 1",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        }
+      ]
+    },
+    {
+      "name": "ID",
+      "count": 383,
+      "percentage": 2.76,
+      "percent": 22.759999999999998,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 179,
+          "percentage": 1.29,
+          "percent": 21.29
+        },
+        {
+          "name": "Phase 2",
+          "count": 125,
+          "percentage": 0.9,
+          "percent": 20.9
+        },
+        {
+          "name": "N/A",
+          "count": 50,
+          "percentage": 0.36,
+          "percent": 20.36
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 15,
+          "percentage": 0.11,
+          "percent": 20.11
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 14,
+          "percentage": 0.1,
+          "percent": 20.1
+        }
+      ]
+    },
+    {
+      "name": "Ontario",
+      "count": 383,
+      "percentage": 2.76,
+      "percent": 22.759999999999998,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 135,
+          "percentage": 0.97,
+          "percent": 20.97
+        },
+        {
+          "name": "Phase 2",
+          "count": 124,
+          "percentage": 0.89,
+          "percent": 20.89
+        },
+        {
+          "name": "Phase 1",
+          "count": 48,
+          "percentage": 0.35,
+          "percent": 20.35
+        },
+        {
+          "name": "N/A",
+          "count": 45,
+          "percentage": 0.32,
+          "percent": 20.32
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 19,
+          "percentage": 0.14,
+          "percent": 20.14
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 12,
+          "percentage": 0.09,
+          "percent": 20.09
+        }
+      ]
+    },
+    {
+      "name": "HI",
+      "count": 376,
+      "percentage": 2.71,
+      "percent": 22.71,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 180,
+          "percentage": 1.3,
+          "percent": 21.3
+        },
+        {
+          "name": "Phase 2",
+          "count": 105,
+          "percentage": 0.76,
+          "percent": 20.76
+        },
+        {
+          "name": "N/A",
+          "count": 57,
+          "percentage": 0.41,
+          "percent": 20.41
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 16,
+          "percentage": 0.12,
+          "percent": 20.12
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 15,
+          "percentage": 0.11,
+          "percent": 20.11
+        },
+        {
+          "name": "Phase 1",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        }
+      ]
+    },
+    {
+      "name": "ND",
+      "count": 358,
+      "percentage": 2.58,
+      "percent": 22.58,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 182,
+          "percentage": 1.31,
+          "percent": 21.31
+        },
+        {
+          "name": "Phase 2",
+          "count": 108,
+          "percentage": 0.78,
+          "percent": 20.78
+        },
+        {
+          "name": "N/A",
+          "count": 36,
+          "percentage": 0.26,
+          "percent": 20.26
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 17,
+          "percentage": 0.12,
+          "percent": 20.12
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 13,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "Phase 1",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "MT",
+      "count": 357,
+      "percentage": 2.57,
+      "percent": 22.57,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 160,
+          "percentage": 1.15,
+          "percent": 21.15
+        },
+        {
+          "name": "Phase 2",
+          "count": 132,
+          "percentage": 0.95,
+          "percent": 20.95
+        },
+        {
+          "name": "N/A",
+          "count": 33,
+          "percentage": 0.24,
+          "percent": 20.24
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 17,
+          "percentage": 0.12,
+          "percent": 20.12
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 12,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "Phase 1",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        }
+      ]
+    },
+    {
+      "name": "ME",
+      "count": 336,
+      "percentage": 2.42,
+      "percent": 22.42,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 163,
+          "percentage": 1.17,
+          "percent": 21.17
+        },
+        {
+          "name": "Phase 2",
+          "count": 93,
+          "percentage": 0.67,
+          "percent": 20.67
+        },
+        {
+          "name": "N/A",
+          "count": 57,
+          "percentage": 0.41,
+          "percent": 20.41
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 11,
+          "percentage": 0.08,
+          "percent": 20.08
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 10,
+          "percentage": 0.07,
+          "percent": 20.07
+        },
+        {
+          "name": "Phase 1",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "WV",
+      "count": 325,
+      "percentage": 2.34,
+      "percent": 22.34,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 167,
+          "percentage": 1.2,
+          "percent": 21.2
+        },
+        {
+          "name": "Phase 2",
+          "count": 95,
+          "percentage": 0.68,
+          "percent": 20.68
+        },
+        {
+          "name": "N/A",
+          "count": 40,
+          "percentage": 0.29,
+          "percent": 20.29
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 15,
+          "percentage": 0.11,
+          "percent": 20.11
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 7,
+          "percentage": 0.05,
+          "percent": 20.05
+        },
+        {
+          "name": "Phase 1",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "AR",
+      "count": 324,
+      "percentage": 2.34,
+      "percent": 22.34,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 163,
+          "percentage": 1.17,
+          "percent": 21.17
+        },
+        {
+          "name": "Phase 2",
+          "count": 94,
+          "percentage": 0.68,
+          "percent": 20.68
+        },
+        {
+          "name": "N/A",
+          "count": 47,
+          "percentage": 0.34,
+          "percent": 20.34
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 11,
+          "percentage": 0.08,
+          "percent": 20.08
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 9,
+          "percentage": 0.06,
+          "percent": 20.06
+        }
+      ]
+    },
+    {
+      "name": "VT",
+      "count": 287,
+      "percentage": 2.07,
+      "percent": 22.07,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 146,
+          "percentage": 1.05,
+          "percent": 21.05
+        },
+        {
+          "name": "Phase 2",
+          "count": 78,
+          "percentage": 0.56,
+          "percent": 20.56
+        },
+        {
+          "name": "N/A",
+          "count": 48,
+          "percentage": 0.35,
+          "percent": 20.35
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 8,
+          "percentage": 0.06,
+          "percent": 20.06
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 1",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "RI",
+      "count": 280,
+      "percentage": 2.02,
+      "percent": 22.02,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 121,
+          "percentage": 0.87,
+          "percent": 20.87
+        },
+        {
+          "name": "Phase 2",
+          "count": 76,
+          "percentage": 0.55,
+          "percent": 20.55
+        },
+        {
+          "name": "N/A",
+          "count": 52,
+          "percentage": 0.37,
+          "percent": 20.37
+        },
+        {
+          "name": "Phase 1",
+          "count": 14,
+          "percentage": 0.1,
+          "percent": 20.1
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 10,
+          "percentage": 0.07,
+          "percent": 20.07
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 7,
+          "percentage": 0.05,
+          "percent": 20.05
+        }
+      ]
+    },
+    {
+      "name": "WY",
+      "count": 274,
+      "percentage": 1.97,
+      "percent": 21.97,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 125,
+          "percentage": 0.9,
+          "percent": 20.9
+        },
+        {
+          "name": "Phase 2",
+          "count": 103,
+          "percentage": 0.74,
+          "percent": 20.74
+        },
+        {
+          "name": "N/A",
+          "count": 22,
+          "percentage": 0.16,
+          "percent": 20.16
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 14,
+          "percentage": 0.1,
+          "percent": 20.1
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 8,
+          "percentage": 0.06,
+          "percent": 20.06
+        },
+        {
+          "name": "Phase 1",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Quebec",
+      "count": 263,
+      "percentage": 1.9,
+      "percent": 21.9,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 117,
+          "percentage": 0.84,
+          "percent": 20.84
+        },
+        {
+          "name": "Phase 2",
+          "count": 68,
+          "percentage": 0.49,
+          "percent": 20.49
+        },
+        {
+          "name": "N/A",
+          "count": 36,
+          "percentage": 0.26,
+          "percent": 20.26
+        },
+        {
+          "name": "Phase 1",
+          "count": 19,
+          "percentage": 0.14,
+          "percent": 20.14
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 12,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 10,
+          "percentage": 0.07,
+          "percent": 20.07
+        },
+        {
+          "name": "Phase 4",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "AK",
+      "count": 197,
+      "percentage": 1.42,
+      "percent": 21.42,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 115,
+          "percentage": 0.83,
+          "percent": 20.83
+        },
+        {
+          "name": "Phase 2",
+          "count": 48,
+          "percentage": 0.35,
+          "percent": 20.35
+        },
+        {
+          "name": "N/A",
+          "count": 21,
+          "percentage": 0.15,
+          "percent": 20.15
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 7,
+          "percentage": 0.05,
+          "percent": 20.05
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 1",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "British Columbia",
+      "count": 184,
+      "percentage": 1.33,
+      "percent": 21.33,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 85,
+          "percentage": 0.61,
+          "percent": 20.61
+        },
+        {
+          "name": "Phase 2",
+          "count": 55,
+          "percentage": 0.4,
+          "percent": 20.4
+        },
+        {
+          "name": "N/A",
+          "count": 31,
+          "percentage": 0.22,
+          "percent": 20.22
+        },
+        {
+          "name": "Phase 1",
+          "count": 6,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Alberta",
+      "count": 171,
+      "percentage": 1.23,
+      "percent": 21.23,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 95,
+          "percentage": 0.68,
+          "percent": 20.68
+        },
+        {
+          "name": "Phase 2",
+          "count": 38,
+          "percentage": 0.27,
+          "percent": 20.27
+        },
+        {
+          "name": "N/A",
+          "count": 26,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 7,
+          "percentage": 0.05,
+          "percent": 20.05
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        },
+        {
+          "name": "Phase 1",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Saskatchewan",
+      "count": 139,
+      "percentage": 1,
+      "percent": 21,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 79,
+          "percentage": 0.57,
+          "percent": 20.57
+        },
+        {
+          "name": "N/A",
+          "count": 27,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "Phase 2",
+          "count": 25,
+          "percentage": 0.18,
+          "percent": 20.18
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 6,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Manitoba",
+      "count": 128,
+      "percentage": 0.92,
+      "percent": 20.92,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 69,
+          "percentage": 0.5,
+          "percent": 20.5
+        },
+        {
+          "name": "N/A",
+          "count": 30,
+          "percentage": 0.22,
+          "percent": 20.22
+        },
+        {
+          "name": "Phase 2",
+          "count": 22,
+          "percentage": 0.16,
+          "percent": 20.16
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "PR",
+      "count": 127,
+      "percentage": 0.92,
+      "percent": 20.92,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 76,
+          "percentage": 0.55,
+          "percent": 20.55
+        },
+        {
+          "name": "N/A",
+          "count": 27,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "Phase 2",
+          "count": 19,
+          "percentage": 0.14,
+          "percent": 20.14
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 4,
+          "percentage": 0.03,
+          "percent": 20.03
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Nova Scotia",
+      "count": 125,
+      "percentage": 0.9,
+      "percent": 20.9,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 65,
+          "percentage": 0.47,
+          "percent": 20.47
+        },
+        {
+          "name": "N/A",
+          "count": 28,
+          "percentage": 0.2,
+          "percent": 20.2
+        },
+        {
+          "name": "Phase 2",
+          "count": 26,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 4,
+          "percentage": 0.03,
+          "percent": 20.03
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Western Australia",
+      "count": 96,
+      "percentage": 0.69,
+      "percent": 20.69,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 43,
+          "percentage": 0.31,
+          "percent": 20.31
+        },
+        {
+          "name": "N/A",
+          "count": 28,
+          "percentage": 0.2,
+          "percent": 20.2
+        },
+        {
+          "name": "Phase 2",
+          "count": 21,
+          "percentage": 0.15,
+          "percent": 20.15
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Queensland",
+      "count": 65,
+      "percentage": 0.47,
+      "percent": 20.47,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 34,
+          "percentage": 0.25,
+          "percent": 20.25
+        },
+        {
+          "name": "N/A",
+          "count": 17,
+          "percentage": 0.12,
+          "percent": 20.12
+        },
+        {
+          "name": "Phase 2",
+          "count": 11,
+          "percentage": 0.08,
+          "percent": 20.08
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "New South Wales",
+      "count": 63,
+      "percentage": 0.45,
+      "percent": 20.45,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 35,
+          "percentage": 0.25,
+          "percent": 20.25
+        },
+        {
+          "name": "Phase 2",
+          "count": 13,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "N/A",
+          "count": 11,
+          "percentage": 0.08,
+          "percent": 20.08
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 1",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Auckland",
+      "count": 58,
+      "percentage": 0.42,
+      "percent": 20.42,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 32,
+          "percentage": 0.23,
+          "percent": 20.23
+        },
+        {
+          "name": "N/A",
+          "count": 16,
+          "percentage": 0.12,
+          "percent": 20.12
+        },
+        {
+          "name": "Phase 2",
+          "count": 9,
+          "percentage": 0.06,
+          "percent": 20.06
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Newfoundland and Labrador",
+      "count": 49,
+      "percentage": 0.35,
+      "percent": 20.35,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 28,
+          "percentage": 0.2,
+          "percent": 20.2
+        },
+        {
+          "name": "N/A",
+          "count": 12,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "Phase 2",
+          "count": 7,
+          "percentage": 0.05,
+          "percent": 20.05
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "New Brunswick",
+      "count": 47,
+      "percentage": 0.34,
+      "percent": 20.34,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 36,
+          "percentage": 0.26,
+          "percent": 20.26
+        },
+        {
+          "name": "Phase 2",
+          "count": 7,
+          "percentage": 0.05,
+          "percent": 20.05
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Victoria",
+      "count": 46,
+      "percentage": 0.33,
+      "percent": 20.33,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 26,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "N/A",
+          "count": 12,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "Phase 2",
+          "count": 6,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "South Australia",
+      "count": 41,
+      "percentage": 0.3,
+      "percent": 20.3,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 26,
+          "percentage": 0.19,
+          "percent": 20.19
+        },
+        {
+          "name": "N/A",
+          "count": 12,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Newfoundland",
+      "count": 15,
+      "percentage": 0.11,
+      "percent": 20.11,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 12,
+          "percentage": 0.09,
+          "percent": 20.09
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Co Dublin",
+      "count": 13,
+      "percentage": 0.09,
+      "percent": 20.09,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 9,
+          "percentage": 0.06,
+          "percent": 20.06
+        },
+        {
+          "name": "Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "KOREA",
+      "count": 12,
+      "percentage": 0.09,
+      "percent": 20.09,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 7,
+          "percentage": 0.05,
+          "percent": 20.05
+        },
+        {
+          "name": "Phase 2",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        },
+        {
+          "name": "N/A",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Hong Kong",
+      "count": 11,
+      "percentage": 0.08,
+      "percent": 20.08,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 6,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 1",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Co Galway",
+      "count": 10,
+      "percentage": 0.07,
+      "percent": 20.07,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 7,
+          "percentage": 0.05,
+          "percent": 20.05
+        },
+        {
+          "name": "Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Daegu",
+      "count": 10,
+      "percentage": 0.07,
+      "percent": 20.07,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 2",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Kagoshima",
+      "count": 10,
+      "percentage": 0.07,
+      "percent": 20.07,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 6,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Gyeonggi-do",
+      "count": 9,
+      "percentage": 0.06,
+      "percent": 20.06,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 6,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Kyeonggi-do",
+      "count": 9,
+      "percentage": 0.06,
+      "percent": 20.06,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 6,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "N/A",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Aoba-ku",
+      "count": 8,
+      "percentage": 0.06,
+      "percent": 20.06,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Hiroshima",
+      "count": 8,
+      "percentage": 0.06,
+      "percent": 20.06,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Iwate",
+      "count": 8,
+      "percentage": 0.06,
+      "percent": 20.06,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Tokyo",
+      "count": 8,
+      "percentage": 0.06,
+      "percent": 20.06,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 4,
+          "percentage": 0.03,
+          "percent": 20.03
+        },
+        {
+          "name": "Phase 2",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Hokkaido",
+      "count": 7,
+      "percentage": 0.05,
+      "percent": 20.05,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        },
+        {
+          "name": "Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 1/Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Prince Edward Island",
+      "count": 7,
+      "percentage": 0.05,
+      "percent": 20.05,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 7,
+          "percentage": 0.05,
+          "percent": 20.05
+        }
+      ]
+    },
+    {
+      "name": "Co Waterford",
+      "count": 6,
+      "percentage": 0.04,
+      "percent": 20.04,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Co Limerick",
+      "count": 5,
+      "percentage": 0.04,
+      "percent": 20.04,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 5,
+          "percentage": 0.04,
+          "percent": 20.04
+        }
+      ]
+    },
+    {
+      "name": "Co Sligo",
+      "count": 5,
+      "percentage": 0.04,
+      "percent": 20.04,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 4,
+          "percentage": 0.03,
+          "percent": 20.03
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "ENGLAND",
+      "count": 5,
+      "percentage": 0.04,
+      "percent": 20.04,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "England",
+      "count": 5,
+      "percentage": 0.04,
+      "percent": 20.04,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Niigata",
+      "count": 5,
+      "percentage": 0.04,
+      "percent": 20.04,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Suntou",
+      "count": 5,
+      "percentage": 0.04,
+      "percent": 20.04,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 4,
+          "percentage": 0.03,
+          "percent": 20.03
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Canterbury",
+      "count": 4,
+      "percentage": 0.03,
+      "percent": 20.03,
+      "phase": [
+        {
+          "name": "Phase 1",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Co Cork",
+      "count": 4,
+      "percentage": 0.03,
+      "percent": 20.03,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 4,
+          "percentage": 0.03,
+          "percent": 20.03
+        }
+      ]
+    },
+    {
+      "name": "Incheon",
+      "count": 3,
+      "percentage": 0.02,
+      "percent": 20.02,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Madrid",
+      "count": 3,
+      "percentage": 0.02,
+      "percent": 20.02,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Northern Ireland",
+      "count": 3,
+      "percentage": 0.02,
+      "percent": 20.02,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Okinawa",
+      "count": 3,
+      "percentage": 0.02,
+      "percent": 20.02,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Sao Paulo",
+      "count": 3,
+      "percentage": 0.02,
+      "percent": 20.02,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 3,
+          "percentage": 0.02,
+          "percent": 20.02
+        }
+      ]
+    },
+    {
+      "name": "Shanghai",
+      "count": 3,
+      "percentage": 0.02,
+      "percent": 20.02,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Cairo",
+      "count": 2,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Hyogo",
+      "count": 2,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Kurashiki",
+      "count": 2,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 1",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Pathumwan",
+      "count": 2,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "San Paulo",
+      "count": 2,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Scotland",
+      "count": 2,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Shaanxi",
+      "count": 2,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 1",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        },
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Tasmania",
+      "count": 2,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 2,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "20900",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Banciao",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Belgium",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Chuo-ku",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Czech Republic",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Engalnd",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Esentepe",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Fukushima Prefecture",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Guanacaste",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Haryana",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Hyderabad",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Jeollanam-do",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Karnataka",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2/Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Kingston 7",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Manchester",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Mumbai",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "México",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Parktown",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Parkville",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Santa Fe",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Saxony",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "São Paulo",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "N/A",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Tamilnadu",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 1",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Toyko",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Ulster",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Wellington",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 3",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    },
+    {
+      "name": "Zimbabwe",
+      "count": 1,
+      "percentage": 0.01,
+      "percent": 20.01,
+      "phase": [
+        {
+          "name": "Phase 2",
+          "count": 1,
+          "percentage": 0.01,
+          "percent": 20.01
+        }
+      ]
+    }
+  ]
+}

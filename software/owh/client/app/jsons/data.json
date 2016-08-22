@@ -1,0 +1,50 @@
+{
+  "races": [
+    {"name": "American Indian or Alaska Native", "births": 2000},
+    {"name": "Asian or Pacific Islander", "births": 2000},
+    {"name": "Black or African American", "births": 2000},
+    {"name": "White", "births": 2000}
+  ],
+  "regions": [
+    {
+      "name": "South",
+      "births": 1987,
+      "races": [
+        {"name": "American Indian or Alaska Native", "births": 300},
+        {"name": "Asian or Pacific Islander", "births": 475},
+        {"name": "Black or African American", "births": 558},
+        {"name": "White", "births": 600}
+      ]
+    },
+    {
+      "name": "West",
+      "births": 1987,
+      "races": [
+        {"name": "American Indian or Alaska Native", "births": 300},
+        {"name": "Asian or Pacific Islander", "births": 475},
+        {"name": "Black or African American", "births": 558},
+        {"name": "White", "births": 600}
+      ]
+    },
+    {
+      "name": "Northeast",
+      "births": 1987,
+      "races": [
+        {"name": "American Indian or Alaska Native", "births": 300},
+        {"name": "Asian or Pacific Islander", "births": 475},
+        {"name": "Black or African American", "births": 558},
+        {"name": "White", "births": 600}
+      ]
+    },
+    {
+      "name": "Midwest",
+      "births": 1987,
+      "races": [
+        {"name": "American Indian or Alaska Native", "births": 300},
+        {"name": "Asian or Pacific Islander", "births": 475},
+        {"name": "Black or African American", "births": 558},
+        {"name": "White", "births": 600}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "sex": [
+    {
+      "key": "female",
+      "value": "Female"
+    },
+    {
+      "key": "male",
+      "value": "Male"
+    },
+    {
+      "key": "both",
+      "value": "Both Males and Females"
+    }
+  ],
+  "race": [
+    {
+      "key": "american-indian-or-alaska-native",
+      "value": "American Indian or Alaska Native"
+    },
+    {
+      "key": "asian",
+      "value": "Asian"
+
+    },
+    {
+      "key": "black-or-african-american",
+      "value": "Black or African American"
+
+    },
+    {
+      "key": "hispanic-or-Latino",
+      "value": "Hispanic or Latino"
+
+    },
+    {
+      "key": "native-hawaiian-or-other-pacific-islander",
+      "value": "Native Hawaiian or Other Pacific Islander"
+
+    },
+    {
+      "key": "white",
+      "value": "White"
+
+    },
+    {
+      "key": "multiple-race",
+      "value": "Multiple Race"
+    },
+    {
+      "key": "all-races-ethnicities",
+      "value": "All Races/Ethnicities"
+
+    }
+  ],
+  "Grade":[
+    {
+      "key": "9th",
+      "value": "9th"
+
+    },
+    {
+      "key": "10th",
+      "value": "10th"
+
+    },
+    {
+      "key": "11th",
+      "value": "11th"
+
+    },
+    {
+      "key": "12th",
+      "value": "12th"
+
+    },
+    {
+      "key": "all",
+      "value": "All Grades"
+
+    }
+  ]
+}

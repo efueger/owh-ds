@@ -1,0 +1,34 @@
+{
+  "rowHeaders": [],
+  "columnHeaders": [
+    {
+      "key": "gender",
+      "title": "label.filter.gender",
+      "queryKey": "sex",
+      "primary": false,
+      "value": [],
+      "groupBy": "column",
+      "type": "label.filter.group.demographics",
+      "groupByDefault": "column",
+      "showChart": true,
+      "autoCompleteOptions": [
+        {
+          "key": "F",
+          "title": "Female",
+          "deaths": "6,362,211",
+          "count": 6362211,
+          "deathsPercentage": 49.81
+        },
+        {
+          "key": "M",
+          "title": "Male",
+          "deaths": "6,410,289",
+          "count": 6410289,
+          "deathsPercentage": 50.19
+        }
+      ],
+      "defaultGroup": "column"
+    }
+  ],
+  "chartHeaders": []
+}

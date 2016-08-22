@@ -1,0 +1,304 @@
+{
+  "data": [
+    {
+      "key": "American Indian",
+      "values": [
+        {
+          "label": "Central American",
+          "value": 19
+        },
+        {
+          "label": "Central and South American",
+          "value": 1
+        },
+        {
+          "label": "Cuban",
+          "value": 9
+        },
+        {
+          "label": "Dominican",
+          "value": 6
+        },
+        {
+          "label": "Latin American",
+          "value": 10
+        },
+        {
+          "label": "Mexican",
+          "value": 512
+        },
+        {
+          "label": "Non-Hispanic",
+          "value": 17151
+        },
+        {
+          "label": "Other Hispanic",
+          "value": 203
+        },
+        {
+          "label": "Puerto Rican",
+          "value": 28
+        },
+        {
+          "label": "South American",
+          "value": 17
+        },
+        {
+          "label": "Spaniard",
+          "value": 11
+        },
+        {
+          "label": "Unknown",
+          "value": 64
+        }
+      ],
+      "deaths": 18031
+    },
+    {
+      "key": "Asian or Pacific Islander",
+      "values": [
+        {
+          "label": "Central American",
+          "value": 43
+        },
+        {
+          "label": "Central and South American",
+          "value": 4
+        },
+        {
+          "label": "Cuban",
+          "value": 14
+        },
+        {
+          "label": "Dominican",
+          "value": 6
+        },
+        {
+          "label": "Latin American",
+          "value": 6
+        },
+        {
+          "label": "Mexican",
+          "value": 207
+        },
+        {
+          "label": "Non-Hispanic",
+          "value": 60942
+        },
+        {
+          "label": "Other Hispanic",
+          "value": 397
+        },
+        {
+          "label": "Puerto Rican",
+          "value": 142
+        },
+        {
+          "label": "South American",
+          "value": 35
+        },
+        {
+          "label": "Spaniard",
+          "value": 27
+        },
+        {
+          "label": "Unknown",
+          "value": 280
+        }
+      ],
+      "deaths": 62103
+    },
+    {
+      "key": "Black",
+      "values": [
+        {
+          "label": "Central American",
+          "value": 491
+        },
+        {
+          "label": "Central and South American",
+          "value": 112
+        },
+        {
+          "label": "Cuban",
+          "value": 346
+        },
+        {
+          "label": "Dominican",
+          "value": 838
+        },
+        {
+          "label": "Latin American",
+          "value": 19
+        },
+        {
+          "label": "Mexican",
+          "value": 539
+        },
+        {
+          "label": "Non-Hispanic",
+          "value": 304107
+        },
+        {
+          "label": "Other Hispanic",
+          "value": 321
+        },
+        {
+          "label": "Puerto Rican",
+          "value": 581
+        },
+        {
+          "label": "South American",
+          "value": 93
+        },
+        {
+          "label": "Spaniard",
+          "value": 2
+        },
+        {
+          "label": "Unknown",
+          "value": 1867
+        }
+      ],
+      "deaths": 309316
+    },
+    {
+      "key": "Other (Puerto Rico only)",
+      "values": [
+        {
+          "label": "Central American",
+          "value": 0
+        },
+        {
+          "label": "Central and South American",
+          "value": 0
+        },
+        {
+          "label": "Cuban",
+          "value": 0
+        },
+        {
+          "label": "Dominican",
+          "value": 0
+        },
+        {
+          "label": "Latin American",
+          "value": 0
+        },
+        {
+          "label": "Mexican",
+          "value": 0
+        },
+        {
+          "label": "Non-Hispanic",
+          "value": 0
+        },
+        {
+          "label": "Other Hispanic",
+          "value": 0
+        },
+        {
+          "label": "Puerto Rican",
+          "value": 0
+        },
+        {
+          "label": "South American",
+          "value": 0
+        },
+        {
+          "label": "Spaniard",
+          "value": 0
+        },
+        {
+          "label": "Unknown",
+          "value": 0
+        }
+      ],
+      "deaths": 0
+    },
+    {
+      "key": "White",
+      "values": [
+        {
+          "label": "Central American",
+          "value": 7026
+        },
+        {
+          "label": "Central and South American",
+          "value": 2369
+        },
+        {
+          "label": "Cuban",
+          "value": 14936
+        },
+        {
+          "label": "Dominican",
+          "value": 3013
+        },
+        {
+          "label": "Latin American",
+          "value": 716
+        },
+        {
+          "label": "Mexican",
+          "value": 95193
+        },
+        {
+          "label": "Non-Hispanic",
+          "value": 2068925
+        },
+        {
+          "label": "Other Hispanic",
+          "value": 14643
+        },
+        {
+          "label": "Puerto Rican",
+          "value": 21079
+        },
+        {
+          "label": "South American",
+          "value": 5964
+        },
+        {
+          "label": "Spaniard",
+          "value": 598
+        },
+        {
+          "label": "Unknown",
+          "value": 6888
+        }
+      ],
+      "deaths": 2241350
+    }
+  ],
+  "title": "label.title.race.hispanicOrigin",
+  "options": {
+    "chart": {
+      "type": "multiBarHorizontalChart",
+      "height": 250,
+      "width": 250,
+      "margin": {
+        "top": 5,
+        "right": 5,
+        "bottom": 5,
+        "left": 5
+      },
+      "showLegend": false,
+      "showControls": false,
+      "showValues": false,
+      "showXAxis": false,
+      "showYAxis": false,
+      "stacked": true,
+      "duration": 500,
+      "xAxis": {
+        "showMaxMin": false
+      },
+      "yAxis": {
+        "axisLabel": "Deaths"
+      },
+      "useInteractiveGuideline": false,
+      "interactive": false,
+      "tooltip": {}
+    }
+  }
+}

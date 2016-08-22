@@ -1,0 +1,48 @@
+{
+  "gender": [
+    {
+      "name": "M",
+      "deaths": 1331232,
+      "race": [
+        {
+          "name": "1",
+          "deaths": 1131379
+        },
+        {
+          "name": "2",
+          "deaths": 157972
+        },
+        {
+          "name": "4",
+          "deaths": 32035
+        },
+        {
+          "name": "3",
+          "deaths": 9846
+        }
+      ]
+    },
+    {
+      "name": "F",
+      "deaths": 1299568,
+      "race": [
+        {
+          "name": "1",
+          "deaths": 1109971
+        },
+        {
+          "name": "2",
+          "deaths": 151344
+        },
+        {
+          "name": "4",
+          "deaths": 30068
+        },
+        {
+          "name": "3",
+          "deaths": 8185
+        }
+      ]
+    }
+  ]
+}

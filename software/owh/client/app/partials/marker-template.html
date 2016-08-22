@@ -1,0 +1,18 @@
+<div class="usa-grid-full" style="width: 250px">
+    <div class="usa-width-one-whole">
+        <div class="usa-width-two-thirds" style="display: table">
+            <div class="usa-width-one-whole">
+                <div class="usa-width-two-thirds marker-label">Year(s)</div>
+                <div class="usa-width-one-third">{{properties.years().join();}}</div>
+            </div>
+            <div class="usa-width-one-whole" ng-repeat="eachCat in properties.sex">
+                <div class="usa-width-two-thirds marker-label" ng-bind="eachCat.name | GenderTitle"></div>
+                <div class="usa-width-one-third" ng-bind="eachCat.deaths | number"></div>
+            </div>
+            <div class="usa-width-one-whole">
+                <div class="usa-width-two-thirds marker-label">Total Deaths</div>
+                <div class="usa-width-one-third">{{properties.totalCount | number}}</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,778 @@
+{
+  "Alcohol and Other Drug Use": {
+    "key": "Alcohol and Other Drug Use",
+    "path": [
+      "Alcohol and Other Drug Use"
+    ]
+  },
+  "Ever Drank Alcohol(at least one drink of alcohol on at least 1 day during their life)": {
+    "key": "Ever alcohol use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Ever alcohol use"
+    ]
+  },
+  "Drank Alcohol Before Age 13 Years(for the first time other than a few sips)": {
+    "key": "Initiation of alcohol use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Initiation of alcohol use"
+    ]
+  },
+  "Currently Drank Alcohol(at least one drink of alcohol on at least 1 day during the 30 days before the survey)": {
+    "key": "Current alcohol use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Current alcohol use"
+    ]
+  },
+  "Usually Obtained The Alcohol They Drank By Someone Giving It To Them(during the 30 days before the survey, among students who currently drank alcohol)": {
+    "key": "Source of alcohol",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Source of alcohol"
+    ]
+  },
+  "Drank Five Or More Drinks Of Alcohol In A Row(within a couple of hours on at least 1 day during the 30 days before the survey)": {
+    "key": "5 or more drinks in a row",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "5 or more drinks in a row"
+    ]
+  },
+  "Reported That The Largest Number Of Drinks They Had In A Row Was 10 Or More(within a couple of hours during the 30 days before the survey)": {
+    "key": "Largest number of drinks",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Largest number of drinks"
+    ]
+  },
+  "Ever Used Marijuana(one or more times during their life)": {
+    "key": "Ever marijuana use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Ever marijuana use"
+    ]
+  },
+  "Tried Marijuana Before Age 13 Years(for the first time)": {
+    "key": "Initiation of marijuana use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Initiation of marijuana use"
+    ]
+  },
+  "Currently Used Marijuana(one or more times during the 30 days before the survey)": {
+    "key": "Current marijuana use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Current marijuana use"
+    ]
+  },
+  "Ever Used Synthetic Marijuana(also called 'K2', 'Spice', 'fake weed', 'King Kong', 'Yucatan Fire', 'Skunk', or 'Moon Rocks', one or more times during their life)": {
+    "key": "Ever synthetic marijuana use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Ever synthetic marijuana use"
+    ]
+  },
+  "Ever Used Cocaine(any form of cocaine, such as powder, crack, or freebase, one or more times during their life)": {
+    "key": "Ever cocaine use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Ever cocaine use"
+    ]
+  },
+  "Ever Used Ecstasy(also called 'MDMA,' one or more times during their life)": {
+    "key": "Ever ecstasy use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Ever ecstasy use"
+    ]
+  },
+  "Ever Used Heroin(also called 'smack,' 'junk,' or 'China white,' one or more times during their life)": {
+    "key": "Ever heroin use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Ever heroin use"
+    ]
+  },
+  "Ever Used Methamphetamines(also called 'speed,' 'crystal,' 'crank,' or 'ice,' one or more times during their life)": {
+    "key": "Ever methamphetamine use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Ever methamphetamine use"
+    ]
+  },
+  "Ever Took Steroids Without A Doctor's Prescription(pills or shots, one or more times during their life)": {
+    "key": "Ever steroid use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Ever steroid use"
+    ]
+  },
+  "Ever Took Prescription Drugs Without A Doctor's Prescription(such as Oxycontin, Percocet, Vicodin, codeine, Adderall, Ritalin, or Xanax, one or more times during their life)": {
+    "key": "Ever prescription drug use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Ever prescription drug use"
+    ]
+  },
+  "Ever Used Inhalants(sniffed glue, breathed the contents of aerosol spray cans, or inhaled any paints or sprays to get high, one or more times during their life)": {
+    "key": "Ever inhalant use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Ever inhalant use"
+    ]
+  },
+  "Ever Injected Any Illegal Drug(used a needle to inject any illegal drug into their body one or more times during their life)": {
+    "key": "Illegal injected drug use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Illegal injected drug use"
+    ]
+  },
+  "Were Offered, Sold, Or Given An Illegal Drug On School Property(during the 12 months before the survey)": {
+    "key": "Illegal drugs at school",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Illegal drugs at school"
+    ]
+  },
+  "Usually Used Marijuana By Smoking It(in a joint, bong, pipe, or blunt during the 30 days before the survey)": {
+    "key": "How marijuana used",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "How marijuana used"
+    ]
+  },
+  "Ever Used Hallucinogenic Drugs(such as LSD, acid, PCP, angel dust, mescaline, or mushrooms, one or more times during their life)": {
+    "key": "Ever hallucinogenic drug use",
+    "path": [
+      "Alcohol and Other Drug Use",
+      "Ever hallucinogenic drug use"
+    ]
+  },
+  "Sexual Behaviors": {
+    "key": "Sexual Behaviors",
+    "path": [
+      "Sexual Behaviors"
+    ]
+  },
+  "Ever Had Sexual Intercourse": {
+    "key": "Ever sexual intercourse",
+    "path": [
+      "Sexual Behaviors",
+      "Ever sexual intercourse"
+    ]
+  },
+  "Had Sexual Intercourse Before Age 13 Years(for the first time)": {
+    "key": "Sex before 13 years",
+    "path": [
+      "Sexual Behaviors",
+      "Sex before 13 years"
+    ]
+  },
+  "Had Sexual Intercourse With Four Or More Persons(during their life)": {
+    "key": "Multiple sex partners",
+    "path": [
+      "Sexual Behaviors",
+      "Multiple sex partners"
+    ]
+  },
+  "Were Currently Sexually Active(had sexual intercourse with at least one person during the 3 months before the survey)": {
+    "key": "Current sexual activity",
+    "path": [
+      "Sexual Behaviors",
+      "Current sexual activity"
+    ]
+  },
+  "Did Not Use A Condom(during last sexual intercourse, among students who were currently sexually active)": {
+    "key": "Condom use",
+    "path": [
+      "Sexual Behaviors",
+      "Condom use"
+    ]
+  },
+  "Did Not Use Birth Control Pills(before last sexual intercourse to prevent pregnancy, among students who were currently sexually active)": {
+    "key": "Birth control pill use",
+    "path": [
+      "Sexual Behaviors",
+      "Birth control pill use"
+    ]
+  },
+  "Did Not Use An IUD (E.G., Mirena Or Paragard) Or Implant (E.G., Implanon Or Nexplanon)(before last sexual intercourse to prevent pregnancy, among students who were currently sexually active)": {
+    "key": "IUD or implant use",
+    "path": [
+      "Sexual Behaviors",
+      "IUD or implant use"
+    ]
+  },
+  "Did Not Use A Shot (E.G., Depo-Provera), Patch (E.G., Orthoevra), Or Birth Control Ring (E.G., Nuvaring)(before last sexual intercourse to prevent pregnancy, among students who were currently sexually active)": {
+    "key": "Shot, patch, or ring use",
+    "path": [
+      "Sexual Behaviors",
+      "Shot, patch, or ring use"
+    ]
+  },
+  "Did Not Use Birth Control Pills; An IUD Or Implant; Or A Shot, Patch, Or Birth Control Ring(before last sexual intercourse to prevent pregnancy, among students who were currently sexually active)": {
+    "key": "Pill, IUD, or shot use",
+    "path": [
+      "Sexual Behaviors",
+      "Pill, IUD, or shot use"
+    ]
+  },
+  "Did Not Use Both A Condom During And Birth Control Pills; An IUD Or Implant; Or A Shot, Patch, Or Birth Control Ring(before last sexual intercourse to prevent pregnancy, among students who were currently sexually active)": {
+    "key": "Dual birth control use",
+    "path": [
+      "Sexual Behaviors",
+      "Dual birth control use"
+    ]
+  },
+  "Did Not Use Any Method To Prevent Pregnancy(during last sexual intercourse, among students who were currently sexually active)": {
+    "key": "No birth control use",
+    "path": [
+      "Sexual Behaviors",
+      "No birth control use"
+    ]
+  },
+  "Drank Alcohol Or Used Drugs(before last sexual intercourse, among students who were currently sexually active)": {
+    "key": "Alcohol/drugs and sex",
+    "path": [
+      "Sexual Behaviors",
+      "Alcohol/drugs and sex"
+    ]
+  },
+  "Were Never Tested For HIV(not counting tests done when donating blood)": {
+    "key": "HIV testing",
+    "path": [
+      "Sexual Behaviors",
+      "HIV testing"
+    ]
+  },
+  "Dietary Behaviors": {
+    "key": "Dietary Behaviors",
+    "path": [
+      "Dietary Behaviors"
+    ]
+  },
+  "Did Not Eat Fruit Or Drink 100% Fruit Juices(during the 7 days before the survey)": {
+    "key": "No fruit consumption",
+    "path": [
+      "Dietary Behaviors",
+      "No fruit consumption"
+    ]
+  },
+  "Did Not Eat Vegetables(green salad, potatoes (excluding French fries, fried potatoes, or potato chips), carrots, or other vegetables, during the 7 days before the survey)": {
+    "key": "No vegetable eating",
+    "path": [
+      "Dietary Behaviors",
+      "No vegetable eating"
+    ]
+  },
+  "Did Not Drink Milk(during the 7 days before the survey)": {
+    "key": "No milk drinking",
+    "path": [
+      "Dietary Behaviors",
+      "No milk drinking"
+    ]
+  },
+  "Drank A Can, Bottle, Or Glass Of Soda Or Pop(not counting diet soda or diet pop, during the 7 days before the survey)": {
+    "key": "No soda drinking",
+    "path": [
+      "Dietary Behaviors",
+      "No soda drinking"
+    ]
+  },
+  "Drank A Can, Bottle, Or Glass Of Soda Or Pop One Or More Times Per Day(not counting diet soda or diet pop, during the 7 days before the survey)": {
+    "key": "Soda drinking >= 1 times",
+    "path": [
+      "Dietary Behaviors",
+      "Soda drinking >= 1 times"
+    ]
+  },
+  "Drank A Can, Bottle, Or Glass Of A Sports Drink(not counting low calorie sports drinks during the 7 days before the survey)": {
+    "key": "No sports drinks",
+    "path": [
+      "Dietary Behaviors",
+      "No sports drinks"
+    ]
+  },
+  "Drank A Can, Bottle, Or Glass Of A Sports Drink One Or More Times Per Day(not counting low calorie sports drinks during the 7 days before the survey)": {
+    "key": "Sports drinks >= 1 times",
+    "path": [
+      "Dietary Behaviors",
+      "Sports drinks >= 1 times"
+    ]
+  },
+  "Drank A Can, Bottle, Or Glass Of A Sports Drink Two Or More Times Per Day(not counting low calorie sports drinks during the 7 days before the survey)": {
+    "key": "Sports drinks >= 2 times",
+    "path": [
+      "Dietary Behaviors",
+      "Sports drinks >= 2 times"
+    ]
+  },
+  "Drank A Can, Bottle, Or Glass Of A Sports Drink Three Or More Times Per Day(not counting low calorie sports drinks during the 7 days before the survey)": {
+    "key": "Sports drinks >= 3 times",
+    "path": [
+      "Dietary Behaviors",
+      "Sports drinks >= 3 times"
+    ]
+  },
+  "Did Not Drink Water(during the 7 days before the survey)": {
+    "key": "No water drinking",
+    "path": [
+      "Dietary Behaviors",
+      "No water drinking"
+    ]
+  },
+  "Did Not Eat Breakfast(during the 7 days before the survey)": {
+    "key": "Breakfast eating",
+    "path": [
+      "Dietary Behaviors",
+      "Breakfast eating"
+    ]
+  },
+  "Did Not Eat Breakfast On All 7 Days(during the 7 days before the survey)": {
+    "key": "Daily breakfast eating",
+    "path": [
+      "Dietary Behaviors",
+      "Daily breakfast eating"
+    ]
+  },
+  "Physical Activity": {
+    "key": "Physical Activity",
+    "path": [
+      "Physical Activity"
+    ]
+  },
+  "Did Not Participate In At Least 60 Minutes Of Physical Activity On At Least 1 Day(doing any kind of physical activity that increased their heart rate and made them breathe hard some of the time during the 7 days before the survey)": {
+    "key": "Physical activity",
+    "path": [
+      "Physical Activity",
+      "Physical activity"
+    ]
+  },
+  "Were Not Physically Active At Least 60 Minutes Per Day On 5 Or More Days(doing any kind of physical activity that increased their heart rate and made them breathe hard some of the time during the 7 days before the survey)": {
+    "key": "Physical activity >= 5 days",
+    "path": [
+      "Physical Activity",
+      "Physical activity >= 5 days"
+    ]
+  },
+  "Were Not Physically Active At Least 60 Minutes Per Day On All 7 Days(doing any kind of physical activity that increased their heart rate and made them breathe hard some of the time during the 7 days before the survey)": {
+    "key": "Daily physical activity",
+    "path": [
+      "Physical Activity",
+      "Daily physical activity"
+    ]
+  },
+  "Played Video Or Computer Games Or Used A Computer 3 Or More Hours Per Day(for something that was not school work on an average school day)": {
+    "key": "Computer use",
+    "path": [
+      "Physical Activity",
+      "Computer use"
+    ]
+  },
+  "Watched 3 Or More Hours Per Day Of Television(on an average school day)": {
+    "key": "Television watching",
+    "path": [
+      "Physical Activity",
+      "Television watching"
+    ]
+  },
+  "Did Not Attend Physical Education Classes On 1 Or More Days(in an average week when they were in school)": {
+    "key": "PE attendance",
+    "path": [
+      "Physical Activity",
+      "PE attendance"
+    ]
+  },
+  "Did Not Attend Physical Education Classes On All 5 Days(in an average week when they were in school)": {
+    "key": "Daily PE attendance",
+    "path": [
+      "Physical Activity",
+      "Daily PE attendance"
+    ]
+  },
+  "Did Not Play On At Least One Sports Team(run by their school or community groups during the 12 months before the survey)": {
+    "key": "Sports team participation",
+    "path": [
+      "Physical Activity",
+      "Sports team participation"
+    ]
+  },
+  "Did Not Participate In Muscle Strengthening Activities On 3 Or More Days(such as, push-ups, sit-ups, or weight lifting, during the 7 days before the survey)": {
+    "key": "Muscle strengthening",
+    "path": [
+      "Physical Activity",
+      "Muscle strengthening"
+    ]
+  },
+  "Obesity, Overweight, and Weight Control": {
+    "key": "Obesity, Overweight, and Weight Control",
+    "path": [
+      "Obesity, Overweight, and Weight Control"
+    ]
+  },
+  "Had Obesity(>= 95th percentile for body mass index, based on sex- and age-specific reference data from the 2000 CDC growth charts)": {
+    "key": "Obesity",
+    "path": [
+      "Obesity, Overweight, and Weight Control",
+      "Obesity"
+    ]
+  },
+  "Were Overweight(>= 85th percentile but <95th percentile for body mass index, based on sex- and age-specific reference data from the 2000 CDC growth charts)": {
+    "key": "Overweight",
+    "path": [
+      "Obesity, Overweight, and Weight Control",
+      "Overweight"
+    ]
+  },
+  "Described Themselves As Slightly Or Very Overweight": {
+    "key": "Perception of weight",
+    "path": [
+      "Obesity, Overweight, and Weight Control",
+      "Perception of weight"
+    ]
+  },
+  "Were Not Trying To Lose Weight": {
+    "key": "Weight loss",
+    "path": [
+      "Obesity, Overweight, and Weight Control",
+      "Weight loss"
+    ]
+  },
+  "Other Health Topics": {
+    "key": "Other Health Topics",
+    "path": [
+      "Other Health Topics"
+    ]
+  },
+  "Had Ever Been Told By A Doctor Or Nurse That They Had Asthma": {
+    "key": "Asthma",
+    "path": [
+      "Other Health Topics",
+      "Asthma"
+    ]
+  },
+  "Did Not See A Dentist(for a check-up, exam, teeth cleaning, or other dental work during the 12 months before the survey)": {
+    "key": "Oral health care",
+    "path": [
+      "Other Health Topics",
+      "Oral health care"
+    ]
+  },
+  "Did Not Have 8 Or More Hours Of Sleep(on an average school night)": {
+    "key": "Sleep",
+    "path": [
+      "Other Health Topics",
+      "Sleep"
+    ]
+  },
+  "Used An Indoor Tanning Device(such as a sunlamp, sunbed, or tanning booth (not counting getting a spray-on tan) one or more times during the 12 months before the survey)": {
+    "key": "Indoor tanning device use",
+    "path": [
+      "Other Health Topics",
+      "Indoor tanning device use"
+    ]
+  },
+  "Had A Sunburn(one or more times during the 12 months before the survey, counting even a small part of the skin turning red or hurting for 12 hours or more after being outside in the sun or after using a sunlamp or other indoor tanning device)": {
+    "key": "Sunburn",
+    "path": [
+      "Other Health Topics",
+      "Sunburn"
+    ]
+  },
+  "Avoid Foods Because Eating The Food Could Cause An Allergic Reaction(such as skin rashes, swelling, itching, vomiting, coughing, or trouble breathing)": {
+    "key": "Food allergies",
+    "path": [
+      "Other Health Topics",
+      "Food allergies"
+    ]
+  },
+  "Unintentional Injuries and Violence": {
+    "key": "Unintentional Injuries and Violence",
+    "path": [
+      "Unintentional Injuries and Violence"
+    ]
+  },
+  "Never or rarely wore a bicycle helmet(among students who had ridden a bicycle during the 12 months before the survey)": {
+    "key": "Bicycle helmet use",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Bicycle helmet use"
+    ]
+  },
+  "Never or rarely wore a seat belt(when riding in a car driven by someone else)": {
+    "key": "Seat belt use",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Seat belt use"
+    ]
+  },
+  "Rode with a driver Who Had been drinking alcohol(in a car or other vehicle one or more times during the 30 days before the survey)": {
+    "key": "Riding with a drinking driver",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Riding with a drinking driver"
+    ]
+  },
+  "Drove when they had been drinking alcohol(in a car or other vehicle one or more times during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)": {
+    "key": "Drinking and driving",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Drinking and driving"
+    ]
+  },
+  "Texted or e-mailed while driving a car or other vehicle(on at least 1 day during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)": {
+    "key": "Texting and driving",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Texting and driving"
+    ]
+  },
+  "Carried a weapon(such as, a gun, knife, or club, on at least 1 day during the 30 days before the survey)": {
+    "key": "Weapon carrying",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Weapon carrying"
+    ]
+  },
+  "Carried a gun(on at least 1 day during the 30 days before the survey)": {
+    "key": "Gun carrying",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Gun carrying"
+    ]
+  },
+  "Carried a Weapon on school property(such as, a gun, knife, or club, on at least 1 day during the 30 days before the survey)": {
+    "key": "Weapon carrying at school",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Weapon carrying at school"
+    ]
+  },
+  "Were threatened or injured with a weapon on school property(such as, a gun, knife, or club, one or more times during the 12 months before the survey)": {
+    "key": "Threatened at school",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Threatened at school"
+    ]
+  },
+  "Were in a physical fight(one or more times during the 12 months before the survey)": {
+    "key": "Physical fighting",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Physical fighting"
+    ]
+  },
+  "Were injured in A physical fight(one or more times during the 12 months before the survey and injuries had to be treated by a doctor or nurse)": {
+    "key": "Injurious physical fighting",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Injurious physical fighting"
+    ]
+  },
+  "Were in a physical fight on school Property(one or more times during the 12 months before the survey)": {
+    "key": "Physical fighting at school",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Physical fighting at school"
+    ]
+  },
+  "Did not go to school because they felt unsafe at school or on their way to or from school(on at least 1 day during the 30 days before the survey)": {
+    "key": "Safety concerns at school",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Safety concerns at school"
+    ]
+  },
+  "Were electronically bullied(counting being bullied through e-mail, chat rooms, instant messaging, Web sites, or texting during the 12 months before the survey)": {
+    "key": "Electronic bullying",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Electronic bullying"
+    ]
+  },
+  "Were bullied on school property (during the 12 months before the survey)": {
+    "key": "Bullying at school",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Bullying at school"
+    ]
+  },
+  "Were ever physically forced to have sexual intercourse(when they did not want to)": {
+    "key": "Forced sexual intercourse",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Forced sexual intercourse"
+    ]
+  },
+  "Experienced Physical Dating Violence(counting being hit, slammed into something, or injured with an object or weapon on purpose by someone they were dating or going out with one or more times during the 12 months before the survey, among students who dated or went out with someone during the 12 months before the survey)": {
+    "key": "Physical dating violence",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Physical dating violence"
+    ]
+  },
+  "Experienced Sexual Dating Violence(counting kissing, touching, or being physically forced to have sexual intercourse when they did not want to by someone they were dating or going out with one or more times during the 12 months before the survey, among students who dated or went out with someone during the 12 months before the survey)": {
+    "key": "Sexual dating violence",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Sexual dating violence"
+    ]
+  },
+  "Felt Sad Or Hopeless(almost every day for 2 or more weeks in a row so that they stopped doing some usual activities during the 12 months before the survey)": {
+    "key": "Sad or hopeless",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Sad or hopeless"
+    ]
+  },
+  "Seriously Considered Attempting Suicide(during the 12 months before the survey)": {
+    "key": "Suicide consideration",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Suicide consideration"
+    ]
+  },
+  "Made A Plan About How They Would Attempt Suicide(during the 12 months before the survey)": {
+    "key": "Suicide plan",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Suicide plan"
+    ]
+  },
+  "Attempted Suicide(one or more times during the 12 months before the survey)": {
+    "key": "Attempted suicide",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Attempted suicide"
+    ]
+  },
+  "Attempted Suicide That Resulted In An Injury, Poisoning, Or Overdose That Had To Be Treated By A Doctor Or Nurse(during the 12 months before the survey)": {
+    "key": "Injurious suicide attempt",
+    "path": [
+      "Unintentional Injuries and Violence",
+      "Injurious suicide attempt"
+    ]
+  },
+  "tobbacco use": {
+    "key": "Tobbaco use",
+    "path": [
+      "Tobbaco use"
+    ]
+  },
+  "Ever Tried Cigarette Smoking(even one or two puffs)": {
+    "key": "Ever cigarette use",
+    "path": [
+      "Tobbaco use",
+      "Ever cigarette use"
+    ]
+  },
+  "Smoked A Whole Cigarette Before Age 13 Years(for the first time)": {
+    "key": "Initiation of cigarette use",
+    "path": [
+      "Tobbaco use",
+      "Initiation of cigarette use"
+    ]
+  },
+  "Currently Smoked Cigarettes(on at least 1 day during the 30 days before the survey)": {
+    "key": "Current cigarette use",
+    "path": [
+      "Tobbaco use",
+      "Current cigarette use"
+    ]
+  },
+  "Currently Smoked Cigarettes Frequently(on 20 or more days during the 30 days before the survey)": {
+    "key": "Frequent cigarette use",
+    "path": [
+      "Tobbaco use",
+      "Frequent cigarette use"
+    ]
+  },
+  "Smoked More Than 10 Cigarettes Per Day(on the days they smoked during the 30 days before the survey, among students who currently smoked cigarettes)": {
+    "key": "Smoked >10 cigarettes",
+    "path": [
+      "Tobbaco use",
+      "Smoked >10 cigarettes"
+    ]
+  },
+  "Currently Smoked Cigarettes Daily(on all 30 days during the 30 days before the survey)": {
+    "key": "Current daily cigarette use",
+    "path": [
+      "Tobbaco use",
+      "Current daily cigarette use"
+    ]
+  },
+  "Usually Obtained Their Own Cigarettes By Buying Them In A Store Or Gas Station(during the 30 days before the survey, among students who currently smoked cigarettes and who were aged <18 years)": {
+    "key": "Cigarettes from store",
+    "path": [
+      "Tobbaco use",
+      "Cigarettes from store"
+    ]
+  },
+  "Usually Obtained Their Own Cigarettes By Buying On The Internet(during the 30 days before the survey, among students who currently smoked cigarettes and who were aged <18 years)": {
+    "key": "Cigarettes from Internet",
+    "path": [
+      "Tobbaco use",
+      "Cigarettes from Internet"
+    ]
+  },
+  "Did Not Try To Quit Smoking Cigarettes(during the 12 months before the survey, among students who currently smoked cigarettes)": {
+    "key": "Smoking cessation",
+    "path": [
+      "Tobbaco use",
+      "Smoking cessation"
+    ]
+  },
+  "Currently Used Smokeless Tobacco(chewing tobacco, snuff, or dip on at least 1 day during the 30 days before the survey)": {
+    "key": "Current smokeless tobacco use",
+    "path": [
+      "Tobbaco use",
+      "Current smokeless tobacco use"
+    ]
+  },
+  "Currently Smoked Cigars(cigars, cigarillos, or little cigars on at least 1 day during the 30 days before the survey)": {
+    "key": "Current cigar use",
+    "path": [
+      "Tobbaco use",
+      "Current cigar use"
+    ]
+  },
+  "Ever Used Electronic Vapor Products(including e-cigarettes, e-cigars, e-pipes, vape pipes, vaping pens, e-hookahs, and hookah pens)": {
+    "key": "Electronic vapor product use",
+    "path": [
+      "Tobbaco use",
+      "Electronic vapor product use"
+    ]
+  },
+  "Currently Used Electronic Vapor Products(including e-cigarettes, e-cigars, e-pipes, vape pipes, vaping pens, e-hookahs, and hookah pens on at least 1 day during the 30 days before the survey)": {
+    "key": "Current electronic vapor product use",
+    "path": [
+      "Tobbaco use",
+      "Current electronic vapor product use"
+    ]
+  },
+  "Currently Smoked Cigarettes Or Cigars(on at least 1 day during the 30 days before the survey)": {
+    "key": "Current cigarette or cigar use",
+    "path": [
+      "Tobbaco use",
+      "Current cigarette or cigar use"
+    ]
+  },
+  "Currently Used Cigarettes, Cigars, Or Smokeless Tobacco(on at least 1 day during the 30 days before the survey)": {
+    "key": "Current cigarette, cigar, or smokeless tobacco use",
+    "path": [
+      "Tobbaco use",
+      "Current cigarette, cigar, or smokeless tobacco use"
+    ]
+  },
+  "Currently Used Tobacco(current cigarette, smokeless tobacco, cigar, or electronic vapor products use on at least 1 day during the 30 days before the survey)": {
+    "key": "Current tobacco use",
+    "path": [
+      "Tobbaco use",
+      "Current tobacco use"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+'use strict';
+(function() {
+    angular
+        .module('owh')
+        .component('owhToggleSwitch', {
+            templateUrl: 'app/partials/owh-toggle-switch/owhToggleSwitch.html',
+            controller: OWHToggleSwitchController,
+            controllerAs: 'otsc',
+            transclude: true,
+            bindings: {
+                options: '<',
+                model: '=',
+                tooltip: '@',
+                onChange: '&'
+            }
+        });
+
+    OWHToggleSwitchController.$inject = ['$scope'];
+
+    function OWHToggleSwitchController($scope) {
+        var otsc = this;
+        $scope.$watch('otsc.model', function (newValue, oldValue) {
+            otsc.onChange();
+        });
+    }
+
+}());

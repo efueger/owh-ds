@@ -1,0 +1,19 @@
+<table>
+    <thead>
+    <tr>
+        <th ng-repeat="header in obtc.headers" ng-bind="header | translate"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="eachRowData in obtc.data track by $index">
+        <td ng-repeat="eachCellData in eachRowData">
+            <!-- ng-if="!eachCellData.isCount"-->
+            <span ng-bind="eachCellData.title"></span>
+            <!--<span ng-if="eachCellData.isCount">
+                <span ng-bind="eachCellData.title" class="count-value"></span>
+                <span class="inline-bar border-1" style="width: {{eachCellData.percentage}}%"></span>
+            </span>-->
+        </td>
+    </tr>
+    </tbody>
+</table>

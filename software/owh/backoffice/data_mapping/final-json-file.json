@@ -1,0 +1,400 @@
+[
+  {
+    "column":"birth_year",
+    "start": 9,
+    "stop": 12,
+    "field": "DOB_YY",
+    "description": "Birth Year",
+    "mappings": {
+      "2014": "Year of birth"
+    }
+  },
+  {
+    "column":"birth_month",
+    "start": 13,
+    "stop": 14,
+    "field": "DOB_MM",
+    "description": "Birth Month",
+    "mappings": {
+      "01": "January",
+      "02": "February",
+      "03": "March",
+      "04": "April",
+      "05": "May",
+      "06": "June",
+      "07": "July",
+      "08": "August",
+      "09": "September",
+      "10": "October",
+      "11": "November",
+      "12": "December"
+    }
+  },
+  {
+    "column":"birth_day_of_week",
+    "start": 23,
+    "stop": 23,
+    "field": "DOB_WK",
+    "description": "Birth Day of Week",
+    "mappings": {
+      "1": "Sunday",
+      "2": "Monday",
+      "3": "Tuesday",
+      "4": "Wednesday",
+      "5": "Thursday",
+      "6": "Friday",
+      "7": "Saturday"
+    }
+  },
+  {
+    "column":"mother_age",
+    "start": 77,
+    "stop": 78,
+    "field": "MAGER14",
+    "description": "Mother’s Age Recode 14",
+    "mappings": {
+      "10": "30-34 years",
+      "11": "35-39 years",
+      "12": "40-44 years",
+      "13": "45-49 years",
+      "14": "50-54 years",
+      "01": "Under 15 Years",
+      "03": "15 years",
+      "04": "16 years",
+      "05": "17 years",
+      "06": "18 years",
+      "07": "19 years",
+      "08": "20-24 years",
+      "09": "25-29 years"
+    }
+  },
+  {
+    "column": "mother_race",
+    "start": 107,
+    "stop": 107,
+    "field": "MRACE6",
+    "description": "Mother’s Race Recode 6",
+    "mappings": {
+      "1": "White (only) the United States except Puerto Rico",
+      "2": "Black (only)",
+      "3": "AIAN (only)",
+      "4": "Asian (only)",
+      "5": "NHOPI ( only) ",
+      "6": "More than one race"
+    }
+  },
+  {
+    "column":"mother_hispanic_origin",
+    "start": 115,
+    "stop": 115,
+    "field": "MHISP_R",
+    "description": "Mother’s Hispanic Origin Recode",
+    "mappings": {
+      "0": "Non-Hispanic",
+      "1": "Mexican",
+      "2": "Puerto Rican",
+      "3": "Cuban",
+      "4": "Central and South American",
+      "5": "Other and Unknown Hispanic origin",
+      "9": "Hispanic origin not stated"
+    }
+  },
+  {
+    "column":"mother_marital_status",
+    "start": 120,
+    "stop": 120,
+    "field": "DMAR",
+    "description": "Marital Status",
+    "mappings": {
+      "1": "Married",
+      "2": "Unmarried"
+    }
+  },
+  {
+    "column":"mother_education",
+    "start": 124,
+    "stop": 124,
+    "field": "MEDUC",
+    "description": "Mother’s Education",
+    "mappings": {
+      "1": "8th grade or less",
+      "2": "9th through 12th grade with no diploma",
+      "3": "High school graduate or GED completed",
+      "4": "Some college credit, but not a degree.",
+      "5": "Associate degree (AA,AS)",
+      "6": "Bachelor’s degree (BA, AB, BS) ",
+      "7": "Master’s degree (MA, MS, MEng, MEd, MSW, MBA)",
+      "8": "Doctorate (PhD, EdD) or Professional Degree (MD, DDS, DVM, LLB, JD)",
+      "9": "Unknown"
+    }
+  },
+  {
+    "column":"live_birth_order",
+    "start": 182,
+    "stop": 182,
+    "field": "TBO_REC",
+    "description": "Total Birth Order Recode",
+    "mappings": {
+      "8": "8 or more live births",
+      "9": "Unknown or not stated",
+      "1-7": "Number of live birth order."
+    },
+    "type": "range"
+  },
+  {
+    "column":"month_prenatal_care_began",
+    "start": 224,
+    "stop": 225,
+    "field": "PRECARE",
+    "description": "Month Prenatal Care Began",
+    "mappings": {
+      "99": "Unknown or not stated",
+      "00": "No prenatal care ",
+      "01-10": "Month prenatal care began"
+
+    },
+    "type": "range",
+    "consider": "value"
+  },
+  {
+    "column":"tobacco_use",
+    "start": 269,
+    "stop": 269,
+    "field": "CIG_REC",
+    "description": "Cigarette Recode (Revised)",
+    "mappings": {
+      "Y": "Yes",
+      "N": "No",
+      "U": "Unknown or not stated"
+    }
+  },
+  {
+    "column":"delivery_method",
+    "start": 408,
+    "stop": 408,
+    "field": "DMETH_REC",
+    "description": "Delivery Method Recode Combined",
+    "mappings": {
+      "1": "Vaginal(revised and unrevised)",
+      "2": "C-Section",
+      "9": "Unknown"
+    }
+  },
+  {
+    "column":"attendant_at_birth",
+    "start": 433,
+    "stop": 433,
+    "field": "ATTEND",
+    "description": "Attendant at Birth",
+    "mappings": {
+      "1": "Doctor of Medicine (MD)",
+      "2": "Doctor of Osteopathy (DO)",
+      "3": "Certified Nurse Midwife (CNM)",
+      "4": "Other Midwifen",
+      "5": "Other",
+      "9": "Unknown or not stated"
+    }
+  },
+  {
+    "column":"plurality",
+    "start": 454,
+    "stop": 454,
+    "field": "DPLURAL",
+    "description": "Plurality Recode",
+    "mappings": {
+      "1": "Single",
+      "2": "Twin",
+      "3": "Triplet",
+      "4": "Quadruplet",
+      "5": "Quintuplet or higher"
+    }
+  },
+  {
+    "column":"gender",
+    "start": 475,
+    "stop": 475,
+    "field": "SEX",
+    "description": "Sex of Infant",
+    "mappings": {
+      "M": "Male",
+      "F": "Female"
+    }
+  },
+  {
+    "column":"lmp_gestational_age_group_1",
+    "start": 490,
+    "stop": 491,
+    "field": "COMBGEST",
+    "description": "Combined Gestation – Detail in Weeks",
+    "mappings": {
+        "17-47": "17th through 47th week of Gestation",
+        "99": "Unknown"
+
+      },
+     "type":"Range"
+  },
+  {
+    "column":"lmp_gestational_age_group_2",
+    "start": 492,
+    "stop": 493,
+    "field": "GESTREC10",
+    "description": "Combined Gestation Recode 10",
+    "mappings": {
+      "10": "42 weeks and over",
+      "99": "Unknown",
+      "01": "Under 20 weeks",
+      "02": "20-27 weeks",
+      "03": "28-31 weeks",
+      "04": "32-33 weeks",
+      "05": "34-36 weeks",
+      "06": "37-38 weeks",
+      "07": "39 weeks",
+      "08": "40 weeks",
+      "09": "41 weeks"
+    }
+  },
+  {
+    "column":"lmp_gestational_age_weekly",
+    "start": 494,
+    "stop": 494,
+    "field": "GESTREC3",
+    "description": "Combined Gestation Recode 3",
+    "mappings": {
+      "1": "Under 37 weeks",
+      "2": "37 weeks and over",
+      "3": "Not stated"
+    }
+  },
+  {
+    "column":"oe_gestational_age_group_1",
+    "start": 499,
+    "stop": 500,
+    "field": "OEGest_Comb",
+    "description": "Obstetric Estimate Edited",
+    "mappings": {
+      "99": "Not stated",
+      "17-47": "Weeks of gestation"
+    },
+    "type": "range"
+  },
+  {
+    "column":"oe_gestational_age_group_2",
+    "start": 501,
+    "stop": 502,
+    "field": "OEGest_R10",
+    "description": "Obstetric Estimate Recode10",
+    "mappings": {
+      "10": "42 weeks and over",
+      "99": "Unknown",
+      "01": "Under 20 weeks",
+      "02": "20-27 weeks",
+      "03": "28-31 weeks",
+      "04": "32-33 weeks",
+      "05": "34-36 weeks",
+      "06": "37-38 weeks",
+      "07": "39 weeks",
+      "08": "40 weeks",
+      "09": "41 weeks"
+    }
+  },
+  {
+    "column":"oe_gestational_age_weekly",
+    "start": 503,
+    "stop": 503,
+    "field": "OEGest_R3",
+    "description": "Obstetric Estimate Recode 3",
+    "mappings": {
+      "1": "Under 37 weeks",
+      "2": "37 weeks and over",
+      "3": "Not stated"
+    }
+  },
+  {
+    "column":"birth_weight",
+    "start": 509,
+    "stop": 510,
+    "field": "BWTR12",
+    "description": "Birth Weight Recode 12",
+    "mappings": {
+      "10": "4500 – 4999 grams",
+      "11": "5000 – 8165 grams",
+      "12": "Not Stated",
+      "01": "0227 - 0499 grams",
+      "02": "0500 – 0999 grams",
+      "03": "1000 - 1499 grams",
+      "04": "1500 – 1999 grams",
+      "05": "2000 – 2499 grams",
+      "06": "2500 – 2999 grams",
+      "07": "3000 – 3499 grams",
+      "08": "3500 – 3999 grams",
+      "09": "4000 – 4499 grams"
+    }
+  },
+  {
+    "column":"birth_place",
+    "start": 1330,
+    "stop": 1330,
+    "field": "UBFACIL",
+    "description": "Birth Place",
+    "mappings": {
+      "1": "Hospital",
+      "2": "Freestanding Birthing Center",
+      "3": "Clinic / Doctor’s Office",
+      "4": "Residence",
+      "5": "Other",
+      "9": "Unknown"
+    }
+  },
+  {
+    "column":"chronic_hypertension",
+    "start": 1332,
+    "stop": 1332,
+    "field": "URF_CHYPER",
+    "description": "Chronic Hypertension",
+    "mappings": {
+      "1": "Yes",
+      "2": "No",
+      "9": "Unknown",
+      "-9": "Not on certificate"
+    }
+  },
+  {
+    "column":"diabetes",
+    "start": 1331,
+    "stop": 1331,
+    "field": "URF_DIAB",
+    "description": "Diabetes",
+    "mappings": {
+      "1": "Yes",
+      "2": "No",
+      "9": "Unknown",
+      "-9": "Not on certificate"
+    }
+  },
+  {
+    "column":"pregnancy_associated_hypertension",
+    "start": 1333,
+    "stop": 1333,
+    "field": "URF_PHYPER",
+    "description": "Pregnancy Associated Hypertension",
+    "mappings": {
+      "1": "Yes",
+      "2": "No",
+      "9": "Unknown",
+      "-9": "Not on certificate"
+    }
+  },
+  {
+    "column":"eclampsia",
+    "start": 1334,
+    "stop": 1334,
+    "field": "URF_ECLAM",
+    "description": "Eclampsia",
+    "mappings": {
+      "1": "Yes",
+      "2": "No",
+      "9": "Unknown",
+      "-9": "Not on certificate"
+    }
+  }
+]

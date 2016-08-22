@@ -1,0 +1,173 @@
+
+/* UI-SELECT CSS */
+
+.ui-select-bootstrap .close {
+    color: #e6e6e6;
+    float: right;
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 1;
+    opacity: 0.2;
+    text-shadow: 0 1px 0 #fff;
+}
+
+.ui-select-multiple.ui-select-bootstrap .ui-select-match .close {
+    margin-left:8px;
+}
+.ui-select-match-item {
+    padding-right: 5px;
+    padding-top: 13px;
+    vertical-align: bottom;
+}
+
+.ui-select-bootstrap .close:hover, .ui-select-bootstrap .close:focus {
+    color: #e6e6e6;
+    cursor: pointer;
+    opacity: 0.5;
+    text-decoration: none;
+}
+.ui-select-bootstrap button.close {
+    background: transparent none repeat scroll 0 0;
+    border: 0 none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.ui-select-bootstrap .dropdown-menu {
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.176);
+    display: none;
+    float: left;
+    font-size: 14px;
+    left: 0;
+    list-style: outside none none;
+    margin: 2px 0 0;
+    min-width: 160px;
+    padding: 5px 0;
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+}
+.ui-select-bootstrap .dropdown-menu.pull-right {
+    left: auto;
+    right: 0;
+}
+.ui-select-bootstrap .dropdown-menu .divider {
+    background-color: #e5e5e5;
+    height: 1px;
+    margin: 9px 0;
+    overflow: hidden;
+}
+.ui-select-bootstrap .dropdown-menu > li > a {
+    clear: both;
+    color: #333;
+    display: block;
+    font-weight: normal;
+    line-height: 1.42857;
+    padding: 3px 20px;
+    white-space: nowrap;
+}
+.ui-select-bootstrap .dropdown-menu > li > a:hover, .ui-select-bootstrap .dropdown-menu > li > a:focus {
+    background-color: #f5f5f5;
+    color: #262626;
+    text-decoration: none;
+}
+.ui-select-bootstrap .dropdown-menu > .active > a, .ui-select-bootstrap .dropdown-menu > .active > a:hover, .ui-select-bootstrap .dropdown-menu > .active > a:focus {
+    background-color: #428bca;
+    color: #fff;
+    outline: 0 none;
+    text-decoration: none;
+}
+.ui-select-bootstrap .dropdown-menu > .disabled > a, .ui-select-bootstrap .dropdown-menu > .disabled > a:hover, .ui-select-bootstrap .dropdown-menu > .disabled > a:focus {
+    color: #999;
+}
+.ui-select-bootstrap .dropdown-menu > .disabled > a:hover, .ui-select-bootstrap .dropdown-menu > .disabled > a:focus {
+    background-color: transparent;
+    background-image: none;
+    cursor: not-allowed;
+    text-decoration: none;
+}
+.ui-select-bootstrap.open > .dropdown-menu {
+    display: block;
+}
+.ui-select-bootstrap.open > a {
+    outline: 0 none;
+}
+.ui-select-bootstrap .dropdown-menu-right {
+    left: auto;
+    right: 0;
+}
+.ui-select-bootstrap .dropdown-menu-left {
+    left: 0;
+    right: auto;
+}
+.ui-select-bootstrap .dropdown-header {
+    color: #999;
+    display: block;
+    font-size: 12px;
+    line-height: 1.42857;
+    padding: 3px 20px;
+}
+.ui-select-bootstrap .dropdown-backdrop {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 990;
+}
+.ui-select-bootstrap .pull-right > .dropdown-menu {
+    left: auto;
+    right: 0;
+}
+.ui-select-bootstrap .dropup .caret, .ui-select-bootstrap .navbar-fixed-bottom .dropdown .caret {
+    border-bottom: 4px solid;
+    border-top: 0 none;
+    content: "";
+}
+.ui-select-bootstrap .ui-select-bootstrap .dropup .dropdown-menu, .ui-select-bootstrap .navbar-fixed-bottom .dropdown .dropdown-menu {
+    bottom: 100%;
+    margin-bottom: 1px;
+    top: auto;
+}
+.ui-select-bootstrap .dropdown-menu li {
+    display: list-item;
+}
+.ui-select-bootstrap .dropdown-menu li:before, .ui-select-bootstrap .dropdown-menu li:after {
+    display: none;
+}
+@media (min-width: 768px) {
+    .ui-select-bootstrap .navbar-right .dropdown-menu {
+        left: auto;
+        right: 0;
+    }
+    .ui-select-bootstrap .navbar-right .dropdown-menu-left {
+        left: 0;
+        right: auto;
+    }
+}
+.ui-select-bootstrap.dropdown {
+    position: relative;
+}
+.ui-select-bootstrap {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+
+.ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+    height: auto;
+    display: inline;
+}
+
+.ui-select-bootstrap .dropdown-header {
+    color: #914fb5;
+    font-size: 22px;
+}
+.ui-select-choices-group-label {
+    font-variant: small-caps;
+    text-decoration: underline;
+}

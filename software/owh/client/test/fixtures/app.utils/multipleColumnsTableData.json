@@ -1,0 +1,590 @@
+{
+  "headers": {
+    "rowHeaders": [
+      {
+        "key": "autopsy",
+        "title": "label.filter.autopsy",
+        "queryKey": "autopsy",
+        "primary": false,
+        "value": [
+          "Y"
+        ],
+        "groupBy": "row",
+        "type": "label.filter.group.weekday.autopsy.pod",
+        "autoCompleteOptions": [
+          {
+            "key": "Y",
+            "title": "Yes",
+            "deaths": "987,027",
+            "count": 987027,
+            "deathsPercentage": 7.73
+          },
+          {
+            "key": "N",
+            "title": "No",
+            "deaths": "10,813,148",
+            "count": 10813148,
+            "deathsPercentage": 84.66
+          },
+          {
+            "key": "U",
+            "title": "Unknown",
+            "deaths": "972,325",
+            "count": 972325,
+            "deathsPercentage": 7.61
+          }
+        ],
+        "defaultGroup": "row",
+        "allChecked": true
+      },
+      {
+        "key": "race",
+        "title": "label.filter.race",
+        "queryKey": "race",
+        "primary": false,
+        "value": [
+          "1"
+        ],
+        "groupBy": "row",
+        "type": "label.filter.group.demographics",
+        "showChart": true,
+        "defaultGroup": "column",
+        "autoCompleteOptions": [
+          {
+            "key": "3",
+            "title": "American Indian",
+            "deaths": "83,206",
+            "count": 83206,
+            "deathsPercentage": 0.65
+          },
+          {
+            "key": "4",
+            "title": "Asian or Pacific Islander",
+            "deaths": "284,525",
+            "count": 284525,
+            "deathsPercentage": 2.23
+          },
+          {
+            "key": "2",
+            "title": "Black",
+            "deaths": "1,486,573",
+            "count": 1486573,
+            "deathsPercentage": 11.64
+          },
+          {
+            "key": "0",
+            "title": "Other (Puerto Rico only)",
+            "deaths": 0,
+            "count": 0,
+            "deathsPercentage": 0
+          },
+          {
+            "key": "1",
+            "title": "White",
+            "deaths": "10,918,196",
+            "count": 10918196,
+            "deathsPercentage": 85.48
+          }
+        ],
+        "allChecked": true
+      }
+    ],
+    "columnHeaders": [
+      {
+        "key": "gender",
+        "title": "label.filter.gender",
+        "queryKey": "sex",
+        "primary": false,
+        "value": [],
+        "groupBy": "column",
+        "type": "label.filter.group.demographics",
+        "groupByDefault": "column",
+        "showChart": true,
+        "autoCompleteOptions": [
+          {
+            "key": "F",
+            "title": "Female",
+            "deaths": "6,362,211",
+            "count": 6362211,
+            "deathsPercentage": 49.81
+          },
+          {
+            "key": "M",
+            "title": "Male",
+            "deaths": "6,410,289",
+            "count": 6410289,
+            "deathsPercentage": 50.19
+          }
+        ],
+        "defaultGroup": "column",
+        "allChecked": true
+      },
+      {
+        "key": "year",
+        "title": "label.filter.year",
+        "queryKey": "current_year",
+        "primary": false,
+        "value": [
+          "2014",
+          "2013"
+        ],
+        "groupBy": "column",
+        "type": "label.filter.group.year.month",
+        "defaultGroup": "row",
+        "allChecked": false,
+        "autoCompleteOptions": [
+          {
+            "key": "2014",
+            "title": "2014",
+            "deaths": "2,630,800",
+            "count": 2630800,
+            "deathsPercentage": 20.6
+          },
+          {
+            "key": "2013",
+            "title": "2013",
+            "deaths": "2,601,452",
+            "count": 2601452,
+            "deathsPercentage": 20.37
+          },
+          {
+            "key": "2012",
+            "title": "2012",
+            "deaths": "2,547,864",
+            "count": 2547864,
+            "deathsPercentage": 19.95
+          },
+          {
+            "key": "2011",
+            "title": "2011",
+            "deaths": "2,519,842",
+            "count": 2519842,
+            "deathsPercentage": 19.73
+          },
+          {
+            "key": "2010",
+            "title": "2010",
+            "deaths": "2,472,542",
+            "count": 2472542,
+            "deathsPercentage": 19.36
+          }
+        ]
+      }
+    ],
+    "chartHeaders": [
+      {
+        "headers": [
+          {
+            "key": "race",
+            "title": "label.filter.race",
+            "queryKey": "race",
+            "primary": false,
+            "value": [
+              "1"
+            ],
+            "groupBy": "row",
+            "type": "label.filter.group.demographics",
+            "showChart": true,
+            "defaultGroup": "column",
+            "autoCompleteOptions": [
+              {
+                "key": "3",
+                "title": "American Indian",
+                "deaths": "83,206",
+                "count": 83206,
+                "deathsPercentage": 0.65
+              },
+              {
+                "key": "4",
+                "title": "Asian or Pacific Islander",
+                "deaths": "284,525",
+                "count": 284525,
+                "deathsPercentage": 2.23
+              },
+              {
+                "key": "2",
+                "title": "Black",
+                "deaths": "1,486,573",
+                "count": 1486573,
+                "deathsPercentage": 11.64
+              },
+              {
+                "key": "0",
+                "title": "Other (Puerto Rico only)",
+                "deaths": 0,
+                "count": 0,
+                "deathsPercentage": 0
+              },
+              {
+                "key": "1",
+                "title": "White",
+                "deaths": "10,918,196",
+                "count": 10918196,
+                "deathsPercentage": 85.48
+              }
+            ],
+            "allChecked": true
+          },
+          {
+            "key": "autopsy",
+            "title": "label.filter.autopsy",
+            "queryKey": "autopsy",
+            "primary": false,
+            "value": [
+              "Y"
+            ],
+            "groupBy": "row",
+            "type": "label.filter.group.weekday.autopsy.pod",
+            "autoCompleteOptions": [
+              {
+                "key": "Y",
+                "title": "Yes",
+                "deaths": "987,027",
+                "count": 987027,
+                "deathsPercentage": 7.73
+              },
+              {
+                "key": "N",
+                "title": "No",
+                "deaths": "10,813,148",
+                "count": 10813148,
+                "deathsPercentage": 84.66
+              },
+              {
+                "key": "U",
+                "title": "Unknown",
+                "deaths": "972,325",
+                "count": 972325,
+                "deathsPercentage": 7.61
+              }
+            ],
+            "defaultGroup": "row",
+            "allChecked": true
+          }
+        ],
+        "chartType": "verticalStack"
+      },
+      {
+        "headers": [
+          {
+            "key": "gender",
+            "title": "label.filter.gender",
+            "queryKey": "sex",
+            "primary": false,
+            "value": [],
+            "groupBy": "column",
+            "type": "label.filter.group.demographics",
+            "groupByDefault": "column",
+            "showChart": true,
+            "autoCompleteOptions": [
+              {
+                "key": "F",
+                "title": "Female",
+                "deaths": "6,362,211",
+                "count": 6362211,
+                "deathsPercentage": 49.81
+              },
+              {
+                "key": "M",
+                "title": "Male",
+                "deaths": "6,410,289",
+                "count": 6410289,
+                "deathsPercentage": 50.19
+              }
+            ],
+            "defaultGroup": "column",
+            "allChecked": true
+          },
+          {
+            "key": "autopsy",
+            "title": "label.filter.autopsy",
+            "queryKey": "autopsy",
+            "primary": false,
+            "value": [
+              "Y"
+            ],
+            "groupBy": "row",
+            "type": "label.filter.group.weekday.autopsy.pod",
+            "autoCompleteOptions": [
+              {
+                "key": "Y",
+                "title": "Yes",
+                "deaths": "987,027",
+                "count": 987027,
+                "deathsPercentage": 7.73
+              },
+              {
+                "key": "N",
+                "title": "No",
+                "deaths": "10,813,148",
+                "count": 10813148,
+                "deathsPercentage": 84.66
+              },
+              {
+                "key": "U",
+                "title": "Unknown",
+                "deaths": "972,325",
+                "count": 972325,
+                "deathsPercentage": 7.61
+              }
+            ],
+            "defaultGroup": "row",
+            "allChecked": true
+          }
+        ],
+        "chartType": "verticalBar"
+      },
+      {
+        "headers": [
+          {
+            "key": "gender",
+            "title": "label.filter.gender",
+            "queryKey": "sex",
+            "primary": false,
+            "value": [],
+            "groupBy": "column",
+            "type": "label.filter.group.demographics",
+            "groupByDefault": "column",
+            "showChart": true,
+            "autoCompleteOptions": [
+              {
+                "key": "F",
+                "title": "Female",
+                "deaths": "6,362,211",
+                "count": 6362211,
+                "deathsPercentage": 49.81
+              },
+              {
+                "key": "M",
+                "title": "Male",
+                "deaths": "6,410,289",
+                "count": 6410289,
+                "deathsPercentage": 50.19
+              }
+            ],
+            "defaultGroup": "column",
+            "allChecked": true
+          },
+          {
+            "key": "race",
+            "title": "label.filter.race",
+            "queryKey": "race",
+            "primary": false,
+            "value": [
+              "1"
+            ],
+            "groupBy": "row",
+            "type": "label.filter.group.demographics",
+            "showChart": true,
+            "defaultGroup": "column",
+            "autoCompleteOptions": [
+              {
+                "key": "3",
+                "title": "American Indian",
+                "deaths": "83,206",
+                "count": 83206,
+                "deathsPercentage": 0.65
+              },
+              {
+                "key": "4",
+                "title": "Asian or Pacific Islander",
+                "deaths": "284,525",
+                "count": 284525,
+                "deathsPercentage": 2.23
+              },
+              {
+                "key": "2",
+                "title": "Black",
+                "deaths": "1,486,573",
+                "count": 1486573,
+                "deathsPercentage": 11.64
+              },
+              {
+                "key": "0",
+                "title": "Other (Puerto Rico only)",
+                "deaths": 0,
+                "count": 0,
+                "deathsPercentage": 0
+              },
+              {
+                "key": "1",
+                "title": "White",
+                "deaths": "10,918,196",
+                "count": 10918196,
+                "deathsPercentage": 85.48
+              }
+            ],
+            "allChecked": true
+          }
+        ],
+        "chartType": "horizontalStack"
+      }
+    ]
+  },
+  "data": {
+    "autopsy": [
+      {
+        "name": "Y",
+        "deaths": 314748,
+        "race": [
+          {
+            "name": "1",
+            "deaths": 314748,
+            "gender": [
+              {
+                "name": "M",
+                "deaths": 214659,
+                "year": [
+                  {
+                    "name": "2015",
+                    "deaths": 107460
+                  },
+                  {
+                    "name": "2012",
+                    "deaths": 107199
+                  }
+                ]
+              },
+              {
+                "name": "F",
+                "deaths": 100089,
+                "year": [
+                  {
+                    "name": "2014",
+                    "deaths": 50390
+                  },
+                  {
+                    "name": "2013",
+                    "deaths": 49699
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "countKey": "deaths",
+  "totalCount": 12772500,
+  "countLabel": "Number of Deaths",
+  "calculatePercentage": false,
+  "calculateRowTotal": true,
+  "expectedResult": {
+    "headers": [
+      [
+        {
+          "colspan": 1,
+          "rowspan": 2,
+          "title": "label.filter.autopsy"
+        },
+        {
+          "colspan": 1,
+          "rowspan": 2,
+          "title": "label.filter.race"
+        },
+        {
+          "title": "Female",
+          "colspan": 2,
+          "rowspan": 1
+        },
+        {
+          "title": "Male",
+          "colspan": 2,
+          "rowspan": 1
+        },
+        {
+          "title": "Number of Deaths",
+          "colspan": 1,
+          "rowspan": 2
+        }
+      ],
+      [
+        {
+          "title": "2014",
+          "colspan": 1,
+          "rowspan": 1
+        },
+        {
+          "title": "2013",
+          "colspan": 1,
+          "rowspan": 1
+        },
+        {
+          "title": "2014",
+          "colspan": 1,
+          "rowspan": 1
+        },
+        {
+          "title": "2013",
+          "colspan": 1,
+          "rowspan": 1
+        }
+      ]
+    ],
+    "data": [
+      [
+        {
+          "title": "Yes",
+          "isCount": false,
+          "rowspan": 2,
+          "colspan": 1,
+          "key": "Y"
+        },
+        {
+          "title": "White",
+          "isCount": false,
+          "rowspan": 1,
+          "colspan": 1,
+          "key": "1"
+        },
+        {
+          "title": 50390,
+          "isCount": false,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "title": 49699,
+          "isCount": false,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "title": "0",
+          "percentage": 0,
+          "isCount": false
+        },
+        {
+          "title": "0",
+          "percentage": 0,
+          "isCount": false
+        },
+        {
+          "title": 314748,
+          "isCount": false,
+          "rowspan": 1,
+          "colspan": 1,
+          "isBold": true
+        }
+      ],
+      [
+        {
+          "title": "Total",
+          "isCount": false,
+          "rowspan": 1,
+          "colspan": 5,
+          "isBold": true
+        },
+        {
+          "title": "314,748",
+          "percentage": 2.4642630651790958,
+          "isCount": true,
+          "rowspan": 1,
+          "colspan": 1,
+          "isBold": true
+        }
+      ]
+    ]
+  }
+}

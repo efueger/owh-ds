@@ -1,0 +1,6 @@
+<owh-accordion ng-if="onac.accordionData.isAccordion" ng-repeat="eachAccordion in onac.accordionData.data"
+               left-title="{{eachAccordion.headerTitle | translate}}({{eachAccordion.title}})"
+               right-title="{{eachAccordion.count}}">
+    <owh-nested-accordion accordion-data="eachAccordion.children"></owh-nested-accordion>
+</owh-accordion>
+<owh-basic-table data="onac.accordionData.data" headers="onac.accordionData.headers" ng-if="!onac.accordionData.isAccordion"></owh-basic-table>

@@ -1,0 +1,41 @@
+<!--<owh-nested-accordion accordion-data="otc.dataToAccordion"></owh-nested-accordion>-->
+<table>
+    <thead>
+    <tr ng-repeat="eachHeaderRow in otc.dataToMixedTable.headers">
+        <th ng-repeat="eachHeader in eachHeaderRow" ng-bind="eachHeader.title" colspan="{{eachHeader.colspan}}" rowspan="{{eachHeader.rowspan}}"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="eachRow in otc.dataToMixedTable.data track by $index">
+        <td ng-repeat="eachColumn in eachRow track by $index" colspan="{{eachColumn.colspan}}" rowspan="{{eachColumn.rowspan}}" ng-class="eachColumn.isBold?'bold-class':''">
+            <span ng-if="!eachColumn.isCount" ng-bind-html="eachColumn.title"></span>
+            <i class="cursor-pointer {{eachColumn.iconClass}}" ng-if="eachColumn.iconClass" ng-click="eachColumn.onIconClick(eachColumn.key)"></i>
+            <label class="custom-label" ng-if="eachColumn.isCount">
+                <span ng-bind="eachColumn.title" class="count-value"></span>
+            </label>
+            <span ng-if="eachColumn.isCount" class="inline-bar" style="width: {{eachColumn.percentage}}%"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<!--
+<table>
+    <thead>
+        <tr>
+            <th ng-repeat="header in otc.headers" ng-bind="header.title | translate"></th>
+            <th ng-bind="otc.countLabel | translate"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="eachRowData in otc.dataToTable track by $index" class="{{eachRowData.cssClass}}">
+            <td ng-repeat="header in otc.headers">
+                <i class="fa fa-angle-down fa-2x cursor-pointer" ng-if="$index === eachRowData.collapsibleIndex && eachRowData.allowCollapse" ng-click="otc.toggle($event, eachRowData.childCssClass)"></i>
+                <span ng-bind="eachRowData[header.key]"></span>
+            </td>
+            <td>
+                <span ng-bind="eachRowData[otc.countKey]" class="count-value"></span>
+                <span class="inline-bar border-1" style="width: {{eachRowData[otc.countKey + 'Percentage']}}%"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>-->

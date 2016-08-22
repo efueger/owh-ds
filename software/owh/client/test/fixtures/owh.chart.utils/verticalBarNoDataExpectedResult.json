@@ -1,0 +1,43 @@
+{
+  "data": [],
+  "title": "label.title.gender.race",
+  "options": {
+    "chart": {
+      "type": "multiBarChart",
+      "height": 250,
+      "width": 250,
+      "margin": {
+        "top": 5,
+        "right": 5,
+        "bottom": 5,
+        "left": 5
+      },
+      "showMaxMin": false,
+      "showLegend": false,
+      "showControls": false,
+      "showValues": false,
+      "showXAxis": false,
+      "showYAxis": false,
+      "reduceXTicks": false,
+      "legend": {
+        "width": 200,
+        "expanded": true
+      },
+      "staggerLabels": true,
+      "rotateLabels": 70,
+      "clipEdge": true,
+      "duration": 500,
+      "stacked": false,
+      "xAxis": {
+        "axisLabelDistance": 20,
+        "margin": {
+          "top": 60
+        }
+      },
+      "yAxis": {},
+      "useInteractiveGuideline": false,
+      "interactive": false,
+      "tooltip": {}
+    }
+  }
+}

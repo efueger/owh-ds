@@ -1,0 +1,12 @@
+{
+  "gender&race": "horizontalStack",
+  "race&agegroup": "verticalStack",
+  "gender&agegroup":	"horizontalBar",
+  "race&hispanicOrigin": "horizontalStack",
+  "gender&hispanicOrigin": "verticalBar",
+  "agegroup&hispanicOrigin": "verticalStack",
+  "race&autopsy": "verticalStack",
+  "gender&autopsy": "verticalBar",
+  "agegroup&autopsy": "horizontalBar",
+  "gender&placeofdeath": "verticalStack"
+}

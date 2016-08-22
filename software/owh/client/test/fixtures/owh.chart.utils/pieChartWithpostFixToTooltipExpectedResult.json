@@ -1,0 +1,57 @@
+{
+  "data": [
+    {
+      "label": "American Indian",
+      "value": 18031
+    },
+    {
+      "label": "Asian or Pacific Islander",
+      "value": 62103
+    },
+    {
+      "label": "Black",
+      "value": 309316
+    },
+    {
+      "label": "Other (Puerto Rico only)",
+      "value": 0
+    },
+    {
+      "label": "White",
+      "value": 2241350
+    }
+  ],
+  "title": "label.graph.race",
+  "options": {
+    "chart": {
+      "type": "pieChart",
+      "height": 250,
+      "width": 250,
+      "margin": {
+        "top": 5,
+        "right": 5,
+        "bottom": 5,
+        "left": 5
+      },
+      "showValues": false,
+      "showLabels": false,
+      "transitionDuration": 250,
+      "showLegend": false,
+      "legend": {
+        "margin": {}
+      },
+      "labelThreshold": 0.01,
+      "labelSunbeamLayout": true,
+      "styles": {
+        "classes": {
+          "with-3d-shadow": true,
+          "with-transitions": true,
+          "gallery": false
+        }
+      },
+      "useInteractiveGuideline": false,
+      "interactive": false,
+      "tooltip": {}
+    }
+  }
+}

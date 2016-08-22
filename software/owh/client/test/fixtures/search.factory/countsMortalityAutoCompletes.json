@@ -1,0 +1,340 @@
+{
+  "status": "OK",
+  "data": {
+    "simple": {
+      "placeofdeath": [
+        {
+          "name": "1",
+          "deaths": 4013568
+        },
+        {
+          "name": "4",
+          "deaths": 3610576
+        },
+        {
+          "name": "6",
+          "deaths": 2607395
+        },
+        {
+          "name": "2",
+          "deaths": 869355
+        },
+        {
+          "name": "7",
+          "deaths": 837276
+        },
+        {
+          "name": "5",
+          "deaths": 751689
+        },
+        {
+          "name": "3",
+          "deaths": 73283
+        },
+        {
+          "name": "9",
+          "deaths": 9358
+        }
+      ],
+      "hispanicOrigin": [
+        {
+          "name": "100-199",
+          "deaths": 11946443
+        },
+        {
+          "name": "210-219",
+          "deaths": 445300
+        },
+        {
+          "name": "260-269",
+          "deaths": 101372
+        },
+        {
+          "name": "270-274",
+          "deaths": 73151
+        },
+        {
+          "name": "280-299",
+          "deaths": 71941
+        },
+        {
+          "name": "996-999",
+          "deaths": 36983
+        },
+        {
+          "name": "221-230",
+          "deaths": 31855
+        },
+        {
+          "name": "231-249",
+          "deaths": 23415
+        },
+        {
+          "name": "220",
+          "deaths": 19394
+        },
+        {
+          "name": "275-279",
+          "deaths": 16405
+        },
+        {
+          "name": "200-209",
+          "deaths": 3216
+        },
+        {
+          "name": "250-259",
+          "deaths": 3025
+        }
+      ],
+      "race": [
+        {
+          "name": "1",
+          "deaths": 10918196
+        },
+        {
+          "name": "2",
+          "deaths": 1486573
+        },
+        {
+          "name": "4",
+          "deaths": 284525
+        },
+        {
+          "name": "3",
+          "deaths": 83206
+        }
+      ],
+      "gender": [
+        {
+          "name": "M",
+          "deaths": 6410289
+        },
+        {
+          "name": "F",
+          "deaths": 6362211
+        }
+      ],
+      "month": [
+        {
+          "name": "01",
+          "deaths": 1188225
+        },
+        {
+          "name": "12",
+          "deaths": 1155071
+        },
+        {
+          "name": "03",
+          "deaths": 1128809
+        },
+        {
+          "name": "11",
+          "deaths": 1061378
+        },
+        {
+          "name": "10",
+          "deaths": 1060011
+        },
+        {
+          "name": "02",
+          "deaths": 1052406
+        },
+        {
+          "name": "04",
+          "deaths": 1049859
+        },
+        {
+          "name": "05",
+          "deaths": 1048883
+        },
+        {
+          "name": "07",
+          "deaths": 1020885
+        },
+        {
+          "name": "08",
+          "deaths": 1016567
+        },
+        {
+          "name": "06",
+          "deaths": 995236
+        },
+        {
+          "name": "09",
+          "deaths": 995170
+        }
+      ],
+      "year": [
+        {
+          "name": "2014",
+          "deaths": 2630800
+        },
+        {
+          "name": "2013",
+          "deaths": 2601452
+        },
+        {
+          "name": "2012",
+          "deaths": 2547864
+        },
+        {
+          "name": "2011",
+          "deaths": 2519842
+        },
+        {
+          "name": "2010",
+          "deaths": 2472542
+        }
+      ],
+      "weekday": [
+        {
+          "name": "6",
+          "deaths": 1848002
+        },
+        {
+          "name": "7",
+          "deaths": 1845915
+        },
+        {
+          "name": "2",
+          "deaths": 1827655
+        },
+        {
+          "name": "4",
+          "deaths": 1816256
+        },
+        {
+          "name": "3",
+          "deaths": 1812061
+        },
+        {
+          "name": "5",
+          "deaths": 1811070
+        },
+        {
+          "name": "1",
+          "deaths": 1810734
+        },
+        {
+          "name": "9",
+          "deaths": 807
+        }
+      ],
+      "ucd-filters": [],
+      "mcd-filters": [],
+      "autopsy": [
+        {
+          "name": "N",
+          "deaths": 10813148
+        },
+        {
+          "name": "Y",
+          "deaths": 987027
+        },
+        {
+          "name": "U",
+          "deaths": 972325
+        }
+      ],
+      "agegroup": [
+        {
+          "name": "23-23",
+          "deaths": 1919437
+        },
+        {
+          "name": "22-22",
+          "deaths": 1746347
+        },
+        {
+          "name": "24-24",
+          "deaths": 1413054
+        },
+        {
+          "name": "21-21",
+          "deaths": 1378719
+        },
+        {
+          "name": "20-20",
+          "deaths": 1156326
+        },
+        {
+          "name": "19-19",
+          "deaths": 1028578
+        },
+        {
+          "name": "18-18",
+          "deaths": 909577
+        },
+        {
+          "name": "17-17",
+          "deaths": 745316
+        },
+        {
+          "name": "25-25",
+          "deaths": 562427
+        },
+        {
+          "name": "16-16",
+          "deaths": 555673
+        },
+        {
+          "name": "15-15",
+          "deaths": 346784
+        },
+        {
+          "name": "14-14",
+          "deaths": 210493
+        },
+        {
+          "name": "13-13",
+          "deaths": 140723
+        },
+        {
+          "name": "01-06",
+          "deaths": 139965
+        },
+        {
+          "name": "26-26",
+          "deaths": 119535
+        },
+        {
+          "name": "12-12",
+          "deaths": 119108
+        },
+        {
+          "name": "11-11",
+          "deaths": 105410
+        },
+        {
+          "name": "10-10",
+          "deaths": 95667
+        },
+        {
+          "name": "09-09",
+          "deaths": 50915
+        },
+        {
+          "name": "08-08",
+          "deaths": 14664
+        },
+        {
+          "name": "07-07",
+          "deaths": 11966
+        },
+        {
+          "name": "27-27",
+          "deaths": 1816
+        }
+      ]
+    },
+    "nested": {
+      "table": {},
+      "charts": [],
+      "maps": {}
+    }
+  },
+  "pagination": {
+    "total": 12772500
+  },
+  "messages": "success"
+}

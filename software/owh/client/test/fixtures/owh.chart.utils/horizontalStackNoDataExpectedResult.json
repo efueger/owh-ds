@@ -1,0 +1,33 @@
+{
+  "data": [],
+  "title": "label.title.gender.race",
+  "options": {
+    "chart": {
+      "type": "multiBarHorizontalChart",
+      "height": 250,
+      "width": 250,
+      "margin": {
+        "top": 5,
+        "right": 5,
+        "bottom": 5,
+        "left": 5
+      },
+      "showLegend": false,
+      "showControls": false,
+      "showValues": false,
+      "showXAxis": false,
+      "showYAxis": false,
+      "stacked": true,
+      "duration": 500,
+      "xAxis": {
+        "showMaxMin": false
+      },
+      "yAxis": {
+        "axisLabel": "Deaths"
+      },
+      "useInteractiveGuideline": false,
+      "interactive": false,
+      "tooltip": {}
+    }
+  }
+}
