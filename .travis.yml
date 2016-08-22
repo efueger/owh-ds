@@ -3,7 +3,7 @@ node_js:
   - '4.4'
 
 install:
-  - cd /software/owh/client
+  - cd  software/owh/client
   - npm install
 
 before_script:
