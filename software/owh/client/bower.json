@@ -30,5 +30,8 @@
     "spin.js": "^2.3.2",
     "angular-modal-service": "~0.10.1",
     "angular-nvd3": "^1.0.7"
+  },
+  "resolutions": {
+    "angular": "1.5.5"
   }
 }
