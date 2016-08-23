@@ -19,6 +19,9 @@ before_script:
   - sleep 1 # give server time to start
 
 script:
+  - cd ../server
+  - nohup npm run-script start > nohup.out &
+  - cd ../client
   - node_modules/.bin/karma start test/unit-tests/karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
   - node_modules/.bin/protractor test/e2e-tests/protractor.conf.js --browser=firefox
 
