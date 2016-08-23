@@ -8,6 +8,7 @@ addons:
 
 install:
   - cd  software/owh/client
+  - npm install -g nodemon
   - npm install
   - npm install -g codeclimate-test-reporter
 
