@@ -24,7 +24,7 @@ script:
   - cd ../server
   - npm start > /dev/null &
   - cd ../client
-  - ifconfig
+  - ip address
   - node_modules/.bin/protractor test/e2e-tests/protractor.conf.js --browser=firefox
 
 after_script:
