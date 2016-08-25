@@ -4,7 +4,7 @@ node_js:
 
 addons:
   code_climate:
-    repo_token: CODECLIMATE-REPO-TOKEN
+    repo_token: CCTOKEN
 
 install:
   - cd  software/owh/client
