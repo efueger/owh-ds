@@ -21,6 +21,9 @@ before_script:
 
 script:
   - node_modules/.bin/karma start test/unit-tests/karma.conf.js --no-auto-watch --single-run --reporters=dots --browsers=Firefox
+  - ls
+  - ls coverage
+  - ls "coverage/PhantomJS 2.1.1 (Linux 0.0.0)"
   #Travis ci unable to connect to remote elastic search
   # we have to run a ealstic search locally in TravisCI, insert data and query data
   #- cd ../server
