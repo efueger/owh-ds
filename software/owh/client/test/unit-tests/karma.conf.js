@@ -88,7 +88,7 @@ module.exports = function(config){
     },
 
     coverageReporter:{
-      type : 'html',
+      type : 'lcov',
       dir : 'coverage/',
       file : 'index.html'
     },
