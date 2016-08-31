@@ -6,6 +6,7 @@ describe('search mortality page', function() {
 
     beforeEach(function() {
         browser.get('/search');
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
     });
 
     it('Mortality default filters verification', function() {
