@@ -4,8 +4,12 @@ var elasticQueryBuilder = require('../api/elasticQueryBuilder');
 const util = require('util');
 var Q = require('q');
 
-//var _host = "http://192.168.2.21:9200/";
 var _host = "https://search-spl-neoxainmajvric7meirttqquqy.us-east-1.es.amazonaws.com/";
+//To access local elastic search from Travis-CI
+if(process.env.NODE_ENV == 'test'){
+    _host = "http://localhost:9200";
+}
+
 var _index = "owh";
 //var _mortality_index = "mortality";
 var mortality_type = "mortality";
