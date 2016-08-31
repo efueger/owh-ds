@@ -33,6 +33,7 @@ script:
   - ls "coverage/PhantomJS 2.1.1 (Linux 0.0.0)"
   - cd ../server
   - npm start > /dev/null &
+  - sleep 10
   - cd ../client
   - node_modules/.bin/protractor test/e2e-tests/protractor.conf.js --browser=firefox
 
