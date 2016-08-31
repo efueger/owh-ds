@@ -31,3 +31,4 @@ exclude_paths:
   - software/owh/server/.gitignore
   - software/owh/server/package.json
   - software/owh/server/test/*
+  - software/owh/server/uploads/*
