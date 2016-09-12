@@ -8,18 +8,18 @@ addons:
     repo_token: aa4bb84528f703e93a68f03079e9870898d452659e9498bbba8fb043c66e3083
 
 env:
-  - NODE_ENV=test # If we set env to test then owh app use local elastic search service
+  - NODE_ENV=test # If we set NODE_ENV to test then owh app use local elastic search service
+
 install:
   - cd  software/owh/client
-  - npm install -g nodemon
   - npm install
+  - npm install -g nodemon
   - npm install -g codeclimate-test-reporter
-
+  - npm install -g lcov-result-merger
 before_script:
   - sleep 10
   - curl http://localhost:9200/  # To verify ElasticSearch running
   - curl -XPUT 'http://localhost:9200/owh' #create index 'owh' in ElasticSearch
-  - "curl -XPUT 'http://localhost:9200/owh/_settings' -d '{ 'index' : {  'max_result_window' : 1000000000 } }'" #add setting to set max results
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - npm start > /dev/null &
@@ -27,15 +27,18 @@ before_script:
   - sleep 1 # give server time to start
 
 script:
-  - node_modules/.bin/karma start test/unit-tests/karma.conf.js --no-auto-watch --single-run
+  - test-single-run
   - ls
   - ls coverage
   - ls "coverage/PhantomJS 2.1.1 (Linux 0.0.0)"
   - cd ../server
+  - istanbul cover node_modules\mocha\bin\_mocha -- -R spec --recursive test
   - npm start > /dev/null &
   - sleep 10
   - cd ../client
   - node_modules/.bin/protractor test/e2e-tests/protractor.conf.js --browser=firefox
 
-after_script:
-  - codeclimate-test-reporter < "coverage/PhantomJS 2.1.1 (Linux 0.0.0)/lcov.info"
+after_success:
+- cd ..
+- lcov-result-merger './**/lcov.info' 'merged-lcov.info'
+- codeclimate-test-reporter < "merged-lcov.info"
