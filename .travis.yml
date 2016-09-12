@@ -19,8 +19,12 @@ env:
   - NODE_ENV=test # If we set NODE_ENV to test then owh app use local elastic search service
 
 install:
-  - cd  software/owh/client
+  - cd software/owh/server
   - npm install
+  - npm install --dev
+  - cd  ../client
+  - npm install
+  - npm install --dev
   - npm install -g nodemon
   - npm install -g istanbul
   - npm install -g codeclimate-test-reporter
