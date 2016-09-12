@@ -14,6 +14,7 @@ install:
   - cd  software/owh/client
   - npm install
   - npm install -g nodemon
+  - npm install -g instanbul
   - npm install -g codeclimate-test-reporter
   - npm install -g lcov-result-merger
 before_script:
