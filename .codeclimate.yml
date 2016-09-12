@@ -27,7 +27,6 @@ exclude_paths:
   - software/owh/client/package.json
   - software/owh/client/vendor/**/*
   - software/owh/client/test/*
-  - software/owh/client/test/**/*.spec.js
   - software/owh/server/node_modules/**/*
   - software/owh/server/.gitignore
   - software/owh/server/package.json
