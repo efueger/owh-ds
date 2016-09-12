@@ -61,7 +61,7 @@ class BirthParser:
             if not f.endswith(".txt"):
                 continue
             file_path = "%s/%s" % (INPUT_FOLDER, f)
-            print "Processing file : ", f
+            print("Processing file : ", f)
             with open(file_path) as infile:
                 for line in infile:
                     row = {}
@@ -77,7 +77,7 @@ class BirthParser:
                             value = self.get_range_value(value, config['mappings'])
                         row[config['column']] = self.get_value(value)
                     row["date_of_birth"] = self.get_date_of_birth(row)
-                    print "counter", counter
+                    print("counter", counter)
                     records.append(row)
 
             json_file = "%s/%s" % (OUTPUT_FOLDER, f.replace(".txt", ".json"))

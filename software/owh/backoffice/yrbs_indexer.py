@@ -84,7 +84,7 @@ class YrbsIndexer:
             if not f.endswith(".csv"):
                 continue
             fileName = os.path.splitext(f)[0]
-            print 'processing file:', fileName
+            print('processing file:', fileName)
             query_attributes = self.getQueryAttributesForYrbsFile(fileName)
             fileType = fileName.split('_')[2]
             column_maps = self.get_column_maps(fileType)

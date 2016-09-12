@@ -90,7 +90,7 @@ class ElasticSearchRepository(Repository, object):
             The elastic search response object
         """
         res = self.es.bulk(index= self.index_name, body= obj, refresh=True, request_timeout = 30)
-        print "Flush"
+        print("Flush")
         return res
 
     def search(self, criteria, sort, pagination):
