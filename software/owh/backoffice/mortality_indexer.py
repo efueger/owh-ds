@@ -33,7 +33,7 @@ us_states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "
 class MortalityIndexer:
 
     def load_icd_code_mappings(self):
-        print('Loading icd config file')
+        print 'Loading icd config file'
         with open("./elastic_mappings/conditions-ICD-10-mappings.json") as jf:
             global icd_10_code_mappings
             icd_10_code_mappings = json.load(jf, encoding="utf8")

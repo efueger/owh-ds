@@ -23,7 +23,7 @@ birth_parser = BirthParser()
 def index_birth_json(recreate_index, json_file_name):
 
     json_file = "%s/%s.%s" % (INPUT_JSON_FOLDER, json_file_name, 'json')
-    print("Json file:", json_file)
+    print "Json file:", json_file
 
     if not os.path.exists(json_file):
         print 'input file does not exist on file system'
@@ -53,3 +53,4 @@ birth_parser.read_config_json_file()
 birth_parser.generate_birth_json_from_text_file()
 
 index_birth_json(False, 'Nat2014PublicPS.c20150514.r20151007')
+
