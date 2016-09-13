@@ -4,7 +4,7 @@
 ```
 mkdir -p /usr/local/owh-ds/application/
 cd /usr/local/owh-ds/application/
-git clone git@github.com:semanticbits/kudos-dryrun.git
+git clone git@github.com:semanticbits/owh-ds.git
 git checkout develop
 cd /owh-ds/software/owh
 ```
@@ -73,6 +73,9 @@ Below steps are to load YRBS and Mortality data sets(few years data) into local 
         * Extract both the zips in a folder and update this folder path in mortality_indexer.py file
     2. Update ES_HOST in software/owh/backoffice/mortality_indexer.py file. 
     3. And run mortality_indexer.py. Creating indexes may take more than hour.
+
+4. Environment variable NODE_ENV
+    1. Create environment variable NODE_ENV and set value to 'dev'
 
 ## Files and importance
 1. package.json - nodeJS root file and it has all dependencies and start-up scripts
