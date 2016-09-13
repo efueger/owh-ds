@@ -18,12 +18,12 @@ describe('owhTree component: ', function() {
             $componentController = _$componentController_;
         });
         $templateCache.put('app/partials/marker-template.html', 'app/partials/marker-template.html');
-        $templateCache.put('app/partials/home/home.html', 'app/partials/home/home.html');
-        $templateCache.put('app/partials/owhTree.html', 'app/partials/owhTree.html');
+        $templateCache.put('app/modules/home/home.html', 'app/modules/home/home.html');
+        $templateCache.put('app/components/owh-tree/owhTree.html', 'app/components/owh-tree/owhTree.html');
 
         $httpBackend.whenGET('app/i18n/messages-en.json').respond({ hello: 'World' });
         $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
-        $httpBackend.whenGET('app/partials/owhTree.html').respond( $templateCache.get('app/partials/owhTree.html'));
+        $httpBackend.whenGET('app/components/owh-tree/owhTree.html').respond( $templateCache.get('app/components/owh-tree/owhTree.html'));
 
 
     });

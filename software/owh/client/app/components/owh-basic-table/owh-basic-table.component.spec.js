@@ -18,12 +18,12 @@ describe('OWH basic table component: ', function() {
             $componentController = _$componentController_;
         });
         $templateCache.put('app/partials/marker-template.html', 'app/partials/marker-template.html');
-        $templateCache.put('app/partials/home/home.html', 'app/partials/home/home.html');
-        $templateCache.put('app/partials/owhBasicTable.html', 'app/partials/owhBasicTable.html');
+        $templateCache.put('app/modules/home/home.html', 'app/modules/home/home.html');
+        $templateCache.put('app/components/owh-basic-table/owhBasicTable.html', 'app/components/owh-basic-table/owhBasicTable.html');
 
         $httpBackend.whenGET('app/i18n/messages-en.json').respond({ hello: 'World' });
         $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
-        $httpBackend.whenGET('app/partials/owhBasicTable.html').respond( $templateCache.get('app/partials/owhBasicTable.html'));
+        $httpBackend.whenGET('app/components/owh-basic-table/owhBasicTable.html').respond( $templateCache.get('app/components/owh-basic-table/owhBasicTable.html'));
     });
 
 
@@ -33,5 +33,3 @@ describe('OWH basic table component: ', function() {
     }));
 
 });
-
-

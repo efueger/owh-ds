@@ -18,12 +18,12 @@ describe('Footer component: ', function() {
             $componentController = _$componentController_;
         });
         $templateCache.put('app/partials/marker-template.html', 'app/partials/marker-template.html');
-        $templateCache.put('app/partials/home/home.html', 'app/partials/home/home.html');
-        $templateCache.put('app/partials/footer.html', 'app/partials/footer.html');
+        $templateCache.put('app/modules/home/home.html', 'app/modules/home/home.html');
+        $templateCache.put('app/components/owh-footer/footer.html', 'app/components/owh-footer/footer.html');
 
         $httpBackend.whenGET('app/i18n/messages-en.json').respond({ hello: 'World' });
         $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
-        $httpBackend.whenGET('app/partials/footer.html').respond( $templateCache.get('app/partials/footer.html'));
+        $httpBackend.whenGET('app/components/owh-footer/footer.html').respond( $templateCache.get('app/components/owh-footer/footer.html'));
     });
 
 
@@ -34,4 +34,3 @@ describe('Footer component: ', function() {
     }));
 
 });
-
