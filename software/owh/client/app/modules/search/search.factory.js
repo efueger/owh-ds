@@ -1,3 +1,6 @@
+//TODO: consolidate with search.service.js
+//TODO: split out some logic into separate services
+//TODO: split json out into separate files
 (function(){
     angular
         .module('owh.search')
