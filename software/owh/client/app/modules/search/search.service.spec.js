@@ -3,7 +3,7 @@
 /*group of common test goes here as describe*/
 describe('search service ', function(){
     var searchFactory, utils, $rootScope, $scope, controllerProvider, searchService, deferred, $q,
-        primaryFilter, $httpBackend, $templateCache, API, searchService,
+        primaryFilter, $httpBackend, $templateCache, API,
         searchResponse, groupGenderResponse, genderGroupHeaders, fourGroupsResponse,
         ModalService, givenModalDefaults, elementVisible, thenFunction, closeDeferred, uploadImageDeferred, $timeout;
     module.sharedInjector();
