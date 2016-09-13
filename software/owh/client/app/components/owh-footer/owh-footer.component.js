@@ -3,7 +3,7 @@
     angular
         .module('owh')
         .component("owhFooter",{
-            templateUrl: 'app/partials/footer.html',
+            templateUrl: 'app/components/footer/footer.html',
             controller: FooterController,
             controllerAs: 'fc'
         });

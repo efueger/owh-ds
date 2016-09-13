@@ -13,15 +13,16 @@
         $locationProvider.html5Mode(true);
         $locationProvider.hashPrefix('!');
 
+        //TODO: move these route definitions inside of their respective modules
         //Routes
         $stateProvider.state('home', {
             url:'/',
-            templateUrl: 'app/partials/home/home.html',
+            templateUrl: 'app/modules/home/home.html',
             controller: 'HomeController',
             controllerAs: 'hc'
         }).state('search', {
                 url:'/search',
-                templateUrl: 'app/partials/search.html',
+                templateUrl: 'app/modules/search/search.html',
                 controller: 'SearchController',
                 controllerAs: 'sc',
                 params: {primaryFilterKey: 'deaths'}

@@ -3,7 +3,7 @@
     angular
         .module('owh')
         .component("owhSideFilter",{
-            templateUrl: 'app/partials/owhSideFilter.html',
+            templateUrl: 'app/components/owh-side-filter/owhSideFilter.html',
             controller: sideFilterController,
             controllerAs: 'sfc',
             bindings:{

@@ -3,7 +3,7 @@
     angular
         .module('owh')
         .component('owhSearch', {
-            templateUrl: 'app/partials/owhSearch.html',
+            templateUrl: 'app/components/owh-search/owhSearch.html',
             controller: OWHSearchController,
             controllerAs: 'ots',
             bindings: {

@@ -3,7 +3,7 @@
     angular
         .module('owh')
         .component('owhAccordion', {
-            templateUrl: 'app/partials/owh-accordion/owhAccordion.html',
+            templateUrl: 'app/components/owh-accordion/owhAccordion.html',
             controller: OWHAccordionController,
             controllerAs: 'oac',
             transclude: true,

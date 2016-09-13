@@ -3,7 +3,7 @@
     angular
         .module('owh')
         .component('owhTable', {
-            templateUrl: 'app/partials/owhTable.html',
+            templateUrl: 'app/components/owh-table/owhTable.html',
             controller: OWHTableController,
             controllerAs: 'otc',
             bindings: {

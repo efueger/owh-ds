@@ -3,7 +3,7 @@
     angular
         .module('owh')
         .component("owhTree",{
-            templateUrl: 'app/partials/owhTree.html',
+            templateUrl: 'app/components/owh-tree/owhTree.html',
             controller: TreeController,
             controllerAs: 'tc',
             bindings:{

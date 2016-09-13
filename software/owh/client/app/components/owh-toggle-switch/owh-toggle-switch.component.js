@@ -3,7 +3,7 @@
     angular
         .module('owh')
         .component('owhToggleSwitch', {
-            templateUrl: 'app/partials/owh-toggle-switch/owhToggleSwitch.html',
+            templateUrl: 'app/components/owh-toggle-switch/owhToggleSwitch.html',
             controller: OWHToggleSwitchController,
             controllerAs: 'otsc',
             transclude: true,
