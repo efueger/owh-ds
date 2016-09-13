@@ -5,7 +5,7 @@ from random import randint
 from elasticsearch_repository import ElasticSearchRepository
 from repositories import BatchRepository
 
-INPUT_FILE_LOCATION = "C:\Users\Ashok\Desktop\OWH"
+INPUT_FILE_LOCATION = "<path to mortality data sets>"
 
 CONFIG_FILE_DIR = './data_mapping'
 
@@ -13,7 +13,7 @@ configs = {}
 records = []
 icd_10_code_mappings = {}
 
-ES_HOST = '192.168.2.21' #'search-spl-neoxainmajvric7meirttqquqy.us-east-1.es.amazonaws.com' #'search-spl-neoxainmajvric7meirttqquqy.us-east-1.es.amazonaws.com'
+ES_HOST = '127.0.0.1' #'search-spl-neoxainmajvric7meirttqquqy.us-east-1.es.amazonaws.com' #'search-spl-neoxainmajvric7meirttqquqy.us-east-1.es.amazonaws.com'
 ES_PORT = 9200 #update port if it is running on different port
 
 ES_BULK_LOAD_SIZE = 5000
