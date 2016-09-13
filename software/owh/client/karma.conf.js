@@ -1,7 +1,7 @@
 module.exports = function(config){
   config.set({
 
-    basePath : '../../',
+    basePath : './',
 
     files : [
       'vendor/uswds-0.9.1/js/uswds.min.js',
@@ -33,18 +33,16 @@ module.exports = function(config){
       'bower_components/nvd3/build/nv.d3.js',
       'bower_components/angular-nvd3/dist/angular-nvd3.js',
       'vendor/leaflet-image/leaflet-image.js',
-      'app/modules/owh/home/home.module.js',
-      'app/modules/owh/search/search.module.js',
-      'app/modules/owh/app.module.js',
+      'app/**/*.module.js',
       'app/**/*.js',
-      'app/partials/**/*.html',
-      'test/fixtures/**/*.json',
-      'test/unit-tests/**/*.spec.js'
+      'app/**/*.html',
+      'app/**/*.spec.js',
+      'test/fixtures/**/*.json'
     ],
 
     preprocessors: {
       'app/**/*.js': ['coverage'],
-      'app/partials/**/*.html': ['ng-html2js'],
+      'app/**/*.html': ['ng-html2js'],
       'test/fixtures/**/*.json'   : ['json_fixtures']
     },
 
