@@ -8,7 +8,7 @@ git clone git@github.com:semanticbits/owh-ds.git
 git checkout develop
 cd /owh-ds/software/owh
 ```
-## install dependencies
+## Install dependencies
 Install both client and server dependencies
 ```
 cd /owh-ds/software/owh/client/
