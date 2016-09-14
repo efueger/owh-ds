@@ -175,4 +175,20 @@ describe("Search controller: ", function () {
         //$rootScope.$broadcast('leafletDirectiveGeoJson.click',event, args);
     });
 
+    it("downloadCSV should call out to xlsService and $window.open",inject(function(utilService) {
+        var mockWindow = {
+          open: function() {
+
+          }
+        };
+
+        spyOn(mockWindow, 'open');
+        spyOn(utilService, 'prepareMixedTableData').and.returnValue({});
+        var searchController= $controller('SearchController',{$scope:$scope, $window: mockWindow});
+        searchController.filters = {selectedPrimaryFilter: {data: {}} };
+        searchController.downloadCSV();
+
+        expect(mockWindow.open).toHaveBeenCalled();
+    }));
+
 });
