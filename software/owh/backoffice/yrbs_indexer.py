@@ -5,12 +5,11 @@ from elasticsearch_repository import ElasticSearchRepository
 from repositories import BatchRepository
 
 
-INPUT_FILES_DIR = 'C:/Users/Ashok/Desktop/OWH/YRBS/two_entity_csvs_all_years/final_files'
+INPUT_FILES_DIR = '<path to YRBS data sets>'
 
 configs = {}
-ES_HOST = '192.168.2.21'#'search-spl-neoxainmajvric7meirttqquqy.us-east-1.es.amazonaws.com' #'search-spl-neoxainmajvric7meirttqquqy.us-east-1.es.amazonaws.com'
+ES_HOST = '127.0.0.1' #'search-spl-neoxainmajvric7meirttqquqy.us-east-1.es.amazonaws.com' #'search-spl-neoxainmajvric7meirttqquqy.us-east-1.es.amazonaws.com'
 ES_PORT = 9200 #update port if it is running on different port
-
 ES_BULK_LOAD_SIZE = 50
 ES_YRBS_INDEX = 'yrbs_all'
 ES_YRBS_TYPE = 'yrbs'
