@@ -20,15 +20,6 @@ npm install --dev
 
 ````
 
-## Run the application
-### Development
-To start the application run below script.
-```
-cd /owh-ds/software/owh/server/
-nohup npm run-script start > nohup.out &
-
-```
-
 ## Run the test cases
 ### Karma
 ```
@@ -75,7 +66,8 @@ Below steps are to load YRBS and Mortality data sets(few years data) into local 
     3. And run mortality_indexer.py. Creating indexes may take more than hour.
 
 4. Environment variable NODE_ENV
-    1. Create environment variable NODE_ENV and set value to 'dev'
+    1. Create environment variable NODE_ENV and set value to 'dev'. As per elasticsearch configuration(elasticsearch.js), local running elasticsearch service
+       will be used, if NODE_ENV value set to either 'test' or 'dev'
 
 ## Files and importance
 1. package.json - nodeJS root file and it has all dependencies and start-up scripts
@@ -83,4 +75,11 @@ Below steps are to load YRBS and Mortality data sets(few years data) into local 
 3. karma.conf.js - Unit test cases configuration file
 4. protractor.conf.js - Selenium test cases using Protractor. 
 
+## Run the application
+### Development
+To start the application run below script.
+```
+cd /owh-ds/software/owh/server/
+nohup npm run-script start > nohup.out &
 
+```
