@@ -88,6 +88,10 @@
             <!--Table-->
             <div class="usa-grid-full">
                 <div class="usa-width-one-whole overflow-auto">
+                    <hr />
+                    <div class="pull-right margin-bottom-20 margin-right-10">
+                        <a ng-click="sc.downloadCSV()">Download csv</a> | <a>Download xls</a>
+                    </div>
                     <owh-table headers="sc.filters.selectedPrimaryFilter.headers" data="sc.filters.selectedPrimaryFilter.data"
                                count-key="{{sc.filters.selectedPrimaryFilter.key}}"
                                count-label="{{sc.filters.selectedPrimaryFilter.countLabel}}"

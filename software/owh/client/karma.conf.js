@@ -32,6 +32,7 @@ module.exports = function(config){
       'bower_components/d3/d3.js',
       'bower_components/nvd3/build/nv.d3.js',
       'bower_components/angular-nvd3/dist/angular-nvd3.js',
+      'bower_components/js-xlsx/dist/xlsx.full.min.js',
       'vendor/leaflet-image/leaflet-image.js',
       'app/**/*.module.js',
       'app/**/*.js',
