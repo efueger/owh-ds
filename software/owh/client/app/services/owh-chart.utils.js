@@ -50,23 +50,24 @@
                     "chart": {
                         "type": "multiBarHorizontalChart",
                         "height": 250,
-                        "width": 250,
+                        "width": 350,
                         "margin": {
                             "top": 5,
-                            "right": 5,
-                            "bottom": 5,
-                            "left": 5
+                            "right": 25,
+                            "bottom": 25,
+                            "left": 130
                         },
-                        showLegend: false,
+                        showLegend: true,
                         showControls: false,
-                        showValues: false,
-                        showXAxis:false,
-                        showYAxis:false,
+                        showValues: true,
+                        showXAxis:true,
+                        showYAxis:true,
                         stacked: stacked,
                         "duration": 500,
                         x: function(d){return d.label;},
                         y: function(d){return d.value;},
                         "xAxis": {
+                            axisLabelDistance:20,
                             tickFormat:function (d) {
                                 if(isNaN(d)){ return d; }
                                 return d3.format(',f')(d);
@@ -147,19 +148,19 @@
                     "chart": {
                         "type": "multiBarChart",
                         "height": 250,
-                        "width": 250,
+                        "width": 350,
                         "margin": {
                             "top": 5,
-                            "right": 5,
-                            "bottom": 5,
-                            "left": 5
+                            "right": 25,
+                            "bottom": 35,
+                            "left": 130
                         },
-                        showMaxMin: false,
-                        showLegend: false,
+                        showMaxMin: true,
+                        showLegend: true,
                         showControls: false,
-                        showValues: false,
-                        showXAxis:false,
-                        showYAxis:false,
+                        showValues: true,
+                        showXAxis:true,
+                        showYAxis:true,
                         reduceXTicks:false,
                         //wrapLabels:true,
                         legend:{
@@ -267,10 +268,10 @@
                         },
                         x: function(d){ return d.label; },
                         y: function(d){ return d.value; },
-                        showValues: false,
+                        showValues: true,
                         showLabels: false,
                         transitionDuration: 250,
-                        showLegend: false,
+                        showLegend: true,
                         legend: {
                             margin:{}
                         },

@@ -14,25 +14,34 @@ var MortalitySearchPage = function() {
 
     msp.isChartDisplayed = function(){
         //Verify chart css classes present or not
-        var parentChartEle = element(by.css('.nvd3-svg'));
         return element(by.css('.nvd3-svg')).isPresent() &&
                element(by.css('.nv-y.nv-axis')).isPresent() &&
                element(by.css('.nv-x.nv-axis')).isPresent()
     };
     msp.isDataElementsPresent = function(){
-        //Verify chart X and Y axis css classes present or not
-       return true;
+       var axis_x_dataElements =  element(by.css('.nv-x.nv-axis.nvd3-svg')).element(by.css('.nvd3.nv-wrap.nv-axis'))
+                                    .element(by.css('.tick.zero'));
+       var axis_y_dataElements =  element(by.css('.nv-y.nv-axis.nvd3-svg')).element(by.css('.nvd3.nv-wrap.nv-axis'))
+                                    .element(by.css('.tick.zero'));
+
+       return axis_x_dataElements.isPresent() && axis_y_dataElements.isPresent();
     };
 
-    msp.isInteractiveLegendsPresent = function () {
-        //Check Grouped & Stacked radio buttons displayed
-       return true;
+    msp.getLegends = function () {
+       //Get Female & Male radio buttons
+       var legends =  element.all(by.css('.nv-legend-text'));
+       return legends;
     };
 
-    msp.selectOrUnslectLegends = function () {
-        //By default stacked radio button should be selected
-        //Use can select grouped option too
-        return true;
+    msp.getSelectedOrUnSelectedLegends = function () {
+        //By default Female and Male radio button should be selected
+        var legends =  element.all(by.css('.nv-series'));
+        var selectedFemaleEle = legends.get(0).$('.nv-legend-symbol').getAttribute('style');
+        var selectedMaleEle = legends.get(1).$('.nv-legend-symbol').getAttribute('style');
+        //verify unselect functionality by un selecting female radio button
+        selectedFemaleEle.click();
+        var unSelectedFemaleEle = legends.get(0).$('.nv-legend-symbol').getAttribute('style');
+        return [selectedFemaleEle, selectedMaleEle, unSelectedFemaleEle];
     };
 };
 

@@ -30,13 +30,18 @@ describe('search mortality page', function() {
     });
 
     it('An interactive legend is displayed on the graph', function () {
-        //Check 'Grouped', 'Stacked', 'Female' and 'Male'(By default mortality has Race, Gender filter)
+        //Check 'Female' and 'Male'(By default mortality has Race, Gender filter)
         // radio buttons are displayed
-        expect(mortalityPage.isInteractiveLegendsPresent()).toEqual(true);
+        var legends = mortalityPage.getLegends();
+        expect(legends.get(0).getText()).toEqual('Female');
+        expect(legends.get(1).getText()).toEqual('Male');
     });
 
     it('And then user can select/unselect options to change data displayed on the graph', function(){
         //User can select/unselect legends
-        expect(mortalityPage.selectOrUnslectLegends()).toEqual(true);
+        var legends = mortalityPage.getSelectedOrUnSelectedLegends();
+        expect(legends[0]).toContain('fill-opacity: 1') //By default Female radio button should be selected
+        expect(legends[1]).toContain('fill-opacity: 1') //By default Male radio button should be selected
+        expect(legends[2]).toContain('fill-opacity: 0') //Un select Female radio button
     });
 });
