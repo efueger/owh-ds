@@ -17,6 +17,12 @@ describe('home page', function() {
         //expect(browser.getTitle()).toEqual($translate.instant('app.title'))
     });
 
+    it('I should see valid content under "On This Site You Can:" section', function(){
+        expect(owhHomePage.getYouCanSectionContent().getText()).toContain('Compare health information and statistics across populations, filtering for factors such as sex, age, race, and other socioeconomic variables.');
+        expect(owhHomePage.getYouCanSectionContent().getText()).toContain('Access dozens of datasets published by the Federal Government and gain insight into the main topics concerning women’s health today.');
+        expect(owhHomePage.getYouCanSectionContent().getText()).toContain('Generate custom reports, graphs and maps to visually represent a wide range of information.');
+    });
+
     it('When I click on Explore button in Quick Health Data Online section, ' +
         'I should get search page with default filter type mortality', function() {
 
