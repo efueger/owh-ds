@@ -52,13 +52,13 @@
                     data.rowHeaders.push(filter);
                 }
             });
-            var filename = sc.filters.selectedPrimaryFilter.header + "_Years_Filtered";
+            var filename = getFilename(sc.filters.selectedPrimaryFilter.header);
             xlsService.exportCSVFromMixedTable(data, filename);
         }
 
         function downloadXLS() {
             var data = getMixedTable(sc.filters.selectedPrimaryFilter);
-            var filename = sc.filters.selectedPrimaryFilter.header + "_Years_Filtered";
+            var filename = getFilename(sc.filters.selectedPrimaryFilter.header);
             xlsService.exportXLSFromMixedTable(data, filename);
         }
 
@@ -73,6 +73,10 @@
 
             //TODO: see comment in owh-table.component.js, we can construct this object once and pass it into the various components
             return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal);
+        }
+
+        function getFilename(dataset) {
+            return dataset + '_Years_Filtered';
         }
 
         function primaryFilterChanged(newFilter) {
