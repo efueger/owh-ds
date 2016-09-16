@@ -73,7 +73,7 @@ describe('xlsService', function(){
               [2][3][4]
              */
             var ws = {'A1': {v: 1, t: 'n'}, 'A2': {v: 2, t: 'n'}, 'B2': {v: 3, t: 'n'}, 'C2': {v: 4, t: 'n'}, '!ref': 'A1:C2', '!merges': [{s: {c: 0, r: 0}, e: {c: 2, r: 0}}]};
-            var csv = xlsService.getCSVFromSheet(ws);
+            var csv = xlsService.getCSVFromSheet(ws, [[]]);
 
             expect(csv).toEqual('1,1,1\n2,3,4\n');
         });
@@ -85,10 +85,42 @@ describe('xlsService', function(){
              |  |[4]
              */
             var ws = {'A1': {v: 1, t: 'n'}, 'B1': {v: 2, t: 'n'}, 'B2': {v: 3, t: 'n'}, 'B3': {v: 4, t: 'n'}, '!ref': 'A1:B3', '!merges': [{s: {c: 0, r: 0}, e: {c: 0, r: 2}}]};
-            var csv = xlsService.getCSVFromSheet(ws);
+            var csv = xlsService.getCSVFromSheet(ws, [[], [], []]);
 
             expect(csv).toEqual('1,2\n1,3\n1,4\n');
         });
+    });
+
+    it('exportCSVFromMixedTable should call out to saveAs with the proper filename', function () {
+        spyOn(window, 'saveAs');
+        var mixedTable = {
+            headers: [[{title: 'header1', colspan: 1, rowspan: 1}, {title: 'header2', colspan: 1, rowspan: 1}]],
+            data: [
+                [{title: 'data1', colspan: 1, rowspan: 1}, {title: 'data2', colspan: 1, rowspan: 1}],
+                [{title: 'data3', colspan: 1, rowspan: 1}, {title: 'data4', colspan: 1, rowspan: 1}]
+            ]
+        };
+        var filename = 'testname';
+        xlsService.exportCSVFromMixedTable(mixedTable, filename);
+
+        expect(window.saveAs).toHaveBeenCalled();
+        expect(window.saveAs.calls.argsFor(0)[1]).toEqual(filename + '.csv');
+    });
+
+    it('exportXLSFromMixedTable should call out to saveAs with the proper filename', function () {
+        spyOn(window, 'saveAs');
+        var mixedTable = {
+            headers: [[{title: 'header1', colspan: 1, rowspan: 1}, {title: 'header2', colspan: 1, rowspan: 1}]],
+            data: [
+                [{title: 'data1', colspan: 1, rowspan: 1}, {title: 'data2', colspan: 1, rowspan: 1}],
+                [{title: 'data3', colspan: 1, rowspan: 1}, {title: 'data4', colspan: 1, rowspan: 1}]
+            ]
+        };
+        var filename = 'testnameXLS';
+        xlsService.exportXLSFromMixedTable(mixedTable, filename);
+
+        expect(window.saveAs).toHaveBeenCalled();
+        expect(window.saveAs.calls.argsFor(0)[1]).toEqual(filename + '.xlsx');
     });
 
 });
