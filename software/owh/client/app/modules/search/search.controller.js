@@ -45,6 +45,13 @@
 
         function downloadCSV() {
             var data = getMixedTable(sc.filters.selectedPrimaryFilter);
+            //add row headers so we can properly repeat row header merge cells
+            data.rowHeaders = [];
+            angular.forEach(sc.filters.selectedPrimaryFilter.value, function(filter, idx) {
+                if(filter.groupBy === 'row') {
+                    data.rowHeaders.push(filter);
+                }
+            });
             var filename = sc.filters.selectedPrimaryFilter.header + "_Years_Filtered";
             xlsService.exportCSVFromMixedTable(data, filename);
         }

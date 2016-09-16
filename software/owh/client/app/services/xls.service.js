@@ -24,10 +24,11 @@
             return buf;
         }
 
+        //data should have rowHeaders array for csv exporting
         function exportCSVFromMixedTable(data, filename) {
             var sheetArray = getSheetArrayFromMixedTable(data);
             var sheet = getSheetFromArray(sheetArray);
-            var csv = getCSVFromSheet(sheet, data.headers);
+            var csv = getCSVFromSheet(sheet, data.headers, data.rowHeaders);
             saveAs(new Blob([s2ab(csv)], {type:"application/octet-stream"}), filename + ".csv");
         }
 
@@ -123,11 +124,11 @@
         }
 
         //helper function to repeat merge cells in header for CSV output
-        function padSheetForCSV(sheet, headers) {
+        function padSheetForCSV(sheet, colHeaders, rowHeaders) {
             var headerMerges = [];
             angular.forEach(sheet['!merges'], function(merge, idx) {
-                //only repeat if merge cell is part of headers
-                if(merge.s.r < headers.length) {
+                //only repeat if merge cell is part of headers, use rowHeaders.length - 1 because of Total row
+                if(merge.s.r < colHeaders.length || merge.s.c < rowHeaders.length - 1) {
                     var start = sheet[XLSX.utils.encode_cell(merge.s)];
                     for(var r = merge.s.r; r <= merge.e.r; r++) {
                         for(var c = merge.s.c; c <= merge.e.c; c++) {
@@ -144,8 +145,8 @@
             return sheet;
         }
 
-        function getCSVFromSheet(sheet, headers) {
-            var csv = XLSX.utils.sheet_to_csv(padSheetForCSV(sheet, headers));
+        function getCSVFromSheet(sheet, colHeaders, rowHeaders) {
+            var csv = XLSX.utils.sheet_to_csv(padSheetForCSV(sheet, colHeaders, rowHeaders));
             return csv;
         }
 
