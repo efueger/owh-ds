@@ -179,7 +179,7 @@ describe("Search controller: ", function () {
         spyOn(utilService, 'prepareMixedTableData').and.returnValue({});
         spyOn(xlsService, 'exportCSVFromMixedTable');
         var searchController= $controller('SearchController',{$scope:$scope});
-        searchController.filters = {selectedPrimaryFilter: {data: {}} };
+        searchController.filters = {selectedPrimaryFilter: {data: {}, value: []} };
         searchController.downloadCSV();
 
         expect(xlsService.exportCSVFromMixedTable).toHaveBeenCalled();

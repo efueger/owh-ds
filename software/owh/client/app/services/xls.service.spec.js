@@ -89,6 +89,35 @@ describe('xlsService', function(){
 
             expect(csv).toEqual('1,2\n1,3\n1,4\n');
         });
+
+        it('should repeat merged cells marked as row headers without repeating data cells', function () {
+            /*
+            [1][2][3][ 9]
+            | |[4][5][10]
+            |a|[6][7][11]
+            | |[  8 ][12]
+             */
+            var ws = {
+                'A1': {v: 1, t: 'n'},
+                'B1': {v: 2, t: 'n'},
+                'C1': {v: 3, t: 'n'},
+                'D1': {v: 9, t: 'n'},
+                'A2': {v: 'a', t: 's'},
+                'B2': {v: 4, t: 'n'},
+                'C2': {v: 5, t: 'n'},
+                'D2': {v: 10, t: 'n'},
+                'B3': {v: 6, t: 'n'},
+                'C3': {v: 7, t: 'n'},
+                'D3': {v: 11, t: 'n'},
+                'B4': {v: 8, t: 'n'},
+                'D4': {v: 12, t: 'n'},
+                '!ref': 'A1:D4',
+                '!merges': [{s: {c: 0, r: 1}, e: {c: 0, r: 3}}, {s: {c: 1, r: 3}, e: {c: 2, r: 3}}]
+            }
+            var csv = xlsService.getCSVFromSheet(ws, [[]], [{}, {}]);
+
+            expect(csv).toEqual('1,2,3,9\na,4,5,10\na,6,7,11\na,8,,12\n');
+        })
     });
 
     it('exportCSVFromMixedTable should call out to saveAs with the proper filename', function () {
