@@ -5,11 +5,11 @@
 
     SearchController.$inject = ['$scope', 'ModalService', 'utilService', 'searchFactory', '$rootScope',
         '$templateCache', '$compile', '$q', '$filter', 'leafletData', '$timeout', 'chartUtilService', 'shareUtilService',
-        '$stateParams'];
+        '$stateParams', 'xlsService', '$window'];
 
     function SearchController($scope, ModalService, utilService, searchFactory, $rootScope,
                                  $templateCache, $compile, $q, $filter, leafletData, $timeout, chartUtilService,
-                                 shareUtilService, $stateParams) {
+                                 shareUtilService, $stateParams, xlsService, $window) {
 
         var sc = this;
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
@@ -19,6 +19,8 @@
         sc.filters.primaryFilters = utilService.findAllByKeyAndValue(sc.filters.search, 'primary', true);
         var mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
         sc.filters.selectedPrimaryFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', $stateParams.primaryFilterKey);
+        sc.downloadCSV = downloadCSV;
+        sc.downloadXLS = downloadXLS;
         sc.getSelectedYears = getSelectedYears;
         sc.showPhaseTwoGraphs = showPhaseTwoGraphs;
         sc.showExpandedGraph = showExpandedGraph;
@@ -40,6 +42,31 @@
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter);
             }
         }, true);
+
+        function downloadCSV() {
+            var data = getMixedTable(sc.filters.selectedPrimaryFilter);
+            var filename = sc.filters.selectedPrimaryFilter.header + "_Years_Filtered";
+            xlsService.exportCSVFromMixedTable(data, filename);
+        }
+
+        function downloadXLS() {
+            var data = getMixedTable(sc.filters.selectedPrimaryFilter);
+            var filename = sc.filters.selectedPrimaryFilter.header + "_Years_Filtered";
+            xlsService.exportXLSFromMixedTable(data, filename);
+        }
+
+        function getMixedTable(selectedFilter){
+            var file = selectedFilter.data;
+            var headers = selectedFilter.headers;
+            var countKey = selectedFilter.key;
+            var countLabel = selectedFilter.countLabel;
+            var totalCount = selectedFilter.count;
+            var calculatePercentage = selectedFilter.calculatePercentage;
+            var calculateRowTotal = selectedFilter.calculateRowTotal;
+
+            //TODO: see comment in owh-table.component.js, we can construct this object once and pass it into the various components
+            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal);
+        }
 
         function primaryFilterChanged(newFilter) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
