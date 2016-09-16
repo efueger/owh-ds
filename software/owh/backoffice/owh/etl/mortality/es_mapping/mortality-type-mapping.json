@@ -1,0 +1,67 @@
+{
+  "mortality": {
+    "include_in_all": false,
+    "properties": {
+      "state":{
+        "type":"string", "index":"not_analyzed"
+      },
+      "month_of_death":{
+        "type":"string", "index":"not_analyzed"
+      },
+      "sex":{
+        "type":"string", "index":"not_analyzed"
+      },
+      "age_5_interval":{
+        "type":"string", "index":"not_analyzed"
+      },
+      "age":{
+        "type":"string", "index":"not_analyzed"
+      },
+      "infant_age":{
+        "type":"string", "index":"not_analyzed"
+      },
+      "place_of_death":{
+        "type":"string", "index":"not_analyzed"
+      },
+      "week_of_death": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "current_year": {
+          "type":"string", "index":"not_analyzed"
+      },
+      "autopsy": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "ICD_10_code": {
+        "properties": {
+            "code":    { "type": "string", "index":"not_analyzed"  },
+            "path": { "type": "string", "index":"not_analyzed"  }
+          }
+      },
+      "ICD_113_code": {
+          "type":"string", "index":"not_analyzed"
+      },
+      "ICD_130_code": {
+          "type":"string", "index":"not_analyzed"
+      },
+      "entity_axis_condn_count": {
+        "type":"string"
+      },
+      "entity_axis_condn": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "record_axis_condn_count":{
+        "type":"string"
+      },
+      "record_axis_condn": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "race": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "hispanic_origin": {
+        "type":"string", "index":"not_analyzed"
+      }
+    }
+  }
+}

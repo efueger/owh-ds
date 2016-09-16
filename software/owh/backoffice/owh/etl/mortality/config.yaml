@@ -1,0 +1,9 @@
+data_file:
+  directory: C:\PRJ\OWH\datasets\mortaliy
+elastic_search:
+  host: 127.0.0.1
+  port: 9200
+  bulk_load_size: 5000
+  index: owh
+  type: mortality
+  type_mapping: mortality-type-mapping.json
