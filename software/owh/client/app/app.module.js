@@ -16,7 +16,7 @@
     'angularAwesomeSlider',
     'angularModalService',
     'owh.filters',
-    'owh.utils',
+    'owh.services',
     'owh.home',
     'owh.search'
   ]);

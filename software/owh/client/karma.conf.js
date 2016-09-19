@@ -37,13 +37,13 @@ module.exports = function(config){
       'app/**/*.js',
       'app/**/*.html',
       'app/**/*.spec.js',
-      'test/fixtures/**/*.json'
+      'app/**/fixtures/**/*.json'
     ],
 
     preprocessors: {
       'app/**/*.js': ['coverage'],
       'app/**/*.html': ['ng-html2js'],
-      'test/fixtures/**/*.json'   : ['json_fixtures']
+      'app/**/fixtures/**/*.json'   : ['json_fixtures']
     },
 
     autoWatch : true,

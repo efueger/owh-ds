@@ -1,7 +1,7 @@
 (function(){
     'use strict';
     angular
-        .module('owh.utils')
+        .module('owh.services')
         .service('shareUtilService', shareUtilService);
 
     shareUtilService.$inject = ['searchFactory', '$q', '$filter'];

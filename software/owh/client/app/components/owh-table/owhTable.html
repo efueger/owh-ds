@@ -2,7 +2,7 @@
 <table>
     <thead>
     <tr ng-repeat="eachHeaderRow in otc.dataToMixedTable.headers">
-        <th ng-repeat="eachHeader in eachHeaderRow" ng-bind="eachHeader.title" colspan="{{eachHeader.colspan}}" rowspan="{{eachHeader.rowspan}}" ng-class="{'text-right': eachHeader.isCount && eachHeader.colspan <= 3, 'text-center': eachHeader.colspan > 3}"></th>
+        <th ng-repeat="eachHeader in eachHeaderRow" ng-bind="eachHeader.title" colspan="{{eachHeader.colspan}}" rowspan="{{eachHeader.rowspan}}" ng-class="{'text-right': eachHeader.isData && eachHeader.colspan <= 3, 'text-center': eachHeader.colspan > 3}"></th>
     </tr>
     </thead>
     <tbody>
