@@ -57,12 +57,14 @@
         {
           "title": "Female",
           "colspan": 1,
-          "rowspan": 1
+          "rowspan": 1,
+          "isCount": true
         },
         {
           "title": "Male",
           "colspan": 1,
-          "rowspan": 1
+          "rowspan": 1,
+          "isCount": true
         }
       ]
     ],

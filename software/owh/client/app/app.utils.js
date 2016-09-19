@@ -378,8 +378,9 @@
                 });
             }
             //mark each data column header as isCount to set alignment
-            angular.forEach(tableColumnHeaders.headers, function(row) {
-                for(var i = headers.rowHeaders.length; i < row.length; i++) {
+            angular.forEach(tableColumnHeaders.headers, function(row, index) {
+                var skip = (index === 0 ? headers.rowHeaders.length : 0);
+                for(var i = skip; i < row.length; i++) {
                     row[i].isCount = true;
                 }
             });

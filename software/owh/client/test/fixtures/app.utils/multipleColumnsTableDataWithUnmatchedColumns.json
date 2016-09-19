@@ -477,29 +477,34 @@
         {
           "title": "Female",
           "colspan": 1,
-          "rowspan": 1
+          "rowspan": 1,
+          "isCount": true
         },
         {
           "title": "Male",
           "colspan": 1,
-          "rowspan": 1
+          "rowspan": 1,
+          "isCount": true
         },
         {
           "title": "Number of Deaths",
           "colspan": 1,
-          "rowspan": 2
+          "rowspan": 2,
+          "isCount": true
         }
       ],
       [
         {
           "title": "2014",
           "colspan": 1,
-          "rowspan": 1
+          "rowspan": 1,
+          "isCount": true
         },
         {
           "title": "2014",
           "colspan": 1,
-          "rowspan": 1
+          "rowspan": 1,
+          "isCount": true
         }
       ]
     ],
