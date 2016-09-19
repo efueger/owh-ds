@@ -90,7 +90,13 @@
                 <div class="usa-width-one-whole overflow-auto">
                     <hr />
                     <div class="pull-right margin-bottom-20 margin-right-10">
-                        <a ng-click="sc.downloadCSV()">Download csv</a> | <a ng-click="sc.downloadXLS()">Download xls</a>
+                        <a name="download_csv" ng-click="sc.downloadCSV()" class="cursor-pointer">
+                            &nbsp;<i class="fa fa-download" title="Download CSV"></i>
+                        </a>
+                        |
+                        <a name="download_xls" ng-click="sc.downloadXLS()" class="cursor-pointer">
+                            &nbsp;<i class="fa fa-download" title="Download XLS"></i>
+                        </a>
                     </div>
                     <owh-table headers="sc.filters.selectedPrimaryFilter.headers" data="sc.filters.selectedPrimaryFilter.data"
                                count-key="{{sc.filters.selectedPrimaryFilter.key}}"
