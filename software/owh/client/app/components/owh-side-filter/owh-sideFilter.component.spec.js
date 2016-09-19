@@ -286,4 +286,13 @@ describe('OWH Side filter component: ', function() {
         //Should show next phase implementation
         ctrl.showModal(selectedFilter,allFilters);
     });
+
+    it('Should getFilterOrder based on sort binding', function() {
+        var sort = ['gender', 'race', 'height'];
+        var bindings = {filters: [], sort: sort};
+        var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
+        expect(ctrl.getFilterOrder({filters: {key: 'race'}})).toEqual(1);
+        expect(ctrl.getFilterOrder({filters: {key: 'height'}})).toEqual(2);
+        expect(ctrl.getFilterOrder({filters: {key: 'iq'}})).toEqual(-1);
+    });
 });

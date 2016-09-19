@@ -14,7 +14,6 @@
         var sc = this;
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
-
         sc.filters = searchFactory.getAllFilters();
         sc.filters.primaryFilters = utilService.findAllByKeyAndValue(sc.filters.search, 'primary', true);
         var mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
@@ -28,6 +27,7 @@
             {key:'crude_death_rates',title:'Crude Death Rates'},
             {key:'age-adjusted_death_rates',title:'Age Adjusted Death Rates'}
         ];
+        sc.sort = ['race', 'gender', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
         sc.showFbDialog = showFbDialog;
 
         /*To render the inline bars for the sideBar filters*/
