@@ -175,4 +175,26 @@ describe("Search controller: ", function () {
         //$rootScope.$broadcast('leafletDirectiveGeoJson.click',event, args);
     });
 
+    it("downloadCSV should prepare mixedTable and call out to xlsService",inject(function(utilService, xlsService) {
+        spyOn(utilService, 'prepareMixedTableData').and.returnValue({});
+        spyOn(xlsService, 'exportCSVFromMixedTable');
+        var searchController= $controller('SearchController',{$scope:$scope});
+        searchController.filters = {selectedPrimaryFilter: {data: {}, value: []} };
+        searchController.downloadCSV();
+
+        expect(xlsService.exportCSVFromMixedTable).toHaveBeenCalled();
+        expect(utilService.prepareMixedTableData).toHaveBeenCalled();
+    }));
+
+    it('downloadXLS should prepare mixedTable and call out to xlsService', inject(function(utilService, xlsService) {
+        spyOn(utilService, 'prepareMixedTableData').and.returnValue({});
+        spyOn(xlsService, 'exportXLSFromMixedTable');
+        var searchController= $controller('SearchController',{$scope:$scope});
+        searchController.filters = {selectedPrimaryFilter: {data: {}} };
+        searchController.downloadXLS();
+
+        expect(xlsService.exportXLSFromMixedTable).toHaveBeenCalled();
+        expect(utilService.prepareMixedTableData).toHaveBeenCalled();
+    }));
+
 });
