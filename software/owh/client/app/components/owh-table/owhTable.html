@@ -2,12 +2,12 @@
 <table>
     <thead>
     <tr ng-repeat="eachHeaderRow in otc.dataToMixedTable.headers">
-        <th ng-repeat="eachHeader in eachHeaderRow" ng-bind="eachHeader.title" colspan="{{eachHeader.colspan}}" rowspan="{{eachHeader.rowspan}}"></th>
+        <th ng-repeat="eachHeader in eachHeaderRow" ng-bind="eachHeader.title" colspan="{{eachHeader.colspan}}" rowspan="{{eachHeader.rowspan}}" ng-class="{'text-right': eachHeader.isCount}"></th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="eachRow in otc.dataToMixedTable.data track by $index">
-        <td ng-repeat="eachColumn in eachRow track by $index" colspan="{{eachColumn.colspan}}" rowspan="{{eachColumn.rowspan}}" ng-class="eachColumn.isBold?'bold-class':''">
+        <td ng-repeat="eachColumn in eachRow track by $index" colspan="{{eachColumn.colspan}}" rowspan="{{eachColumn.rowspan}}" ng-class="{'bold-class': eachColumn.isBold, 'text-right': eachColumn.isCount}">
             <span ng-if="!eachColumn.isCount" ng-bind-html="eachColumn.title"></span>
             <i class="cursor-pointer {{eachColumn.iconClass}}" ng-if="eachColumn.iconClass" ng-click="eachColumn.onIconClick(eachColumn.key)"></i>
             <label class="custom-label" ng-if="eachColumn.isCount">
