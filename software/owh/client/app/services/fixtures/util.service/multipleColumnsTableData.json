@@ -487,19 +487,19 @@
           "title": "Female",
           "colspan": 2,
           "rowspan": 1,
-          "isCount": true
+          "isData": true
         },
         {
           "title": "Male",
           "colspan": 2,
           "rowspan": 1,
-          "isCount": true
+          "isData": true
         },
         {
           "title": "Number of Deaths",
           "colspan": 1,
           "rowspan": 2,
-          "isCount": true
+          "isData": true
         }
       ],
       [
@@ -507,25 +507,25 @@
           "title": "2014",
           "colspan": 1,
           "rowspan": 1,
-          "isCount": true
+          "isData": true
         },
         {
           "title": "2013",
           "colspan": 1,
           "rowspan": 1,
-          "isCount": true
+          "isData": true
         },
         {
           "title": "2014",
           "colspan": 1,
           "rowspan": 1,
-          "isCount": true
+          "isData": true
         },
         {
           "title": "2013",
           "colspan": 1,
           "rowspan": 1,
-          "isCount": true
+          "isData": true
         }
       ]
     ],
