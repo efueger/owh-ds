@@ -17,5 +17,6 @@ Scenario: Access search page with filter type YRBS
   Then I should get search page with default filter type "Youth Risk Behavior"
 
 Scenario: Access Birth card
-  When I click on explore button in Birth card under womens health section
+  When I am at home page
+  And I click on explore button in Birth card under womens health section
   Then I should get a info modal

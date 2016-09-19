@@ -60,7 +60,7 @@ var homeStepDefinitionsWrapper = function () {
     });
 
     this.When(/^I am at home page$/, function () {
-        browser.get('/');
+        browser.get("/");
     });
 };
 module.exports = homeStepDefinitionsWrapper;
