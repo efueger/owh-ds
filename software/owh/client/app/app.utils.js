@@ -377,6 +377,12 @@
                     rowspan: tableColumnHeaders.headers.length > 0 ? tableColumnHeaders.headers.length : 1
                 });
             }
+            //mark each data column header as isCount to set alignment
+            angular.forEach(tableColumnHeaders.headers, function(row) {
+                for(var i = headers.rowHeaders.length; i < row.length; i++) {
+                    row[i].isCount = true;
+                }
+            });
             return tableHeaders;
         }
         function prepareMixedTableColumnHeaders(columnHeaders) {
