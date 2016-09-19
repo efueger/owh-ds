@@ -2,10 +2,20 @@
 exports.config = {
 
   allScriptsTimeout: 11000,
+  framework: 'custom',
+  frameworkPath: require.resolve('protractor-cucumber-framework'),
 
   specs: [
-    '**/*.spec.js'
+    'features/*.feature'
   ],
+
+  cucumberOpts: {
+    // require step definitions
+    require: [
+      'features/step_definitions/homeSteps.js',
+      'features/step_definitions/mortalitySteps.js'
+    ]
+  },
 
   capabilities: {
     'browserName': 'chrome'
@@ -13,12 +23,5 @@ exports.config = {
   onPrepare: function() {
     browser.driver.manage().window().maximize();
   },
-  baseUrl: 'http://localhost:9900/',
-
-  framework: 'jasmine',
-
-  jasmineNodeOpts: {
-    defaultTimeoutInterval: 30000,
-    showColors: true
-  }
+  baseUrl: 'http://localhost:9900/'
 };
