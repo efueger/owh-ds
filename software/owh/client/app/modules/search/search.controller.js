@@ -52,13 +52,13 @@
                     data.rowHeaders.push(filter);
                 }
             });
-            var filename = getFilename(sc.filters.selectedPrimaryFilter.header);
+            var filename = getFilename(sc.filters.selectedPrimaryFilter);
             xlsService.exportCSVFromMixedTable(data, filename);
         }
 
         function downloadXLS() {
             var data = getMixedTable(sc.filters.selectedPrimaryFilter);
-            var filename = getFilename(sc.filters.selectedPrimaryFilter.header);
+            var filename = getFilename(sc.filters.selectedPrimaryFilter);
             xlsService.exportXLSFromMixedTable(data, filename);
         }
 
@@ -75,8 +75,35 @@
             return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal);
         }
 
-        function getFilename(dataset) {
-            return dataset + '_Years_Filtered';
+        function getFilename(selectedFilter) {
+            //get year range
+            var yearRange = '';
+            angular.forEach(selectedFilter.allFilters, function(filter) {
+                if(filter.key === 'year') {
+                    if(filter.value.length > 1) {
+                        var minYear = parseInt(filter.value[0]);
+                        var maxYear = parseInt(filter.value[0]);
+                        angular.forEach(filter.value, function(year) {
+                            var yearInt = parseInt(year);
+                            if(yearInt < minYear) {
+                                minYear = yearInt;
+                            }
+                            if(yearInt > maxYear) {
+                                maxYear = yearInt;
+                            }
+                        });
+                        yearRange = minYear + '-' + maxYear;
+                    } else if(filter.value.length === 1) {
+                        //only one year selected
+                        yearRange = filter.value[0];
+                    } else {
+                        //use all if none selected
+                        yearRange = 'All';
+                    }
+
+                }
+            });
+            return selectedFilter.header + '_' + yearRange + '_Filtered';
         }
 
         function primaryFilterChanged(newFilter) {
