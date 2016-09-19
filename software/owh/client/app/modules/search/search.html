@@ -90,12 +90,13 @@
                 <div class="usa-width-one-whole overflow-auto">
                     <hr />
                     <div class="pull-right margin-bottom-20 margin-right-10">
-                        <a name="download_csv" ng-click="sc.downloadCSV()" class="cursor-pointer">
-                            &nbsp;<i class="fa fa-download" title="Download CSV"></i>
+                        <!--<div>Icons made by <a href="http://www.flaticon.com/authors/madebyoliver" title="Madebyoliver">Madebyoliver</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>-->
+                        <a name="download_csv" ng-click="sc.downloadCSV()" title="Download CSV" class="cursor-pointer">
+                            <img src="images/csv.png"/>
                         </a>
                         |
-                        <a name="download_xls" ng-click="sc.downloadXLS()" class="cursor-pointer">
-                            &nbsp;<i class="fa fa-download" title="Download XLS"></i>
+                        <a name="download_xls" ng-click="sc.downloadXLS()" title="Download XLS" class="cursor-pointer">
+                            <img src="images/xls.png"/>
                         </a>
                     </div>
                     <owh-table headers="sc.filters.selectedPrimaryFilter.headers" data="sc.filters.selectedPrimaryFilter.data"
