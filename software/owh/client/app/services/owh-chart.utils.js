@@ -57,7 +57,6 @@
                             "bottom": 45,
                             "left": 45
                         },
-                        showMaxMin: false,
                         showLegend: false,
                         showControls: false,
                         showValues: false,
@@ -263,8 +262,8 @@
                         "margin": {
                             "top": 5,
                             "right": 5,
-                            "bottom": 45,
-                            "left": 45
+                            "bottom": 5,
+                            "left": 5
                         },
                         x: function(d){ return d.label; },
                         y: function(d){ return d.value; },
