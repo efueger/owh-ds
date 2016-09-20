@@ -16,6 +16,8 @@ class MortalityIndexer (ETL):
 
     def __init__(self, configFile):
         ETL.__init__(self, configFile)
+        self.createIndex(True)
+        self.load_icd_code_mappings()
 
 
     def load_icd_code_mappings(self):
@@ -61,17 +63,15 @@ class MortalityIndexer (ETL):
             value = '_BLANK_'
         return value
 
-    def index_mortality_data(self):
+    def performETL(self):
         for f in os.listdir(self.config['data_file']['directory']):
             if not f.endswith(".DUSMCPUB"):
                 continue
             file_path = os.path.join(self.config['data_file']['directory'], f)
-            print "Processing file : ", f
+            logger.info("Processing file : ", f)
             config_file =  f.replace(".DUSMCPUB", ".json")
             self.load_config_json_file(config_file)
-
-            print 'Loading config file for:', f
-
+            logger.debug('Loading config file for:', f)
             with open(file_path) as infile:
                 for line in infile:
                     row = {}
@@ -124,10 +124,16 @@ class MortalityIndexer (ETL):
                     self.batchRepository.persist({"index": {"_index": self.config['elastic_search']['index'], "_type": self.config['elastic_search']['type'], "_id": counter}})
                     self.batchRepository.persist(row)
             infile.close()
+            self.metrics.insertCount=counter
 
+    def validateETL(self):
+#         if(self.metrics.insertCount == self.getCurrentRecordCount()):
+#             return
+#         else:
+#             raise AssertionError("Expected number of records not loaded into DB, ETL validation failed", self.metrics.insertCount, self.getCurrentRecordCount()
+
+        return
 
 # Perform ETL
 indexer = MortalityIndexer(file(os.path.join(os.path.dirname(__file__), "config.yaml"), 'r'))
-indexer.createIndex(True)
-indexer.load_icd_code_mappings()
-indexer.index_mortality_data()
+indexer.execute()

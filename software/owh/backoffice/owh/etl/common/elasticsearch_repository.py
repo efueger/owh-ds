@@ -99,3 +99,6 @@ class ElasticSearchRepository(Repository, object):
 
     def search(self, criteria, sort, pagination):
         return self.es.search(index=self.index_name, body=criteria)
+
+    def countrecords(self):
+        return self.es.count(index=self.index_name, doc_type=self.name)['count']
