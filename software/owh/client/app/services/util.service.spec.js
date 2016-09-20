@@ -1,7 +1,7 @@
 'use strict';
 
 /*group of common test goes here as describe*/
-describe('app utils', function(){
+describe('utilService', function(){
     var utils, list, tableData, multipleColumnsTableData, noColumnsTableData, noRowsTableData,
         multipleColumnsTableDataWithUnmatchedColumns, singleValuedTableData;
 
@@ -19,17 +19,17 @@ describe('app utils', function(){
             {key: '7', title: 'Saturday'},
             {key: '9', title: 'Unknown'}
         ];
-        tableData = __fixtures__['test/fixtures/app.utils/tableData'];
+        tableData = __fixtures__['app/services/fixtures/util.service/tableData'];
 
-        multipleColumnsTableData = __fixtures__['test/fixtures/app.utils/multipleColumnsTableData'];
+        multipleColumnsTableData = __fixtures__['app/services/fixtures/util.service/multipleColumnsTableData'];
 
-        multipleColumnsTableDataWithUnmatchedColumns = __fixtures__['test/fixtures/app.utils/multipleColumnsTableDataWithUnmatchedColumns'];
+        multipleColumnsTableDataWithUnmatchedColumns = __fixtures__['app/services/fixtures/util.service/multipleColumnsTableDataWithUnmatchedColumns'];
 
-        noColumnsTableData = __fixtures__['test/fixtures/app.utils/noColumnsTableData'];
+        noColumnsTableData = __fixtures__['app/services/fixtures/util.service/noColumnsTableData'];
 
-        noRowsTableData = __fixtures__['test/fixtures/app.utils/noRowsTableData'];
+        noRowsTableData = __fixtures__['app/services/fixtures/util.service/noRowsTableData'];
 
-        singleValuedTableData = __fixtures__['test/fixtures/app.utils/noRowsTableData'];
+        singleValuedTableData = __fixtures__['app/services/fixtures/util.service/noRowsTableData'];
     }));
 
     it('test utils isValueNotEmpty for undefined', function () {
