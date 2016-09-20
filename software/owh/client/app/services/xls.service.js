@@ -20,7 +20,7 @@
         function s2ab(s) {
             var buf = new ArrayBuffer(s.length);
             var view = new Uint8Array(buf);
-            for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+            for (var i=0; i!==s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
             return buf;
         }
 
@@ -50,12 +50,12 @@
             var range = {s: {c:10000000, r:10000000}, e: {c:0, r:0 }};
             //keep track of offsets caused by merged cells
             var cOffsets = {};
-            for(var R = 0; R != data.length; ++R) {
+            for(var R = 0; R !== data.length; ++R) {
                 var rOffset = 0;
                 if(!cOffsets[R]) {
                     cOffsets[R] = 0;
                 }
-                for(var C = 0; C != data[R].length; ++C) {
+                for(var C = 0; C !== data[R].length; ++C) {
                     var cellJson = data[R][C];
                     var newR = R + rOffset;
                     var newC = C + cOffsets[R];
@@ -64,17 +64,9 @@
                     if(range.e.r < newR) range.e.r = newR;
                     if(range.e.c < newC) range.e.c = newC;
 
-                    if(cellJson == null) continue;
-                    var cell = {v: cellJson.title };
+                    if(cellJson === null) continue;
+                    var cell = getCellFromJson(cellJson);
                     var cell_ref = XLSX.utils.encode_cell({c:newC,r:newR});
-
-                    if(typeof cell.v === 'number') cell.t = 'n';
-                    else if(typeof cell.v === 'boolean') cell.t = 'b';
-                    else if(cell.v instanceof Date) {
-                        cell.t = 'n'; cell.z = XLSX.SSF._table[14];
-                        cell.v = datenum(cell.v);
-                    }
-                    else cell.t = 's';
 
                     if(cellJson.colspan > 1 || cellJson.rowspan > 1) {
                         cOffsets[R] += cellJson.colspan - 1;
@@ -101,6 +93,19 @@
             }
           	if(range.s.c < 10000000) ws['!ref'] = XLSX.utils.encode_range(range);
           	return ws;
+        }
+
+        function getCellFromJson(cellJson) {
+            var cell = {v: cellJson.title };
+
+            if(typeof cell.v === 'number') cell.t = 'n';
+            else if(typeof cell.v === 'boolean') cell.t = 'b';
+            else if(cell.v instanceof Date) {
+                cell.t = 'n'; cell.z = XLSX.SSF._table[14];
+                cell.v = datenum(cell.v);
+            }
+            else cell.t = 's';
+            return cell;
         }
 
         //gets json representation of sheet
