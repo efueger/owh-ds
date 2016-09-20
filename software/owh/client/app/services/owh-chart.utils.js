@@ -1,7 +1,7 @@
 (function(){
     'use strict';
     angular
-        .module('owh.utils')
+        .module('owh.services')
         .service('chartUtilService', chartUtilService);
 
     chartUtilService.$inject = ['$dateParser', '$filter', '$translate','utilService', 'ModalService'];

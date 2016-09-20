@@ -125,7 +125,8 @@
         "queryKey": "current_year",
         "primary": false,
         "value": [
-          "2014"
+          "2014",
+          "2013"
         ],
         "groupBy": "column",
         "type": "label.filter.group.year.month",
@@ -424,29 +425,37 @@
     "autopsy": [
       {
         "name": "Y",
-        "deaths": 157850,
+        "deaths": 314748,
         "race": [
           {
             "name": "1",
-            "deaths": 157850,
+            "deaths": 314748,
             "gender": [
               {
-                "name": "Ml",
-                "deaths": 107460,
+                "name": "M",
+                "deaths": 214659,
                 "year": [
                   {
                     "name": "2015",
                     "deaths": 107460
+                  },
+                  {
+                    "name": "2012",
+                    "deaths": 107199
                   }
                 ]
               },
               {
-                "name": "Fl",
-                "deaths": 50390,
+                "name": "F",
+                "deaths": 100089,
                 "year": [
                   {
                     "name": "2014",
                     "deaths": 50390
+                  },
+                  {
+                    "name": "2013",
+                    "deaths": 49699
                   }
                 ]
               }
@@ -476,30 +485,47 @@
         },
         {
           "title": "Female",
-          "colspan": 1,
-          "rowspan": 1
+          "colspan": 2,
+          "rowspan": 1,
+          "isData": true
         },
         {
           "title": "Male",
-          "colspan": 1,
-          "rowspan": 1
+          "colspan": 2,
+          "rowspan": 1,
+          "isData": true
         },
         {
           "title": "Number of Deaths",
           "colspan": 1,
-          "rowspan": 2
+          "rowspan": 2,
+          "isData": true
         }
       ],
       [
         {
           "title": "2014",
           "colspan": 1,
-          "rowspan": 1
+          "rowspan": 1,
+          "isData": true
+        },
+        {
+          "title": "2013",
+          "colspan": 1,
+          "rowspan": 1,
+          "isData": true
         },
         {
           "title": "2014",
           "colspan": 1,
-          "rowspan": 1
+          "rowspan": 1,
+          "isData": true
+        },
+        {
+          "title": "2013",
+          "colspan": 1,
+          "rowspan": 1,
+          "isData": true
         }
       ]
     ],
@@ -520,9 +546,16 @@
           "key": "1"
         },
         {
-          "title": "0",
-          "percentage": 0,
-          "isCount": false
+          "title": 50390,
+          "isCount": false,
+          "rowspan": 1,
+          "colspan": 1
+        },
+        {
+          "title": 49699,
+          "isCount": false,
+          "rowspan": 1,
+          "colspan": 1
         },
         {
           "title": "0",
@@ -530,7 +563,12 @@
           "isCount": false
         },
         {
-          "title": 157850,
+          "title": "0",
+          "percentage": 0,
+          "isCount": false
+        },
+        {
+          "title": 314748,
           "isCount": false,
           "rowspan": 1,
           "colspan": 1,
@@ -542,12 +580,12 @@
           "title": "Total",
           "isCount": false,
           "rowspan": 1,
-          "colspan": 3,
+          "colspan": 5,
           "isBold": true
         },
         {
-          "title": "157,850",
-          "percentage": 1.2358582892934038,
+          "title": "314,748",
+          "percentage": 2.4642630651790958,
           "isCount": true,
           "rowspan": 1,
           "colspan": 1,

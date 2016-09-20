@@ -81,10 +81,10 @@
             angular.forEach(selectedFilter.allFilters, function(filter) {
                 if(filter.key === 'year') {
                     if(filter.value.length > 1) {
-                        var minYear = parseInt(filter.value[0]);
-                        var maxYear = parseInt(filter.value[0]);
+                        var minYear = parseInt(filter.value[0], 10);
+                        var maxYear = parseInt(filter.value[0], 10);
                         angular.forEach(filter.value, function(year) {
-                            var yearInt = parseInt(year);
+                            var yearInt = parseInt(year, 10);
                             if(yearInt < minYear) {
                                 minYear = yearInt;
                             }
