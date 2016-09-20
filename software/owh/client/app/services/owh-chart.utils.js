@@ -53,13 +53,14 @@
                         "width": 350,
                         "margin": {
                             "top": 5,
-                            "right": 25,
-                            "bottom": 25,
-                            "left": 130
+                            "right": 5,
+                            "bottom": 45,
+                            "left": 45
                         },
-                        showLegend: true,
+                        showMaxMin: false,
+                        showLegend: false,
                         showControls: false,
-                        showValues: true,
+                        showValues: false,
                         showXAxis:true,
                         showYAxis:true,
                         stacked: stacked,
@@ -67,18 +68,17 @@
                         x: function(d){return d.label;},
                         y: function(d){return d.value;},
                         "xAxis": {
-                            axisLabelDistance:20,
-                            tickFormat:function (d) {
-                                if(isNaN(d)){ return d; }
-                                return d3.format(',f')(d);
+                            "axisLabelDistance": -20,
+                            "axisLabel": filter2.key,
+                            tickFormat:function () {
+                                return null;
                             },
                             "showMaxMin": false
                         },
                         "yAxis": {
-                            "axisLabel": "Deaths",
-                            tickFormat:function (d) {
-                                if(isNaN(d)){ return d; }
-                                return d3.format(',f')(d);
+                            "axisLabel": filter1.key,
+                            tickFormat:function () {
+                                return null;
                             }
                         },
                         valueFormat:function (n){
@@ -151,14 +151,14 @@
                         "width": 350,
                         "margin": {
                             "top": 5,
-                            "right": 25,
-                            "bottom": 35,
-                            "left": 130
+                            "right": 5,
+                            "bottom": 45,
+                            "left": 45
                         },
-                        showMaxMin: true,
-                        showLegend: true,
+                        showMaxMin: false,
+                        showLegend: false,
                         showControls: false,
-                        showValues: true,
+                        showValues: false,
                         showXAxis:true,
                         showYAxis:true,
                         reduceXTicks:false,
@@ -175,20 +175,20 @@
                         "duration": 500,
                         "stacked": stacked,
                         "xAxis": {
-                            axisLabelDistance:20,
-                            //axisLabel: $filter('translate')(filter2.title),
+                            "axisLabelDistance": -20,
+                            "axisLabel": filter2.key,
                             margin: {
                                 top:60
                             },
-                            tickFormat:function (d) {
-                                if(isNaN(d)){ return d;}
-                                return d3.format(',f')(d);
+                            tickFormat:function () {
+                                return null;
                             }
                         },
                         "yAxis": {
-                            tickFormat:function (d) {
-                                if(isNaN(d)){ return d; }
-                                return d3.format(',f')(d);
+                            "axisLabelDistance": -20,
+                            "axisLabel": filter1.key,
+                            tickFormat:function () {
+                               return null;
                             }
                         },
                         valueFormat:function (n){
@@ -263,15 +263,15 @@
                         "margin": {
                             "top": 5,
                             "right": 5,
-                            "bottom": 5,
-                            "left": 5
+                            "bottom": 45,
+                            "left": 45
                         },
                         x: function(d){ return d.label; },
                         y: function(d){ return d.value; },
-                        showValues: true,
+                        showValues: false,
                         showLabels: false,
                         transitionDuration: 250,
-                        showLegend: true,
+                        showLegend: false,
                         legend: {
                             margin:{}
                         },
@@ -328,16 +328,24 @@
                 expandedChartData.options.chart.showValues = true;
                 expandedChartData.options.chart.showXAxis = true;
                 expandedChartData.options.chart.showYAxis = true;
-
-
+                expandedChartData.options.chart.xAxis.tickFormat = function (d) {
+                    if(isNaN(d)){ return d; }
+                    return d3.format(',f')(d);
+                };
+                expandedChartData.options.chart.yAxis.tickFormat = function (d) {
+                    if(isNaN(d)){ return d; }
+                    return d3.format(',f')(d);
+                };
+                expandedChartData.options.chart.yAxis.axisLabelDistance = 10;
+                expandedChartData.options.chart.xAxis.axisLabelDistance = 50;
                 if(eachChartData.options.chart.type === 'multiBarHorizontalChart') {
                     expandedChartData.options.chart.margin.top = 20;
                     expandedChartData.options.chart.margin.right = 40;
-                    expandedChartData.options.chart.margin.bottom = 20;
+                    expandedChartData.options.chart.margin.bottom = 120;
                     if(expandedChartData.title === 'label.title.agegroup.autopsy' ||
                         expandedChartData.title === 'label.title.race.hispanicOrigin') {
                         expandedChartData.options.chart.margin.left =
-                            (expandedChartData.title === 'label.title.race.hispanicOrigin')?160:60;
+                            (expandedChartData.title === 'label.title.race.hispanicOrigin')?160:100;
                         expandedChartData.options.chart.height = 550;
                         expandedChartData.options.chart.showValues = false;
                     } if(expandedChartData.title === 'label.title.yrbsSex.yrbsRace' ) {
@@ -348,8 +356,8 @@
                 } else if(eachChartData.options.chart.type === 'multiBarChart') {
                     expandedChartData.options.chart.margin.top = 20;
                     expandedChartData.options.chart.margin.right = 20;
-                    expandedChartData.options.chart.margin.bottom = 100;
-                    expandedChartData.options.chart.margin.left = 60;
+                    expandedChartData.options.chart.margin.bottom = 120;
+                    expandedChartData.options.chart.margin.left = 100;
                     if(expandedChartData.title === 'label.title.gender.placeofdeath') {
                         expandedChartData.options.chart.wrapLabels=true;
                         expandedChartData.options.chart.rotateLabels=0;
