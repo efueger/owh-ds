@@ -76,7 +76,7 @@ deploy:
   secret_access_key: $OWH_ACCESS_SECRET
   skip_cleanup: true
   on: &2
-    repo: semanticbits/owh
+    repo: semanticbits/owh-ds
     branch:
       - feature/OWH-58
       # - develop
