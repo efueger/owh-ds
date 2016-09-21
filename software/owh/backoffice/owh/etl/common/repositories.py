@@ -90,8 +90,7 @@ class BatchRepository(Repository, object):
         self.repo = repo
         self.batch = []
         self.batch_size = batch_size if batch_size > 1 else 1
-        #super().__init__(repo.name)
-        super(BatchRepository, self).__init__(repo.name)
+        Repository.__init__(self, repo.name)
 
     def __enter__(self):
         return self

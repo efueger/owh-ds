@@ -61,7 +61,6 @@ class ElasticSearchRepository(Repository, object):
         except Exception as e:
             logging.fatal('Error creating index  [%s] for doctype [%s]', self.index_name, self.name)
             logging.error(e)
-
             raise
 
     def delete_index(self):
@@ -94,11 +93,13 @@ class ElasticSearchRepository(Repository, object):
             The elastic search response object
         """
         res = self.es.bulk(index= self.index_name, body= obj, refresh=True, request_timeout = 30)
-        print "Flush"
         return res
 
     def search(self, criteria, sort, pagination):
         return self.es.search(index=self.index_name, body=criteria)
 
-    def countrecords(self):
+    def count_records(self):
         return self.es.count(index=self.index_name, doc_type=self.name)['count']
+
+    def get_record_by_id(self, id):
+        return self.es.get(index=self.index_name, doc_type=self.name, id=id)

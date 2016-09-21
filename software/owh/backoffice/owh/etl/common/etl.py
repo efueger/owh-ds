@@ -1,6 +1,10 @@
 import yaml
 import logging
 import datetime
+import logging.config
+import os
+
+logging.config.fileConfig(os.path.join(os.path.dirname(__file__),'logging.conf'))
 
 from owh.etl.common.elasticsearch_repository import ElasticSearchRepository
 from owh.etl.common.repositories import BatchRepository
@@ -9,43 +13,62 @@ logger = logging.getLogger('etl')
 
 class ETLMetrics:
     def __init__(self):
-        self.status = ''
+        self.status = None
         self.startTime  = 0
         self.endTime  = 0
         self.duration = 0
         self.insertCount = 0
-        self.udpateCount=0
-        self.deletedCount=0
+        self.updateCount=0
+        self.deleteCount=0
+        self.message=None
 
 class ETL :
+    """Base ETL implemetation class that provides the common framework for the ETL implementation.
+       All dataset specific ETL implementation class should extend from this class and implement the following abstract methods
+        perform_etl() - dataset specific ETL implementation
+        validate_etl() - validation of a completed ETL
+       The contrete ETL implemetation should also instatiate the ETL impl and invoke the execute() method to
+       trigger the execution of the ETL
+    """
     def __init__(self, configFile):
         """Initialize the ETL"""
         self.metrics = ETLMetrics()
         self.config = yaml.safe_load(configFile)
-        logger.debug("Loaded configuration:", yaml.dump(self.config))
+        logger.debug("Loaded configuration: %s", yaml.dump(self.config))
         if 'elastic_search' in self.config and 'bulk_load_size' in self.config['elastic_search']:
             self.esRepository = ElasticSearchRepository(self.config['elastic_search'])
-            self.batchRepository = BatchRepository(self.config['elastic_search'], self.esRepository)
+            self.batchRepository = BatchRepository(self.config['elastic_search']['bulk_load_size'], self.esRepository)
         else:
             raise ValueError("Elastic search configuration not specified", yaml.dump(self.config))
 
-    def getCurrentRecordCount(self):
-        return self.esRepository.countrecords()
+    def get_record_count(self):
+        return self.esRepository.count_records()
 
-    def retrieveDataFiles(self):
+    def get_record_by_id(self, id):
+            return self.esRepository.get_record_by_id(id)
+
+    def retrieve_data_files(self):
         """Retrieve data files from AWS bucket"""
         logger.info("Retrieving data files")
 
-    def printMetrics(self):
+    def _print_metrics(self):
         """Print the metrics of the ETL"""
         logger.info("""
-        """)
+        Stauts : %s
+        Message: %s
+        Start time: %s
+        End Time: %s
+        Duration: %s
+        Insert Count: %s
+        Update Count: %s
+        Delete Count: %s
+        """, self.metrics.status,self.metrics.message, self.metrics.startTime, self.metrics.endTime, self.metrics.duration,self.metrics.insertCount, self.metrics.updateCount, self.metrics.deleteCount)
 
-    def performETL(self):
+    def perform_etl(self):
         """ This abstract method must be implemented by the concrete subclasses to perform the ETL specific to the dataset"""
         raise NotImplementedError("ETL.performETL must be implemented by dataset specific ETL subclass")
 
-    def validateETL(self):
+    def validate_etl(self):
         """ This abstract method must be implemented by concrete ETL class implemenation specific to the dataset.
          Implementation of the this method should perform some validation of the data loaded.
          Some proposed validations are
@@ -56,19 +79,28 @@ class ETL :
 
     def execute(self):
         """Execute the ETL process"""
-        self.metrics.startTime = datetime.datetime.now()
-        logger.info("Starting ETL")
-        logger.info("Retriving input data files for ETL")
-        self.retrieveDataFiles()
-        logger.info("Data files retreival complete")
-        logger.info("Starting transfromation and load")
-        self.performETL()
-        logger.info("Transfromation and Load completed")
-        logger.info("Validating ETL")
-        self.validateETL()
-        logger.info("Validation completed")
-        logger.info("ETL completed successfully, below is the metrics from the ETL")
-        self.metrics.endTime = datetime.datetime.now()
-        self.metrics.duration = self.metrics.endTime - self.metrics.startTime
-        self.metrics.status = "SUCCESS"
-        self.printMetrics()
+        try:
+            self.metrics.startTime = datetime.datetime.now()
+            logger.info("Starting ETL")
+            logger.info("Retriving input data files for ETL")
+            self.retrieve_data_files()
+            logger.info("Data files retreival complete")
+            logger.info("Starting transfromation and load")
+            self.perform_etl()
+            logger.info("Transfromation and Load completed")
+            logger.info("Validating ETL")
+            if not self.validate_etl():
+                self.metrics.status='FAILED'
+                logger.error("ETL validation FIALED, below is the metrics from the ETL")
+            else:
+                self.metrics.status = "SUCCESS"
+                logger.info("ETL completed successfully, below is the metrics from the ETL")
+            self.metrics.endTime = datetime.datetime.now()
+            self.metrics.duration = self.metrics.endTime - self.metrics.startTime
+            self._print_metrics()
+        except Exception as e:
+            logger.fatal("Exception running ETL: ", e)
+            logger.fatal(e)
+            self.metrics.status = "ERROR"
+            self.metrics.message = "Exception running ETL: %s" % e
+            raise

@@ -4,8 +4,7 @@ from random import randint
 from owh.etl.common.etl import ETL
 import logging
 
-logger = logging.getLogger('etl')
-
+logger = logging.getLogger('mortality_etl')
 
 counter = 0
 us_states = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA",
@@ -16,16 +15,15 @@ class MortalityIndexer (ETL):
 
     def __init__(self, configFile):
         ETL.__init__(self, configFile)
-        self.createIndex(True)
-        self.load_icd_code_mappings()
+        self._create_index(True)
+        self._load_icd_code_mappings()
 
 
-    def load_icd_code_mappings(self):
-        print 'Loading icd config file'
+    def _load_icd_code_mappings(self):
         with open(os.path.join(os.path.dirname(__file__),"es_mapping/conditions-ICD-10-mappings.json")) as jf:
             self.icd_10_code_mappings = json.load(jf, encoding="utf8")
 
-    def createIndex(self, recreate_index):
+    def _create_index(self, recreate_index):
         mappingFile = os.path.join(os.path.dirname(__file__), "es_mapping"
                                                     ,self.config['elastic_search']['type_mapping'])
         if recreate_index:
@@ -35,43 +33,43 @@ class MortalityIndexer (ETL):
             with open(mappingFile, "r") as mapping:
                 self.esRepository.create_mappings(json.load(mapping))
 
-    def load_config_json_file(self, file_name):
+    def _load_config_json_file(self, file_name):
         print 'Loading config file:', file_name
         with open(os.path.join(self.config['data_file']['directory'], 'data_mapping',file_name)) as jf:
             self.configs = json.load(jf, encoding="utf8")
 
-    def parse_value(self, value):
+    def _parse_value(self, value):
         if not value.isdigit():
             return value
         if "." in value:
             return float(value)
         return int(value)
 
-    def get_range_value(self, value, mappings):
+    def _get_range_value(self, value, mappings):
         if mappings.get(value):
             return value
         else:
             for key in mappings.keys():
                 if "-" in key:
                     ranges = key.split("-")
-                    if self.parse_value(value) >= self.parse_value(ranges[0]) \
-                            and self.parse_value(value) <= self.parse_value(ranges[1]):
+                    if self._parse_value(value) >= self._parse_value(ranges[0]) \
+                            and self._parse_value(value) <= self._parse_value(ranges[1]):
                         return key
-
-    def checkBlanks(self, value):
+    def _check_blanks(self, value):
         if value == '':  # check for blank
             value = '_BLANK_'
         return value
 
-    def performETL(self):
+    def perform_etl(self):
+        """Perform the mortality ETL"""
         for f in os.listdir(self.config['data_file']['directory']):
             if not f.endswith(".DUSMCPUB"):
                 continue
             file_path = os.path.join(self.config['data_file']['directory'], f)
-            logger.info("Processing file : ", f)
+            logger.info("Processing file: %s", f)
             config_file =  f.replace(".DUSMCPUB", ".json")
-            self.load_config_json_file(config_file)
-            logger.debug('Loading config file for:', f)
+            self._load_config_json_file(config_file)
+            logger.debug('Loading config file for: %s', f)
             with open(file_path) as infile:
                 for line in infile:
                     row = {}
@@ -105,35 +103,42 @@ class MortalityIndexer (ETL):
                             row[config['column'][:-6]] = conditions
                             i += 21
                         elif config.get('type'):  # check for range values
-                            value = self.get_range_value(value, config['mappings'])
-                            row[config['column']] = self.checkBlanks(value)
+                            value = self._get_range_value(value, config['mappings'])
+                            row[config['column']] = self._check_blanks(value)
                             i += 1
                         elif config['column'] == 'ICD_10_code':
                             code = value.upper()
                             if code:
                                 row[config['column']] = {'code': code, 'path':self.icd_10_code_mappings[code]}
                             else:
-                                row[config['column']] = self.checkBlanks(value.upper())
+                                row[config['column']] = self._check_blanks(value.upper())
                             i += 1
                         else:
-                            row[config['column']] = self.checkBlanks(value.upper())
+                            row[config['column']] = self._check_blanks(value.upper())
                             i += 1
 
-                    print "Record count:", counter
+                    logger.debug("Record count: %s", counter)
                     row['state'] = us_states[randint(0,49)]
                     self.batchRepository.persist({"index": {"_index": self.config['elastic_search']['index'], "_type": self.config['elastic_search']['type'], "_id": counter}})
                     self.batchRepository.persist(row)
             infile.close()
-            self.metrics.insertCount=counter
+            self.batchRepository.flush()
+        self.metrics.insertCount=counter
 
-    def validateETL(self):
-#         if(self.metrics.insertCount == self.getCurrentRecordCount()):
-#             return
-#         else:
-#             raise AssertionError("Expected number of records not loaded into DB, ETL validation failed", self.metrics.insertCount, self.getCurrentRecordCount()
+    def validate_etl(self):
+        """ Validate the ETL"""
+        if self.metrics.insertCount != self.get_record_count():
+            self.metrics.message = "Number of records in the DB (%d) not same as the number of records inserted (%d)" % (self.get_record_count(), self.metrics.insertCount)
+            return False
+        if self.get_record_by_id(1) is None:
+            self.metrics.message = "Record 1 is None"
+            return False
+        if self.get_record_by_id(self.get_record_count()) is None:
+            self.metrics.message = "Last record is None"
+            return False
+        return True
 
-        return
-
-# Perform ETL
-indexer = MortalityIndexer(file(os.path.join(os.path.dirname(__file__), "config.yaml"), 'r'))
-indexer.execute()
+if __name__ == "__main__":
+    # Perform ETL
+    indexer = MortalityIndexer(file(os.path.join(os.path.dirname(__file__), "config.yaml"), 'r'))
+    indexer.execute()
