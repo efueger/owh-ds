@@ -74,6 +74,7 @@ deploy:
 - provider: s3
   access_key_id: $OWH_ACCESS_KEY
   secret_access_key: $OWH_ACCESS_SECRET
+  local_dir: dpl_cd_upload
   skip_cleanup: true
   on: &2
     repo: semanticbits/owh-ds
