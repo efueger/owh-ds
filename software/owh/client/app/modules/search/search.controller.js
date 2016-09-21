@@ -29,7 +29,7 @@
             {key:'crude_death_rates',title:'Crude Death Rates'},
             {key:'age-adjusted_death_rates',title:'Age Adjusted Death Rates'}
         ];
-        sc.sort = ['race', 'gender', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
+        sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
         sc.showFbDialog = showFbDialog;
 
         /*To render the inline bars for the sideBar filters*/
