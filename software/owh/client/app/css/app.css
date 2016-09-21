@@ -982,12 +982,13 @@ body {
 
 .owh-side-menu__handle--collapsed {
     padding: 5px;
-    border-radius: 3px;
+    border-radius: 0.3rem;
+    border: 1px solid #ddd;
     margin-top: 10px;
     display: inline-block;
-    margin-left: 15px;
+    margin-left: -12px;
     margin-bottom: -20px;
-    background-color: transparent;
+    background-color: #F6F6F6;
     transition: background-color 1s, color 1s;
 }
 
