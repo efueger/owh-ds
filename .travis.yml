@@ -78,7 +78,7 @@ deploy:
   on: &2
     repo: semanticbits/owh-ds
     branch:
-      - feature/OWH-58
+      - develop-continuous-wip
       # - develop
       # - release
       # - master
