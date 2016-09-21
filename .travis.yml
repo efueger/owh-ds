@@ -84,7 +84,8 @@ deploy:
   on: &2
     repo: semanticbits/owh
     branch:
-      - develop
+      - feature/OWH-58
+      # - develop
       # - release
       # - master
   bucket: sb-owh
