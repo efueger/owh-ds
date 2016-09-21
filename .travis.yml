@@ -3,7 +3,6 @@ node_js:
   - '4.4'
 services:
   - elasticsearch
-  - docker
 
 cache:
   directories:
@@ -18,9 +17,6 @@ addons:
 
 env:
   - NODE_ENV=test # If we set NODE_ENV to test then owh app use local elastic search service
-
-before_install:
-  - docker info
 
 install:
   - cd software/owh/server
