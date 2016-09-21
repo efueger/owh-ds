@@ -327,16 +327,23 @@
                 expandedChartData.options.chart.showValues = true;
                 expandedChartData.options.chart.showXAxis = true;
                 expandedChartData.options.chart.showYAxis = true;
-                expandedChartData.options.chart.xAxis.tickFormat = function (d) {
-                    if(isNaN(d)){ return d; }
-                    return d3.format(',f')(d);
-                };
-                expandedChartData.options.chart.yAxis.tickFormat = function (d) {
-                    if(isNaN(d)){ return d; }
-                    return d3.format(',f')(d);
-                };
-                expandedChartData.options.chart.yAxis.axisLabelDistance = 10;
-                expandedChartData.options.chart.xAxis.axisLabelDistance = 50;
+
+                if (eachChartData.options.chart.type !== 'pieChart') {
+                    expandedChartData.options.chart.xAxis.tickFormat = function (d) {
+                        if (isNaN(d)) {
+                            return d;
+                        }
+                        return d3.format(',f')(d);
+                    };
+                    expandedChartData.options.chart.yAxis.tickFormat = function (d) {
+                        if (isNaN(d)) {
+                            return d;
+                        }
+                        return d3.format(',f')(d);
+                    };
+                    expandedChartData.options.chart.yAxis.axisLabelDistance = 10;
+                    expandedChartData.options.chart.xAxis.axisLabelDistance = 50;
+                }
                 if(eachChartData.options.chart.type === 'multiBarHorizontalChart') {
                     expandedChartData.options.chart.margin.top = 20;
                     expandedChartData.options.chart.margin.right = 40;
