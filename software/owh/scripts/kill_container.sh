@@ -9,6 +9,5 @@ pwd
 echo "- docker compose down - "
 docker-compose down
 echo " - removing images -"
-# docker rmi kudos_mongodb
 docker rmi owh_web
 echo "***completed***"
