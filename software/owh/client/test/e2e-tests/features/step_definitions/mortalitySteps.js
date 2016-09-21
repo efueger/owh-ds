@@ -24,7 +24,7 @@ var mortalityStepDefinitionsWrapper = function () {
         mortalityPage.expandVisualizationLink.click();
     });
 
-    this.Then(/^labels are displayed on both the axes for expanded visualization$/, function (callback) {
+    this.Then(/^labels are displayed on both the axes for expanded visualization$/, function () {
         var labelArray = mortalityPage.getAxisLabelsForExpandedVisualization();
         expect(labelArray[0].getText()).to.eventually.equal('Race');
         expect(labelArray[1].getText()).to.eventually.equal('Gender');
