@@ -943,3 +943,30 @@ body {
 .census .home-h4.category-header, .census .view-all-link .custom-link{
     color: #01a38e;
 }
+
+/* search */
+
+.owh-side-menu {
+    opacity: 1;
+    left: 0;
+    transition: left 0.3s, width 0.3s, height 1s;
+    line-height: 20px;
+    position: relative;
+}
+
+.owh-search-content.usa-width-three-fourths {
+    transition: width 0.3s;
+    overflow: hidden;
+}
+
+.owh-search-content--expanded {
+    width: 97%!important;
+    overflow: hidden;
+    transition: width 0.3s;
+}
+
+.owh-side-menu.ng-hide {
+    width: 0!important;
+    display: block!important;
+    left: -100%;
+}

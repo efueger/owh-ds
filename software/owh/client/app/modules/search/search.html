@@ -36,13 +36,19 @@
 
 <div class="usa-grid border-top-default" ng-class="{'allow-inline-charting': sc.filters.allowInlineCharting}">
     <div class="usa-width-one-whole bottom-pane">
-        <div class="usa-width-one-fourth side-pane-padding border-right-default">
+        <a ng-click="sc.sideMenu.visible = !sc.sideMenu.visible">
+            <span ng-show="sc.sideMenu.visible">&lt;&lt; Hide Filters</span>
+            <span ng-show="!sc.sideMenu.visible">Show Filters &gt;&gt;</span>
+        </a>
+        <div class="usa-width-one-fourth side-pane-padding border-right-default owh-side-menu" ng-hide="!sc.sideMenu.visible">
             <div class="sort-by side-filter-padding">
                 <owh-side-filter filters="sc.filters"></owh-side-filter>
             </div>
         </div>
-        <div class="usa-width-three-fourths">
-            <!--Charts-->
+        <!--<div class="owh-search-content" ng-class="{'usa-width-three-fourths': sc.sideMenu.visible, 'usa-width-one-whole': !sc.sideMenu.visible }">-->
+        <!--<div class="owh-search-content usa-width-three-fourths" >-->
+        <div class="owh-search-content usa-width-three-fourths" ng-class="{'owh-search-content--expanded': !sc.sideMenu.visible }">
+        <!--Charts-->
             <div class="usa-grid-full margin-top-30">
                 <div class="usa-width-one-whole" ng-repeat="startChartData in sc.filters.selectedPrimaryFilter.chartData" ng-init="parentIndex = $index">
                     <div ng-repeat="chartData in startChartData"
