@@ -82,11 +82,11 @@ deploy:
       # - develop
       # - release
       # - master
-  bucket: sb-owh
+  bucket: sb-owh-deployment
 - provider: codedeploy
   access_key_id: $OWH_ACCESS_KEY
   secret_access_key: $OWH_ACCESS_SECRET
-  bucket: sb-owh
+  bucket: sb-owh-deployment
   key: owh-$TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER.zip
   bundle_type: zip
   application: OwhDev
