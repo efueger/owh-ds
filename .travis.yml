@@ -2,7 +2,6 @@ language: node_js
 node_js:
   - '4.4'
 services:
-  - elasticsearch
   - docker
 
 cache:
@@ -20,6 +19,7 @@ env:
   - NODE_ENV=test # If we set NODE_ENV to test then owh app use local elastic search service
 
 before_install:
+  - curl -O https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-2.4.0.deb && sudo dpkg -i --force-confnew elasticsearch-2.4.0.deb && sudo service elasticsearch restart
   - docker info
 
 install:
