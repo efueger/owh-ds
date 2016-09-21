@@ -20,7 +20,6 @@ env:
   - NODE_ENV=test # If we set NODE_ENV to test then owh app use local elastic search service
 
 before_install:
-  - cd software/owh
   - docker info
 
 install:
