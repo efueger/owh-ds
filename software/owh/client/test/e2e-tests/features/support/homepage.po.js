@@ -1,7 +1,7 @@
 var OwhHomepage = function() {
     var hp = this;
     //explore button in Quick Health Data Online Box
-    hp.quickHealthExploreBtn = element( by.className('qh-button'));
+    hp.quickHealthExploreBtn = element( by.css('.qh-button'));
 
     //Birth Explore link in Women's Health section
     hp.birthExplorerLink = element( by.id('wh_birth_explorer'));
