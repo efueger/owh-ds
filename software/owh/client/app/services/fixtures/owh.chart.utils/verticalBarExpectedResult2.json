@@ -303,7 +303,7 @@
       },
       "yAxis": {
         "axisLabelDistance": -20,
-        "axisLabel": "race"
+        "axisLabel": "Deaths"
       },
       "useInteractiveGuideline": false,
       "interactive": false,

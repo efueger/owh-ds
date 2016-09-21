@@ -296,7 +296,7 @@
         "showMaxMin": false
       },
       "yAxis": {
-        "axisLabel": "race"
+        "axisLabel": "Deaths"
       },
       "useInteractiveGuideline": false,
       "interactive": false,

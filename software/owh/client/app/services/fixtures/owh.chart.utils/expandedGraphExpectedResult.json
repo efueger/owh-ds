@@ -81,7 +81,7 @@
           "showMaxMin": false
         },
         "yAxis": {
-          "axisLabel":"gender",
+          "axisLabel":"Deaths",
           "axisLabelDistance":10
         },
         "useInteractiveGuideline": false,

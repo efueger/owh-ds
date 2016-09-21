@@ -90,7 +90,7 @@
       },
       "yAxis": {
         "axisLabelDistance": -20,
-        "axisLabel": "gender"
+        "axisLabel": "Deaths"
       },
       "useInteractiveGuideline": false,
       "interactive": false,

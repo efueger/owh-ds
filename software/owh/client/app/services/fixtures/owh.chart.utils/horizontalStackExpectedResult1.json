@@ -80,7 +80,7 @@
         "showMaxMin": false
       },
       "yAxis": {
-        "axisLabel": "gender"
+        "axisLabel": "Deaths"
       },
       "useInteractiveGuideline": false,
       "interactive": false,

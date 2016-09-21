@@ -17,7 +17,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^labels are displayed on both the axes for minimized visualization$/, function () {
        var labelArray = mortalityPage.getAxisLabelsForMinimizedVisualization();
        expect(labelArray[0].getText()).to.eventually.equal('Race');
-       expect(labelArray[1].getText()).to.eventually.equal('Gender');
+       expect(labelArray[1].getText()).to.eventually.equal('Deaths');
     });
 
     this.When(/^user expand visualization$/, function () {
@@ -27,7 +27,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^labels are displayed on both the axes for expanded visualization$/, function () {
         var labelArray = mortalityPage.getAxisLabelsForExpandedVisualization();
         expect(labelArray[0].getText()).to.eventually.equal('Race');
-        expect(labelArray[1].getText()).to.eventually.equal('Gender');
+        expect(labelArray[1].getText()).to.eventually.equal('Deaths');
     });
 };
 module.exports = mortalityStepDefinitionsWrapper;

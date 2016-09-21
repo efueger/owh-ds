@@ -75,7 +75,7 @@
                             "showMaxMin": false
                         },
                         "yAxis": {
-                            "axisLabel": filter1.key,
+                            "axisLabel": "Deaths",
                             tickFormat:function () {
                                 return null;
                             }
@@ -185,7 +185,7 @@
                         },
                         "yAxis": {
                             "axisLabelDistance": -20,
-                            "axisLabel": filter1.key,
+                            "axisLabel": "Deaths",
                             tickFormat:function () {
                                return null;
                             }
