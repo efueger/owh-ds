@@ -24,13 +24,13 @@ before_install:
   - docker info
 
 install:
-  - cd server
-  - npm install -g nodemon
+  - cd software/owh/server
   - npm install
   - npm install --dev
   - cd  ../client
   - npm install
   - npm install --dev
+  - npm install -g nodemon
   - npm install -g istanbul
   - npm install -g codeclimate-test-reporter
   - npm install -g lcov-result-merger
@@ -61,7 +61,6 @@ after_success:
 - cd ..
 - lcov-result-merger './**/lcov.info' 'merged-lcov.info'
 - codeclimate-test-reporter < "merged-lcov.info"
-
 
 before_deploy:
   - mkdir -p dpl_tmp
