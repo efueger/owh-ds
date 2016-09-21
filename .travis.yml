@@ -1,8 +1,9 @@
 language: node_js
 node_js:
-  - '4.4'
+  - "4.5"
 services:
   - elasticsearch
+  - docker
 
 cache:
   directories:
@@ -18,17 +19,22 @@ addons:
 env:
   - NODE_ENV=test # If we set NODE_ENV to test then owh app use local elastic search service
 
+before_install:
+  - cd software/owh
+  - docker info
+
 install:
-  - cd software/owh/server
+  - cd server
+  - npm install -g nodemon
   - npm install
   - npm install --dev
   - cd  ../client
   - npm install
   - npm install --dev
-  - npm install -g nodemon
   - npm install -g istanbul
   - npm install -g codeclimate-test-reporter
   - npm install -g lcov-result-merger
+
 before_script:
   - sleep 10
   - curl http://localhost:9200/  # To verify ElasticSearch running
@@ -55,3 +61,42 @@ after_success:
 - cd ..
 - lcov-result-merger './**/lcov.info' 'merged-lcov.info'
 - codeclimate-test-reporter < "merged-lcov.info"
+
+
+before_deploy:
+  - mkdir -p dpl_tmp
+  - mkdir -p dpl_cd_upload
+  - cp appspec.yml dpl_tmp/appspec.yml
+  - cp -R scripts  dpl_tmp/scripts
+  - cd dpl_tmp
+  - zip -r owh-${TRAVIS_BRANCH}-${TRAVIS_BUILD_NUMBER}.zip *
+  - ls
+  - cd ..
+  - mv dpl_tmp/owh-${TRAVIS_BRANCH}-${TRAVIS_BUILD_NUMBER}.zip dpl_cd_upload/
+  - ls dpl_tmp
+  - rm -rf dpl_tmp
+
+deploy:
+- provider: s3
+  access_key_id: $OWH_ACCESS_KEY
+  secret_access_key: $OWH_ACCESS_SECRET
+  skip_cleanup: true
+  on: &2
+    repo: semanticbits/owh
+    branch:
+      - develop
+      # - release
+      # - master
+  bucket: sb-owh
+- provider: codedeploy
+  access_key_id: $OWH_ACCESS_KEY
+  secret_access_key: $OWH_ACCESS_SECRET
+  bucket: sb-owh
+  key: owh-$TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER.zip
+  bundle_type: zip
+  application: OwhDev
+  deployment_group: $TRAVIS_BRANCH
+  on: *2
+
+after_script:
+  - kill -9 $(fuser -n tcp 3000 2> /dev/null)
