@@ -376,7 +376,7 @@
             return result;
         }
 
-        function addCountsToAutoCompleteOptions(primaryFilter) {
+        function addCountsToAutoCompleteOptions(primaryFilter, query) {
             var deferred = $q.defer();
             var apiQuery = {
                 searchFor: primaryFilter.key,
@@ -389,6 +389,10 @@
             angular.forEach(filters, function(eachFilter) {
                 apiQuery.aggregations.simple.push(getGroupQuery(eachFilter));
             });
+            if(query) {
+                var filterQuery = buildAPIQuery(query).apiQuery.query;
+                apiQuery.query = filterQuery;
+            }
             //search results and populate according owh design
             SearchService.searchResults(apiQuery).then(function(response) {
                 primaryFilter.count = response.pagination.total;
@@ -433,6 +437,7 @@
         }
 
         function getAllFilters() {
+            //TODO: consider making these available as angular values, split out into separate file
             var filters = {};
             filters.groupOptions = [
                 {key:'column',title:'Column', tooltip:'Select to view as columns on data table'},

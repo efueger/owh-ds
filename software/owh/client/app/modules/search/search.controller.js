@@ -24,6 +24,7 @@
         sc.getSelectedYears = getSelectedYears;
         sc.showPhaseTwoGraphs = showPhaseTwoGraphs;
         sc.showExpandedGraph = showExpandedGraph;
+        sc.search = search;
         sc.selectedMapSize='small';
         sc.showMeOptions = [
             {key:'number_of_deaths',title:'Number of Deaths'},
@@ -31,17 +32,31 @@
             {key:'age-adjusted_death_rates',title:'Age Adjusted Death Rates'}
         ];
         sc.showFbDialog = showFbDialog;
+        sc.sideFiltersPopulated = false;
+        primaryFilterChanged(sc.filters.selectedPrimaryFilter);
 
-        /*To render the inline bars for the sideBar filters*/
-        searchFactory.addCountsToAutoCompleteOptions(mortalityFilter).then(function() {
-            primaryFilterChanged(sc.filters.selectedPrimaryFilter);
-        });
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter);
             }
         }, true);
+
+        //TODO: make sure only called once when side menu initializes, currently calling for every input instantiated
+        function search(selectedFilter) {
+            if(selectedFilter.initiated) {
+                /*To render the inline bars for the sideBar filters*/
+                //TODO: would be better if there was a way to filter using query but also get all possible values back from api
+                var optionalQuery;
+                if(sc.sideFiltersPopulated) {
+                    optionalQuery = selectedFilter;
+                }
+                searchFactory.addCountsToAutoCompleteOptions(mortalityFilter, optionalQuery).then(function() {
+                    primaryFilterChanged(selectedFilter);
+                    sc.sideFiltersPopulated = true;
+                });
+            }
+        }
 
         function downloadCSV() {
             var data = getMixedTable(sc.filters.selectedPrimaryFilter);

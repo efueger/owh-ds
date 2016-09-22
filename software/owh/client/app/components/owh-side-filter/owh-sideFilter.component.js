@@ -7,7 +7,9 @@
             controller: sideFilterController,
             controllerAs: 'sfc',
             bindings:{
-                filters : "="
+                //TODO: change to one-way binding and bubble filter changes up with event bindings
+                filters : "=",
+                onFilter: '&'
             }
         });
 
@@ -21,7 +23,6 @@
         sfc.showModal = showModal;
         sfc.clearSelection = clearSelection;
         sfc.updateGroupValue = updateGroupValue;
-        sfc.search = search;
 
         //Filters based on side filters
         function groupBySideFilter(group) {
@@ -33,7 +34,7 @@
             } else {
                 addOrFilterToPrimaryFilterValue(group, sfc.filters.selectedPrimaryFilter);
             }
-            search();
+            sfc.onFilter();
         }
         function addOrFilterToPrimaryFilterValue(filter, primaryFilter) {
             var filterIndex = utilService.findIndexByKeyAndValue(sfc.filters.selectedPrimaryFilter.value, 'key', filter.key);
@@ -41,12 +42,6 @@
                 primaryFilter.value.push(filter);
             } else if(!filter.groupBy && filterIndex >= 0) {
                 primaryFilter.value.splice(filterIndex, 1);
-            }
-        }
-
-        function search() {
-            if(sfc.filters.selectedPrimaryFilter.initiated) {
-                sfc.filters.selectedPrimaryFilter.searchResults(sfc.filters.selectedPrimaryFilter);
             }
         }
 
@@ -100,7 +95,7 @@
                         });
                         selectedFilter.value = utilService.getValuesByKey(selectedFilter.selectedValues, 'id');
                         modal.element.hide();
-                        search();
+                        sfc.onFilter();
                     });
                 });
             }
@@ -113,7 +108,7 @@
             //remove all elements from array
             filter.selectedValues.length = 0;
             filter.value.length = 0;
-            search();
+            sfc.onFilter();
         }
 
         //remove all elements from array for all select
@@ -125,7 +120,7 @@
             } else {
                 group.value.length = 0;
             }
-            search();
+            sfc.onFilter();
         }
     }
 }());
