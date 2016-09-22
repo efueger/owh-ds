@@ -96,7 +96,6 @@ deploy:
       - develop-continuous-wip
       # - develop
       # - release
-      # - master
   bucket: sb-owh-deployment
 - provider: codedeploy
   access_key_id: $OWH_ACCESS_KEY
