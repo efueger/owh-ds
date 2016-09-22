@@ -30,6 +30,7 @@ install:
   - npm install
   - npm install --dev
   - npm install -g nodemon
+  - npm install -g protractor
   - npm install -g istanbul
   - npm install -g codeclimate-test-reporter
   - npm install -g lcov-result-merger
