@@ -1,8 +1,7 @@
 Feature: Mortality page
   As a user
   I should be able to access mortality page
-  I want to see legends on X and Y axis on the quick visualizations
-  So that I can instantly know what data is plotted on which axis
+  In order to do further activites
 
 Scenario: Access mortality page
   When I am at home page
