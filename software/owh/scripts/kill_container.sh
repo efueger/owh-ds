@@ -2,7 +2,7 @@
 
 set -e
 echo "** Killing containers ***"
-cd /usr/local/owh/codebase/software/owh
+cd /tmp/deploy
 echo "- Executing in /tmp/deploy -"
 ls
 pwd

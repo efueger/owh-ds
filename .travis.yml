@@ -36,6 +36,7 @@ install:
   - npm install -g lcov-result-merger
 
 before_script:
+  - docker-compose up -d
   - sleep 10
   - curl http://localhost:9200/  # To verify ElasticSearch running
   - curl -XPUT 'http://localhost:9200/owh' #create index 'owh' in ElasticSearch
@@ -66,9 +67,15 @@ after_success:
 - codeclimate-test-reporter < "merged-lcov.info"
 
 before_deploy:
+  - docker-compose build
+  - docker images
   - mkdir -p dpl_tmp
   - mkdir -p dpl_cd_upload
   - cp appspec.yml dpl_tmp/appspec.yml
+  - docker save kudos_web |  gzip -c >  dpl_tmp/kudos_web.tar.gz
+  - docker save kudos_mongodb |  gzip -c >  dpl_tmp/kudos_mongodb.tar.gz
+  - cp docker-compose-deploy.yml  dpl_tmp/docker-compose.yml
+  - cp Dockerfile  dpl_tmp/
   - cp -R scripts  dpl_tmp/scripts
   - cd dpl_tmp
   - zip -r owh-${TRAVIS_BRANCH}-${TRAVIS_BUILD_NUMBER}.zip *
@@ -90,7 +97,6 @@ deploy:
       - develop-continuous-wip
       # - develop
       # - release
-      # - master
   bucket: sb-owh-deployment
 - provider: codedeploy
   access_key_id: $OWH_ACCESS_KEY

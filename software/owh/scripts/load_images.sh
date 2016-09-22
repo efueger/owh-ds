@@ -4,11 +4,8 @@ set -e
 echo "** Loading images ***"
 cd /tmp/deploy
 echo "- Executing in /tmp/deploy -"
-echo "checking out code from git................"
-cd  /usr/local/owh/codebase
-git pull
-echo "***Checkout completed successfully***"
-echo "building docker images......"
-cd /usr/local/owh/codebase/software/owh
-docker-compose build
+ls
+pwd
+echo "loading images"
+docker load -i owh_web.tar.gz
 echo "***completed***"
