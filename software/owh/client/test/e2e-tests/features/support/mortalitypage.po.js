@@ -4,7 +4,7 @@ var MortalitySearchPage = function() {
     msp.filterTypeSelectBox = element( by.model('ots.filters.selectedPrimaryFilter'));
     msp.chartDataDiv = element(by.repeater('chartData in startChartData'));
     msp.expandVisualizationLink = element(by.css('a[name=expand_graph]'));
-    msp.sideMenu = element(by.tagName('owh-side-filter'));
+    msp.sideMenu = element(by.className('owh-side-menu'));
     msp.hideFiltersBtn = element(by.className('owh-side-menu__handle'));
 
     msp.getSelectedFilterType = function() {

@@ -49,9 +49,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^side menu slides away$/, function () {
-        mortalityPage.sideMenu.isDisplayed().then(function(value){
-            expect(value).to.equal(false);
-        });
+        expect(mortalityPage.sideMenu.getAttribute('class')).to.eventually.include('ng-hide');
     });
 };
 module.exports = mortalityStepDefinitionsWrapper;
