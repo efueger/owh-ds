@@ -1,22 +1,11 @@
 version: '2'
 
 services:
-  #mongodb:
-  #  image: kudos_mongodb:latest
-  #  ports:
-  #    - "27017:27017"
-  #  volumes:
-  #    - /data:/data
-  #  command: --config /conf/mongod.conf
   web:
     restart: always
     image: owh_web:latest
     build: .
     environment:
       - NODE_ENV=dev
-      # - MONGODB_HOST=mongodb
-      # - MONGODB_PORT=27017
-    #depends_on:
-      # - mongodb
     ports:
-      - "80:3000"
+      - "80:9900"

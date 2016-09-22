@@ -72,8 +72,7 @@ before_deploy:
   - mkdir -p dpl_tmp
   - mkdir -p dpl_cd_upload
   - cp appspec.yml dpl_tmp/appspec.yml
-  - docker save kudos_web |  gzip -c >  dpl_tmp/kudos_web.tar.gz
-  - docker save kudos_mongodb |  gzip -c >  dpl_tmp/kudos_mongodb.tar.gz
+  - docker save owh_web |  gzip -c >  dpl_tmp/owh_web.tar.gz
   - cp docker-compose-deploy.yml  dpl_tmp/docker-compose.yml
   - cp Dockerfile  dpl_tmp/
   - cp -R scripts  dpl_tmp/scripts
