@@ -35,7 +35,7 @@ install:
   - npm install -g lcov-result-merger
 
 before_script:
-   - docker-compose up -d
+  - docker-compose up -d
   - sleep 10
   - curl http://localhost:9200/  # To verify ElasticSearch running
   - curl -XPUT 'http://localhost:9200/owh' #create index 'owh' in ElasticSearch
