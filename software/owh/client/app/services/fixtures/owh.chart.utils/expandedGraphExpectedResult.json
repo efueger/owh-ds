@@ -65,7 +65,7 @@
         "margin": {
           "top": 20,
           "right": 40,
-          "bottom": 20,
+          "bottom": 120,
           "left": 210
         },
         "showLegend": true,
@@ -76,10 +76,13 @@
         "stacked": true,
         "duration": 500,
         "xAxis": {
+          "axisLabelDistance":120,
+          "axisLabel":"race",
           "showMaxMin": false
         },
         "yAxis": {
-          "axisLabel": "Deaths"
+          "axisLabel":"Deaths",
+          "axisLabelDistance":10
         },
         "useInteractiveGuideline": false,
         "interactive": false,

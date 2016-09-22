@@ -58,19 +58,19 @@
     "chart": {
       "type": "multiBarChart",
       "height": 250,
-      "width": 250,
+      "width": 350,
       "margin": {
         "top": 5,
         "right": 5,
-        "bottom": 5,
-        "left": 5
+        "bottom": 45,
+        "left": 45
       },
       "showMaxMin": false,
       "showLegend": false,
       "showControls": false,
       "showValues": false,
-      "showXAxis": false,
-      "showYAxis": false,
+      "showXAxis": true,
+      "showYAxis": true,
       "reduceXTicks": false,
       "legend": {
         "width": 200,
@@ -82,12 +82,16 @@
       "duration": 500,
       "stacked": true,
       "xAxis": {
-        "axisLabelDistance": 20,
+        "axisLabelDistance": -20,
+        "axisLabel": "race",
         "margin": {
           "top": 60
         }
       },
-      "yAxis": {},
+      "yAxis": {
+        "axisLabelDistance": -20,
+        "axisLabel": "Deaths"
+      },
       "useInteractiveGuideline": false,
       "interactive": false,
       "tooltip": {}
