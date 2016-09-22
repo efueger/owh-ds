@@ -88,11 +88,11 @@ describe('chart utils', function(){
 
         expect(result.options.chart.x({label: 'x label'})).toEqual('x label');
         expect(result.options.chart.y({value: 'y value'})).toEqual('y value');
-        expect(result.options.chart.xAxis.tickFormat('1,234')).toEqual('1,234');
-        expect(result.options.chart.xAxis.tickFormat(1234)).toEqual('1,234');
+        expect(result.options.chart.xAxis.tickFormat('1,234')).toEqual(null);
+        expect(result.options.chart.xAxis.tickFormat(1234)).toEqual(null);
 
-        expect(result.options.chart.yAxis.tickFormat('1,234')).toEqual('1,234');
-        expect(result.options.chart.yAxis.tickFormat(1234)).toEqual('1,234');
+        expect(result.options.chart.yAxis.tickFormat('1,234')).toEqual(null);
+        expect(result.options.chart.yAxis.tickFormat(1234)).toEqual(null);
 
         expect(result.options.chart.valueFormat('1,234')).toEqual('1,234');
         expect(result.options.chart.valueFormat(1234)).toEqual('1234');
@@ -106,11 +106,11 @@ describe('chart utils', function(){
 
         expect(result.options.chart.x({x: 'x label'})).toEqual('x label');
         expect(result.options.chart.y({y: 'y value'})).toEqual('y value');
-        expect(result.options.chart.xAxis.tickFormat('1,234')).toEqual('1,234');
-        expect(result.options.chart.xAxis.tickFormat(1234)).toEqual('1,234');
+        expect(result.options.chart.xAxis.tickFormat('1,234')).toEqual(null);
+        expect(result.options.chart.xAxis.tickFormat(1234)).toEqual(null);
 
-        expect(result.options.chart.yAxis.tickFormat('1,234')).toEqual('1,234');
-        expect(result.options.chart.yAxis.tickFormat(1234)).toEqual('1,234');
+        expect(result.options.chart.yAxis.tickFormat('1,234')).toEqual(null);
+        expect(result.options.chart.yAxis.tickFormat(1234)).toEqual(null);
 
         expect(result.options.chart.valueFormat('1,234')).toEqual('1,234');
         expect(result.options.chart.valueFormat(1234)).toEqual('1234');

@@ -943,3 +943,9 @@ body {
 .census .home-h4.category-header, .census .view-all-link .custom-link{
     color: #01a38e;
 }
+/* To increase visualization(charts) axis label size*/
+.nv-axislabel {
+    font-size: 13px !important;
+    font-weight: bold !important;
+    text-transform: capitalize;
+}
