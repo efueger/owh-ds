@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+#set -e
 echo "** Killing containers ***"
 cd /usr/local/owh/codebase/software/owh
 echo "- Executing in /tmp/deploy -"
