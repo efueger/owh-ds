@@ -17,7 +17,10 @@ Scenario: Axis labels
 
 Scenario: Side filter collapse
   Given user is on search page
-  When user sees side filter
+  Then user sees side filter
   Then there is button to hide filter
   When user clicks hide filter button
   Then side menu slides away
+  Then user sees button to show filters
+  When user clicks show filters button
+  Then side menu slides back into view

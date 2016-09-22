@@ -34,14 +34,12 @@ var mortalityStepDefinitionsWrapper = function () {
         browser.get('/search');
     });
 
-    this.When(/^user sees side filter$/, function () {
-        mortalityPage.sideMenu.isDisplayed();
+    this.Then(/^user sees side filter$/, function () {
+        expect(mortalityPage.sideMenu.isDisplayed()).to.eventually.equal(true);
     });
 
     this.Then(/^there is button to hide filter$/, function () {
-        mortalityPage.hideFiltersBtn.isDisplayed().then(function(value){
-           expect(value).to.equal(true);
-        });
+        expect(mortalityPage.hideFiltersBtn.isDisplayed()).to.eventually.equal(true);
     });
 
     this.When(/^user clicks hide filter button$/, function () {
@@ -50,6 +48,18 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^side menu slides away$/, function () {
         expect(mortalityPage.sideMenu.getAttribute('class')).to.eventually.include('ng-hide');
+    });
+
+    this.Then(/^user sees button to show filters$/, function () {
+        expect(mortalityPage.showFiltersBtn.isDisplayed()).to.eventually.equal(true);
+    });
+
+    this.When(/^user clicks show filters button$/, function () {
+        mortalityPage.showFiltersBtn.click();
+    });
+
+    this.Then(/^side menu slides back into view$/, function () {
+        expect(mortalityPage.sideMenu.getAttribute('class')).to.not.eventually.include('ng-hide');
     });
 };
 module.exports = mortalityStepDefinitionsWrapper;

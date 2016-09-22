@@ -6,6 +6,7 @@ var MortalitySearchPage = function() {
     msp.expandVisualizationLink = element(by.css('a[name=expand_graph]'));
     msp.sideMenu = element(by.className('owh-side-menu'));
     msp.hideFiltersBtn = element(by.className('owh-side-menu__handle'));
+    msp.showFiltersBtn = element(by.className('owh-side-menu__handle--collapsed'));
 
     msp.getSelectedFilterType = function() {
        return msp.filterTypeSelectBox.$('option:checked').getText();
