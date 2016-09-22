@@ -7,7 +7,9 @@
             controller: sideFilterController,
             controllerAs: 'sfc',
             bindings:{
-                filters : "="
+                filters : "=",
+                //array of filter keys, specifies order
+                sort: '<'
             }
         });
 
@@ -22,6 +24,7 @@
         sfc.clearSelection = clearSelection;
         sfc.updateGroupValue = updateGroupValue;
         sfc.search = search;
+        sfc.getFilterOrder = getFilterOrder;
 
         //Filters based on side filters
         function groupBySideFilter(group) {
@@ -126,6 +129,11 @@
                 group.value.length = 0;
             }
             search();
+        }
+
+        //called to determine order of side filters, looks at sort array passed in
+        function getFilterOrder(filter) {
+            return sfc.sort.indexOf(filter.filters.key);
         }
     }
 }());
