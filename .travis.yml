@@ -30,7 +30,7 @@ install:
   - npm install
   - npm install --dev
   - npm install -g nodemon
-  - npm install -g protractor
+  #####- npm install -g protractor
   - npm install -g istanbul
   - npm install -g codeclimate-test-reporter
   - npm install -g lcov-result-merger
@@ -43,9 +43,9 @@ before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - npm start > /dev/null &
-  - npm run update-webdriver
+  ####- npm run update-webdriver
+  -./node_modules/protractor/bin/webdriver-manager update
   - nohup bash -c './nodemodules/protractor/bin/webdriver-manager start 2>&1 &'
-  #####- ./node_modules/protractor/bin/webdriver-manager update
   - sleep 1 #give server time to start
 
 script:
@@ -58,8 +58,8 @@ script:
   - npm start > /dev/null &
   - sleep 10
   - cd ../client
-  - protractor test/e2e-tests/protractor.conf.js --browser=firefox
-  ######- node_modules/.bin/protractor test/e2e-tests/protractor.conf.js --browser=firefox
+  #####- protractor test/e2e-tests/protractor.conf.js --browser=firefox
+  - node_modules/.bin/protractor test/e2e-tests/protractor.conf.js --browser=firefox
 
 after_success:
 - cd ..
