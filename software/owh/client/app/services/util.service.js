@@ -2,7 +2,7 @@
 (function(){
     'use strict';
     angular
-        .module('owh.utils', [])
+        .module('owh.services')
         .service('utilService', utilService);
 
     utilService.$inject = ['$dateParser', '$filter', '$translate', '$rootScope'];
@@ -193,35 +193,35 @@
         }
 
         /*function buildAPIQuery(filters) {
-            return {
-                query: prepareFilterQuery(filters),
-                detail:0
-            };
-        }
+         return {
+         query: prepareFilterQuery(filters),
+         detail:0
+         };
+         }
 
-        function prepareFilterQuery(filters) {
-            var filter = {};
-            var filterQuery = angular.copy(filters);
-            angular.forEach(filterQuery, function(searchObject, index) {
-                if( angular.isArray(searchObject.value) ){
-                    var emptyValueIndex = searchObject.value.indexOf('');
-                    if (emptyValueIndex > -1) {
-                        searchObject.value.splice(emptyValueIndex, 1);
-                    }
-                }
-                if ( isValueNotEmpty(searchObject.value) ) {
-                    filter[searchObject.queryKey] = {
-                        exact: searchObject.exact,
-                        primary: searchObject.primary,
-                        caseChange: searchObject.caseChange,
-                        queryKey: searchObject.queryKey,
-                        value: searchObject.value,
-                        type: searchObject.type
-                    };
-                }
-            });
-            return filter;
-        }*/
+         function prepareFilterQuery(filters) {
+         var filter = {};
+         var filterQuery = angular.copy(filters);
+         angular.forEach(filterQuery, function(searchObject, index) {
+         if( angular.isArray(searchObject.value) ){
+         var emptyValueIndex = searchObject.value.indexOf('');
+         if (emptyValueIndex > -1) {
+         searchObject.value.splice(emptyValueIndex, 1);
+         }
+         }
+         if ( isValueNotEmpty(searchObject.value) ) {
+         filter[searchObject.queryKey] = {
+         exact: searchObject.exact,
+         primary: searchObject.primary,
+         caseChange: searchObject.caseChange,
+         queryKey: searchObject.queryKey,
+         value: searchObject.value,
+         type: searchObject.type
+         };
+         }
+         });
+         return filter;
+         }*/
 
         function numberWithCommas(number) {
             return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -237,97 +237,97 @@
         }
 
         /*function prepareNestedAccordionData(headers, data, countKey, totalCount, countLabel) {
-            if(headers.length == 2) {
-                return prepareBasicTableData(headers, data, countKey, totalCount, countLabel);
-            }
-            var accordionObject = {
-                isAccordion: true,
-                data: []
-            };
-            angular.forEach(headers, function(eachHeader, headerIndex) {
-                var eachHeaderData = data[eachHeader.key];
-                angular.forEach(eachHeaderData, function(eachData, index) {
-                    var eachAccordion = {};
-                    eachAccordion.headerTitle = eachHeader.title;
-                    eachAccordion.title = getValueFromOptions(eachHeader.autoCompleteOptions, 'key', eachData.name, 'title');
-                    eachAccordion.count = numberWithCommas(eachData[countKey]);
-                    eachAccordion.percentage = (eachData[countKey] / totalCount) * 100;
-                    eachAccordion.children = prepareNestedAccordionData(headers.slice(1), eachData, countKey, totalCount, countLabel);
-                    accordionObject.data.push(eachAccordion);
-                });
-            });
-            return accordionObject;
-        }*/
+         if(headers.length == 2) {
+         return prepareBasicTableData(headers, data, countKey, totalCount, countLabel);
+         }
+         var accordionObject = {
+         isAccordion: true,
+         data: []
+         };
+         angular.forEach(headers, function(eachHeader, headerIndex) {
+         var eachHeaderData = data[eachHeader.key];
+         angular.forEach(eachHeaderData, function(eachData, index) {
+         var eachAccordion = {};
+         eachAccordion.headerTitle = eachHeader.title;
+         eachAccordion.title = getValueFromOptions(eachHeader.autoCompleteOptions, 'key', eachData.name, 'title');
+         eachAccordion.count = numberWithCommas(eachData[countKey]);
+         eachAccordion.percentage = (eachData[countKey] / totalCount) * 100;
+         eachAccordion.children = prepareNestedAccordionData(headers.slice(1), eachData, countKey, totalCount, countLabel);
+         accordionObject.data.push(eachAccordion);
+         });
+         });
+         return accordionObject;
+         }*/
         /*function prepareBasicTableData(headers, data, countKey, totalCount, countLabel) {
-            var tableObject = {
-                isAccordion: false,
-                data: [],
-                headers: []
-            };
+         var tableObject = {
+         isAccordion: false,
+         data: [],
+         headers: []
+         };
 
-            var headerData = data[headers[0].key];
-            tableObject.headers.push(headers[0].title);
-            angular.forEach(headers[1].autoCompleteOptions, function(eachOption) {
-                tableObject.headers.push(eachOption.title);
-            });
-            tableObject.headers.push(countLabel);
-            angular.forEach(headerData, function(eachData, index) {
-                var eachTableRow = [];
-                eachTableRow.push({
-                    title: getValueFromOptions(headers[0].autoCompleteOptions, 'key', eachData.name, 'title'),
-                    isCount: false
-                });
-                angular.forEach(headers[1].autoCompleteOptions, function(eachOption) {
-                    var count = getValueFromOptions(eachData[headers[1].key], 'name', eachOption.key, countKey, '0');
-                    eachTableRow.push({
-                        title: numberWithCommas(Number(count)),
-                        isCount: true,
-                        percentage: (Number(count) / totalCount) * 100
-                    });
-                });
-                eachTableRow.push({
-                    title: numberWithCommas(eachData[countKey]),
-                    isCount: true,
-                    percentage: (eachData[countKey] / totalCount) * 100
-                });
-                tableObject.data.push(eachTableRow);
-            });
-            return tableObject;
-        }*/
+         var headerData = data[headers[0].key];
+         tableObject.headers.push(headers[0].title);
+         angular.forEach(headers[1].autoCompleteOptions, function(eachOption) {
+         tableObject.headers.push(eachOption.title);
+         });
+         tableObject.headers.push(countLabel);
+         angular.forEach(headerData, function(eachData, index) {
+         var eachTableRow = [];
+         eachTableRow.push({
+         title: getValueFromOptions(headers[0].autoCompleteOptions, 'key', eachData.name, 'title'),
+         isCount: false
+         });
+         angular.forEach(headers[1].autoCompleteOptions, function(eachOption) {
+         var count = getValueFromOptions(eachData[headers[1].key], 'name', eachOption.key, countKey, '0');
+         eachTableRow.push({
+         title: numberWithCommas(Number(count)),
+         isCount: true,
+         percentage: (Number(count) / totalCount) * 100
+         });
+         });
+         eachTableRow.push({
+         title: numberWithCommas(eachData[countKey]),
+         isCount: true,
+         percentage: (eachData[countKey] / totalCount) * 100
+         });
+         tableObject.data.push(eachTableRow);
+         });
+         return tableObject;
+         }*/
         /*function prepareGroupedTableData(headers, data, countKey, totalCount, cssClass, headerStartIndex) {
-            if(!cssClass) {
-                cssClass = 'group';
-            } if( !headerStartIndex ) {
-                headerStartIndex = 0;
-            }
-            var tableData = [];
-            angular.forEach(headers, function(eachHeader, headerIndex) {
-                var eachHeaderData = data[eachHeader.key];
-                angular.forEach(eachHeaderData, function(eachData, index) {
-                    var eachTableRow = {};
-                    var matchedOption;
-                    if(eachHeader.autoCompleteOptions) {
-                        matchedOption = findByKeyAndValue(eachHeader.autoCompleteOptions, 'key', eachData.name);
-                    }
-                    eachTableRow[eachHeader.key] = matchedOption ? matchedOption.title : eachData.name;
-                    eachTableRow[countKey] = eachData[countKey];
-                    eachTableRow[countKey + 'Percentage'] = (eachData[countKey] / totalCount) * 100;
-                    eachTableRow.cssClass = cssClass;
-                    eachTableRow.childCssClass = cssClass + ' ' + cssClass + '_' + index;
-                    if(headers.length > 1) {
-                        eachTableRow.allowCollapse = true;
-                        eachTableRow.collapsibleIndex = headerStartIndex;
-                        var nextHeader = headers[headerIndex + 1];
-                        $translate(nextHeader.title).then(function (translation) {
-                            eachTableRow[nextHeader.key] = eachData[nextHeader.key].length + ' ' + translation + 's'
-                        });
-                    }
-                    tableData.push(eachTableRow);
-                    tableData = tableData.concat(prepareGroupedTableData(headers.slice(1), eachData, countKey, totalCount, eachTableRow.childCssClass, headerStartIndex + 1, totalCount));
-                });
-            });
-            return tableData;
-        }*/
+         if(!cssClass) {
+         cssClass = 'group';
+         } if( !headerStartIndex ) {
+         headerStartIndex = 0;
+         }
+         var tableData = [];
+         angular.forEach(headers, function(eachHeader, headerIndex) {
+         var eachHeaderData = data[eachHeader.key];
+         angular.forEach(eachHeaderData, function(eachData, index) {
+         var eachTableRow = {};
+         var matchedOption;
+         if(eachHeader.autoCompleteOptions) {
+         matchedOption = findByKeyAndValue(eachHeader.autoCompleteOptions, 'key', eachData.name);
+         }
+         eachTableRow[eachHeader.key] = matchedOption ? matchedOption.title : eachData.name;
+         eachTableRow[countKey] = eachData[countKey];
+         eachTableRow[countKey + 'Percentage'] = (eachData[countKey] / totalCount) * 100;
+         eachTableRow.cssClass = cssClass;
+         eachTableRow.childCssClass = cssClass + ' ' + cssClass + '_' + index;
+         if(headers.length > 1) {
+         eachTableRow.allowCollapse = true;
+         eachTableRow.collapsibleIndex = headerStartIndex;
+         var nextHeader = headers[headerIndex + 1];
+         $translate(nextHeader.title).then(function (translation) {
+         eachTableRow[nextHeader.key] = eachData[nextHeader.key].length + ' ' + translation + 's'
+         });
+         }
+         tableData.push(eachTableRow);
+         tableData = tableData.concat(prepareGroupedTableData(headers.slice(1), eachData, countKey, totalCount, eachTableRow.childCssClass, headerStartIndex + 1, totalCount));
+         });
+         });
+         return tableData;
+         }*/
         function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal) {
             var tableData = {
                 headers: prepareMixedTableHeaders(headers, countLabel),
@@ -362,7 +362,7 @@
                     rowspan: tableColumnHeaders.headers.length > 0 ? tableColumnHeaders.headers.length : 1
                 };
                 //$translate(eachRowHeader.title).then(function (translation) {
-                    eachTableRowHeader.title = $filter('translate')(eachRowHeader.title);
+                eachTableRowHeader.title = $filter('translate')(eachRowHeader.title);
                 //});
                 tableRowHeaders.push(eachTableRowHeader)
             });
@@ -377,6 +377,13 @@
                     rowspan: tableColumnHeaders.headers.length > 0 ? tableColumnHeaders.headers.length : 1
                 });
             }
+            //mark each data column header as isData to set alignment
+            angular.forEach(tableColumnHeaders.headers, function(row, index) {
+                var skip = (index === 0 ? headers.rowHeaders.length : 0);
+                for(var i = skip; i < row.length; i++) {
+                    row[i].isData = true;
+                }
+            });
             return tableHeaders;
         }
         function prepareMixedTableColumnHeaders(columnHeaders) {
@@ -590,66 +597,66 @@
 
 
         /*function prepareYRBSTableData(data, headers, groupedFilter, yearFilter, aggKey, isAggAtStart) {
-            var tableData = {
-                headers: [[]],
-                data : []
-            };
-            /!*tableData.headers[0].push({
-                title: 'Year',
-                colspan: 1,
-                rowspan: 1
-            });*!/
-            var questionHeaders = findAllByKeyAndValue(headers, 'key', 'question');
-            var otherHeaders = findAllNotContainsKeyAndValue(headers, 'key', 'question');
-            groupedFilter.autoCompleteOptions = otherHeaders.concat(groupedFilter.autoCompleteOptions);
-            groupedFilter.value = [];
-            var columnHeaders = [groupedFilter];
-            if(yearFilter.value.length > 1) {
-                columnHeaders.push(yearFilter)
-            }
-            var selectedYears = getSelectedAutoCompleteOptions(yearFilter);
-            var mixedTableHeaders = {
-                rowHeaders: questionHeaders,
-                columnHeaders: columnHeaders
-            };
-            tableData.headers = prepareMixedTableHeaders(mixedTableHeaders);
-            var totalTablecolspan = 0;
-            if(tableData.headers[0].length > 0) {
-                angular.forEach(tableData.headers[0], function(eachHeader) {
-                    totalTablecolspan += eachHeader.colspan;
-                })
-            }
-            angular.forEach(data.aggData, function(questions, questionCategory){
-                var categoryRow = [];
-                categoryRow.push({
-                    title: questionCategory,
-                    colspan: totalTablecolspan,
-                    rowspan:1,
-                    isBold: true
-                });
-                tableData.data.push(categoryRow);
-                angular.forEach(questions, function(years, question){
-                    var eachTableRow = [];
-                    eachTableRow.push({
-                        title: question,
-                        colspan: 1,
-                        rowspan: 1
-                    });
-                    angular.forEach(selectedYears, function(eachYear) {
-                        angular.forEach(groupedFilter.autoCompleteOptions, function(eachOption){
-                            var data = years[eachYear.key] ? years[eachYear.key][eachOption.key] : '';
-                            eachTableRow.push({
-                                title: data,
-                                colspan:1,
-                                rowspan:1
-                            });
-                        });
-                    });
-                    tableData.data.push(eachTableRow);
-                })
-            });
-            return tableData;
-        }*/
+         var tableData = {
+         headers: [[]],
+         data : []
+         };
+         /!*tableData.headers[0].push({
+         title: 'Year',
+         colspan: 1,
+         rowspan: 1
+         });*!/
+         var questionHeaders = findAllByKeyAndValue(headers, 'key', 'question');
+         var otherHeaders = findAllNotContainsKeyAndValue(headers, 'key', 'question');
+         groupedFilter.autoCompleteOptions = otherHeaders.concat(groupedFilter.autoCompleteOptions);
+         groupedFilter.value = [];
+         var columnHeaders = [groupedFilter];
+         if(yearFilter.value.length > 1) {
+         columnHeaders.push(yearFilter)
+         }
+         var selectedYears = getSelectedAutoCompleteOptions(yearFilter);
+         var mixedTableHeaders = {
+         rowHeaders: questionHeaders,
+         columnHeaders: columnHeaders
+         };
+         tableData.headers = prepareMixedTableHeaders(mixedTableHeaders);
+         var totalTablecolspan = 0;
+         if(tableData.headers[0].length > 0) {
+         angular.forEach(tableData.headers[0], function(eachHeader) {
+         totalTablecolspan += eachHeader.colspan;
+         })
+         }
+         angular.forEach(data.aggData, function(questions, questionCategory){
+         var categoryRow = [];
+         categoryRow.push({
+         title: questionCategory,
+         colspan: totalTablecolspan,
+         rowspan:1,
+         isBold: true
+         });
+         tableData.data.push(categoryRow);
+         angular.forEach(questions, function(years, question){
+         var eachTableRow = [];
+         eachTableRow.push({
+         title: question,
+         colspan: 1,
+         rowspan: 1
+         });
+         angular.forEach(selectedYears, function(eachYear) {
+         angular.forEach(groupedFilter.autoCompleteOptions, function(eachOption){
+         var data = years[eachYear.key] ? years[eachYear.key][eachOption.key] : '';
+         eachTableRow.push({
+         title: data,
+         colspan:1,
+         rowspan:1
+         });
+         });
+         });
+         tableData.data.push(eachTableRow);
+         })
+         });
+         return tableData;
+         }*/
 
 
         function getMinAndMaxValue(array) {

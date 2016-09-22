@@ -1,7 +1,7 @@
 (function(){
     'use strict';
     angular
-        .module('owh.utils')
+        .module('owh.services')
         .service('chartUtilService', chartUtilService);
 
     chartUtilService.$inject = ['$dateParser', '$filter', '$translate','utilService', 'ModalService'];
@@ -50,34 +50,34 @@
                     "chart": {
                         "type": "multiBarHorizontalChart",
                         "height": 250,
-                        "width": 250,
+                        "width": 350,
                         "margin": {
                             "top": 5,
                             "right": 5,
-                            "bottom": 5,
-                            "left": 5
+                            "bottom": 45,
+                            "left": 45
                         },
                         showLegend: false,
                         showControls: false,
                         showValues: false,
-                        showXAxis:false,
-                        showYAxis:false,
+                        showXAxis:true,
+                        showYAxis:true,
                         stacked: stacked,
                         "duration": 500,
                         x: function(d){return d.label;},
                         y: function(d){return d.value;},
                         "xAxis": {
-                            tickFormat:function (d) {
-                                if(isNaN(d)){ return d; }
-                                return d3.format(',f')(d);
+                            "axisLabelDistance": -20,
+                            "axisLabel": filter2.key,
+                            tickFormat:function () {
+                                return null;
                             },
                             "showMaxMin": false
                         },
                         "yAxis": {
                             "axisLabel": "Deaths",
-                            tickFormat:function (d) {
-                                if(isNaN(d)){ return d; }
-                                return d3.format(',f')(d);
+                            tickFormat:function () {
+                                return null;
                             }
                         },
                         valueFormat:function (n){
@@ -147,19 +147,19 @@
                     "chart": {
                         "type": "multiBarChart",
                         "height": 250,
-                        "width": 250,
+                        "width": 350,
                         "margin": {
                             "top": 5,
                             "right": 5,
-                            "bottom": 5,
-                            "left": 5
+                            "bottom": 45,
+                            "left": 45
                         },
                         showMaxMin: false,
                         showLegend: false,
                         showControls: false,
                         showValues: false,
-                        showXAxis:false,
-                        showYAxis:false,
+                        showXAxis:true,
+                        showYAxis:true,
                         reduceXTicks:false,
                         //wrapLabels:true,
                         legend:{
@@ -174,20 +174,20 @@
                         "duration": 500,
                         "stacked": stacked,
                         "xAxis": {
-                            axisLabelDistance:20,
-                            //axisLabel: $filter('translate')(filter2.title),
+                            "axisLabelDistance": -20,
+                            "axisLabel": filter2.key,
                             margin: {
                                 top:60
                             },
-                            tickFormat:function (d) {
-                                if(isNaN(d)){ return d;}
-                                return d3.format(',f')(d);
+                            tickFormat:function () {
+                                return null;
                             }
                         },
                         "yAxis": {
-                            tickFormat:function (d) {
-                                if(isNaN(d)){ return d; }
-                                return d3.format(',f')(d);
+                            "axisLabelDistance": -20,
+                            "axisLabel": "Deaths",
+                            tickFormat:function () {
+                               return null;
                             }
                         },
                         valueFormat:function (n){
@@ -328,27 +328,43 @@
                 expandedChartData.options.chart.showXAxis = true;
                 expandedChartData.options.chart.showYAxis = true;
 
-
+                if (eachChartData.options.chart.type !== 'pieChart') {
+                    expandedChartData.options.chart.xAxis.tickFormat = function (d) {
+                        if (isNaN(d)) {
+                            return d;
+                        }
+                        return d3.format(',f')(d);
+                    };
+                    expandedChartData.options.chart.yAxis.tickFormat = function (d) {
+                        if (isNaN(d)) {
+                            return d;
+                        }
+                        return d3.format(',f')(d);
+                    };
+                    expandedChartData.options.chart.yAxis.axisLabelDistance = 10;
+                    expandedChartData.options.chart.xAxis.axisLabelDistance = 120;
+                }
                 if(eachChartData.options.chart.type === 'multiBarHorizontalChart') {
                     expandedChartData.options.chart.margin.top = 20;
                     expandedChartData.options.chart.margin.right = 40;
-                    expandedChartData.options.chart.margin.bottom = 20;
+                    expandedChartData.options.chart.margin.bottom = 120;
                     if(expandedChartData.title === 'label.title.agegroup.autopsy' ||
                         expandedChartData.title === 'label.title.race.hispanicOrigin') {
                         expandedChartData.options.chart.margin.left =
-                            (expandedChartData.title === 'label.title.race.hispanicOrigin')?160:60;
+                            (expandedChartData.title === 'label.title.race.hispanicOrigin')?160:100;
                         expandedChartData.options.chart.height = 550;
                         expandedChartData.options.chart.showValues = false;
                     } if(expandedChartData.title === 'label.title.yrbsSex.yrbsRace' ) {
                         expandedChartData.options.chart.margin.left = 210;
                     } else {
-                        expandedChartData.options.chart.margin.left = 160;
+                        expandedChartData.options.chart.margin.left = 200;
                     }
                 } else if(eachChartData.options.chart.type === 'multiBarChart') {
+                    expandedChartData.options.chart.xAxis.axisLabelDistance = 70;
                     expandedChartData.options.chart.margin.top = 20;
                     expandedChartData.options.chart.margin.right = 20;
-                    expandedChartData.options.chart.margin.bottom = 100;
-                    expandedChartData.options.chart.margin.left = 60;
+                    expandedChartData.options.chart.margin.bottom = 120;
+                    expandedChartData.options.chart.margin.left = 120;
                     if(expandedChartData.title === 'label.title.gender.placeofdeath') {
                         expandedChartData.options.chart.wrapLabels=true;
                         expandedChartData.options.chart.rotateLabels=0;
@@ -356,7 +372,9 @@
                         expandedChartData.options.chart.staggerLabels = false;
                     }else if (expandedChartData.title==='label.title.gender.hispanicOrigin' ||
                         expandedChartData.title==='label.title.agegroup.hispanicOrigin' ) {
-                        expandedChartData.options.chart.margin.bottom = 135;
+                        expandedChartData.options.chart.yAxis.axisLabelDistance = 30;
+                        expandedChartData.options.chart.height = 600;
+                        expandedChartData.options.chart.margin.bottom = 200;
                     }
                 } else if (eachChartData.options.chart.type === 'pieChart') {
                     if(expandedChartData.title === 'label.graph.yrbsGrade') {

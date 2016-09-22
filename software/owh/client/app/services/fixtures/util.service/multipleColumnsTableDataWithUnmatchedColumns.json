@@ -118,6 +118,56 @@
         ],
         "defaultGroup": "column",
         "allChecked": true
+      },
+      {
+        "key": "year",
+        "title": "label.filter.year",
+        "queryKey": "current_year",
+        "primary": false,
+        "value": [
+          "2014"
+        ],
+        "groupBy": "column",
+        "type": "label.filter.group.year.month",
+        "defaultGroup": "row",
+        "allChecked": false,
+        "autoCompleteOptions": [
+          {
+            "key": "2014",
+            "title": "2014",
+            "deaths": "2,630,800",
+            "count": 2630800,
+            "deathsPercentage": 20.6
+          },
+          {
+            "key": "2013",
+            "title": "2013",
+            "deaths": "2,601,452",
+            "count": 2601452,
+            "deathsPercentage": 20.37
+          },
+          {
+            "key": "2012",
+            "title": "2012",
+            "deaths": "2,547,864",
+            "count": 2547864,
+            "deathsPercentage": 19.95
+          },
+          {
+            "key": "2011",
+            "title": "2011",
+            "deaths": "2,519,842",
+            "count": 2519842,
+            "deathsPercentage": 19.73
+          },
+          {
+            "key": "2010",
+            "title": "2010",
+            "deaths": "2,472,542",
+            "count": 2472542,
+            "deathsPercentage": 19.36
+          }
+        ]
       }
     ],
     "chartHeaders": [
@@ -381,12 +431,24 @@
             "deaths": 157850,
             "gender": [
               {
-                "name": "M",
-                "deaths": 107460
+                "name": "Ml",
+                "deaths": 107460,
+                "year": [
+                  {
+                    "name": "2015",
+                    "deaths": 107460
+                  }
+                ]
               },
               {
-                "name": "F",
-                "deaths": 50390
+                "name": "Fl",
+                "deaths": 50390,
+                "year": [
+                  {
+                    "name": "2014",
+                    "deaths": 50390
+                  }
+                ]
               }
             ]
           }
@@ -397,35 +459,52 @@
   "countKey": "deaths",
   "totalCount": 12772500,
   "countLabel": "Number of Deaths",
-  "calculatePercentage": true,
+  "calculatePercentage": false,
   "calculateRowTotal": true,
   "expectedResult": {
     "headers": [
       [
         {
           "colspan": 1,
-          "rowspan": 1,
+          "rowspan": 2,
           "title": "label.filter.autopsy"
         },
         {
           "colspan": 1,
-          "rowspan": 1,
+          "rowspan": 2,
           "title": "label.filter.race"
         },
         {
           "title": "Female",
           "colspan": 1,
-          "rowspan": 1
+          "rowspan": 1,
+          "isData": true
         },
         {
           "title": "Male",
           "colspan": 1,
-          "rowspan": 1
+          "rowspan": 1,
+          "isData": true
         },
         {
           "title": "Number of Deaths",
           "colspan": 1,
-          "rowspan": 1
+          "rowspan": 2,
+          "isData": true
+        }
+      ],
+      [
+        {
+          "title": "2014",
+          "colspan": 1,
+          "rowspan": 1,
+          "isData": true
+        },
+        {
+          "title": "2014",
+          "colspan": 1,
+          "rowspan": 1,
+          "isData": true
         }
       ]
     ],
@@ -446,23 +525,18 @@
           "key": "1"
         },
         {
-          "title": "50,390",
-          "percentage": 0.3945194754355059,
-          "isCount": true,
-          "rowspan": 1,
-          "colspan": 1
+          "title": "0",
+          "percentage": 0,
+          "isCount": false
         },
         {
-          "title": "107,460",
-          "percentage": 0.8413388138578979,
-          "isCount": true,
-          "rowspan": 1,
-          "colspan": 1
+          "title": "0",
+          "percentage": 0,
+          "isCount": false
         },
         {
-          "title": "157,850",
-          "percentage": 1.2358582892934038,
-          "isCount": true,
+          "title": 157850,
+          "isCount": false,
           "rowspan": 1,
           "colspan": 1,
           "isBold": true

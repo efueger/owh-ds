@@ -37,13 +37,13 @@ describe('search factory ', function(){
 
         filters = searchFactory.getAllFilters();
 
-        countsMortalityAutoCompletes = __fixtures__['test/fixtures/search.factory/countsMortalityAutoCompletes'];
+        countsMortalityAutoCompletes = __fixtures__['app/modules/search/fixtures/search.factory/countsMortalityAutoCompletes'];
 
-        searchResponse = __fixtures__['test/fixtures/search.factory/searchResponse'];
-        groupGenderResponse = __fixtures__['test/fixtures/search.factory/groupGenderResponse'];
-        fourGroupsResponse = __fixtures__['test/fixtures/search.factory/fourGroupsResponse'];
+        searchResponse = __fixtures__['app/modules/search/fixtures/search.factory/searchResponse'];
+        groupGenderResponse = __fixtures__['app/modules/search/fixtures/search.factory/groupGenderResponse'];
+        fourGroupsResponse = __fixtures__['app/modules/search/fixtures/search.factory/fourGroupsResponse'];
 
-        genderGroupHeaders = __fixtures__['test/fixtures/search.factory/genderGroupHeaders'];
+        genderGroupHeaders = __fixtures__['app/modules/search/fixtures/search.factory/genderGroupHeaders'];
         spyOn(ModalService, 'showModal').and.callFake(function(modalDefaults){
             givenModalDefaults = modalDefaults;
             givenModalDefaults.element = {
@@ -211,11 +211,11 @@ describe('search factory ', function(){
         beforeAll(function() {
             primaryFilter = filters.search[1];
             filters.selectedPrimaryFilter = primaryFilter;
-            yrbsResponse = __fixtures__['test/fixtures/search.factory/yrbsResponse'];
-            raceNoValueHeaders = __fixtures__['test/fixtures/search.factory/raceNoValueHeaders'];
-            yrbsGradePieChartResponse = __fixtures__['test/fixtures/search.factory/yrbsGradePieChartResponse'];
-            yrbsRacePieChartResponse = __fixtures__['test/fixtures/search.factory/yrbsRacePieChartResponse'];
-            yrbsGenderAndRaceBarChartResponse = __fixtures__['test/fixtures/search.factory/yrbsGenderAndRaceBarChartResponse'];
+            yrbsResponse = __fixtures__['app/modules/search/fixtures/search.factory/yrbsResponse'];
+            raceNoValueHeaders = __fixtures__['app/modules/search/fixtures/search.factory/raceNoValueHeaders'];
+            yrbsGradePieChartResponse = __fixtures__['app/modules/search/fixtures/search.factory/yrbsGradePieChartResponse'];
+            yrbsRacePieChartResponse = __fixtures__['app/modules/search/fixtures/search.factory/yrbsRacePieChartResponse'];
+            yrbsGenderAndRaceBarChartResponse = __fixtures__['app/modules/search/fixtures/search.factory/yrbsGenderAndRaceBarChartResponse'];
         });
         beforeEach(function() {
             deferred = $q.defer();

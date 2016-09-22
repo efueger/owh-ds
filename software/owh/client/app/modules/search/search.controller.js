@@ -5,11 +5,11 @@
 
     SearchController.$inject = ['$scope', 'ModalService', 'utilService', 'searchFactory', '$rootScope',
         '$templateCache', '$compile', '$q', '$filter', 'leafletData', '$timeout', 'chartUtilService', 'shareUtilService',
-        '$stateParams'];
+        '$stateParams', 'xlsService', '$window'];
 
     function SearchController($scope, ModalService, utilService, searchFactory, $rootScope,
                                  $templateCache, $compile, $q, $filter, leafletData, $timeout, chartUtilService,
-                                 shareUtilService, $stateParams) {
+                                 shareUtilService, $stateParams, xlsService, $window) {
 
         var sc = this;
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
@@ -19,6 +19,8 @@
         sc.filters.primaryFilters = utilService.findAllByKeyAndValue(sc.filters.search, 'primary', true);
         var mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
         sc.filters.selectedPrimaryFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', $stateParams.primaryFilterKey);
+        sc.downloadCSV = downloadCSV;
+        sc.downloadXLS = downloadXLS;
         sc.getSelectedYears = getSelectedYears;
         sc.showPhaseTwoGraphs = showPhaseTwoGraphs;
         sc.showExpandedGraph = showExpandedGraph;
@@ -40,6 +42,69 @@
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter);
             }
         }, true);
+
+        function downloadCSV() {
+            var data = getMixedTable(sc.filters.selectedPrimaryFilter);
+            //add row headers so we can properly repeat row header merge cells
+            data.rowHeaders = [];
+            angular.forEach(sc.filters.selectedPrimaryFilter.value, function(filter, idx) {
+                if(filter.groupBy === 'row') {
+                    data.rowHeaders.push(filter);
+                }
+            });
+            var filename = getFilename(sc.filters.selectedPrimaryFilter);
+            xlsService.exportCSVFromMixedTable(data, filename);
+        }
+
+        function downloadXLS() {
+            var data = getMixedTable(sc.filters.selectedPrimaryFilter);
+            var filename = getFilename(sc.filters.selectedPrimaryFilter);
+            xlsService.exportXLSFromMixedTable(data, filename);
+        }
+
+        function getMixedTable(selectedFilter){
+            var file = selectedFilter.data;
+            var headers = selectedFilter.headers;
+            var countKey = selectedFilter.key;
+            var countLabel = selectedFilter.countLabel;
+            var totalCount = selectedFilter.count;
+            var calculatePercentage = selectedFilter.calculatePercentage;
+            var calculateRowTotal = selectedFilter.calculateRowTotal;
+
+            //TODO: see comment in owh-table.component.js, we can construct this object once and pass it into the various components
+            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal);
+        }
+
+        function getFilename(selectedFilter) {
+            //get year range
+            var yearRange = '';
+            angular.forEach(selectedFilter.allFilters, function(filter) {
+                if(filter.key === 'year') {
+                    if(filter.value.length > 1) {
+                        var minYear = parseInt(filter.value[0], 10);
+                        var maxYear = parseInt(filter.value[0], 10);
+                        angular.forEach(filter.value, function(year) {
+                            var yearInt = parseInt(year, 10);
+                            if(yearInt < minYear) {
+                                minYear = yearInt;
+                            }
+                            if(yearInt > maxYear) {
+                                maxYear = yearInt;
+                            }
+                        });
+                        yearRange = minYear + '-' + maxYear;
+                    } else if(filter.value.length === 1) {
+                        //only one year selected
+                        yearRange = filter.value[0];
+                    } else {
+                        //use all if none selected
+                        yearRange = 'All';
+                    }
+
+                }
+            });
+            return selectedFilter.header + '_' + yearRange + '_Filtered';
+        }
 
         function primaryFilterChanged(newFilter) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);

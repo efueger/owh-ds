@@ -46,32 +46,32 @@ describe('chart utils', function(){
         chartUtils = $injector.get('chartUtilService');
         shareUtils = $injector.get('shareUtilService');
         $httpBackend = $injector.get('$httpBackend');
-        filter1 = __fixtures__['test/fixtures/owh.chart.utils/filter1'];
-        filter2 = __fixtures__['test/fixtures/owh.chart.utils/filter2'];
-        filter3 = __fixtures__['test/fixtures/owh.chart.utils/filter3'];
+        filter1 = __fixtures__['app/services/fixtures/owh.chart.utils/filter1'];
+        filter2 = __fixtures__['app/services/fixtures/owh.chart.utils/filter2'];
+        filter3 = __fixtures__['app/services/fixtures/owh.chart.utils/filter3'];
 
-        data1 = __fixtures__['test/fixtures/owh.chart.utils/data1'];
-        data2 = __fixtures__['test/fixtures/owh.chart.utils/data2'];
+        data1 = __fixtures__['app/services/fixtures/owh.chart.utils/data1'];
+        data2 = __fixtures__['app/services/fixtures/owh.chart.utils/data2'];
 
-        pieChartData = __fixtures__['test/fixtures/owh.chart.utils/pieChartData'];
+        pieChartData = __fixtures__['app/services/fixtures/owh.chart.utils/pieChartData'];
         primaryFilter = {"key":"deaths"};
 
-        horizontalStackExpectedResult1 = __fixtures__['test/fixtures/owh.chart.utils/horizontalStackExpectedResult1'];
-        horizontalStackExpectedResult2 = __fixtures__['test/fixtures/owh.chart.utils/horizontalStackExpectedResult2'];
+        horizontalStackExpectedResult1 = __fixtures__['app/services/fixtures/owh.chart.utils/horizontalStackExpectedResult1'];
+        horizontalStackExpectedResult2 = __fixtures__['app/services/fixtures/owh.chart.utils/horizontalStackExpectedResult2'];
 
-        verticalStackExpectedResult = __fixtures__['test/fixtures/owh.chart.utils/verticalStackExpectedResult'];
-        horizontalBarExpectedResult = __fixtures__['test/fixtures/owh.chart.utils/horizontalBarExpectedResult'];
+        verticalStackExpectedResult = __fixtures__['app/services/fixtures/owh.chart.utils/verticalStackExpectedResult'];
+        horizontalBarExpectedResult = __fixtures__['app/services/fixtures/owh.chart.utils/horizontalBarExpectedResult'];
 
-        verticalBarExpectedResult1 = __fixtures__['test/fixtures/owh.chart.utils/verticalBarExpectedResult1'];
-        verticalBarExpectedResult2 = __fixtures__['test/fixtures/owh.chart.utils/verticalBarExpectedResult2'];
+        verticalBarExpectedResult1 = __fixtures__['app/services/fixtures/owh.chart.utils/verticalBarExpectedResult1'];
+        verticalBarExpectedResult2 = __fixtures__['app/services/fixtures/owh.chart.utils/verticalBarExpectedResult2'];
 
-        horizontalStackNoDataExpectedResult = __fixtures__['test/fixtures/owh.chart.utils/horizontalStackNoDataExpectedResult'];
-        verticalBarNoDataExpectedResult = __fixtures__['test/fixtures/owh.chart.utils/verticalBarNoDataExpectedResult'];
+        horizontalStackNoDataExpectedResult = __fixtures__['app/services/fixtures/owh.chart.utils/horizontalStackNoDataExpectedResult'];
+        verticalBarNoDataExpectedResult = __fixtures__['app/services/fixtures/owh.chart.utils/verticalBarNoDataExpectedResult'];
 
-        pieChartExpectedResult = __fixtures__['test/fixtures/owh.chart.utils/pieChartExpectedResult'];
-        pieChartWithpostFixToTooltipExpectedResult = __fixtures__['test/fixtures/owh.chart.utils/pieChartWithpostFixToTooltipExpectedResult'];
+        pieChartExpectedResult = __fixtures__['app/services/fixtures/owh.chart.utils/pieChartExpectedResult'];
+        pieChartWithpostFixToTooltipExpectedResult = __fixtures__['app/services/fixtures/owh.chart.utils/pieChartWithpostFixToTooltipExpectedResult'];
 
-        expandedGraphExpectedResult = __fixtures__['test/fixtures/owh.chart.utils/expandedGraphExpectedResult'];
+        expandedGraphExpectedResult = __fixtures__['app/services/fixtures/owh.chart.utils/expandedGraphExpectedResult'];
 
         postFixToTooltip = 'data';
 
@@ -88,11 +88,11 @@ describe('chart utils', function(){
 
         expect(result.options.chart.x({label: 'x label'})).toEqual('x label');
         expect(result.options.chart.y({value: 'y value'})).toEqual('y value');
-        expect(result.options.chart.xAxis.tickFormat('1,234')).toEqual('1,234');
-        expect(result.options.chart.xAxis.tickFormat(1234)).toEqual('1,234');
+        expect(result.options.chart.xAxis.tickFormat('1,234')).toEqual(null);
+        expect(result.options.chart.xAxis.tickFormat(1234)).toEqual(null);
 
-        expect(result.options.chart.yAxis.tickFormat('1,234')).toEqual('1,234');
-        expect(result.options.chart.yAxis.tickFormat(1234)).toEqual('1,234');
+        expect(result.options.chart.yAxis.tickFormat('1,234')).toEqual(null);
+        expect(result.options.chart.yAxis.tickFormat(1234)).toEqual(null);
 
         expect(result.options.chart.valueFormat('1,234')).toEqual('1,234');
         expect(result.options.chart.valueFormat(1234)).toEqual('1234');
@@ -106,11 +106,11 @@ describe('chart utils', function(){
 
         expect(result.options.chart.x({x: 'x label'})).toEqual('x label');
         expect(result.options.chart.y({y: 'y value'})).toEqual('y value');
-        expect(result.options.chart.xAxis.tickFormat('1,234')).toEqual('1,234');
-        expect(result.options.chart.xAxis.tickFormat(1234)).toEqual('1,234');
+        expect(result.options.chart.xAxis.tickFormat('1,234')).toEqual(null);
+        expect(result.options.chart.xAxis.tickFormat(1234)).toEqual(null);
 
-        expect(result.options.chart.yAxis.tickFormat('1,234')).toEqual('1,234');
-        expect(result.options.chart.yAxis.tickFormat(1234)).toEqual('1,234');
+        expect(result.options.chart.yAxis.tickFormat('1,234')).toEqual(null);
+        expect(result.options.chart.yAxis.tickFormat(1234)).toEqual(null);
 
         expect(result.options.chart.valueFormat('1,234')).toEqual('1,234');
         expect(result.options.chart.valueFormat(1234)).toEqual('1234');
