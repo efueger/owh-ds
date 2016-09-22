@@ -999,6 +999,7 @@ body {
     display: block!important;
     position: absolute;
     left: -100%;
+}
 
 /* To increase visualization(charts) axis label size*/
 .nv-axislabel {
