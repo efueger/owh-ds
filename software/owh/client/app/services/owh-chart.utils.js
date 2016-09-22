@@ -342,7 +342,7 @@
                         return d3.format(',f')(d);
                     };
                     expandedChartData.options.chart.yAxis.axisLabelDistance = 10;
-                    expandedChartData.options.chart.xAxis.axisLabelDistance = 50;
+                    expandedChartData.options.chart.xAxis.axisLabelDistance = 120;
                 }
                 if(eachChartData.options.chart.type === 'multiBarHorizontalChart') {
                     expandedChartData.options.chart.margin.top = 20;
@@ -357,13 +357,14 @@
                     } if(expandedChartData.title === 'label.title.yrbsSex.yrbsRace' ) {
                         expandedChartData.options.chart.margin.left = 210;
                     } else {
-                        expandedChartData.options.chart.margin.left = 160;
+                        expandedChartData.options.chart.margin.left = 200;
                     }
                 } else if(eachChartData.options.chart.type === 'multiBarChart') {
+                    expandedChartData.options.chart.xAxis.axisLabelDistance = 70;
                     expandedChartData.options.chart.margin.top = 20;
                     expandedChartData.options.chart.margin.right = 20;
                     expandedChartData.options.chart.margin.bottom = 120;
-                    expandedChartData.options.chart.margin.left = 100;
+                    expandedChartData.options.chart.margin.left = 120;
                     if(expandedChartData.title === 'label.title.gender.placeofdeath') {
                         expandedChartData.options.chart.wrapLabels=true;
                         expandedChartData.options.chart.rotateLabels=0;
@@ -371,7 +372,9 @@
                         expandedChartData.options.chart.staggerLabels = false;
                     }else if (expandedChartData.title==='label.title.gender.hispanicOrigin' ||
                         expandedChartData.title==='label.title.agegroup.hispanicOrigin' ) {
-                        expandedChartData.options.chart.margin.bottom = 135;
+                        expandedChartData.options.chart.yAxis.axisLabelDistance = 30;
+                        expandedChartData.options.chart.height = 600;
+                        expandedChartData.options.chart.margin.bottom = 200;
                     }
                 } else if (eachChartData.options.chart.type === 'pieChart') {
                     if(expandedChartData.title === 'label.graph.yrbsGrade') {

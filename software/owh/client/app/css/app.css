@@ -944,8 +944,8 @@ body {
     color: #01a38e;
 }
 /* To increase visualization(charts) axis label size*/
-.nvd3 text {
-    font-size: 13px;
-    font-weight: bold;
+.nv-axislabel {
+    font-size: 13px !important;
+    font-weight: bold !important;
     text-transform: capitalize;
 }

@@ -76,7 +76,7 @@
         "stacked": true,
         "duration": 500,
         "xAxis": {
-          "axisLabelDistance":50,
+          "axisLabelDistance":120,
           "axisLabel":"race",
           "showMaxMin": false
         },
