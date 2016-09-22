@@ -29,5 +29,29 @@ var mortalityStepDefinitionsWrapper = function () {
         expect(labelArray[0].getText()).to.eventually.equal('Race');
         expect(labelArray[1].getText()).to.eventually.equal('Deaths');
     });
+
+    this.Given(/^user is on search page$/, function () {
+        browser.get('/search');
+    });
+
+    this.When(/^user sees side filter$/, function () {
+        mortalityPage.sideMenu.isDisplayed();
+    });
+
+    this.Then(/^there is button to hide filter$/, function () {
+        mortalityPage.hideFiltersBtn.isDisplayed().then(function(value){
+           expect(value).to.equal(true);
+        });
+    });
+
+    this.When(/^user clicks hide filter button$/, function () {
+        mortalityPage.hideFiltersBtn.click();
+    });
+
+    this.Then(/^side menu slides away$/, function () {
+        mortalityPage.sideMenu.isDisplayed().then(function(value){
+            expect(value).to.equal(false);
+        });
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;
