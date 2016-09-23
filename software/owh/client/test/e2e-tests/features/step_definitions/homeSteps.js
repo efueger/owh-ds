@@ -63,12 +63,14 @@ var homeStepDefinitionsWrapper = function () {
         browser.get("/");
     });
 
-    this.Then(/^gray banner on top reads "([^"]*)"$/, function (message) {
-        //Implementation pending
+    this.Then(/^gray banner on top reads "([^"]*)"$/, function (givenMessage) {
+        homePage.getWorkInProgressMessage().then(function(foundMessage){
+           expect(givenMessage).to.equal(foundMessage);
+        });
     });
 
     this.When(/^I am at search page$/, function () {
-        //implementation pending
+        browser.get("/search");
     });
 };
 module.exports = homeStepDefinitionsWrapper;

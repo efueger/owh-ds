@@ -23,7 +23,7 @@ Scenario: Access Birth card
   And I click on explore button in Birth card under womens health section
   Then I should get a info modal
 
-Scenario 1: Banner
+Scenario: Banner
   When I am at home page
   Then gray banner on top reads "An official website of the United States Government. This site is work in progress and may contain inaccuracies. If you don't find what you need, visit this site or CDC Wonder"
   When I am at search page
