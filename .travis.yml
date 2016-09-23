@@ -73,8 +73,8 @@ before_deploy:
   - cd software
   - mkdir -p dpl_tmp
   - mkdir -p dpl_cd_upload
-  - cp ../../deployment/appspec.yml dpl_tmp/appspec.yml
   - docker save owh_web |  gzip -c >  dpl_tmp/owh_web.tar.gz
+  - cp ../../deployment/appspec.yml dpl_tmp/appspec.yml
   - cp ../../deployment/docker-compose-deploy.yml  dpl_tmp/docker-compose.yml
   - cp ../../deployment/Dockerfile  dpl_tmp/
   - cp -R ../../deployment/scripts  dpl_tmp/scripts
@@ -87,7 +87,7 @@ before_deploy:
   - rm -rf dpl_tmp
   - cd ..
   - cd ..
-  - cd deployment  
+  - cd deployment
 
 deploy:
 - provider: s3
@@ -102,15 +102,15 @@ deploy:
       # - develop (TBD)
       # - release (TBD)
   bucket: sb-owh-deployment
-- provider: codedeploy
-  access_key_id: $OWH_ACCESS_KEY
-  secret_access_key: $OWH_ACCESS_SECRET
-  bucket: sb-owh-deployment
-  key: owh-$TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER.zip
-  bundle_type: zip
-  application: OwhDev
-  deployment_group: $TRAVIS_BRANCH
-  on: *2
+#- provider: codedeploy
+#  access_key_id: $OWH_ACCESS_KEY
+#  secret_access_key: $OWH_ACCESS_SECRET
+#  bucket: sb-owh-deployment
+#  key: owh-$TRAVIS_BRANCH-$TRAVIS_BUILD_NUMBER.zip
+#  bundle_type: zip
+#  application: OwhDev
+#  deployment_group: $TRAVIS_BRANCH
+#  on: *2
 
 after_script:
   - kill -9 $(fuser -n tcp 3000 2> /dev/null)
