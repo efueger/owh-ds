@@ -65,6 +65,7 @@ after_success:
 before_deploy:
   - cd $TRAVIS_BUILD_DIR/deployment
   - docker-compose up -d
+  - sleep 10
   - docker-compose build
   - docker images
   - cd $TRAVIS_BUILD_DIR/software/owh
