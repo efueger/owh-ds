@@ -5,7 +5,7 @@ services:
     restart: always
     image: owh_web:latest
     build: .
-    environment:
-      - NODE_ENV=dev
+    #environment:
+    #  - NODE_ENV=dev
     ports:
       - "80:9900"

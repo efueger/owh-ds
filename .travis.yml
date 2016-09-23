@@ -68,11 +68,11 @@ before_deploy:
   - docker images
   - mkdir -p dpl_tmp
   - mkdir -p dpl_cd_upload
-  - cp appspec.yml dpl_tmp/appspec.yml
+  - cp ../deployment/appspec.yml dpl_tmp/appspec.yml
   - docker save owh_web |  gzip -c >  dpl_tmp/owh_web.tar.gz
-  - cp docker-compose-deploy.yml  dpl_tmp/docker-compose.yml
-  - cp Dockerfile  dpl_tmp/
-  - cp -R scripts  dpl_tmp/scripts
+  - cp ../deployment/docker-compose-deploy.yml  dpl_tmp/docker-compose.yml
+  - cp ../deployment/Dockerfile  dpl_tmp/
+  - cp -R ../deployment/scripts  dpl_tmp/scripts
   - cd dpl_tmp
   - zip -r owh-${TRAVIS_BRANCH}-${TRAVIS_BUILD_NUMBER}.zip *
   - ls
@@ -92,7 +92,7 @@ deploy:
     branch:
       - develop-continuous-wip
       # - develop (TBD)
-      # - release
+      # - release (TBD)
   bucket: sb-owh-deployment
 - provider: codedeploy
   access_key_id: $OWH_ACCESS_KEY

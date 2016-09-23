@@ -6,7 +6,7 @@ services:
     container_name: owh_web
     image: owh_web
     build: .
-    environment:
-      - NODE_ENV=dev
+    #environment:
+    #  - NODE_ENV=dev
     ports:
       - "80:9900"
