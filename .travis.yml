@@ -67,11 +67,11 @@ before_deploy:
   - docker-compose up -d
   - docker-compose build
   - docker images
-  - cd $TRAVIS_BUILD_DIR/software/owh
+  - cd $TRAVIS_BUILD_DIR/software
   - mkdir -p dpl_tmp
   - mkdir -p dpl_cd_upload
-  - docker save owh_web |  gzip -c >  dpl_tmp/owh_web.tar.gz
   - cp $TRAVIS_BUILD_DIR/deployment/appspec.yml dpl_tmp/appspec.yml
+  - docker save owh_web | gzip -c >  dpl_tmp/owh_web.tar.gz
   - cp $TRAVIS_BUILD_DIR/deployment/docker-compose-deploy.yml  dpl_tmp/docker-compose.yml
   - cp $TRAVIS_BUILD_DIR/deployment/Dockerfile  dpl_tmp/
   - cp -R $TRAVIS_BUILD_DIR/deployment/scripts  dpl_tmp/scripts
