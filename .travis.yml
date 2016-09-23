@@ -66,10 +66,7 @@ before_deploy:
 
   - cd $TRAVIS_BUILD_DIR/software/owh
   # Dealing with paths that fight each other... start the nasty bit...
-  - cp $TRAVIS_BUILD_DIR/deployment/Dockerfile Dockerfile
-  - cp $TRAVIS_BUILD_DIR/deployment/.dockerignore .dockerignore
-  - cp $TRAVIS_BUILD_DIR/deployment/docker-compose.yml docker-compose.yml
-  - cp $TRAVIS_BUILD_DIR/deployment/docker-compose-deploy.yml docker-compose-deploy.yml
+  - cp $TRAVIS_BUILD_DIR/deployment/* $TRAVIS_BUILD_DIR/software/owh
   # End the nasty bit.
   - docker-compose up -d
   - docker-compose build
