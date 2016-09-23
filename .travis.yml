@@ -35,7 +35,6 @@ install:
   - npm install -g lcov-result-merger
 
 before_script:
-  - docker-compose up -d
   - sleep 10
   - curl http://localhost:9200/  # To verify ElasticSearch running
   - curl -XPUT 'http://localhost:9200/owh' #create index 'owh' in ElasticSearch
@@ -64,8 +63,11 @@ after_success:
   - codeclimate-test-reporter < "merged-lcov.info"
 
 before_deploy:
+  - cd ../deployment
+  - docker-compose up -d
   - docker-compose build
   - docker images
+  - cd ..
   - mkdir -p dpl_tmp
   - mkdir -p dpl_cd_upload
   - cp ../deployment/appspec.yml dpl_tmp/appspec.yml
