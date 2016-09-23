@@ -35,7 +35,7 @@ class MortalityIndexer (ETL):
 
     def _load_config_json_file(self, file_name):
         print 'Loading config file:', file_name
-        with open(os.path.join(self.config['data_file']['directory'], 'data_mapping',file_name)) as jf:
+        with open(os.path.join(self.dataDirectory, 'data_mapping',file_name)) as jf:
             self.configs = json.load(jf, encoding="utf8")
 
     def _parse_value(self, value):
@@ -62,10 +62,11 @@ class MortalityIndexer (ETL):
 
     def perform_etl(self):
         """Perform the mortality ETL"""
-        for f in os.listdir(self.config['data_file']['directory']):
+
+        for f in os.listdir(self.dataDirectory):
             if not f.endswith(".DUSMCPUB"):
                 continue
-            file_path = os.path.join(self.config['data_file']['directory'], f)
+            file_path = os.path.join(self.dataDirectory, f)
             logger.info("Processing file: %s", f)
             config_file =  f.replace(".DUSMCPUB", ".json")
             self._load_config_json_file(config_file)

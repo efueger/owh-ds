@@ -3,6 +3,7 @@ import logging
 import datetime
 import logging.config
 import os
+import boto
 
 logging.config.fileConfig(os.path.join(os.path.dirname(__file__),'logging.conf'))
 
@@ -42,14 +43,50 @@ class ETL :
             raise ValueError("Elastic search configuration not specified", yaml.dump(self.config))
 
     def get_record_count(self):
+        """Gets the total number records of the type loaded by the ETL"""
         return self.esRepository.count_records()
 
     def get_record_by_id(self, id):
-            return self.esRepository.get_record_by_id(id)
+        """Retrieve a record with the specified id from the index user by the ETL"""
+        return self.esRepository.get_record_by_id(id)
+
+    def _create_data_dir(self):
+        """Create work directory and set the dataDirectory property"""
+        self.dataDirectory = 'WORK/' + datetime.datetime.now().strftime('%Y%m%d.%H%M%S')+'/'
+        if not os.path.exists(self.dataDirectory):
+            os.makedirs(self.dataDirectory)
 
     def retrieve_data_files(self):
         """Retrieve data files from AWS bucket"""
         logger.info("Retrieving data files")
+        self._create_data_dir()
+        if not (self.config['data_file'] and 'aws_access_key_id' in self.config['data_file'] and 'aws_secret_access_key' in self.config['data_file']
+                     and 'aws_s3_bucket_name' in self.config['data_file'] and 'aws_s3_directory' in self.config['data_file']):
+            raise ValueError ("AWS S3 configuration not provided", yaml.dump(self.config))
+
+        # connect to the bucket
+        conn = boto.connect_s3(self.config['data_file']['aws_access_key_id'],self.config['data_file']['aws_secret_access_key'])
+        bucket = conn.get_bucket(self.config['data_file']['aws_s3_bucket_name'])
+
+        # dowload the files
+        bucket_list = bucket.list()
+        awsDataDirectory=self.config['data_file']['aws_s3_directory']
+        if not awsDataDirectory.endswith('/'):
+            awsDataDirectory += '/'
+        for file in bucket_list:
+            remotePath = str(file.key)
+            if remotePath.startswith(awsDataDirectory):
+                logger.debug("Processing remote file: %s", remotePath)
+                remoteStrippedPath = remotePath.replace(awsDataDirectory, '', 1)
+                localPath = self.dataDirectory + remoteStrippedPath
+                localDir = os.path.dirname(localPath)
+                if remoteStrippedPath:
+                    if remoteStrippedPath.endswith('/'):
+                        if not os.path.exists(localDir):
+                            os.makedirs(localDir)
+                    else:
+                        logger.debug("Downloading file remote file '%s' to '%s'", remotePath, localPath)
+                        file.get_contents_to_filename(localPath)
 
     def _print_metrics(self):
         """Print the metrics of the ETL"""
@@ -82,9 +119,13 @@ class ETL :
         try:
             self.metrics.startTime = datetime.datetime.now()
             logger.info("Starting ETL")
-            logger.info("Retriving input data files for ETL")
-            self.retrieve_data_files()
-            logger.info("Data files retreival complete")
+            if  not ('local_directory' in self.config['data_file'] and self.config['data_file']['local_directory']):
+                logger.info("Retriving input data files for ETL from AWS S3 bucket specified")
+                self.retrieve_data_files()
+                logger.info("Data files retreival complete")
+            else:
+                self.dataDirectory = self.config['data_file']['local_directory']
+                logger.info("Using local directory %s for data files, skipping data files retrieval from AWS S3", self.config['data_file']['local_directory'])
             logger.info("Starting transfromation and load")
             self.perform_etl()
             logger.info("Transfromation and Load completed")
@@ -99,7 +140,7 @@ class ETL :
             self.metrics.duration = self.metrics.endTime - self.metrics.startTime
             self._print_metrics()
         except Exception as e:
-            logger.fatal("Exception running ETL: ", e)
+            logger.fatal("Exception running ETL: %s", e)
             logger.fatal(e)
             self.metrics.status = "ERROR"
             self.metrics.message = "Exception running ETL: %s" % e
