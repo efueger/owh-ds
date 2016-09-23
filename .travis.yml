@@ -63,11 +63,12 @@ after_success:
   - codeclimate-test-reporter < "merged-lcov.info"
 
 before_deploy:
-  #- cd $TRAVIS_BUILD_DIR/deployment
-  - docker-compose up -d
-  - docker-compose build $TRAVIS_BUILD_DIR/deployment
-  - docker images
+  # Dealing with paths that fight each other...
   - cd $TRAVIS_BUILD_DIR/software/owh
+  - cp $TRAVIS_BUILD_DIR/deployment/Dockerfile Dockerfile # Nasty bit...
+  - docker-compose up -d
+  - docker-compose build
+  - docker images
   - mkdir -p dpl_tmp
   - mkdir -p dpl_cd_upload
   - docker save owh_web |  gzip -c >  dpl_tmp/owh_web.tar.gz
