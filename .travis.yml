@@ -63,22 +63,18 @@ after_success:
   - codeclimate-test-reporter < "merged-lcov.info"
 
 before_deploy:
-  #- cd $TRAVIS_BUILD_DIR/deployment
+  - cd $TRAVIS_BUILD_DIR/deployment
   - docker-compose up -d
   - docker-compose build
   - docker images
-  - cd $TRAVIS_BUILD_DIR/software
+  - cd $TRAVIS_BUILD_DIR/software/owh
   - mkdir -p dpl_tmp
   - mkdir -p dpl_cd_upload
-  #- cp $TRAVIS_BUILD_DIR/deployment/appspec.yml dpl_tmp/appspec.yml
-  - cp appspec.yml dpl_tmp/appspec.yml
-  - docker save owh_web | gzip -c > dpl_tmp/owh_web.tar.gz
-  #- cp $TRAVIS_BUILD_DIR/deployment/docker-compose-deploy.yml  dpl_tmp/docker-compose.yml
-  #- cp $TRAVIS_BUILD_DIR/deployment/Dockerfile  dpl_tmp/
-  #- cp -R $TRAVIS_BUILD_DIR/deployment/scripts  dpl_tmp/scripts
-  - cp docker-compose-deploy.yml dpl_tmp/docker-compose.yml
-  - cp Dockerfile  dpl_tmp/
-  - cp $TRAVIS_BUILD_DIR/deployment/scripts dpl_tmp/scripts
+  - docker save owh_web |  gzip -c >  dpl_tmp/owh_web.tar.gz
+  - cp $TRAVIS_BUILD_DIR/deployment/appspec.yml dpl_tmp/appspec.yml
+  - cp $TRAVIS_BUILD_DIR/deployment/docker-compose-deploy.yml  dpl_tmp/docker-compose.yml
+  - cp $TRAVIS_BUILD_DIR/deployment/Dockerfile  dpl_tmp/
+  - cp -R $TRAVIS_BUILD_DIR/deployment/scripts  dpl_tmp/scripts
   - cd dpl_tmp
   - zip -r owh-${TRAVIS_BRANCH}-${TRAVIS_BUILD_NUMBER}.zip *
   - ls
