@@ -63,6 +63,7 @@ after_success:
   - codeclimate-test-reporter < "merged-lcov.info"
 
 before_deploy:
+  - "echo pwd"
   - cd /deployment
   - docker-compose up -d
   - docker-compose build
