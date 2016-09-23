@@ -63,9 +63,9 @@ after_success:
   - codeclimate-test-reporter < "merged-lcov.info"
 
 before_deploy:
-  - cd $TRAVIS_BUILD_DIR/deployment
+  #- cd $TRAVIS_BUILD_DIR/deployment
   - docker-compose up -d
-  - docker-compose build
+  - docker-compose build $TRAVIS_BUILD_DIR/deployment
   - docker images
   - cd $TRAVIS_BUILD_DIR/software/owh
   - mkdir -p dpl_tmp
