@@ -70,7 +70,7 @@ before_deploy:
   - docker-compose build
   - docker images
   - cd ..
-  - cd software
+  - cd software/owh
   - mkdir -p dpl_tmp
   - mkdir -p dpl_cd_upload
   - docker save owh_web |  gzip -c >  dpl_tmp/owh_web.tar.gz
