@@ -5,7 +5,7 @@ from random import randint
 from elasticsearch_repository import ElasticSearchRepository
 from repositories import BatchRepository
 
-INPUT_FILE_LOCATION = "<path to mortality data sets>"
+INPUT_FILE_LOCATION = "C:\PRJ\OWH\datasets\mortaliy"
 
 CONFIG_FILE_DIR = './data_mapping'
 
