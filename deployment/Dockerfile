@@ -8,6 +8,7 @@ RUN npm install -g nodemon
 RUN chmod 777 /usr/local/owh/scripts/*.sh
 WORKDIR /usr/local/owh/server
 RUN cd /usr/local/owh/server
+RUN ls /usr/local/owh/server
 RUN npm install
 WORKDIR /usr/local/owh/client
 RUN cd /usr/local/owh/client
