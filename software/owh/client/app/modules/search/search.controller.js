@@ -32,8 +32,9 @@
             {key:'age-adjusted_death_rates',title:'Age Adjusted Death Rates'}
         ];
         sc.showFbDialog = showFbDialog;
-        sc.sideFiltersPopulated = false;
-        primaryFilterChanged(sc.filters.selectedPrimaryFilter);
+        populateFilterCounts(mortalityFilter).then(function() {
+            search(sc.filters.selectedPrimaryFilter);
+        });
 
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
@@ -42,20 +43,16 @@
             }
         }, true);
 
-        //TODO: make sure only called once when side menu initializes, currently calling for every input instantiated
         function search(selectedFilter) {
-            if(selectedFilter.initiated) {
-                /*To render the inline bars for the sideBar filters*/
-                //TODO: would be better if there was a way to filter using query but also get all possible values back from api
-                var optionalQuery;
-                if(sc.sideFiltersPopulated) {
-                    optionalQuery = selectedFilter;
-                }
-                searchFactory.addCountsToAutoCompleteOptions(mortalityFilter, optionalQuery).then(function() {
-                    primaryFilterChanged(selectedFilter);
-                    sc.sideFiltersPopulated = true;
-                });
-            }
+            /*To render the inline bars for the sideBar filters*/
+            //TODO: would be better if there was a way to filter using query but also get all possible values back from api
+            populateFilterCounts(mortalityFilter, selectedFilter).then(function() {
+                primaryFilterChanged(selectedFilter);
+            });
+        }
+
+        function populateFilterCounts(filter, query) {
+            return searchFactory.addCountsToAutoCompleteOptions(filter, query);
         }
 
         function downloadCSV() {
@@ -124,7 +121,6 @@
         function primaryFilterChanged(newFilter) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter).then(function() {
-                sc.filters.selectedPrimaryFilter.initiated = true;
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
                 }

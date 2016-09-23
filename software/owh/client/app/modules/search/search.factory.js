@@ -674,6 +674,7 @@
 
 
                 /*Year and Month*/
+                //TODO: consider setting default selected years elsewhere
                 {key: 'year', title: 'label.filter.year', queryKey:"current_year",primary: false, value: ['2014'],
                     groupBy: false,type:"label.filter.group.year.month", defaultGroup:"row"},
                 {key: 'month', title: 'label.filter.month', queryKey:"month_of_death", primary: false, value: [],
