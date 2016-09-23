@@ -5,7 +5,7 @@ from elasticsearch_repository import ElasticSearchRepository
 from repositories import BatchRepository
 
 
-INPUT_FILES_DIR = '<path to YRBS data sets>'
+INPUT_FILES_DIR = 'C:\PRJ\OWH\yrbs'
 
 configs = {}
 ES_HOST = '127.0.0.1' #'search-spl-neoxainmajvric7meirttqquqy.us-east-1.es.amazonaws.com' #'search-spl-neoxainmajvric7meirttqquqy.us-east-1.es.amazonaws.com'
@@ -83,7 +83,7 @@ class YrbsIndexer:
             if not f.endswith(".csv"):
                 continue
             fileName = os.path.splitext(f)[0]
-            print 'processing file:', fileName
+            #print 'processing file:', fileName
             query_attributes = self.getQueryAttributesForYrbsFile(fileName)
             fileType = fileName.split('_')[2]
             column_maps = self.get_column_maps(fileType)
