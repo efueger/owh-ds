@@ -85,6 +85,9 @@ before_deploy:
   - mv dpl_tmp/owh-${TRAVIS_BRANCH}-${TRAVIS_BUILD_NUMBER}.zip dpl_cd_upload/
   - ls dpl_tmp
   - rm -rf dpl_tmp
+  - cd ..
+  - cd ..
+  - cd deployment  
 
 deploy:
 - provider: s3
