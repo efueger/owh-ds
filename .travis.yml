@@ -91,7 +91,7 @@ deploy:
     repo: semanticbits/owh-ds
     branch:
       - develop-continuous-wip
-      # - develop
+      # - develop (TBD)
       # - release
   bucket: sb-owh-deployment
 - provider: codedeploy
