@@ -15,6 +15,9 @@ var OwhHomepage = function() {
     hp.getYouCanSectionContent = function() {
         return element(by.css('.youCanContent')).all(by.tagName('p'));
     }
+    hp.getWorkInProgressMessage = function () {
+        return element(by.css('.usa-disclaimer-official')).element(by.tagName('span')).getText();
+    }
 };
 
 module.exports = new OwhHomepage;

@@ -98,7 +98,7 @@
   "label.title.race.hispanicOrigin":"Race and Hispanic Origin",
   "label.yrbs.filter.sex": "Sex",
   "label.yrbs.filter.race": "Race",
-  "label.official.us.gov": "An official website of the United States Government",
+  "label.official.us.gov": "An official website of the United States Government. This site is work in progress and may contain inaccuracies. If you don't find what you need, visit {{qhdos}} or {{cdc}}",
   "label.site.prototype": "This site is a prototype.",
   "label.learn.more": "Learn more.",
   "label.next.impl": "Work in progress",
