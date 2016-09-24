@@ -14,3 +14,13 @@ Scenario: Axis labels
   Then labels are displayed on both the axes for minimized visualization
   When user expand visualization
   Then labels are displayed on both the axes for expanded visualization
+
+Scenario: Side filter collapse
+  Given user is on search page
+  Then user sees side filter
+  Then there is button to hide filter
+  When user clicks hide filter button
+  Then side menu slides away
+  Then user sees button to show filters
+  When user clicks show filters button
+  Then side menu slides back into view
