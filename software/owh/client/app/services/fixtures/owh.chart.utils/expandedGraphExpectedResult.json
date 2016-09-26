@@ -77,7 +77,7 @@
         "duration": 500,
         "xAxis": {
           "axisLabelDistance":120,
-          "axisLabel":"race",
+          "axisLabel":"label.filter.race",
           "showMaxMin": false
         },
         "yAxis": {
