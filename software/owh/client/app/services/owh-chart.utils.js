@@ -68,7 +68,7 @@
                         y: function(d){return d.value;},
                         "xAxis": {
                             "axisLabelDistance": -20,
-                            "axisLabel": filter2.key,
+                            "axisLabel": $translate.instant(filter2.title),
                             tickFormat:function () {
                                 return null;
                             },
@@ -175,7 +175,7 @@
                         "stacked": stacked,
                         "xAxis": {
                             "axisLabelDistance": -20,
-                            "axisLabel": filter2.key,
+                            "axisLabel": $translate.instant(filter2.title),
                             margin: {
                                 top:60
                             },
