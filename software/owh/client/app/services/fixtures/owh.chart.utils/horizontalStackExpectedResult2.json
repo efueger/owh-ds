@@ -292,7 +292,7 @@
       "duration": 500,
       "xAxis": {
         "axisLabelDistance":-20,
-        "axisLabel":"hispanicOrigin",
+        "axisLabel":"label.filter.hispanicOrigin",
         "showMaxMin": false
       },
       "yAxis": {

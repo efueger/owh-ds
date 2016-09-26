@@ -30,7 +30,7 @@
       "stacked": false,
       "xAxis": {
         "axisLabelDistance": -20,
-        "axisLabel": "race",
+        "axisLabel": "label.filter.race",
         "margin": {
           "top": 60
         }

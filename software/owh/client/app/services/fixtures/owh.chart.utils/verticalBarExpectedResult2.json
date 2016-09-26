@@ -296,7 +296,7 @@
       "stacked": false,
       "xAxis": {
         "axisLabelDistance": -20,
-        "axisLabel": "hispanicOrigin",
+        "axisLabel": "label.filter.hispanicOrigin",
         "margin": {
           "top": 60
         }
