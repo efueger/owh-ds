@@ -197,4 +197,49 @@ describe('OWH Side filter component: ', function() {
         //Should show next phase implementation
         ctrl.showModal(selectedFilter,allFilters);
     });
+
+    it('getOptionCount should return correct total for given option', function() {
+        var bindings = {};
+        var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
+
+        ctrl.filters = {selectedPrimaryFilter: {key: 'deaths'}};
+
+        var optionCount = ctrl.getOptionCount({deaths: 42});
+
+        expect(optionCount).toEqual(42);
+
+        optionCount = ctrl.getOptionCount({});
+
+        expect(optionCount).toEqual(0);
+    });
+
+    it('updateGroupValue should properly update the value array with the selected options', function() {
+        var bindings = {onFilter: function(){}};
+        var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
+
+        var group = {autoCompleteOptions: [{key: '2013'}, {key: '2014'}], value: [], allChecked: false};
+
+        ctrl.updateGroupValue(group);
+
+        expect(group.value.length).toEqual(2);
+        expect(group.value).toContain('2013');
+        expect(group.value).toContain('2014');
+
+        group.allChecked = true;
+
+        ctrl.updateGroupValue(group);
+
+        expect(group.value.length).toEqual(0);
+    });
+
+    it('updateGroupValue should call onFilter', function() {
+        var bindings = {onFilter: function(){}};
+        var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
+        spyOn(ctrl, 'onFilter');
+
+        ctrl.updateGroupValue({value: []});
+
+        expect(ctrl.onFilter).toHaveBeenCalled();
+
+    });
 });
