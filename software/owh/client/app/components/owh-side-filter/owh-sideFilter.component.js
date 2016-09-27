@@ -17,33 +17,11 @@
 
     function sideFilterController(ModalService, utilService, searchFactory){
         var sfc = this;
-        sfc.groupBySideFilter = groupBySideFilter;
         sfc.getOptionCountPercentage = getOptionCountPercentage;
         sfc.getOptionCount = getOptionCount;
         sfc.showModal = showModal;
         sfc.clearSelection = clearSelection;
         sfc.updateGroupValue = updateGroupValue;
-
-        //Filters based on side filters
-        function groupBySideFilter(group) {
-            if(group.filters) {
-                angular.forEach(group.filters, function(eachFilter) {
-                    eachFilter.groupBy = group.groupBy;
-                    addOrFilterToPrimaryFilterValue(eachFilter, sfc.filters.selectedPrimaryFilter);
-                });
-            } else {
-                addOrFilterToPrimaryFilterValue(group, sfc.filters.selectedPrimaryFilter);
-            }
-            sfc.onFilter();
-        }
-        function addOrFilterToPrimaryFilterValue(filter, primaryFilter) {
-            var filterIndex = utilService.findIndexByKeyAndValue(sfc.filters.selectedPrimaryFilter.value, 'key', filter.key);
-            if(filter.groupBy && filterIndex < 0) {
-                primaryFilter.value.push(filter);
-            } else if(!filter.groupBy && filterIndex >= 0) {
-                primaryFilter.value.splice(filterIndex, 1);
-            }
-        }
 
         function getOptionCountPercentage(option) {
             var countKey = sfc.filters.selectedPrimaryFilter.key;

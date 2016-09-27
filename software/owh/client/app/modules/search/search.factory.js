@@ -15,7 +15,8 @@
             addCountsToAutoCompleteOptions: addCountsToAutoCompleteOptions,
             searchMortalityResults: searchMortalityResults,
             showPhaseTwoModal: showPhaseTwoModal,
-            uploadImage: uploadImage
+            uploadImage: uploadImage,
+            updateFilterValues: updateFilterValues
         };
         return service;
 
@@ -100,6 +101,29 @@
                 });
             });
             return deferred.promise;
+        }
+
+        function updateFilterValues(primaryFilter) {
+            angular.forEach(primaryFilter.sideFilters, function(filter) {
+                var group =  (filter.filterGroup ? filter : filter.filters);
+                if(group.filters) {
+                    angular.forEach(group.filters, function(eachFilter) {
+                        eachFilter.groupBy = group.groupBy;
+                        addOrFilterToPrimaryFilterValue(eachFilter, primaryFilter);
+                    });
+                } else {
+                    addOrFilterToPrimaryFilterValue(group, primaryFilter);
+                }
+            });
+        }
+
+        function addOrFilterToPrimaryFilterValue(filter, primaryFilter) {
+            var filterIndex = utilService.findIndexByKeyAndValue(primaryFilter.value, 'key', filter.key);
+            if(filter.groupBy && filterIndex < 0) {
+                primaryFilter.value.push(filter);
+            } else if(!filter.groupBy && filterIndex >= 0) {
+                primaryFilter.value.splice(filterIndex, 1);
+            }
         }
 
         function showChartForQuestion(primaryFilter, question) {

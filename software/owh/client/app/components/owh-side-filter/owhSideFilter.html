@@ -9,7 +9,7 @@
                     </a>
                     <owh-toggle-switch ng-if="sideFilter.allowGrouping" class="pull-right"
                                        options="sideFilter.groupOptions ? sideFilter.groupOptions : sfc.filters.groupOptions"
-                                       model="group.groupBy" on-change="sfc.groupBySideFilter(group)"
+                                       model="group.groupBy" on-change="sfc.onFilter()"
                                        tooltip="{{'label.group.by.tooltip' | translate}}">
                     </owh-toggle-switch>
                     <!--<a class="group-by-link custom-link" href="javascript:void(0)"
@@ -53,7 +53,7 @@
                                     ng-click="group.value = option.key;sfc.showModal(option, group.autoCompleteOptions)"></button>
                             <owh-toggle-switch class="pull-right" ng-show="option.selectedValues.length > 0 "
                                                options="group.groupOptions"
-                                               model="option.groupBy" on-change="sfc.groupBySideFilter(option)"
+                                               model="option.groupBy" on-change="sfc.onFilter()"
                                                tooltip="{{'label.group.by.tooltip' | translate}}">
                             </owh-toggle-switch>
 

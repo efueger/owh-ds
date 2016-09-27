@@ -89,40 +89,6 @@ describe('OWH Side filter component: ', function() {
         expect(ctrl).toBeDefined();//<aside>
     }));
 
-    it("should call updateGroupValue on the filter",inject( function(){
-        var bindings = { filters : filters };
-
-        var ctrl = $componentController( 'owhSideFilter', { $scope: $scope }, bindings);
-        expect(ctrl).toBeDefined();
-        var group = angular.copy(filters.selectedPrimaryFilter.sideFilters[1].filters);
-
-        //If allChecked
-        ctrl.updateGroupValue(group);
-        expect(group.value.length).toBe(0);
-
-        //Add values to group
-        group.allChecked = false;
-        ctrl.updateGroupValue(group);
-        expect(group.value.length).toBe(2);
-    }));
-
-    it("should call getOptionCount on the filter",inject( function() {
-        var bindings = { filters : filters };
-
-        var ctrl = $componentController( 'owhSideFilter', { $scope: $scope }, bindings);
-        expect(ctrl).toBeDefined();
-        var group = angular.copy(filters.selectedPrimaryFilter.sideFilters[1].filters);
-
-        //get option count
-        var optionCount = ctrl.getOptionCount(group);
-        expect(optionCount).toBe(0);
-
-        group.deaths = 230;
-        optionCount = ctrl.getOptionCount(group);
-        expect(optionCount).toBe(230);
-    }));
-
-
     it("should call getOptionCountPercent on the filter",inject( function() {
         var bindings = { filters : filters };
 
@@ -139,63 +105,8 @@ describe('OWH Side filter component: ', function() {
         expect(optionCountPercent).toBe(64);
     }));
 
-    it("should call groupBySideFilter on the filter",inject( function() {
-        var bindings = { filters : filters };
-        var ctrl = $componentController( 'owhSideFilter', null, bindings);
-        expect(ctrl).toBeDefined();
-        var group = angular.copy(filters.selectedPrimaryFilter.sideFilters[1]);
-        group.filters = [];
-        group.filters.push(group.filters);
-
-        //call groupBySideFilter
-        expect(filters.selectedPrimaryFilter.value.length).toBe(0);
-        ctrl.groupBySideFilter(group);
-        expect(filters.selectedPrimaryFilter.value.length).toBe(1);
-        //add the value to selected primary filter
-
-        //if group has no filters
-        group.filters=undefined;
-        ctrl.groupBySideFilter(group);
-    }));
-
-    it("should call groupBySideFilter with else conditions",inject( function() {
-        var moreFilters= { selectedPrimaryFilter: {
-            key: 'deaths', title: 'label.filter.mortality', primary: true, value: [{key:"gender",text:"gender"}], header:"Mortality",
-            allFilters: [], searchResults: undefined, showMap:true,
-            countLabel: 'Number of Deaths', mapData:{}, initiated:false,
-            sideFilters:[
-                {
-                    filterGroup: false, collapse: true, allowGrouping: true,groupBy:false,
-                    filters: [{key: 'gender', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], groupBy: 'column',
-                        type:"label.filter.group.demographics", groupByDefault: 'column', showChart: true,
-                        autoCompleteOptions: [
-                            {key:'F',title:'Female'},
-                            {key:'M',title:'Male'}
-                        ], defaultGroup:"column"
-                    }]
-                }
-            ]
-        }};
-        var bindings = { filters : moreFilters };
-        var ctrl = $componentController( 'owhSideFilter', null, bindings);
-        expect(ctrl).toBeDefined();
-
-        //call groupBySideFilter
-        //remove the selected value from the primary filter
-        expect(moreFilters.selectedPrimaryFilter.value.length).toBe(1);
-        ctrl.groupBySideFilter(moreFilters.selectedPrimaryFilter.sideFilters[0]);
-        expect(moreFilters.selectedPrimaryFilter.value.length).toBe(0);
-
-
-        //call groupBySideFilter with groupBy true
-        moreFilters.selectedPrimaryFilter.sideFilters[0].key= "race";
-        ctrl.groupBySideFilter(moreFilters.selectedPrimaryFilter.sideFilters[0]);
-    }));
-
-
-
     it("should call clearSelection on the filter",inject( function(){
-        var bindings = { filters : filters };
+        var bindings = { filters : filters, onFilter: function(){} };
 
         var ctrl = $componentController( 'owhSideFilter', { $scope: $scope }, bindings);
         expect(ctrl).toBeDefined();
@@ -223,7 +134,7 @@ describe('OWH Side filter component: ', function() {
             }
         ];
         var selectedFilter = allFilters[1];
-        var bindings = { filters : filters };
+        var bindings = { filters : filters, onFilter: function(){} };
         var ctrl = $componentController( 'owhSideFilter', { $scope: $scope}, bindings);
         expect(ctrl).toBeDefined();
 
@@ -253,7 +164,7 @@ describe('OWH Side filter component: ', function() {
             }
         ];
         var selectedFilter = allFilters[0];
-        var bindings = { filters : filters };
+        var bindings = { filters : filters, onFilter: function(){} };
         var ctrl = $componentController( 'owhSideFilter', { $scope: $scope}, bindings);
         expect(ctrl).toBeDefined();
 
@@ -278,7 +189,7 @@ describe('OWH Side filter component: ', function() {
                     autoCompleteOptions: []} }
         ];
         var selectedFilter = allFilters[0],
-            bindings = { filters : filters };
+            bindings = { filters : filters, onFilter: function(){} };
 
         var ctrl = $componentController( 'owhSideFilter', { $scope: $scope }, bindings);
         expect(ctrl).toBeDefined();

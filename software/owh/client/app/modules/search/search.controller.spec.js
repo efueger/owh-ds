@@ -77,6 +77,9 @@ describe("Search controller: ", function () {
 
         //mock searchFactory object
         var searchFactory= {
+            updateFilterValues: function(){
+
+            },
             addCountsToAutoCompleteOptions: function(){
                 return {then: function(func) {
                     primaryFilterChangedFn= func;
@@ -124,6 +127,7 @@ describe("Search controller: ", function () {
         searchController.selectedMapSize = "big";
 
         //Call primaryFilterChanged
+        primaryFilterChangedFn();
         primaryFilterChangedFn();
 
         //Call SearchResultFn

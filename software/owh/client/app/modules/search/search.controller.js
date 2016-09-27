@@ -32,10 +32,10 @@
             {key:'age-adjusted_death_rates',title:'Age Adjusted Death Rates'}
         ];
         sc.showFbDialog = showFbDialog;
+        //initial populate of the side filter options
         populateFilterCounts(mortalityFilter).then(function() {
             search(sc.filters.selectedPrimaryFilter);
         });
-
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
@@ -121,6 +121,7 @@
         function primaryFilterChanged(newFilter) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter).then(function() {
+                searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
                 }
