@@ -36,7 +36,7 @@
             var wb = {SheetNames: [], Sheets: {}};
             var ws_name = filename;
             var sheetJson = getSheetArrayFromMixedTable(data);
-            var ws = getSheetFromArray(sheetJson);
+            var ws = getSheetFromArray(sheetJson, true);
             wb.SheetNames.push(ws_name);
             wb.Sheets[ws_name] = ws;
             var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'binary'});
@@ -45,7 +45,7 @@
 
         //returns xls worksheet from array of json rows
         //ex: [[{title: 'test', colspan: 1, rowspan: 1}, {...}, {...}], [{...}, null, {...}] ]
-        function getSheetFromArray(data) {
+        function getSheetFromArray(data, convertNumbers) {
             var ws = {'!merges': []};
             var range = {s: {c:10000000, r:10000000}, e: {c:0, r:0 }};
             //keep track of offsets caused by merged cells
@@ -65,7 +65,7 @@
                     if(range.e.c < newC) range.e.c = newC;
 
                     if(cellJson === null) continue;
-                    var cell = getCellFromJson(cellJson);
+                    var cell = getCellFromJson(cellJson, convertNumbers);
                     var cell_ref = XLSX.utils.encode_cell({c:newC,r:newR});
 
                     if(cellJson.colspan > 1 || cellJson.rowspan > 1) {
@@ -95,7 +95,7 @@
           	return ws;
         }
 
-        function getCellFromJson(cellJson) {
+        function getCellFromJson(cellJson, convertNumbers) {
             var cell = {v: cellJson.title };
 
             if(typeof cell.v === 'number') cell.t = 'n';
@@ -104,7 +104,16 @@
                 cell.t = 'n'; cell.z = XLSX.SSF._table[14];
                 cell.v = datenum(cell.v);
             }
-            else cell.t = 's';
+            else {
+                cell.t = 's';
+                if(convertNumbers) {
+                    var numberValue = parseInt(cell.v.replace(',', ''));
+                    if(!isNaN(numberValue)) {
+                        cell.v = numberValue;
+                        cell.t = 'n';
+                    }
+                }
+            }
             return cell;
         }
 
