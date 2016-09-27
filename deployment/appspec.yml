@@ -1,0 +1,24 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /tmp/deploy
+
+permissions:
+  - object: /tmp/deploy/scripts
+    pattern: "*"
+    mode: 777
+
+hooks:
+  ApplicationStop:
+    - location: scripts/kill_container.sh
+      timeout: 400
+      runas: ec2-user
+  AfterInstall:
+    - location: scripts/load_images.sh
+      timeout: 400
+      runas: ec2-user
+  ApplicationStart:
+    - location: scripts/start_container.sh
+      timeout: 400
+      runas: ec2-user
