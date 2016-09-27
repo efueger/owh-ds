@@ -95,9 +95,8 @@ deploy:
   on: &2
     repo: semanticbits/owh-ds
     branch:
-      - develop-continuous-wip
-      # - develop (TBD)
-      # - release (TBD)
+     - develop
+     # - release (TBD)
   bucket: sb-owh-deployment
 - provider: codedeploy
   access_key_id: $OWH_ACCESS_KEY
