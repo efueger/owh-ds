@@ -1,0 +1,10 @@
+.git
+.gitignore
+server/test
+server/coverage
+client/reports
+client/Phantom*
+client/test
+docker-compose.yml
+Dockerfile
+node-debug.log
