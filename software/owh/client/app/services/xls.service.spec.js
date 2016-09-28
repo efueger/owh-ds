@@ -152,4 +152,110 @@ describe('xlsService', function(){
         expect(window.saveAs.calls.argsFor(0)[1]).toEqual(filename + '.xlsx');
     });
 
+
+    //This test cases expected to be fail
+    it('should display numbers and percentages', function () {
+        var sheetArray = [
+            [
+                {
+                    "title": "Yes",
+                    "percentage": "50.38%",
+                    "isCount": false,
+                    "rowspan": 2,
+                    "colspan": 1,
+                    "key": "Y"
+                },
+                {
+                    "title": "White",
+                    "isCount": false,
+                    "rowspan": 1,
+                    "colspan": 1,
+                    "key": "1"
+                },
+                {
+                    "title": "50,390",
+                    "isCount": true,
+                    "rowspan": 1,
+                    "colspan": 1
+                },
+                {
+                    "title": "31.45%",
+                    "isCount": false,
+                    "rowspan": 1,
+                    "colspan": 1
+                },
+                {
+                    "title": "107,460",
+                    "isCount": true,
+                    "rowspan": 1,
+                    "colspan": 1
+                },
+                {
+                    "title": "27.29%",
+                    "isCount": false,
+                    "rowspan": 1,
+                    "colspan": 1
+                },
+                {
+                    "title": "157,850",
+                    "isCount": true,
+                    "rowspan": 1,
+                    "colspan": 1,
+                    "isBold": true
+                }
+            ],
+            [
+                {
+                    "title": "Total",
+                    "isCount": false,
+                    "rowspan": 1,
+                    "colspan": 1,
+                    "isBold": true
+                },
+                {
+                    "title": "123455", //female total
+                    "isCount": false,
+                    "rowspan": 1,
+                    "colspan": 1,
+                    "isBold": true
+                },
+                {
+                    "title": "31.45%",
+                    "isCount": false,
+                    "rowspan": 1,
+                    "colspan": 1
+                },
+                {
+                    "title": "334444", //male total
+                    "isCount": false,
+                    "rowspan": 1,
+                    "colspan": 1,
+                    "isBold": true
+                },
+                {
+                    "title": "27.29%",
+                    "isCount": false,
+                    "rowspan": 1,
+                    "colspan": 1
+                },
+                {
+                    "title": "157,850",
+                    "percentage": 1.2358582892934038,
+                    "isCount": true,
+                    "rowspan": 1,
+                    "colspan": 1,
+                    "isBold": true
+                }
+
+            ]
+        ];
+        var ws = xlsService.getSheetFromArray(sheetArray);
+
+        expect(ws['A1'].v).toEqual("Yes (some percentage)");
+        expect(ws['D1']).toEqual("31.45%");
+        expect(ws['D2']).toEqual("31.45%"); //Total female percentage
+        expect(ws['F1']).toEqual("27.29%");
+        expect(ws['F2']).toEqual("27.29%"); //Total male percentage
+    });
+
 });

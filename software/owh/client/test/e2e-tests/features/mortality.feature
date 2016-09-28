@@ -3,6 +3,8 @@ Feature: Mortality page
   I should be able to access mortality page
   I want to see labels on X and Y axis on the quick visualization
   So that I can instantly know what data is plotted on which axis
+  I want to see raw data and percentages (as default results) when I select to view "Number of Deaths" in the main search bar
+  So that I can see percentages along with number of deaths
 
 Scenario: Access mortality page
   When I am at home page
@@ -24,3 +26,38 @@ Scenario: Side filter collapse
   Then user sees button to show filters
   When user clicks show filters button
   Then side menu slides back into view
+
+Scenario: Percentages in data table
+  When I see the number of deaths in data table
+  Then the percentages are shown for each row are displayed by default
+
+Scenario: Filter options updated
+  When I update criteria in filter options
+  Then data table is updated and the number of deaths and percentages are updated too
+
+Scenario: Items added to columns/rows
+  When I add new data items to row or columns
+  Then the percentages get re-calculated based on all the information displayed in a given row
+
+Scenario: Percentages display
+  When I see the data table
+  Then percentages are displayed in the same column/cell in parenthesis
+
+Scenario: Quick visualizations
+  When I see the quick visualizations
+  Then they're displayed same as before and nothing changes
+
+Scenario: Export
+  When I export the data table into excel or csv
+  Then percentages are exported as well
+  And  each percentage is displayed in a separate column (unlike UI in the application)
+
+Scenario: Show/Hide percentages
+  When I see the results
+  Then an option to view/hide percentages is displayed
+  And when that option is toggled, the percentages are either displayed/hidden
+  And this option decides if percentages get exported into the excel/csv or not
+
+Scenario: enario: Decimal Precision
+  When the I look at the table results
+  Then the Rates and Percentages should have a one decimal precision
