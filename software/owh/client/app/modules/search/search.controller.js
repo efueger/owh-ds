@@ -32,6 +32,10 @@
         ];
         sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
         sc.showFbDialog = showFbDialog;
+        //TODO: refactor map logic into its own component
+        leafletData.getMap().then(function(map) {
+            $timeout(function(){ map.invalidateSize()}, 1000);
+        });
 
         /*To render the inline bars for the sideBar filters*/
         searchFactory.addCountsToAutoCompleteOptions(mortalityFilter).then(function() {

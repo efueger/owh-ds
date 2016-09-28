@@ -49,7 +49,7 @@
                         <div id="chart_us_map" ng-if="chartData.isMap && sc.filters.selectedPrimaryFilter.showMap && sc.filters.selectedPrimaryFilter.maps">
                             <leaflet  lf-center="chartData.usa" markers="chartData.markers" events="chartData.events" geojson="chartData.geojson"
                                       legend="chartData.legend" controls="chartData.controls" defaults="chartData.defaults"
-                                      height="{{sc.selectedMapSize==='small'?'277px':'300px'}}" width="{{sc.selectedMapSize==='small'?'300px':'100%'}}"></leaflet>
+                                      height="{{sc.selectedMapSize==='small'?'277px':'300px'}}" width="{{sc.selectedMapSize==='small'?'auto':'100%'}}"></leaflet>
                         </div>
                         <!--Map-->
 
