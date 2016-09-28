@@ -91,7 +91,7 @@ class ETL :
     def _print_metrics(self):
         """Print the metrics of the ETL"""
         logger.info("""
-        Stauts : %s
+        Status : %s
         Message: %s
         Start time: %s
         End Time: %s
