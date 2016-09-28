@@ -107,8 +107,9 @@
             else {
                 cell.t = 's';
                 if(convertNumbers) {
+                    //check if string is parsable as integer and make sure doesn't contain letters
                     var numberValue = parseInt(cell.v.replace(',', ''));
-                    if(!isNaN(numberValue)) {
+                    if(!isNaN(numberValue) && !cell.v.match(/[a-z]/i)) {
                         cell.v = numberValue;
                         cell.t = 'n';
                     }
