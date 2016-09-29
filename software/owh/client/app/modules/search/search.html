@@ -1,14 +1,6 @@
-<!--disclaimer-->
-<div class="usa-disclaimer">
-    <div class="usa-grid text-center">
-        <span class="usa-disclaimer-official">
-            <img class="usa-flag_icon" src="../../images/us_flag_small.png" alt="U.S. flag signifying that this is a United States federal government website" />
-            <span ng-bind="'label.official.us.gov' | translate"></span>
-        </span>
-    </div>
+<div class="usa-grid">
+    <ng-include src="'app/partials/disclaimer.html'"></ng-include>
 </div>
-<!--disclaimer-->
-
 <!--Search banner-->
 <div class="usa-grid-full">
     <div class="usa-width-one-whole sp-header">
@@ -36,13 +28,19 @@
 
 <div class="usa-grid border-top-default" ng-class="{'allow-inline-charting': sc.filters.allowInlineCharting}">
     <div class="usa-width-one-whole bottom-pane">
-        <div class="usa-width-one-fourth side-pane-padding border-right-default">
+        <a class="owh-side-menu__handle--collapsed cursor-pointer" ng-hide="sc.sideMenu.visible" ng-click="sc.sideMenu.visible = !sc.sideMenu.visible">
+            <span>Show Filters &gt;&gt;</span>
+        </a>
+        <div class="usa-width-one-fourth side-pane-padding border-right-default owh-side-menu" ng-hide="!sc.sideMenu.visible">
+            <a class="owh-side-menu__handle cursor-pointer" ng-click="sc.sideMenu.visible = false">
+                <span>&lt;&lt; Hide Filters</span>
+            </a>
             <div class="sort-by side-filter-padding">
-                <owh-side-filter filters="sc.filters" on-filter="sc.search(sc.filters.selectedPrimaryFilter)"></owh-side-filter>
+                <owh-side-filter filters="sc.filters" on-filter="sc.search(sc.filters.selectedPrimaryFilter)" sort="sc.sort"></owh-side-filter>
             </div>
         </div>
-        <div class="usa-width-three-fourths">
-            <!--Charts-->
+        <div class="owh-search-content usa-width-three-fourths" ng-class="{'owh-search-content--expanded': !sc.sideMenu.visible }">
+        <!--Charts-->
             <div class="usa-grid-full margin-top-30">
                 <div class="usa-width-one-whole" ng-repeat="startChartData in sc.filters.selectedPrimaryFilter.chartData" ng-init="parentIndex = $index">
                     <div ng-repeat="chartData in startChartData"

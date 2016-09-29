@@ -62,5 +62,15 @@ var homeStepDefinitionsWrapper = function () {
     this.When(/^I am at home page$/, function () {
         browser.get("/");
     });
+
+    this.Then(/^gray banner on top reads "([^"]*)"$/, function (givenMessage) {
+        homePage.getWorkInProgressMessage().then(function(foundMessage){
+           expect(givenMessage).to.equal(foundMessage);
+        });
+    });
+
+    this.When(/^I am at search page$/, function () {
+        browser.get("/search");
+    });
 };
 module.exports = homeStepDefinitionsWrapper;

@@ -43,6 +43,16 @@ describe('xlsService', function(){
             var mergedCell = {s: {c: 0, r: 0}, e: {c: 0, r: 2}};
             expect(ws['!merges']).toContain(mergedCell);
         });
+
+        it('should convert strings to numbers if possible when the flag is passed', function () {
+            var sheetArray = [[{title: 1}, {title: 2}, {title: 3}], [{title: 'data1'}, null, {title: 'data3'}], [{title: 'data4'}, {title: 'data5'}, {title: '12,420'}]];
+            var ws = xlsService.getSheetFromArray(sheetArray, true);
+
+            expect(ws['A1'].v).toEqual(1);
+            expect(ws['B2']).toBeUndefined();
+            expect(ws['C3'].v).toEqual(12420);
+            expect(ws['C3'].t).toEqual('n');
+        });
     });
 
     it('getSheetArrayFromMixedTable should return the proper sheet json from a mixed table object', function () {

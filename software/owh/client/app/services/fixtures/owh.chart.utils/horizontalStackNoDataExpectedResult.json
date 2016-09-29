@@ -5,21 +5,23 @@
     "chart": {
       "type": "multiBarHorizontalChart",
       "height": 250,
-      "width": 250,
+      "width": 350,
       "margin": {
         "top": 5,
         "right": 5,
-        "bottom": 5,
-        "left": 5
+        "bottom": 45,
+        "left": 45
       },
       "showLegend": false,
       "showControls": false,
       "showValues": false,
-      "showXAxis": false,
-      "showYAxis": false,
+      "showXAxis": true,
+      "showYAxis": true,
       "stacked": true,
       "duration": 500,
       "xAxis": {
+        "axisLabelDistance":-20,
+        "axisLabel":"label.filter.race",
         "showMaxMin": false
       },
       "yAxis": {

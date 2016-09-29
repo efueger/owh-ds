@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  web:
+    restart: always
+    image: owh_web:latest
+    build: .
+    #environment:
+    #  - NODE_ENV=dev
+    ports:
+      - "80:9900"

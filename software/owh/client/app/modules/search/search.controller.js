@@ -14,11 +14,11 @@
         var sc = this;
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
-
         sc.filters = searchFactory.getAllFilters();
         sc.filters.primaryFilters = utilService.findAllByKeyAndValue(sc.filters.search, 'primary', true);
         var mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
         sc.filters.selectedPrimaryFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', $stateParams.primaryFilterKey);
+        sc.sideMenu = {visible: true};
         sc.downloadCSV = downloadCSV;
         sc.downloadXLS = downloadXLS;
         sc.getSelectedYears = getSelectedYears;
@@ -31,6 +31,7 @@
             {key:'crude_death_rates',title:'Crude Death Rates'},
             {key:'age-adjusted_death_rates',title:'Age Adjusted Death Rates'}
         ];
+        sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
         sc.showFbDialog = showFbDialog;
         //initial populate of the side filter options
         populateFilterCounts(mortalityFilter).then(function() {

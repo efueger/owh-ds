@@ -943,3 +943,65 @@ body {
 .census .home-h4.category-header, .census .view-all-link .custom-link{
     color: #01a38e;
 }
+
+/* search */
+
+.owh-side-menu {
+    opacity: 1;
+    left: 0;
+    transition: left 0.3s, width 0.3s, margin-right 0.3s;
+    line-height: 20px;
+    position: relative;
+}
+
+.owh-search-content {
+    transition: width 0.3s;
+    overflow: hidden;
+}
+
+.owh-search-content--expanded {
+    width: 97%!important;
+    overflow: hidden;
+    transition: width 0.3s;
+}
+
+.owh-side-menu.ng-hide {
+    width: 0!important;
+    margin-right: 1.15%!important;
+    display: block!important;
+    left: -100%;
+}
+
+.owh-side-menu__handle {
+    text-align: right;
+    display: block;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.owh-side-menu__handle--collapsed {
+    padding: 5px;
+    border-radius: 0.3rem;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    display: inline-block;
+    margin-left: -12px;
+    margin-bottom: -20px;
+    background-color: #F6F6F6;
+    transition: background-color 1s, color 1s;
+}
+
+.owh-side-menu__handle--collapsed.ng-hide {
+    transition: background-color 1s, color 1s;
+    background-color: #8956A3;
+    color: white;
+    display: block!important;
+    position: absolute;
+    left: -100%;
+}
+
+/* To increase visualization(charts) axis label size*/
+.nv-axislabel {
+    font-size: 13px !important;
+    font-weight: bold !important;
+}

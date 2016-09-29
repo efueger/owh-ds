@@ -10,11 +10,12 @@ app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({limit: '5mb'}));
 
 var rServeConfig = {
-    host : "54.175.233.200",
-    port : 6311,
-    user : "rserv",
-    password : "OWH16#@rserv"
+     host : "54.175.233.200",
+     port : 6311,
+     user : "rserv",
+     password : "OWH16#@rserv"
 };
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

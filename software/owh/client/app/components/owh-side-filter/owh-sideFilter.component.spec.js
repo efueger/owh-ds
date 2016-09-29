@@ -198,48 +198,12 @@ describe('OWH Side filter component: ', function() {
         ctrl.showModal(selectedFilter,allFilters);
     });
 
-    it('getOptionCount should return correct total for given option', function() {
-        var bindings = {};
-        var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
-
-        ctrl.filters = {selectedPrimaryFilter: {key: 'deaths'}};
-
-        var optionCount = ctrl.getOptionCount({deaths: 42});
-
-        expect(optionCount).toEqual(42);
-
-        optionCount = ctrl.getOptionCount({});
-
-        expect(optionCount).toEqual(0);
-    });
-
-    it('updateGroupValue should properly update the value array with the selected options', function() {
-        var bindings = {onFilter: function(){}};
-        var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
-
-        var group = {autoCompleteOptions: [{key: '2013'}, {key: '2014'}], value: [], allChecked: false};
-
-        ctrl.updateGroupValue(group);
-
-        expect(group.value.length).toEqual(2);
-        expect(group.value).toContain('2013');
-        expect(group.value).toContain('2014');
-
-        group.allChecked = true;
-
-        ctrl.updateGroupValue(group);
-
-        expect(group.value.length).toEqual(0);
-    });
-
-    it('updateGroupValue should call onFilter', function() {
-        var bindings = {onFilter: function(){}};
-        var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
-        spyOn(ctrl, 'onFilter');
-
-        ctrl.updateGroupValue({value: []});
-
-        expect(ctrl.onFilter).toHaveBeenCalled();
-
+    it('Should getFilterOrder based on sort binding', function() {
+        var sort = ['gender', 'race', 'height'];
+        var bindings = {filters: [], sort: sort};
+        var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
+        expect(ctrl.getFilterOrder({filters: {key: 'race'}})).toEqual(1);
+        expect(ctrl.getFilterOrder({filters: {key: 'height'}})).toEqual(2);
+        expect(ctrl.getFilterOrder({filters: {key: 'iq'}})).toEqual(-1);
     });
 });

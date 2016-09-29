@@ -9,7 +9,9 @@
             bindings:{
                 //TODO: change to one-way binding and bubble filter changes up with event bindings
                 filters : "=",
-                onFilter: '&'
+                onFilter: '&',
+                //array of filter keys, specifies order
+                sort: '<'
             }
         });
 
@@ -22,6 +24,7 @@
         sfc.showModal = showModal;
         sfc.clearSelection = clearSelection;
         sfc.updateGroupValue = updateGroupValue;
+        sfc.getFilterOrder = getFilterOrder;
 
         function getOptionCountPercentage(option) {
             var countKey = sfc.filters.selectedPrimaryFilter.key;
@@ -99,6 +102,11 @@
                 group.value.length = 0;
             }
             sfc.onFilter();
+        }
+
+        //called to determine order of side filters, looks at sort array passed in
+        function getFilterOrder(filter) {
+            return sfc.sort.indexOf(filter.filters.key);
         }
     }
 }());
