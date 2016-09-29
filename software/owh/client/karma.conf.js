@@ -43,7 +43,7 @@ module.exports = function(config){
     ],
 
     preprocessors: {
-      'app/**/*.js': ['coverage'],
+      'app/**/!(*.spec).js': ['coverage'],
       'app/**/*.html': ['ng-html2js'],
       'app/**/fixtures/**/*.json'   : ['json_fixtures']
     },

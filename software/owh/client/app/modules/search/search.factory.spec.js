@@ -83,6 +83,33 @@ describe('search factory ', function(){
         $scope.$apply();
     });
 
+    it('updateFilterValues should add proper values to the value array on primaryFilter', function () {
+        var primaryFilter = angular.copy(filters.search[0]);
+        var yearFilter = primaryFilter.sideFilters[0];
+        yearFilter.filters.groupBy = 'row';
+        yearFilter.filters.value.push('2013');
+        searchFactory.updateFilterValues(primaryFilter);
+
+        expect(primaryFilter.value[0].key).toEqual('year');
+        expect(primaryFilter.value[0].value.length).toEqual(2);
+        expect(primaryFilter.value[0].value[0]).toEqual('2014');
+    });
+
+    it('updateFilterValues should work with filterGroups', function () {
+        var primaryFilter = angular.copy(filters.search[0]);
+        var yearFilter = primaryFilter.sideFilters[0];
+        yearFilter.groupBy = 'row';
+        yearFilter.filters.value.push('2013');
+        yearFilter.filterGroup = true;
+        yearFilter.filters = [angular.copy(yearFilter.filters)];
+        searchFactory.updateFilterValues(primaryFilter);
+
+        expect(primaryFilter.value[0].key).toEqual('year');
+        expect(primaryFilter.value[0].value.length).toEqual(2);
+        expect(primaryFilter.value[0].value[0]).toEqual('2014');
+        expect(primaryFilter.value[0].value[1]).toEqual('2013');
+    });
+
     describe('test with mortality data', function () {
         beforeAll(function() {
             primaryFilter = filters.search[0];
@@ -309,5 +336,6 @@ describe('search factory ', function(){
             $scope.$apply();
 
         });
+
     });
 });

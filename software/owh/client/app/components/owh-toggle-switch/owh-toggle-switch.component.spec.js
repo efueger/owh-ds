@@ -32,7 +32,9 @@ describe('owhToggleSwitch component: ', function() {
         var bindings = {model:"modelValue", onChange:onChange};
         var ctrl = $componentController('owhToggleSwitch', {$scope: $scope}, bindings);
         expect(ctrl).toBeDefined();
-        ctrl.model = "changedValue";
+        ctrl.model = "oldValue";
+        $scope.$digest();
+        ctrl.model = "newValue";
         $scope.$digest();
         expect(onChange).toHaveBeenCalled();
     }));

@@ -9,7 +9,7 @@
                     </a>
                     <owh-toggle-switch ng-if="sideFilter.allowGrouping" class="pull-right"
                                        options="sideFilter.groupOptions ? sideFilter.groupOptions : sfc.filters.groupOptions"
-                                       model="group.groupBy" on-change="sfc.groupBySideFilter(group)"
+                                       model="group.groupBy" on-change="sfc.onFilter()"
                                        tooltip="{{'label.group.by.tooltip' | translate}}">
                     </owh-toggle-switch>
                     <!--<a class="group-by-link custom-link" href="javascript:void(0)"
@@ -26,7 +26,7 @@
                             <span translate="{{eachFilter.title}}"></span>
                             <span class="pull-right" ng-bind="sfc.getOptionCount(eachFilter.autoCompleteOptions[0])"></span>
                         </label>
-                        <span class="inline-bar" style="width: {{sfc.getOptionCountPercentage(eachFilter.autoCompleteOptions[0])}}%"></span>
+                        <!--<span class="inline-bar" style="width: {{sfc.getOptionCountPercentage(eachFilter.autoCompleteOptions[0])}}%"></span>-->
                     </li>
                     <li class="group-option more-options" ng-if="group.filters.length > 3">
                         <a ng-show="!sideFilter.showAll" class="custom-link" translate="label.show.more"
@@ -53,7 +53,7 @@
                                     ng-click="group.value = option.key;sfc.showModal(option, group.autoCompleteOptions)"></button>
                             <owh-toggle-switch class="pull-right" ng-show="option.selectedValues.length > 0 "
                                                options="group.groupOptions"
-                                               model="option.groupBy" on-change="sfc.groupBySideFilter(option)"
+                                               model="option.groupBy" on-change="sfc.onFilter()"
                                                tooltip="{{'label.group.by.tooltip' | translate}}">
                             </owh-toggle-switch>
 
@@ -99,7 +99,7 @@
 
                     <!--Radio button filters (UCD & MCD)-->
                     <li ng-if="group.filterType === 'radio'" ng-repeat="option in group.autoCompleteOptions" class="group-option" >
-                        <input id="{{option.key}}" type="radio" ng-model="group.value" ng-value="option.key" ng-click="sfc.search()" >
+                        <input id="{{option.key}}" type="radio" ng-model="group.value" ng-value="option.key" ng-click="sfc.onFilter()" >
                         <label for="{{option.key}}" class="custom-label" style="margin-bottom: 0">
                             <span translate="{{option.title}}"></span>
                         </label>
@@ -118,13 +118,13 @@
                     <li ng-repeat="option in group.autoCompleteOptions | orderBy:'-count'" ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' "
                         class="group-option" ng-show="$index < 3 || sideFilter.showAll">
                         <input id="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" type="checkbox"
-                               checklist-model="group.value" checklist-value="option.key" ng-click="sfc.search()">
+                               checklist-model="group.value" checklist-value="option.key" ng-click="sfc.onFilter()">
                         <label for="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" class="custom-label"
                                ng-init="title = option.title == 'Nursing home/long term care' ? 'Nursing home/long term <br>care' : option.title">
                             <span class="count-label" translate="{{title}}"></span>
                             <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts" ng-bind="sfc.getOptionCount(option)"></span>
                         </label>
-                        <span class="inline-bar" ng-if="!sideFilter.dontShowCounts" style="width: {{sfc.getOptionCountPercentage(option)}}%"></span>
+                        <!--<span class="inline-bar" ng-if="!sideFilter.dontShowCounts" style="width: {{sfc.getOptionCountPercentage(option)}}%"></span>-->
                     </li>
                     <li class="group-option more-options" ng-if="group.autoCompleteOptions.length > 3 &&
                         group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions' &&
