@@ -7,9 +7,9 @@
             controller: sideFilterController,
             controllerAs: 'sfc',
             bindings:{
+                //TODO: change to one-way binding and bubble filter changes up with event bindings
                 filters : "=",
-                //array of filter keys, specifies order
-                sort: '<'
+                onFilter: '&'
             }
         });
 
@@ -17,41 +17,11 @@
 
     function sideFilterController(ModalService, utilService, searchFactory){
         var sfc = this;
-        sfc.groupBySideFilter = groupBySideFilter;
         sfc.getOptionCountPercentage = getOptionCountPercentage;
         sfc.getOptionCount = getOptionCount;
         sfc.showModal = showModal;
         sfc.clearSelection = clearSelection;
         sfc.updateGroupValue = updateGroupValue;
-        sfc.search = search;
-        sfc.getFilterOrder = getFilterOrder;
-
-        //Filters based on side filters
-        function groupBySideFilter(group) {
-            if(group.filters) {
-                angular.forEach(group.filters, function(eachFilter) {
-                    eachFilter.groupBy = group.groupBy;
-                    addOrFilterToPrimaryFilterValue(eachFilter, sfc.filters.selectedPrimaryFilter);
-                });
-            } else {
-                addOrFilterToPrimaryFilterValue(group, sfc.filters.selectedPrimaryFilter);
-            }
-            search();
-        }
-        function addOrFilterToPrimaryFilterValue(filter, primaryFilter) {
-            var filterIndex = utilService.findIndexByKeyAndValue(sfc.filters.selectedPrimaryFilter.value, 'key', filter.key);
-            if(filter.groupBy && filterIndex < 0) {
-                primaryFilter.value.push(filter);
-            } else if(!filter.groupBy && filterIndex >= 0) {
-                primaryFilter.value.splice(filterIndex, 1);
-            }
-        }
-
-        function search() {
-            if(sfc.filters.selectedPrimaryFilter.initiated) {
-                sfc.filters.selectedPrimaryFilter.searchResults(sfc.filters.selectedPrimaryFilter);
-            }
-        }
 
         function getOptionCountPercentage(option) {
             var countKey = sfc.filters.selectedPrimaryFilter.key;
@@ -103,7 +73,7 @@
                         });
                         selectedFilter.value = utilService.getValuesByKey(selectedFilter.selectedValues, 'id');
                         modal.element.hide();
-                        search();
+                        sfc.onFilter();
                     });
                 });
             }
@@ -116,7 +86,7 @@
             //remove all elements from array
             filter.selectedValues.length = 0;
             filter.value.length = 0;
-            search();
+            sfc.onFilter();
         }
 
         //remove all elements from array for all select
@@ -128,7 +98,7 @@
             } else {
                 group.value.length = 0;
             }
-            search();
+            sfc.onFilter();
         }
 
         //called to determine order of side filters, looks at sort array passed in

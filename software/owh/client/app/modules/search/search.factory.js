@@ -15,7 +15,8 @@
             addCountsToAutoCompleteOptions: addCountsToAutoCompleteOptions,
             searchMortalityResults: searchMortalityResults,
             showPhaseTwoModal: showPhaseTwoModal,
-            uploadImage: uploadImage
+            uploadImage: uploadImage,
+            updateFilterValues: updateFilterValues
         };
         return service;
 
@@ -100,6 +101,29 @@
                 });
             });
             return deferred.promise;
+        }
+
+        function updateFilterValues(primaryFilter) {
+            angular.forEach(primaryFilter.sideFilters, function(filter) {
+                var group =  (filter.filterGroup ? filter : filter.filters);
+                if(group.filters) {
+                    angular.forEach(group.filters, function(eachFilter) {
+                        eachFilter.groupBy = group.groupBy;
+                        addOrFilterToPrimaryFilterValue(eachFilter, primaryFilter);
+                    });
+                } else {
+                    addOrFilterToPrimaryFilterValue(group, primaryFilter);
+                }
+            });
+        }
+
+        function addOrFilterToPrimaryFilterValue(filter, primaryFilter) {
+            var filterIndex = utilService.findIndexByKeyAndValue(primaryFilter.value, 'key', filter.key);
+            if(filter.groupBy && filterIndex < 0) {
+                primaryFilter.value.push(filter);
+            } else if(!filter.groupBy && filterIndex >= 0) {
+                primaryFilter.value.splice(filterIndex, 1);
+            }
         }
 
         function showChartForQuestion(primaryFilter, question) {
@@ -376,7 +400,7 @@
             return result;
         }
 
-        function addCountsToAutoCompleteOptions(primaryFilter) {
+        function addCountsToAutoCompleteOptions(primaryFilter, query) {
             var deferred = $q.defer();
             var apiQuery = {
                 searchFor: primaryFilter.key,
@@ -389,6 +413,10 @@
             angular.forEach(filters, function(eachFilter) {
                 apiQuery.aggregations.simple.push(getGroupQuery(eachFilter));
             });
+            if(query) {
+                var filterQuery = buildAPIQuery(query).apiQuery.query;
+                apiQuery.query = filterQuery;
+            }
             //search results and populate according owh design
             SearchService.searchResults(apiQuery).then(function(response) {
                 primaryFilter.count = response.pagination.total;
@@ -433,6 +461,7 @@
         }
 
         function getAllFilters() {
+            //TODO: consider making these available as angular values, split out into separate file
             var filters = {};
             filters.groupOptions = [
                 {key:'column',title:'Column', tooltip:'Select to view as columns on data table'},
@@ -669,6 +698,7 @@
 
 
                 /*Year and Month*/
+                //TODO: consider setting default selected years elsewhere
                 {key: 'year', title: 'label.filter.year', queryKey:"current_year",primary: false, value: ['2014'],
                     groupBy: false,type:"label.filter.group.year.month", defaultGroup:"row"},
                 {key: 'month', title: 'label.filter.month', queryKey:"month_of_death", primary: false, value: [],

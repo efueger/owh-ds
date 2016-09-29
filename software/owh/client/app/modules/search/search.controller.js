@@ -24,6 +24,7 @@
         sc.getSelectedYears = getSelectedYears;
         sc.showPhaseTwoGraphs = showPhaseTwoGraphs;
         sc.showExpandedGraph = showExpandedGraph;
+        sc.search = search;
         sc.selectedMapSize='small';
         sc.showMeOptions = [
             {key:'number_of_deaths',title:'Number of Deaths'},
@@ -32,10 +33,9 @@
         ];
         sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
         sc.showFbDialog = showFbDialog;
-
-        /*To render the inline bars for the sideBar filters*/
-        searchFactory.addCountsToAutoCompleteOptions(mortalityFilter).then(function() {
-            primaryFilterChanged(sc.filters.selectedPrimaryFilter);
+        //initial populate of the side filter options
+        populateFilterCounts(mortalityFilter).then(function() {
+            search(sc.filters.selectedPrimaryFilter);
         });
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
@@ -43,6 +43,18 @@
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter);
             }
         }, true);
+
+        function search(selectedFilter) {
+            /*To render the inline bars for the sideBar filters*/
+            //TODO: would be better if there was a way to filter using query but also get all possible values back from api
+            populateFilterCounts(mortalityFilter, selectedFilter).then(function() {
+                primaryFilterChanged(selectedFilter);
+            });
+        }
+
+        function populateFilterCounts(filter, query) {
+            return searchFactory.addCountsToAutoCompleteOptions(filter, query);
+        }
 
         function downloadCSV() {
             var data = getMixedTable(sc.filters.selectedPrimaryFilter);
@@ -110,7 +122,7 @@
         function primaryFilterChanged(newFilter) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter).then(function() {
-                sc.filters.selectedPrimaryFilter.initiated = true;
+                searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
                 }

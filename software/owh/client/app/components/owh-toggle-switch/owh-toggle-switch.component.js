@@ -20,7 +20,11 @@
     function OWHToggleSwitchController($scope) {
         var otsc = this;
         $scope.$watch('otsc.model', function (newValue, oldValue) {
-            otsc.onChange();
+            //make sure doesnt trigger on init
+            if(newValue !== oldValue) {
+                otsc.onChange();
+            }
+
         });
     }
 

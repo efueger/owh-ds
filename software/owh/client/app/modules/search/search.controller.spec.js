@@ -77,6 +77,9 @@ describe("Search controller: ", function () {
 
         //mock searchFactory object
         var searchFactory= {
+            updateFilterValues: function(){
+
+            },
             addCountsToAutoCompleteOptions: function(){
                 return {then: function(func) {
                     primaryFilterChangedFn= func;
@@ -124,6 +127,7 @@ describe("Search controller: ", function () {
         searchController.selectedMapSize = "big";
 
         //Call primaryFilterChanged
+        primaryFilterChangedFn();
         primaryFilterChangedFn();
 
         //Call SearchResultFn
@@ -184,6 +188,32 @@ describe("Search controller: ", function () {
 
         expect(xlsService.exportCSVFromMixedTable).toHaveBeenCalled();
         expect(utilService.prepareMixedTableData).toHaveBeenCalled();
+    }));
+
+    it('downloadCSV should call out with the proper filename', inject(function(utilService, xlsService) {
+        spyOn(utilService, 'prepareMixedTableData').and.returnValue({});
+        spyOn(xlsService, 'exportCSVFromMixedTable');
+        var searchController= $controller('SearchController',{$scope:$scope});
+        searchController.filters = {selectedPrimaryFilter: {data: {}, value: [], header: 'Mortality', allFilters: [
+            {
+                key: 'year',
+                value: ['2014']
+            }
+        ]} };
+
+        searchController.downloadCSV();
+
+        expect(xlsService.exportCSVFromMixedTable.calls.argsFor(0)).toContain('Mortality_2014_Filtered');
+
+        searchController.filters.selectedPrimaryFilter.allFilters = [{key: 'year', value: ['2013', '2014']}];
+        searchController.downloadCSV();
+
+        expect(xlsService.exportCSVFromMixedTable.calls.argsFor(1)).toContain('Mortality_2013-2014_Filtered');
+
+        searchController.filters.selectedPrimaryFilter.allFilters = [{key: 'year', value: []}];
+        searchController.downloadCSV();
+
+        expect(xlsService.exportCSVFromMixedTable.calls.argsFor(2)).toContain('Mortality_All_Filtered');
     }));
 
     it('downloadXLS should prepare mixedTable and call out to xlsService', inject(function(utilService, xlsService) {
