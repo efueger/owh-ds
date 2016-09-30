@@ -50,7 +50,8 @@
                     "chart": {
                         "type": "multiBarHorizontalChart",
                         "height": 250,
-                        "width": 350,
+                        //setting width to 0 allows the chart to fill container
+                        "width": 0,
                         "margin": {
                             "top": 5,
                             "right": 5,
@@ -147,7 +148,7 @@
                     "chart": {
                         "type": "multiBarChart",
                         "height": 250,
-                        "width": 350,
+                        "width": 0,
                         "margin": {
                             "top": 5,
                             "right": 5,
