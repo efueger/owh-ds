@@ -124,7 +124,13 @@
             angular.forEach(table.headers, function(headerRow, idx) {
                 var headers = [];
                 angular.forEach(headerRow, function(cell, innerIdx) {
-                    headers.push({title: cell.title, colspan: cell.colspan, rowspan: cell.rowspan});
+                    var colspan = cell.colspan;
+                    //if column is not last and not row header then increase colspan for percentage display
+                    if(innerIdx < headerRow.length - 1 && innerIdx >= table.rowHeaders.length) {
+                        colspan++;
+                    }
+                    headers.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
+
                 });
                 sheet.push(headers);
             });
@@ -132,6 +138,10 @@
                 var rowArray = [];
                 angular.forEach(row, function(cell, innerIdx) {
                     rowArray.push({title: cell.title, colspan: cell.colspan, rowspan: cell.rowspan});
+                    //if we have a percentage then add an extra column to display it
+                    if(cell.percentage) {
+                        rowArray.push({title: cell.percentage, colspan: cell.colspan, rowspan: cell.rowspan});
+                    }
                 });
                 sheet.push(rowArray);
             });

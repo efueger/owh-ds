@@ -9,7 +9,8 @@
             bindings:{
                 //TODO: change to one-way binding and bubble filter changes up with event bindings
                 filters : "=",
-                onFilter: '&'
+                onFilter: '&',
+                sort: '<'
             }
         });
 
@@ -22,6 +23,7 @@
         sfc.showModal = showModal;
         sfc.clearSelection = clearSelection;
         sfc.updateGroupValue = updateGroupValue;
+        sfc.getFilterOrder = getFilterOrder;
 
         function getOptionCountPercentage(option) {
             var countKey = sfc.filters.selectedPrimaryFilter.key;
