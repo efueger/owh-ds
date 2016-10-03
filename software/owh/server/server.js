@@ -10,10 +10,10 @@ app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({limit: '5mb'}));
 
 var rServeConfig = {
-     host : "54.175.233.200",
+     host : "54.227.177.4",
      port : 6311,
-     user : "rserv",
-     password : "OWH16#@rserv"
+     user : "gopal",
+     password : "gopal123"
 };
 
 
@@ -31,7 +31,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'html');
 
 //all routes goes here
-require("./routes/search")(app, rServeConfig);
+require("./routes/search")(app);
 require("./routes/fb")(app);
 var allRoutes = require("./routes/route");
 //all routes goes in above section
