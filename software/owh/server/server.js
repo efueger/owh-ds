@@ -9,14 +9,6 @@ var app = express();
 app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({limit: '5mb'}));
 
-var rServeConfig = {
-     host : "54.227.177.4",
-     port : 6311,
-     user : "gopal",
-     password : "gopal123"
-};
-
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
