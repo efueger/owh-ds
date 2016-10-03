@@ -28,11 +28,11 @@
 
 <div class="usa-grid border-top-default" ng-class="{'allow-inline-charting': sc.filters.allowInlineCharting}">
     <div class="usa-width-one-whole bottom-pane">
-        <a class="owh-side-menu__handle--collapsed cursor-pointer" ng-hide="sc.sideMenu.visible" ng-click="sc.sideMenu.visible = !sc.sideMenu.visible">
+        <a class="owh-side-menu__handle--collapsed cursor-pointer" ng-hide="sc.sideMenu.visible" ng-click="sc.sideMenu.visible = !sc.sideMenu.visible; sc.updateCharts()">
             <span>Show Filters &gt;&gt;</span>
         </a>
         <div class="usa-width-one-fourth side-pane-padding border-right-default owh-side-menu" ng-hide="!sc.sideMenu.visible">
-            <a class="owh-side-menu__handle cursor-pointer" ng-click="sc.sideMenu.visible = false">
+            <a class="owh-side-menu__handle cursor-pointer" ng-click="sc.sideMenu.visible = false; sc.updateCharts()">
                 <span>&lt;&lt; Hide Filters</span>
             </a>
             <div class="sort-by side-filter-padding">
@@ -65,7 +65,7 @@
                                     &nbsp; <i class="fa fa-share-alt" title="Share on facebook"></i>
                                 </a>
                             </div>
-                            <nvd3 id="chart_{{parentIndex}}_{{$index}}" options='chartData.options' data='chartData.data'></nvd3>
+                            <nvd3 id="chart_{{parentIndex}}_{{$index}}" options='chartData.options' data='chartData.data' api="chartData.api" on-ready="sc.updateCharts()"></nvd3>
                         </div>
                         <!--Graphs-->
                     </div>

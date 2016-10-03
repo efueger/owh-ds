@@ -37,6 +37,9 @@
             $timeout(function(){ map.invalidateSize()}, 1000);
         });
 
+        //TODO: refactor chart logic into component
+        sc.updateCharts = updateCharts;
+
         /*To render the inline bars for the sideBar filters*/
         searchFactory.addCountsToAutoCompleteOptions(mortalityFilter).then(function() {
             primaryFilterChanged(sc.filters.selectedPrimaryFilter);
@@ -47,6 +50,19 @@
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter);
             }
         }, true);
+
+        //used to make sure chart resizes properly, should be called whenever chart container width changes
+        function updateCharts() {
+            angular.forEach(sc.filters.selectedPrimaryFilter.chartData, function(chartData) {
+                angular.forEach(chartData, function(chart) {
+                    if(!chart.isMap) {
+                        $timeout(function(){
+                            chart.api.update();
+                        }, 250);
+                    }
+                });
+            });
+        }
 
         function downloadCSV() {
             var data = getMixedTable(sc.filters.selectedPrimaryFilter);
