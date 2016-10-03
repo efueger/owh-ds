@@ -500,9 +500,9 @@
              */
             else {
                 var count = data[countKey];
-                var title = calculatePercentage ? numberWithCommas(Number(count)) : count;
                 var columnData = prepareMixedTableColumnData(columnHeaders, data, countKey, count, calculatePercentage);
                 if(typeof data[countKey] !== 'undefined') {
+                    var title = calculatePercentage ? numberWithCommas(Number(count)) : count;
                     columnData.push({
                         title: title,
                         percentage: calculatePercentage ? (Number(data[countKey]) / totalCount) * 100 : undefined,
@@ -547,7 +547,7 @@
                             var title = calculatePercentage ? numberWithCommas(Number(count)) : count;
                             tableData.push({
                                 title: title,
-                                percentage: calculatePercentage? ((Number(count) / totalCount) * 100).toFixed(1): undefined,
+                                percentage: (calculatePercentage && totalCount != undefined)? ((Number(count) / totalCount) * 100).toFixed(1): undefined,
                                 isCount: calculatePercentage,
                                 rowspan: 1,
                                 colspan: 1

@@ -121,26 +121,33 @@
         //gets json representation of sheet
         function getSheetArrayFromMixedTable(table) {
             var sheet = [];
+            var numOfPercentageColumns = 0;
             angular.forEach(table.headers, function(headerRow, idx) {
                 var headers = [];
                 angular.forEach(headerRow, function(cell, innerIdx) {
                     var colspan = cell.colspan;
-                    //if column is not last and not row header then increase colspan for percentage display
-                    if(innerIdx < headerRow.length - 1 && innerIdx >= table.rowHeaders.length) {
-                        colspan++;
-                    }
                     headers.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
-
+                    //if column is not last and not row header then add header  for percentage display
+                    if(innerIdx < headerRow.length - 1 && innerIdx >= table.rowHeaders.length) {
+                        headers.push({title: "", colspan: colspan, rowspan: cell.rowspan});
+                        numOfPercentageColumns++;
+                    }
                 });
                 sheet.push(headers);
             });
+           // console.log(" table data", table.data);
             angular.forEach(table.data, function(row, idx) {
                 var rowArray = [];
+               //console.log(" each row ", row);
                 angular.forEach(row, function(cell, innerIdx) {
-                    rowArray.push({title: cell.title, colspan: cell.colspan, rowspan: cell.rowspan});
+                    var colspan = cell.colspan;
+                    if(cell.title === 'Total') {
+                        colspan += numOfPercentageColumns;
+                    }
+                    rowArray.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
                     //if we have a percentage then add an extra column to display it
-                    if(cell.percentage) {
-                        rowArray.push({title: cell.percentage, colspan: cell.colspan, rowspan: cell.rowspan});
+                    if(cell.percentage && innerIdx < row.length - 1 ) {
+                        rowArray.push({title: cell.percentage+"%", colspan: colspan, rowspan: cell.rowspan});
                     }
                 });
                 sheet.push(rowArray);
