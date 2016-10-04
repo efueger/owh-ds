@@ -3,13 +3,9 @@ var searchUtils = require('../api/utils');
 var elasticQueryBuilder = require('../api/elasticQueryBuilder');
 const util = require('util');
 var Q = require('q');
-
-var _host = "https://search-sb-general-yde2bcat5rvx2aygec3tpezbgu.us-east-1.es.amazonaws.com/";
-//To access local elastic search from Travis-CI
-if(process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'dev'){
-    _host = "http://localhost:9200/";
-}
-
+var logger = require('../config/logging')
+var config = require('../config/config')
+var _host = config.elastic_search.url
 var _index = "owh";
 //var _mortality_index = "mortality";
 var mortality_type = "mortality";
@@ -38,7 +34,7 @@ ElasticClient.prototype.aggregateDeaths = function(query){
     }).then(function (resp) {
         deferred.resolve(searchUtils.populateDataWithMappings(resp, 'deaths'));
     }, function (err) {
-        console.trace(err.message);
+        logger.error(err.message);
         deferred.reject(err);
     });
     return deferred.promise;
@@ -56,7 +52,7 @@ ElasticClient.prototype.aggregateMentalHealth = function(query, headers, aggrega
     }).then(function (resp) {
         deferred.resolve(searchUtils.populateYRBSData(resp.hits.hits, headers, aggregations))
     }, function (err) {
-        console.trace(err.message);
+        logger.error(err.message);
         deferred.reject(err);
     });
     return deferred.promise;

@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
 
 var app = express();
 app.use(bodyParser.json({limit: '5mb'}));
@@ -27,6 +28,8 @@ require("./routes/search")(app);
 require("./routes/fb")(app);
 var allRoutes = require("./routes/route");
 //all routes goes in above section
+
+
 
 // This will change in production since we'll be using the dist folder
 app.use(express.static(path.join(__dirname, '../client')));

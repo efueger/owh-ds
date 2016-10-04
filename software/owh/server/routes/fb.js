@@ -1,6 +1,7 @@
 var result = require('../models/result');
 const fs = require("fs");
 var uuid = require('node-uuid');
+var logger = require('../config/logging')
 
 var imageRouter = function(app, rConfig) {
     app.post('/fb/upload', function(req, res) {
@@ -13,7 +14,7 @@ var imageRouter = function(app, rConfig) {
         fs.writeFile("./uploads/"+full_size, base64Data, "base64", function(err) {
             if (err) {
                 res.send( new result('FAILED', {}, [], "error") );
-                console.log(err);
+                logger.error(err);
             } else {
                 res.send( new result('OK', {imageId: full_size}, [], "success") );
             }
