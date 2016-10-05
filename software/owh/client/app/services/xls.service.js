@@ -75,7 +75,8 @@
                             //only add offset if first column
                             if(newC === 0) {
                                 //add blank element due to bug in vertically merged cells
-                                data[i].unshift({title: '', colspan: 1, rowspan: 1});
+                                // data[i].unshift({title: '', colspan: 1, rowspan: 1});
+                                // data[i].unshift({title: '', colspan: 1, rowspan: 1});
                                 //proper way to account for vertically merged cells, doesn't work due to js-xlsx bug
                                 // if(cOffsets[i]) {
                                     // cOffsets[i] += cellJson.colspan;
@@ -124,21 +125,72 @@
             var numOfPercentageColumns = 0;
             angular.forEach(table.headers, function(headerRow, idx) {
                 var headers = [];
+                if(idx === table.headers.length - 1 && table.headers.length > 1) {
+                    //add cell to account for row headers
+                    headers.push({title: "", colspan: table.rowHeaders.length, rowspan: 1});
+                }
                 angular.forEach(headerRow, function(cell, innerIdx) {
                     var colspan = cell.colspan;
-                    headers.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
-                    //if column is not last and not row header then add header  for percentage display
-                    if(innerIdx < headerRow.length - 1 && innerIdx >= table.rowHeaders.length) {
-                        headers.push({title: "", colspan: colspan, rowspan: cell.rowspan});
-                        numOfPercentageColumns++;
+                    //check is column header for data column, else add header as normal
+                    if((innerIdx >= table.rowHeaders.length && innerIdx < headerRow.length - 1) || idx > 0) {
+                        //for the bottom row just add an extra column for every existing one, else double the length
+                        if(idx === table.headers.length - 1) {
+                            headers.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
+                            headers.push({title: "", colspan: colspan, rowspan: cell.rowspan});
+                            numOfPercentageColumns++;
+                        } else {
+                            headers.push({title: cell.title, colspan: colspan * 2, rowspan: cell.rowspan});
+                        }
+                    } else {
+                        headers.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
                     }
+
                 });
+                console.log(headers);
                 sheet.push(headers);
             });
            // console.log(" table data", table.data);
+            var colOffsets = {};
             angular.forEach(table.data, function(row, idx) {
                 var rowArray = [];
                //console.log(" each row ", row);
+
+                function getPadding(colOffsets) {
+                    var padding = 0;
+                    for(var i = 0; i < table.rowHeaders.length - 1; i++) {
+                        if(colOffsets[i]) {
+                            padding++;
+                            console.log(colOffsets);
+                            colOffsets[i]--;
+                        }
+                    }
+                    return padding;
+                }
+
+                var padding = getPadding(colOffsets);
+                console.log('padding', padding);
+
+                if(table.rowHeaders.length > 1) {
+                    if(padding > 0) {
+                        rowArray.push({title: "", colspan: padding, rowspan: 1});
+                    }
+                }
+
+                //replace zero/empty offsets
+                var paddingIndex = 0;
+                for(var i = 0; i < table.rowHeaders.length; i++) {
+                    if(!colOffsets[i]) {
+                        console.log('replacing coloffset', colOffsets[i]);
+                        console.log('at index', i);
+                        console.log('while processing row', row[i]);
+                        var rowspan = row[paddingIndex] ? row[paddingIndex].rowspan : 0;
+                        if(rowspan > 0) {
+                            colOffsets[i] = rowspan - 1;
+                        }
+                        paddingIndex++;
+                    }
+                }
+
                 angular.forEach(row, function(cell, innerIdx) {
                     var colspan = cell.colspan;
                     if(cell.title === 'Total') {
@@ -146,12 +198,14 @@
                     }
                     rowArray.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
                     //if we have a percentage then add an extra column to display it
-                    if(cell.percentage && innerIdx < row.length - 1 ) {
+                    if(cell.percentage !== undefined && innerIdx < row.length - 1 ) {
                         rowArray.push({title: cell.percentage+"%", colspan: colspan, rowspan: cell.rowspan});
                     }
                 });
                 sheet.push(rowArray);
             });
+            console.log(sheet);
+            console.log('header rowspans', rowHeaderRowspan);
             return sheet;
         }
 
