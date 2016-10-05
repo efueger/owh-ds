@@ -43,21 +43,22 @@ Scenario: Percentages display
   When I see the data table
   Then percentages are displayed in the same column/cell in parenthesis
 
-Scenario: Quick visualizations
-  When I see the quick visualizations
-  Then they're displayed same as before and nothing changes
-
-Scenario: Export
-  When I export the data table into excel or csv
-  Then percentages are exported as well
-  And  each percentage is displayed in a separate column (unlike UI in the application)
+#Scenario: Export
+  #When I export the data table into excel or csv
+  #Then percentages are exported as well
+  #And  each percentage is displayed in a separate column (unlike UI in the application)
 
 Scenario: Show/Hide percentages
   When I see the results
   Then an option to view/hide percentages is displayed
   And when that option is toggled, the percentages are either displayed/hidden
-  And this option decides if percentages get exported into the excel/csv or not
+  #And this option decides if percentages get exported into the excel/csv or not
 
 Scenario: enario: Decimal Precision
-  When the I look at the table results
+  When I look at the table results
+  And percentage option is enabled
   Then the Rates and Percentages should have a one decimal precision
+
+Scenario: Quick visualizations
+  When I see the quick visualizations
+  Then they're displayed same as before and nothing changes

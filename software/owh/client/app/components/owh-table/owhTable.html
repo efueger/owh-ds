@@ -12,7 +12,7 @@
             <i class="cursor-pointer {{eachColumn.iconClass}}" ng-if="eachColumn.iconClass" ng-click="eachColumn.onIconClick(eachColumn.key)"></i>
             <label class="custom-label" ng-if="eachColumn.isCount">
                 <span ng-bind="eachColumn.title" class="count-value"></span>
-                <span ng-show="$index != eachRow.length - 1 && eachColumn.percentage != undefined && eachColumn.percentage > 0" class="count-value">({{eachColumn.percentage}})%</span>
+                <span ng-show="$index != eachRow.length - 1 && eachColumn.percentage != undefined" class="count-value">({{eachColumn.percentage}}%)</span>
             </label>
             <span ng-if="eachColumn.isCount" class="inline-bar" style="width: {{eachColumn.percentage}}%"></span>
         </td>

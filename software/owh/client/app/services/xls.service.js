@@ -108,7 +108,7 @@
                 cell.t = 's';
                 if(convertNumbers) {
                     //check if string is parsable as integer and make sure doesn't contain letters
-                    var numberValue = parseInt(cell.v.replace(',', ''));
+                    var numberValue = parseFloat(cell.v.replace(',', ''));
                     if(!isNaN(numberValue) && !cell.v.match(/[a-z]/i)) {
                         cell.v = numberValue;
                         cell.t = 'n';
@@ -128,14 +128,13 @@
                     var colspan = cell.colspan;
                     headers.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
                     //if column is not last and not row header then add header  for percentage display
-                    if(innerIdx < headerRow.length - 1 && innerIdx >= table.rowHeaders.length) {
-                        headers.push({title: "", colspan: colspan, rowspan: cell.rowspan});
+                    if(table.calculatePercentage && innerIdx < headerRow.length - 1 && innerIdx >= table.rowHeaders.length) {
+                        headers.push({title: "% of " +cell.title+" Deaths", colspan: colspan, rowspan: cell.rowspan});
                         numOfPercentageColumns++;
                     }
                 });
                 sheet.push(headers);
             });
-           // console.log(" table data", table.data);
             angular.forEach(table.data, function(row, idx) {
                 var rowArray = [];
                //console.log(" each row ", row);
@@ -147,7 +146,7 @@
                     rowArray.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
                     //if we have a percentage then add an extra column to display it
                     if(cell.percentage && innerIdx < row.length - 1 ) {
-                        rowArray.push({title: cell.percentage+"%", colspan: colspan, rowspan: cell.rowspan});
+                        rowArray.push({title: cell.percentage, colspan: colspan, rowspan: cell.rowspan});
                     }
                 });
                 sheet.push(rowArray);
