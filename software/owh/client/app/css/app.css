@@ -1005,3 +1005,18 @@ body {
     font-size: 13px !important;
     font-weight: bold !important;
 }
+
+/* Toggle percentage button*/
+.togglePercentage > a {
+    border-color: #ccc;
+    border-right: none;
+    cursor: pointer;
+}
+.togglePercentage > a.selected {
+    background-color: #974bc2;
+    border-color: #ccc;
+
+}
+.togglePercentage > a.active-link {
+   border-color: #ccc;
+}

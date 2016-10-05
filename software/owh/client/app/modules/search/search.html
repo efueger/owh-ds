@@ -86,7 +86,16 @@
             <!--Table-->
             <div class="usa-grid-full">
                 <div class="usa-width-one-whole overflow-auto">
-                    <hr />
+                    <hr /><!-- show hide percentage -->
+                    <div id="togglePercentage" class="togglePercentage pull-left">
+                        <a id="showPercentage" class="active-link custom-link " ng-class="{'selected': sc.filters.selectedPrimaryFilter.calculatePercentage === true}" ng-click="sc.filters.selectedPrimaryFilter.calculatePercentage = true;" title="Show percentage">
+                            <span>Show</span>
+                        </a>
+                        <a id="hidePercentage" class="active-link custom-link" ng-class="{'selected': sc.filters.selectedPrimaryFilter.calculatePercentage === false}" ng-click="sc.filters.selectedPrimaryFilter.calculatePercentage = false;" title="Hide percentage">
+                            <span>Hide</span>
+                        </a>
+                    </div>
+
                     <div class="pull-right margin-bottom-20 margin-right-10">
                         <!--<div>Icons made by <a href="http://www.flaticon.com/authors/madebyoliver" title="Madebyoliver">Madebyoliver</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>-->
                         <a name="download_csv" ng-click="sc.downloadCSV()" title="Download CSV" class="cursor-pointer">

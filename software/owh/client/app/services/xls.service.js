@@ -109,7 +109,7 @@
                 cell.t = 's';
                 if(convertNumbers) {
                     //check if string is parsable as integer and make sure doesn't contain letters
-                    var numberValue = parseInt(cell.v.replace(',', ''));
+                    var numberValue = parseFloat(cell.v.replace(',', ''));
                     if(!isNaN(numberValue) && !cell.v.match(/[a-z]/i)) {
                         cell.v = numberValue;
                         cell.t = 'n';
@@ -132,11 +132,11 @@
                 angular.forEach(headerRow, function(cell, innerIdx) {
                     var colspan = cell.colspan;
                     //check is column header for data column, else add header as normal
-                    if((innerIdx >= table.rowHeaders.length && innerIdx < headerRow.length - 1) || idx > 0) {
+                    if(table.calculatePercentage && ((innerIdx >= table.rowHeaders.length && innerIdx < headerRow.length - 1) || idx > 0)) {
                         //for the bottom row just add an extra column for every existing one, else double the length
                         if(idx === table.headers.length - 1) {
                             headers.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
-                            headers.push({title: "", colspan: colspan, rowspan: cell.rowspan});
+                            headers.push({title: "% of " +cell.title+" Deaths", colspan: colspan, rowspan: cell.rowspan});
                             numOfPercentageColumns++;
                         } else {
                             headers.push({title: cell.title, colspan: colspan * 2, rowspan: cell.rowspan});
@@ -205,7 +205,6 @@
                 sheet.push(rowArray);
             });
             console.log(sheet);
-            console.log('header rowspans', rowHeaderRowspan);
             return sheet;
         }
 

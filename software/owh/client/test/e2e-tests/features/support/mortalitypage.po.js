@@ -7,6 +7,10 @@ var MortalitySearchPage = function() {
     msp.sideMenu = element(by.className('owh-side-menu'));
     msp.hideFiltersBtn = element(by.className('owh-side-menu__handle'));
     msp.showFiltersBtn = element(by.className('owh-side-menu__handle--collapsed'));
+    msp.owhTable = element(by.tagName('owh-table'));
+    msp.showOrHidePecentageDiv = element(by.id('togglePercentage'));
+    msp.showPecentageButton = element(by.id('togglePercentage')).element(by.cssContainingText('a', 'Show'));
+    msp.hidePecentageButton = element(by.id('togglePercentage')).element(by.cssContainingText('a', 'Hide'));
 
     msp.getSelectedFilterType = function() {
        return msp.filterTypeSelectBox.$('option:checked').getText();
@@ -36,6 +40,19 @@ var MortalitySearchPage = function() {
         var axis_x_label = element(by.id('chart_expanded_0')).element(by.css('.nvd3.nv-wrap.nv-multiBarHorizontalChart')).element(by.css('.nv-x.nv-axis')).element(by.css('.nv-axislabel'));
         var axis_y_label = element(by.id('chart_expanded_0')).element(by.css('.nvd3.nv-wrap.nv-multiBarHorizontalChart')).element(by.css('.nv-y.nv-axis')).element(by.css('.nv-axislabel'));
         return [axis_x_label, axis_y_label]
+    };
+    msp.getTableHeaders = function() {
+        //Verify that owhTable has given column
+        return msp.owhTable.element(by.tagName('table')).element(by.tagName('thead')).all(by.tagName('th')).getText();
+
+    };
+    msp.getTableRowData = function(rowNumber) {
+        return msp.owhTable.element(by.tagName('table')).element(by.tagName('tbody')).all(by.tagName('tr')).get(rowNumber).all(by.tagName('td')).getText();
+    }
+    //FilterType ex: Race, Sex, Autopsy...
+    //viewType ex: Column, Row, Off
+    msp.selectSideFilter = function(filterType, viewType) {
+        return element(by.cssContainingText('a', filterType)).element(By.xpath('following-sibling::owh-toggle-switch')).element(by.cssContainingText('a', viewType));
     };
 };
 

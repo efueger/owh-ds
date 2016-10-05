@@ -2,7 +2,6 @@ var result = require('../models/result');
 var elasticSearch = require('../models/elasticSearch');
 var queryBuilder = require('../api/elasticQueryBuilder');
 const util = require('util');
-var rServerConn = require("../models/rServerConn");
 
 var searchRouter = function(app, rConfig) {
     app.post('/search', function(req, res) {
@@ -25,11 +24,6 @@ var searchRouter = function(app, rConfig) {
             new elasticSearch().aggregateMentalHealth(finalQuery, q.dataKeys, q.aggregations.nested.table).then(function(response){
                 res.send( new result('OK', response, response.pagination, "success") );
             });
-            //var rServe = new rServerConn();
-            //console.log("Querying RServe");
-            //rServe.query(rConfig);
-            //console.log("Completed querying RServe");
-            //res.send( new result('OK', [], undefined, "success") );
         }
     });
 };

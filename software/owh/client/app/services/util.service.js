@@ -331,7 +331,8 @@
         function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal) {
             var tableData = {
                 headers: prepareMixedTableHeaders(headers, countLabel),
-                data: []
+                data: [],
+                calculatePercentage: calculatePercentage
             };
             tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal);
             return tableData;
@@ -502,11 +503,11 @@
                 var count = data[countKey];
                 var columnData = prepareMixedTableColumnData(columnHeaders, data, countKey, count, calculatePercentage);
                 if(typeof data[countKey] !== 'undefined') {
-                    var title = calculatePercentage ? numberWithCommas(Number(count)) : count;
+                    var title =  numberWithCommas(Number(count));
                     columnData.push({
                         title: title,
                         percentage: calculatePercentage ? (Number(data[countKey]) / totalCount) * 100 : undefined,
-                        isCount: calculatePercentage,
+                        isCount: true,
                         rowspan: 1,
                         colspan: 1,
                         isBold: true
@@ -544,11 +545,11 @@
                         } else {
                             var count = matchedData[countKey];
                             eachOptionLength = 1;
-                            var title = calculatePercentage ? numberWithCommas(Number(count)) : count;
+                            var title = numberWithCommas(Number(count));
                             tableData.push({
                                 title: title,
                                 percentage: (calculatePercentage && totalCount != undefined)? ((Number(count) / totalCount) * 100).toFixed(1): undefined,
-                                isCount: calculatePercentage,
+                                isCount: true,
                                 rowspan: 1,
                                 colspan: 1
                             });
