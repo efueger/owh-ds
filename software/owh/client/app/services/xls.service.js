@@ -46,6 +46,7 @@
         //returns xls worksheet from array of json rows
         //ex: [[{title: 'test', colspan: 1, rowspan: 1}, {...}, {...}], [{...}, null, {...}] ]
         function getSheetFromArray(data, convertNumbers) {
+            console.log("data----------------------------- ", data);
             var ws = {'!merges': []};
             var range = {s: {c:10000000, r:10000000}, e: {c:0, r:0 }};
             //keep track of offsets caused by merged cells
@@ -128,7 +129,7 @@
                     var colspan = cell.colspan;
                     headers.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
                     //if column is not last and not row header then add header  for percentage display
-                    if(table.calculatePercentage && innerIdx < headerRow.length - 1 && innerIdx >= table.rowHeaders.length) {
+                    if(table.calculatePercentage && innerIdx < headerRow.length - 1 && table.rowHeaders && innerIdx >= table.rowHeaders.length) {
                         headers.push({title: "% of " +cell.title+" Deaths", colspan: colspan, rowspan: cell.rowspan});
                         numOfPercentageColumns++;
                     }
@@ -145,7 +146,7 @@
                     }
                     rowArray.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
                     //if we have a percentage then add an extra column to display it
-                    if(cell.percentage && innerIdx < row.length - 1 ) {
+                    if(table.calculatePercentage && cell.percentage && innerIdx < row.length - 1 ) {
                         rowArray.push({title: cell.percentage, colspan: colspan, rowspan: cell.rowspan});
                     }
                 });

@@ -86,13 +86,15 @@
             <!--Table-->
             <div class="usa-grid-full">
                 <div class="usa-width-one-whole overflow-auto">
-                    <hr /><!-- show hide percentage -->
+                    <hr />
+                    <!-- show hide percentage -->
                     <div id="togglePercentage" class="togglePercentage pull-left">
+                        <span ng-bind="'label.mortality.search.table.percentage' | translate"> </span>
                         <a id="showPercentage" class="active-link custom-link " ng-class="{'selected': sc.filters.selectedPrimaryFilter.calculatePercentage === true}" ng-click="sc.filters.selectedPrimaryFilter.calculatePercentage = true;" title="Show percentage">
-                            <span>Show</span>
+                            <span ng-bind="'label.mortality.search.table.show.percentage.button' | translate"></span>
                         </a>
                         <a id="hidePercentage" class="active-link custom-link" ng-class="{'selected': sc.filters.selectedPrimaryFilter.calculatePercentage === false}" ng-click="sc.filters.selectedPrimaryFilter.calculatePercentage = false;" title="Hide percentage">
-                            <span>Hide</span>
+                            <span ng-bind="'label.mortality.search.table.hide.percentage.button' | translate"></span>
                         </a>
                     </div>
 

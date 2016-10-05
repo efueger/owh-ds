@@ -535,8 +535,8 @@
           "isCount": false
         },
         {
-          "title": 157850,
-          "isCount": false,
+          "title": "157,850",
+          "isCount": true,
           "rowspan": 1,
           "colspan": 1,
           "isBold": true
@@ -559,6 +559,7 @@
           "isBold": true
         }
       ]
-    ]
+    ],
+    "calculatePercentage":false
   }
 }
