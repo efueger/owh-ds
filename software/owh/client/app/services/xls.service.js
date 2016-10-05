@@ -71,21 +71,6 @@
 
                     if(cellJson.colspan > 1 || cellJson.rowspan > 1) {
                         cOffsets[R] += cellJson.colspan - 1;
-                        //when we have a row offset, we have to make sure any resulting column offset is added to subsequent rows
-                        for(var i = R + 1; i < R + cellJson.rowspan; i++) {
-                            //only add offset if first column
-                            if(newC === 0) {
-                                //add blank element due to bug in vertically merged cells
-                                // data[i].unshift({title: '', colspan: 1, rowspan: 1});
-                                // data[i].unshift({title: '', colspan: 1, rowspan: 1});
-                                //proper way to account for vertically merged cells, doesn't work due to js-xlsx bug
-                                // if(cOffsets[i]) {
-                                    // cOffsets[i] += cellJson.colspan;
-                                // } else {
-                                    // cOffsets[i] = cellJson.colspan;
-                                // }
-                            }
-                        }
                         var mergeCell = {s: {c: newC, r: newR}, e: {c: (newC + cellJson.colspan - 1), r: (newR + cellJson.rowspan - 1)}};
                         ws['!merges'].push(mergeCell);
 
@@ -147,30 +132,43 @@
                     }
 
                 });
-                console.log(headers);
                 sheet.push(headers);
             });
-           // console.log(" table data", table.data);
+
+            //keep track of column offsets so we know how much padding to add to each row
             var colOffsets = {};
             angular.forEach(table.data, function(row, idx) {
                 var rowArray = [];
-               //console.log(" each row ", row);
 
                 function getPadding(colOffsets) {
                     var padding = 0;
                     for(var i = 0; i < table.rowHeaders.length - 1; i++) {
                         if(colOffsets[i]) {
                             padding++;
-                            console.log(colOffsets);
                             colOffsets[i]--;
                         }
                     }
                     return padding;
                 }
 
-                var padding = getPadding(colOffsets);
-                console.log('padding', padding);
+                function replacePadding(colOffsets) {
+                    var paddingIndex = 0;
+                    for(var i = 0; i < table.rowHeaders.length; i++) {
+                        if(!colOffsets[i]) {
+                            var rowspan = row[paddingIndex] ? row[paddingIndex].rowspan : 0;
+                            if(rowspan > 0) {
+                                colOffsets[i] = rowspan - 1;
+                            }
+                            paddingIndex++;
+                        }
+                    }
+                    return colOffsets;
+                }
 
+                //get padding
+                var padding = getPadding(colOffsets);
+
+                //add padding as needed to row
                 if(table.rowHeaders.length > 1) {
                     if(padding > 0) {
                         rowArray.push({title: "", colspan: padding, rowspan: 1});
@@ -178,19 +176,7 @@
                 }
 
                 //replace zero/empty offsets
-                var paddingIndex = 0;
-                for(var i = 0; i < table.rowHeaders.length; i++) {
-                    if(!colOffsets[i]) {
-                        console.log('replacing coloffset', colOffsets[i]);
-                        console.log('at index', i);
-                        console.log('while processing row', row[i]);
-                        var rowspan = row[paddingIndex] ? row[paddingIndex].rowspan : 0;
-                        if(rowspan > 0) {
-                            colOffsets[i] = rowspan - 1;
-                        }
-                        paddingIndex++;
-                    }
-                }
+                replacePadding(colOffsets);
 
                 angular.forEach(row, function(cell, innerIdx) {
                     var colspan = cell.colspan;
@@ -205,7 +191,6 @@
                 });
                 sheet.push(rowArray);
             });
-            console.log(sheet);
             return sheet;
         }
 
