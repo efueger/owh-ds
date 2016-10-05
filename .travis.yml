@@ -17,11 +17,13 @@ addons:
 
 env:
   - NODE_ENV=test # If we set NODE_ENV to test then owh app use local elastic search service
+  - OWH_HOME=.owh
 
 before_install:
   - curl -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.0/elasticsearch-2.4.0.deb && sudo dpkg -i --force-confnew elasticsearch-2.4.0.deb && sudo service elasticsearch restart
   - docker info
-
+  - openssl aes-256-cbc -K $encrypted_15a1dbc28b18_key -iv $encrypted_15a1dbc28b18_key -in .owh/owh-config.yaml.enc -out .owh/owh-config.yaml -d
+   
 install:
   - cd software/owh/server
   - npm install
