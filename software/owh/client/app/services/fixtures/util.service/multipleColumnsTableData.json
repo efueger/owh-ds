@@ -546,14 +546,14 @@
           "key": "1"
         },
         {
-          "title": 50390,
-          "isCount": false,
+          "title": "50,390",
+          "isCount": true,
           "rowspan": 1,
           "colspan": 1
         },
         {
-          "title": 49699,
-          "isCount": false,
+          "title": "49,699",
+          "isCount": true,
           "rowspan": 1,
           "colspan": 1
         },
@@ -568,8 +568,8 @@
           "isCount": false
         },
         {
-          "title": 314748,
-          "isCount": false,
+          "title": "314,748",
+          "isCount": true,
           "rowspan": 1,
           "colspan": 1,
           "isBold": true
@@ -592,6 +592,7 @@
           "isBold": true
         }
       ]
-    ]
+    ],
+    "calculatePercentage":false
   }
 }

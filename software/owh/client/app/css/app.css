@@ -1009,14 +1009,17 @@ body {
 /* Toggle percentage button*/
 .togglePercentage > a {
     border-color: #ccc;
-    border-right: none;
     cursor: pointer;
 }
 .togglePercentage > a.selected {
     background-color: #974bc2;
     border-color: #ccc;
-
 }
 .togglePercentage > a.active-link {
    border-color: #ccc;
+}
+.togglePercentage > a.active-link:last-of-type {
+    border-radius: 0 3px 3px 0;
+    border-left:none;
+    margin-left:-4px;
 }

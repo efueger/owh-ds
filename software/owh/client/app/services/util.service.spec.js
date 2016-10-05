@@ -217,8 +217,9 @@ describe('utilService', function(){
 
     it('test utils prepareMixedTableData for numbers and percentages', function () {
         //Implementation pending
-        var result = null //call prepareMixedTableData
+        var result = utils.prepareMixedTableData(tableData.headers, tableData.data, tableData.countKey, tableData.totalCount, tableData.countLabel, tableData.calculatePercentage, tableData.calculateRowTotal);
         expect(result).not.toBe(null);
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(tableData.expectedResult));
     });
 
     it('test utils concatenateByKey', function () {

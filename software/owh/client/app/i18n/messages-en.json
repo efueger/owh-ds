@@ -130,5 +130,8 @@
   "label.graph.expanded": "Graph expanded view",
   "label.graph.yrbsGrade": "Grade",
   "label.graph.yrbsRace": "Race",
-  "label.default.to.be.implemented":"This feature will be implemented in the next phase."
+  "label.default.to.be.implemented":"This feature will be implemented in the next phase.",
+  "label.mortality.search.table.percentage":"Percentage",
+  "label.mortality.search.table.show.percentage.button":"Show",
+  "label.mortality.search.table.hide.percentage.button":"Hide"
 }
