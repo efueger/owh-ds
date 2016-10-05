@@ -112,7 +112,8 @@ describe('xlsService', function(){
             data: [
               [{title: 'data1', colspan: 1, rowspan: 1}, {title: 'data2', colspan: 1, rowspan: 1}],
               [{title: 'data3', colspan: 1, rowspan: 1}, {title: 'data4', colspan: 1, rowspan: 1}]
-            ]
+            ],
+            rowHeaders: [{}]
         };
         var sheetArray = xlsService.getSheetArrayFromMixedTable(mixedTable);
 
@@ -188,7 +189,8 @@ describe('xlsService', function(){
             data: [
                 [{title: 'data1', colspan: 1, rowspan: 1}, {title: 'data2', colspan: 1, rowspan: 1}],
                 [{title: 'data3', colspan: 1, rowspan: 1}, {title: 'data4', colspan: 1, rowspan: 1}]
-            ]
+            ],
+            rowHeaders: [{}]
         };
         var filename = 'testname';
         xlsService.exportCSVFromMixedTable(mixedTable, filename);
@@ -204,7 +206,8 @@ describe('xlsService', function(){
             data: [
                 [{title: 'data1', colspan: 1, rowspan: 1}, {title: 'data2', colspan: 1, rowspan: 1}],
                 [{title: 'data3', colspan: 1, rowspan: 1}, {title: 'data4', colspan: 1, rowspan: 1}]
-            ]
+            ],
+            rowHeaders: [{}]
         };
         var filename = 'testnameXLS';
         xlsService.exportXLSFromMixedTable(mixedTable, filename);
