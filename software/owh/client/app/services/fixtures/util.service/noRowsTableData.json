@@ -72,19 +72,18 @@
       [
         {
           "title": "50,390",
-          "percentage": 0.3945194754355059,
           "isCount": true,
           "rowspan": 1,
           "colspan": 1
         },
         {
           "title": "107,460",
-          "percentage": 0.8413388138578979,
           "isCount": true,
           "rowspan": 1,
           "colspan": 1
         }
       ]
-    ]
+    ],
+    "calculatePercentage":true
   }
 }

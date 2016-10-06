@@ -10,7 +10,6 @@
                 //TODO: change to one-way binding and bubble filter changes up with event bindings
                 filters : "=",
                 onFilter: '&',
-                //array of filter keys, specifies order
                 sort: '<'
             }
         });

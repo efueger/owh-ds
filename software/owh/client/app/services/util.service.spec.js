@@ -205,7 +205,7 @@ describe('utilService', function(){
         expect(JSON.stringify(result)).toEqual(JSON.stringify(noColumnsTableData.expectedResult));
     });
 
-    it('test utils prepareMixedTableData for no row headers and without calculatePercentage', function () {
+    it('test utils prepareMixedTableData for no row headers and with calculatePercentage', function () {
         var result = utils.prepareMixedTableData(noRowsTableData.headers, noRowsTableData.data, noRowsTableData.countKey, noRowsTableData.totalCount, noRowsTableData.countLabel, noRowsTableData.calculatePercentage, noRowsTableData.calculateRowTotal);
         expect(JSON.stringify(result)).toEqual(JSON.stringify(noRowsTableData.expectedResult));
     });
@@ -213,6 +213,13 @@ describe('utilService', function(){
     it('test utils prepareMixedTableData for no row headers and without calculatePercentage', function () {
         var result = utils.prepareMixedTableData(singleValuedTableData.headers, singleValuedTableData.data, singleValuedTableData.countKey, singleValuedTableData.totalCount, singleValuedTableData.countLabel, singleValuedTableData.calculatePercentage, singleValuedTableData.calculateRowTotal);
         expect(JSON.stringify(result)).toEqual(JSON.stringify(singleValuedTableData.expectedResult));
+    });
+
+    it('test utils prepareMixedTableData for numbers and percentages', function () {
+        //Implementation pending
+        var result = utils.prepareMixedTableData(tableData.headers, tableData.data, tableData.countKey, tableData.totalCount, tableData.countLabel, tableData.calculatePercentage, tableData.calculateRowTotal);
+        expect(result).not.toBe(null);
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(tableData.expectedResult));
     });
 
     it('test utils concatenateByKey', function () {

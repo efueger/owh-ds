@@ -331,7 +331,8 @@
         function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal) {
             var tableData = {
                 headers: prepareMixedTableHeaders(headers, countLabel),
-                data: []
+                data: [],
+                calculatePercentage: calculatePercentage
             };
             tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal);
             return tableData;
@@ -351,6 +352,14 @@
             }
 
         }
+
+        /**
+         * This function prepares table headers
+         * Ex: Race, Female, Male, Number of Deaths
+         * @param headers
+         * @param countLabel
+         * @returns {*[]}
+         */
         function prepareMixedTableHeaders(headers, countLabel) {
             var tableHeaders = [[]];
             var tableRowHeaders = [];
@@ -417,9 +426,26 @@
             }
             return tableColumnHeaderData;
         }
+
+        /**
+         * This function prepares table row data
+         * @param rowHeaders
+         * @param columnHeaders
+         * @param data
+         * @param countKey
+         * @param totalCount
+         * @param calculatePercentage
+         * @param calculateRowTotal
+         * @returns {Array}
+         */
         function prepareMixedTableRowData(rowHeaders, columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal) {
             var tableData = [];
 
+            /**
+             * This if condition prepares data
+             * Ex: If we are filtering data by Race and Sex then table have columns like Race, Female, Male, NumberOfDeaths, So this function
+             * prepares 'Race' data and Total
+             */
             if(rowHeaders && rowHeaders.length > 0) {
                 var eachHeader = rowHeaders[0];
                 var eachHeaderData = data[eachHeader.key];
@@ -467,15 +493,21 @@
                     childTableData[0].unshift(eachTableRow);
                     tableData = tableData.concat(childTableData);
                 });
-            } else {
-                var columnData = prepareMixedTableColumnData(columnHeaders, data, countKey, totalCount, calculatePercentage);
+            }
+            /**
+             * This else condition prepares column data
+             * Ex: If we are filtering data by Race and Sex then table have columns like Race, Female, Male, NumberOfDeaths, So this function
+             * prepares 'NumberOfDeaths' data
+             */
+            else {
+                var count = data[countKey];
+                var columnData = prepareMixedTableColumnData(columnHeaders, data, countKey, count, calculatePercentage);
                 if(typeof data[countKey] !== 'undefined') {
-                    var count = data[countKey];
-                    var title = calculatePercentage ? numberWithCommas(Number(count)) : count;
+                    var title =  numberWithCommas(Number(count));
                     columnData.push({
                         title: title,
                         percentage: calculatePercentage ? (Number(data[countKey]) / totalCount) * 100 : undefined,
-                        isCount: calculatePercentage,
+                        isCount: true,
                         rowspan: 1,
                         colspan: 1,
                         isBold: true
@@ -485,6 +517,18 @@
             }
             return tableData;
         }
+
+        /**
+         * This method prepares column data
+         * Ex: If we are filtering data by Race and Sex then table have columns like Race, Female, Male, NumberOfDeaths, So this function
+         * prepares 'Female' and 'Male' data
+         * @param columnHeaders
+         * @param data
+         * @param countKey
+         * @param totalCount
+         * @param calculatePercentage
+         * @returns {Array}
+         */
         function prepareMixedTableColumnData(columnHeaders, data, countKey, totalCount, calculatePercentage) {
             var tableData = [];
             if(columnHeaders && columnHeaders.length > 0) {
@@ -501,11 +545,11 @@
                         } else {
                             var count = matchedData[countKey];
                             eachOptionLength = 1;
-                            var title = calculatePercentage ? numberWithCommas(Number(count)) : count;
+                            var title = numberWithCommas(Number(count));
                             tableData.push({
                                 title: title,
-                                percentage: calculatePercentage? (Number(count) / totalCount) * 100: undefined,
-                                isCount: calculatePercentage,
+                                percentage: (calculatePercentage && totalCount != undefined)? ((Number(count) / totalCount) * 100).toFixed(1): undefined,
+                                isCount: true,
                                 rowspan: 1,
                                 colspan: 1
                             });

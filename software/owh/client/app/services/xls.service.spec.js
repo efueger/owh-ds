@@ -2,7 +2,58 @@
 
 describe('xlsService', function(){
     var xlsService;
-
+    var mixedData = {
+        "headers": [
+            [
+                {
+                    "title": "Female",
+                    "colspan": 1,
+                    "rowspan": 1,
+                    "isData": true
+                },
+                {
+                    "title": "Male",
+                    "colspan": 1,
+                    "rowspan": 1,
+                    "isData": true
+                },
+                {
+                    "title": "Number of Deaths",
+                    "colspan": 1,
+                    "rowspan": 1,
+                    "isData": true
+                }
+            ]
+        ],
+        "rowHeaders": [],
+        "data": [
+            [
+                {
+                    "title": "50,390",
+                    "percentage": "31.9",
+                    "isCount": true,
+                    "rowspan": 1,
+                    "colspan": 1
+                },
+                {
+                    "title": "107,460",
+                    "percentage": "68.1",
+                    "isCount": true,
+                    "rowspan": 1,
+                    "colspan": 1
+                },
+                {
+                    "title": "157,850",
+                    "percentage": 1.2358582892934038,
+                    "isCount": true,
+                    "rowspan": 1,
+                    "colspan": 1,
+                    "isBold": true
+                }
+            ]
+        ],
+        "calculatePercentage":true
+    };
     beforeEach(module('owh'));
 
     beforeEach(inject(function ($injector) {
@@ -61,7 +112,8 @@ describe('xlsService', function(){
             data: [
               [{title: 'data1', colspan: 1, rowspan: 1}, {title: 'data2', colspan: 1, rowspan: 1}],
               [{title: 'data3', colspan: 1, rowspan: 1}, {title: 'data4', colspan: 1, rowspan: 1}]
-            ]
+            ],
+            rowHeaders: [{}]
         };
         var sheetArray = xlsService.getSheetArrayFromMixedTable(mixedTable);
 
@@ -137,7 +189,8 @@ describe('xlsService', function(){
             data: [
                 [{title: 'data1', colspan: 1, rowspan: 1}, {title: 'data2', colspan: 1, rowspan: 1}],
                 [{title: 'data3', colspan: 1, rowspan: 1}, {title: 'data4', colspan: 1, rowspan: 1}]
-            ]
+            ],
+            rowHeaders: [{}]
         };
         var filename = 'testname';
         xlsService.exportCSVFromMixedTable(mixedTable, filename);
@@ -153,13 +206,84 @@ describe('xlsService', function(){
             data: [
                 [{title: 'data1', colspan: 1, rowspan: 1}, {title: 'data2', colspan: 1, rowspan: 1}],
                 [{title: 'data3', colspan: 1, rowspan: 1}, {title: 'data4', colspan: 1, rowspan: 1}]
-            ]
+            ],
+            rowHeaders: [{}]
         };
         var filename = 'testnameXLS';
         xlsService.exportXLSFromMixedTable(mixedTable, filename);
 
         expect(window.saveAs).toHaveBeenCalled();
         expect(window.saveAs.calls.argsFor(0)[1]).toEqual(filename + '.xlsx');
+    });
+
+    it('should show numbers and percentages in exported csv', function () {
+        var sheetArray = xlsService.getSheetArrayFromMixedTable(mixedData)
+        var result = xlsService.getSheetFromArray(sheetArray);
+        expect(result['A1'].v).toEqual('Female');
+        expect(result['B1'].v).toEqual('% of Female Deaths');
+        expect(result['C1'].v).toEqual('Male');
+        expect(result['D1'].v).toEqual('% of Male Deaths');
+        expect(result['E1'].v).toEqual('Number of Deaths');
+        expect(result['A2'].v).toEqual('50,390');
+        expect(result['A2'].t).toEqual('s');
+        expect(result['B2'].v).toEqual('31.9');
+        expect(result['B2'].t).toEqual('s');
+        expect(result['C2'].v).toEqual('107,460');
+        expect(result['C2'].t).toEqual('s');
+        expect(result['D2'].v).toEqual('68.1');
+        expect(result['D2'].t).toEqual('s');
+        expect(result['E2'].v).toEqual('157,850');
+        expect(result['E2'].t).toEqual('s');
+    });
+
+    it('should show numbers and percentages in exported xsl', function () {
+        var sheetArray = xlsService.getSheetArrayFromMixedTable(mixedData)
+        var result = xlsService.getSheetFromArray(sheetArray, true);
+        expect(result['A1'].v).toEqual('Female');
+        expect(result['B1'].v).toEqual('% of Female Deaths');
+        expect(result['C1'].v).toEqual('Male');
+        expect(result['D1'].v).toEqual('% of Male Deaths');
+        expect(result['E1'].v).toEqual('Number of Deaths');
+        expect(result['A2'].v).toEqual(50390);
+        expect(result['A2'].t).toEqual('n');
+        expect(result['B2'].v).toEqual(31.9);
+        expect(result['B2'].t).toEqual('n');
+        expect(result['C2'].v).toEqual(107460);
+        expect(result['C2'].t).toEqual('n');
+        expect(result['D2'].v).toEqual(68.1);
+        expect(result['D2'].t).toEqual('n');
+        expect(result['E2'].v).toEqual(157850);
+        expect(result['E2'].t).toEqual('n');
+    });
+
+    it('should show numbers only in exported csv if calculatepercentage set to false', function () {
+        mixedData.calculatePercentage = false;
+        var sheetArray = xlsService.getSheetArrayFromMixedTable(mixedData)
+        var result = xlsService.getSheetFromArray(sheetArray);
+        expect(result['A1'].v).toEqual('Female');
+        expect(result['B1'].v).toEqual('Male');
+        expect(result['C1'].v).toEqual('Number of Deaths');
+        expect(result['A2'].v).toEqual('50,390');
+        expect(result['A2'].t).toEqual('s');
+        expect(result['B2'].v).toEqual('107,460');
+        expect(result['B2'].t).toEqual('s');
+        expect(result['C2'].v).toEqual('157,850');
+        expect(result['C2'].t).toEqual('s');
+    });
+
+    it('should show numbers only in exported xsl if calculatepercentage set to false', function () {
+        mixedData.calculatePercentage = false;
+        var sheetArray = xlsService.getSheetArrayFromMixedTable(mixedData)
+        var result = xlsService.getSheetFromArray(sheetArray, true);
+        expect(result['A1'].v).toEqual('Female');
+        expect(result['B1'].v).toEqual('Male');
+        expect(result['C1'].v).toEqual('Number of Deaths');
+        expect(result['A2'].v).toEqual(50390);
+        expect(result['A2'].t).toEqual('n');
+        expect(result['B2'].v).toEqual(107460);
+        expect(result['B2'].t).toEqual('n');
+        expect(result['C2'].v).toEqual(157850);
+        expect(result['C2'].t).toEqual('n');
     });
 
 });

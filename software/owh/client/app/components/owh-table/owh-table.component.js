@@ -27,6 +27,11 @@
                 owhTableDataUpdated();
             }
         });
+        $scope.$watch('otc.calculatePercentage', function(newValue, oldValue) {
+            if(newValue !== oldValue) {
+                owhTableDataUpdated();
+            }
+        });
         function owhTableDataUpdated() {
             //otc.dataToTable = utilService.prepareGroupedTableData(otc.headers, otc.data, otc.countKey, otc.totalCount, otc.groupCssClass);
             //otc.dataToAccordion = utilService.prepareNestedAccordionData(otc.headers, otc.data, otc.countKey, otc.totalCount, otc.countLabel);

@@ -58,21 +58,26 @@
 
         function downloadCSV() {
             var data = getMixedTable(sc.filters.selectedPrimaryFilter);
-            //add row headers so we can properly repeat row header merge cells
-            data.rowHeaders = [];
-            angular.forEach(sc.filters.selectedPrimaryFilter.value, function(filter, idx) {
-                if(filter.groupBy === 'row') {
-                    data.rowHeaders.push(filter);
-                }
-            });
+            addRowHeaders(data, sc.filters.selectedPrimaryFilter);
             var filename = getFilename(sc.filters.selectedPrimaryFilter);
             xlsService.exportCSVFromMixedTable(data, filename);
         }
 
         function downloadXLS() {
             var data = getMixedTable(sc.filters.selectedPrimaryFilter);
+            addRowHeaders(data, sc.filters.selectedPrimaryFilter);
             var filename = getFilename(sc.filters.selectedPrimaryFilter);
             xlsService.exportXLSFromMixedTable(data, filename);
+        }
+
+        function addRowHeaders(mixedTable, selectedFilter) {
+            //add row headers so we can properly repeat row header merge cells, and also for adding % columns
+            mixedTable.rowHeaders = [];
+            angular.forEach(selectedFilter.value, function(filter, idx) {
+                if(filter.groupBy === 'row') {
+                    mixedTable.rowHeaders.push(filter);
+                }
+            });
         }
 
         function getMixedTable(selectedFilter){

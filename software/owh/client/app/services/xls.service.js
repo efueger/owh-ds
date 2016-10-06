@@ -70,20 +70,6 @@
 
                     if(cellJson.colspan > 1 || cellJson.rowspan > 1) {
                         cOffsets[R] += cellJson.colspan - 1;
-                        //when we have a row offset, we have to make sure any resulting column offset is added to subsequent rows
-                        for(var i = R + 1; i < R + cellJson.rowspan; i++) {
-                            //only add offset if first column
-                            if(newC === 0) {
-                                //add blank element due to bug in vertically merged cells
-                                data[i].unshift({title: '', colspan: 1, rowspan: 1});
-                                //proper way to account for vertically merged cells, doesn't work due to js-xlsx bug
-                                // if(cOffsets[i]) {
-                                    // cOffsets[i] += cellJson.colspan;
-                                // } else {
-                                    // cOffsets[i] = cellJson.colspan;
-                                // }
-                            }
-                        }
                         var mergeCell = {s: {c: newC, r: newR}, e: {c: (newC + cellJson.colspan - 1), r: (newR + cellJson.rowspan - 1)}};
                         ws['!merges'].push(mergeCell);
 
@@ -108,7 +94,7 @@
                 cell.t = 's';
                 if(convertNumbers) {
                     //check if string is parsable as integer and make sure doesn't contain letters
-                    var numberValue = parseInt(cell.v.replace(',', ''));
+                    var numberValue = parseFloat(cell.v.replace(',', ''));
                     if(!isNaN(numberValue) && !cell.v.match(/[a-z]/i)) {
                         cell.v = numberValue;
                         cell.t = 'n';
@@ -121,17 +107,86 @@
         //gets json representation of sheet
         function getSheetArrayFromMixedTable(table) {
             var sheet = [];
+            var numOfPercentageColumns = 0;
             angular.forEach(table.headers, function(headerRow, idx) {
                 var headers = [];
+                if(idx === table.headers.length - 1 && table.headers.length > 1) {
+                    //add cell to account for row headers
+                    headers.push({title: "", colspan: table.rowHeaders.length, rowspan: 1});
+                }
                 angular.forEach(headerRow, function(cell, innerIdx) {
-                    headers.push({title: cell.title, colspan: cell.colspan, rowspan: cell.rowspan});
+                    var colspan = cell.colspan;
+                    //check is column header for data column, else add header as normal
+                    if(table.calculatePercentage && ((innerIdx >= table.rowHeaders.length && innerIdx < headerRow.length - 1) || idx > 0)) {
+                        //for the bottom row just add an extra column for every existing one, else double the length
+                        if(idx === table.headers.length - 1) {
+                            headers.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
+                            headers.push({title: "% of " +cell.title+" Deaths", colspan: colspan, rowspan: cell.rowspan});
+                            numOfPercentageColumns++;
+                        } else {
+                            headers.push({title: cell.title, colspan: colspan * 2, rowspan: cell.rowspan});
+                        }
+                    } else {
+                        headers.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
+                    }
+
                 });
                 sheet.push(headers);
             });
+
+            //keep track of column offsets so we know how much padding to add to each row
+            var colOffsets = {};
             angular.forEach(table.data, function(row, idx) {
                 var rowArray = [];
+
+                function getPadding(colOffsets) {
+                    var padding = 0;
+                    for(var i = 0; i < table.rowHeaders.length - 1; i++) {
+                        if(colOffsets[i]) {
+                            padding++;
+                            colOffsets[i]--;
+                        }
+                    }
+                    return padding;
+                }
+
+                function replacePadding(colOffsets) {
+                    var paddingIndex = 0;
+                    for(var i = 0; i < table.rowHeaders.length; i++) {
+                        if(!colOffsets[i]) {
+                            var rowspan = row[paddingIndex] ? row[paddingIndex].rowspan : 0;
+                            if(rowspan > 0) {
+                                colOffsets[i] = rowspan - 1;
+                            }
+                            paddingIndex++;
+                        }
+                    }
+                    return colOffsets;
+                }
+
+                //get padding
+                var padding = getPadding(colOffsets);
+
+                //add padding as needed to row
+                if(table.rowHeaders.length > 1) {
+                    if(padding > 0) {
+                        rowArray.push({title: "", colspan: padding, rowspan: 1});
+                    }
+                }
+
+                //replace zero/empty offsets
+                replacePadding(colOffsets);
+
                 angular.forEach(row, function(cell, innerIdx) {
-                    rowArray.push({title: cell.title, colspan: cell.colspan, rowspan: cell.rowspan});
+                    var colspan = cell.colspan;
+                    if(cell.title === 'Total') {
+                        colspan += numOfPercentageColumns;
+                    }
+                    rowArray.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
+                    //if we have a percentage then add an extra column to display it
+                    if(table.calculatePercentage && cell.percentage !== undefined && innerIdx < row.length - 1 ) {
+                        rowArray.push({title: cell.percentage, colspan: colspan, rowspan: cell.rowspan});
+                    }
                 });
                 sheet.push(rowArray);
             });
