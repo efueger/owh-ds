@@ -1,0 +1,25 @@
+# Default config
+default: 
+  elastic_search:
+    url: 'http://localhost:9200/'
+  rserve:
+    host : localhost
+    port : 6311
+    user : ''
+    password : ''
+  logging:
+    level: 'debug'
+# Dev configuration
+dev:
+    
+# Test environment configuration    
+test:
+ 
+# Production configuration    
+production: 
+  elastic_search:
+    url: 
+  rserve:
+    host:
+      user:
+      password:

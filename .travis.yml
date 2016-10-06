@@ -16,12 +16,13 @@ addons:
     repo_token: aa4bb84528f703e93a68f03079e9870898d452659e9498bbba8fb043c66e3083
 
 env:
-  - NODE_ENV=test # If we set NODE_ENV to test then owh app use local elastic search service
-
+  - NODE_ENV=test
+  
 before_install:
   - curl -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.0/elasticsearch-2.4.0.deb && sudo dpkg -i --force-confnew elasticsearch-2.4.0.deb && sudo service elasticsearch restart
   - docker info
-
+  - openssl aes-256-cbc -K $encrypted_515f2799f321_key -iv $encrypted_515f2799f321_iv -in .owh/owh-config.yaml.enc -out .owh/owh-config.yaml -d
+   
 install:
   - cd software/owh/server
   - npm install

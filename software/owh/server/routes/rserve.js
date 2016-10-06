@@ -1,7 +1,8 @@
 var rio = require("rio");
+var logger = require('../config/logging');
 
-var rserve = function (inConfig) {
-    this.config = inConfig;
+var rserve = function () {
+    this.config = require('../config/config.js').rserve
 };
 
 /**
@@ -12,7 +13,7 @@ var rserve = function (inConfig) {
 rserve.prototype.executeRScript = function (script){
     var newConf = JSON.parse(JSON.stringify(this.config));
     newConf.command = script;
-    console.log(newConf);
+    logger.debug("Invoking rio with config", newConf);
     return rio.$e(newConf);
 };
 
@@ -25,7 +26,7 @@ rserve.prototype.executeRServerFunction = function (functionname, args){
     var newConf = JSON.parse(JSON.stringify(this.config));
     newConf.entrypoint = functionname;
     newConf.data = args;
-    console.log(newConf);
+    logger.debug("Invoking rio with config", newConf);
     return rio.$e(newConf);
 };
 
