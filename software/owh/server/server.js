@@ -28,6 +28,8 @@ require("./routes/fb")(app);
 var allRoutes = require("./routes/route");
 //all routes goes in above section
 
+
+
 // This will change in production since we'll be using the dist folder
 app.use(express.static(path.join(__dirname, '../client')));
 // This covers serving up the index page

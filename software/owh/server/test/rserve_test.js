@@ -5,12 +5,7 @@ describe("Rserve", function () {
     var r;
 
     beforeEach( function () {
-        r = new rserve({
-            host : "54.227.177.4",
-            port : 6311,
-            user : "owhtest",
-            password : "owhtestpass"
-        });
+        r = new rserve();
         this.timeout(5000);
     });
 
@@ -18,22 +13,6 @@ describe("Rserve", function () {
         r.executeRScript("R.version.string").then(function (resp) {
             console.log(resp);
             expect(resp).to.be("R version 3.0.2 (2013-09-25)");
-            done();
-        });
-    })
-
-    it("execute simple R script with invalid credentials", function (done){
-        var rr = new rserve({
-            host : "54.227.177.4",
-            port : 6311,
-            user : "owhtest",
-            password : "invalid"
-        });
-        rr.executeRScript("R.version.string").then(function (resp) {
-            expect(resp).to.be.undefined();
-            done();
-        }, function(err){
-            expect(err).to.be("Response with error code 65");
             done();
         });
     })
@@ -73,4 +52,17 @@ describe("Rserve", function () {
             done();
         });
     })
+
+    it("execute simple R script with invalid credentials", function (done){
+        var rr = new rserve();
+        rr.config.password = 'invalid'
+        rr.executeRScript("R.version.string").then(function (resp) {
+            expect(resp).to.be.undefined();
+            done();
+        }, function(err){
+            expect(err).to.be("Response with error code 65");
+            done();
+        });
+    })
+
 })
