@@ -46,7 +46,6 @@
         //returns xls worksheet from array of json rows
         //ex: [[{title: 'test', colspan: 1, rowspan: 1}, {...}, {...}], [{...}, null, {...}] ]
         function getSheetFromArray(data, convertNumbers) {
-            console.log("data----------------------------- ", data);
             var ws = {'!merges': []};
             var range = {s: {c:10000000, r:10000000}, e: {c:0, r:0 }};
             //keep track of offsets caused by merged cells

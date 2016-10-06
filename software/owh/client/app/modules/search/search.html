@@ -89,12 +89,13 @@
                     <hr />
                     <!-- show hide percentage -->
                     <div id="togglePercentage" class="togglePercentage pull-left">
-                        <span ng-bind="'label.mortality.search.table.percentage' | translate"> </span>
                         <a id="showPercentage" class="active-link custom-link " ng-class="{'selected': sc.filters.selectedPrimaryFilter.calculatePercentage === true}" ng-click="sc.filters.selectedPrimaryFilter.calculatePercentage = true;" title="Show percentage">
-                            <span ng-bind="'label.mortality.search.table.show.percentage.button' | translate"></span>
+                            <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === false" ng-bind="'label.mortality.search.table.show.percentage.button' | translate"></span>
+                            <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === true" ng-bind="'label.mortality.search.table.showing.percentage.button' | translate"></span>
                         </a>
                         <a id="hidePercentage" class="active-link custom-link" ng-class="{'selected': sc.filters.selectedPrimaryFilter.calculatePercentage === false}" ng-click="sc.filters.selectedPrimaryFilter.calculatePercentage = false;" title="Hide percentage">
-                            <span ng-bind="'label.mortality.search.table.hide.percentage.button' | translate"></span>
+                            <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === true" ng-bind="'label.mortality.search.table.hide.percentage.button' | translate"></span>
+                            <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === false" ng-bind="'label.mortality.search.table.hidden.percentage.button' | translate"></span>
                         </a>
                     </div>
 
