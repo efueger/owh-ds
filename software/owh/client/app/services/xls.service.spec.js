@@ -179,7 +179,39 @@ describe('xlsService', function(){
             var csv = xlsService.getCSVFromSheet(ws, [[]], [{}, {}]);
 
             expect(csv).toEqual('1,2,3,9\na,4,5,10\na,6,7,11\na,8,,12\n');
-        })
+        });
+
+        it('should only repeat row headers vertically', function() {
+            /*
+             [1][2][3 ][4]
+             | || |[c1][5]
+             |a||b|[c2][6]
+             | || |[c3][7]
+             */
+            var ws = {
+                'A1': {v: 1, t: 'n'},
+                'B1': {v: 2, t: 'n'},
+                'C1': {v: 3, t: 'n'},
+                'D1': {v: 4, t: 'n'},
+                'A2': {v: 'a', t: 's'},
+                'B2': {v: 'b', t: 's'},
+                'C2': {v: 'c1', t: 's'},
+                'C3': {v: 'c2', t: 's'},
+                'C4': {v: 'c3', t: 's'},
+                'D2': {v: 5, t: 'n'},
+                'D3': {v: 6, t: 'n'},
+                'D4': {v: 7, t: 'n'},
+                '!ref': 'A1:D4',
+                '!merges': [{s: {c: 0, r: 1}, e: {c: 0, r: 3}}, {s: {c: 1, r: 1}, e: {c: 1, r: 3}}, {s: {c: 2, r: 1}, e: {c: 2, r: 3}}]
+            }
+            //add merges from padding
+            ws['!merges'].push({s: {c: 0, r: 1}, e: {c: 1, r: 1}});
+            ws['!merges'].push({s: {c: 0, r: 2}, e: {c: 1, r: 2}});
+            ws['!merges'].push({s: {c: 0, r: 3}, e: {c: 1, r: 3}});
+            var csv = xlsService.getCSVFromSheet(ws, [[]], [{}, {}, {}]);
+
+            expect(csv).toEqual('1,2,3,4\na,b,c1,5\na,b,c2,6\na,b,c3,7\n');
+        });
     });
 
     it('exportCSVFromMixedTable should call out to saveAs with the proper filename', function () {
