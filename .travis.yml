@@ -17,6 +17,8 @@ addons:
 
 env:
   - NODE_ENV=test
+  - AWS_ACCESS_KEY_ID=$OWH_ACCESS_KEY
+  - AWS_SECRET_ACCESS_KEY=$OWH_ACCESS_SECRET
   
 before_install:
   - curl -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.0/elasticsearch-2.4.0.deb && sudo dpkg -i --force-confnew elasticsearch-2.4.0.deb && sudo service elasticsearch restart
