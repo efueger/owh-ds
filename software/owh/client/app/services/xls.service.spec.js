@@ -135,7 +135,7 @@ describe('xlsService', function(){
               [2][3][4]
              */
             var ws = {'A1': {v: 1, t: 'n'}, 'A2': {v: 2, t: 'n'}, 'B2': {v: 3, t: 'n'}, 'C2': {v: 4, t: 'n'}, '!ref': 'A1:C2', '!merges': [{s: {c: 0, r: 0}, e: {c: 2, r: 0}}]};
-            var csv = xlsService.getCSVFromSheet(ws, [[]]);
+            var csv = xlsService.getCSVFromSheet(ws, [[]], [{}]);
 
             expect(csv).toEqual('1,1,1\n2,3,4\n');
         });
@@ -147,7 +147,7 @@ describe('xlsService', function(){
              |  |[4]
              */
             var ws = {'A1': {v: 1, t: 'n'}, 'B1': {v: 2, t: 'n'}, 'B2': {v: 3, t: 'n'}, 'B3': {v: 4, t: 'n'}, '!ref': 'A1:B3', '!merges': [{s: {c: 0, r: 0}, e: {c: 0, r: 2}}]};
-            var csv = xlsService.getCSVFromSheet(ws, [[], [], []]);
+            var csv = xlsService.getCSVFromSheet(ws, [[], [], []], []);
 
             expect(csv).toEqual('1,2\n1,3\n1,4\n');
         });
@@ -203,7 +203,7 @@ describe('xlsService', function(){
                 'D4': {v: 7, t: 'n'},
                 '!ref': 'A1:D4',
                 '!merges': [{s: {c: 0, r: 1}, e: {c: 0, r: 3}}, {s: {c: 1, r: 1}, e: {c: 1, r: 3}}, {s: {c: 2, r: 1}, e: {c: 2, r: 3}}]
-            }
+            };
             //add merges from padding
             ws['!merges'].push({s: {c: 0, r: 1}, e: {c: 1, r: 1}});
             ws['!merges'].push({s: {c: 0, r: 2}, e: {c: 1, r: 2}});
@@ -211,6 +211,32 @@ describe('xlsService', function(){
             var csv = xlsService.getCSVFromSheet(ws, [[]], [{}, {}, {}]);
 
             expect(csv).toEqual('1,2,3,4\na,b,c1,5\na,b,c2,6\na,b,c3,7\n');
+        });
+
+        it('should pad 2 column headers properly', function() {
+           /*
+            |a|[b][c]|d|
+            | || |[e]| |
+            [1][2][3][4]
+             */
+            var ws = {
+                'A1': {v: 'a', t: 's'},
+                'B1': {v: 'b', t: 's'},
+                'C1': {v: 'c', t: 's'},
+                'D1': {v: 'd', t: 's'},
+                'C2': {v: 'e', t: 's'},
+                'A3': {v: 1, t: 'n'},
+                'B3': {v: 2, t: 'n'},
+                'C3': {v: 3, t: 'n'},
+                'D3': {v: 4, t: 'n'},
+                '!ref': 'A1:D3',
+                '!merges': [{s: {c: 0, r: 0}, e: {c: 0, r: 1}}, {s: {c: 1, r: 0}, e: {c: 1, r: 1}}, {s: {c: 3, r: 0}, e: {c: 3, r: 1}}]
+            };
+
+            ws['!merges'].push({s: {c: 0, r: 1}, e: {c: 1, r: 1}});
+            var csv = xlsService.getCSVFromSheet(ws, [{}, {}], [{}, {}]);
+
+            expect(csv).toEqual('a,b,c,d\na,b,e,d\n1,2,3,4\n');
         });
     });
 

@@ -200,10 +200,22 @@
                 //only repeat if merge cell is part of headers, use rowHeaders.length - 1 because of Total row
                 if(merge.s.r < colHeaders.length || merge.s.c < rowHeaders.length - 1) {
                     var start = sheet[XLSX.utils.encode_cell(merge.s)];
-                    for(var r = merge.s.r; r <= merge.e.r; r++) {
-                        for(var c = merge.s.c; c <= merge.e.c; c++) {
+                    var end = sheet[XLSX.utils.encode_cell(merge.e)];
+                    //loop separately for rows and columns to avoid repeating over padding cells
+                    if(merge.s.c < rowHeaders.length - 1) {
+                        for(var r = merge.s.r; r <= merge.e.r; r++) {
                             //replace with value from starting cell in range
-                            sheet[XLSX.utils.encode_cell({c: c, r: r})] = {v: start.v, t: 's'};
+                            sheet[XLSX.utils.encode_cell({c: merge.s.c, r: r})] = {v: start.v, t: 's'};
+                        }
+                    }
+
+                    if(merge.s.r < colHeaders.length && !end ) {
+                        console.log('merge end', end);
+                        for(var c = merge.s.c; c <= merge.e.c; c++) {
+                            for(var r = merge.s.r; r <= merge.e.r; r++) {
+                                sheet[XLSX.utils.encode_cell({c: c, r: r})] = {v: start.v, t: 's'};
+                            }
+
                         }
                     }
                     headerMerges.push(idx);
