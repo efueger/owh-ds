@@ -1,0 +1,47 @@
+{
+  "data": [],
+  "title": "label.title.gender.race",
+  "options": {
+    "chart": {
+      "type": "multiBarChart",
+      "height": 250,
+      "width": 350,
+      "margin": {
+        "top": 5,
+        "right": 5,
+        "bottom": 45,
+        "left": 45
+      },
+      "showMaxMin": false,
+      "showLegend": false,
+      "showControls": false,
+      "showValues": false,
+      "showXAxis": true,
+      "showYAxis": true,
+      "reduceXTicks": false,
+      "legend": {
+        "width": 200,
+        "expanded": true
+      },
+      "staggerLabels": true,
+      "rotateLabels": 70,
+      "clipEdge": true,
+      "duration": 500,
+      "stacked": false,
+      "xAxis": {
+        "axisLabelDistance": -20,
+        "axisLabel": "label.filter.race",
+        "margin": {
+          "top": 60
+        }
+      },
+      "yAxis": {
+        "axisLabelDistance": -20,
+        "axisLabel": "Deaths"
+      },
+      "useInteractiveGuideline": false,
+      "interactive": false,
+      "tooltip": {}
+    }
+  }
+}

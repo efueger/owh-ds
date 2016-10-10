@@ -9,13 +9,6 @@ var app = express();
 app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({limit: '5mb'}));
 
-var rServeConfig = {
-    host : "54.175.233.200",
-    port : 6311,
-    user : "rserv",
-    password : "OWH16#@rserv"
-};
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -30,10 +23,12 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'html');
 
 //all routes goes here
-require("./routes/search")(app, rServeConfig);
+require("./routes/search")(app);
 require("./routes/fb")(app);
 var allRoutes = require("./routes/route");
 //all routes goes in above section
+
+
 
 // This will change in production since we'll be using the dist folder
 app.use(express.static(path.join(__dirname, '../client')));

@@ -1,0 +1,156 @@
+[
+  {
+    "data": [
+      {
+        "key": "Female",
+        "color": "#fe66ff",
+        "values": [
+          {
+            "label": "American Indian",
+            "value": 8185
+          },
+          {
+            "label": "Asian or Pacific Islander",
+            "value": 30068
+          },
+          {
+            "label": "Black",
+            "value": 151344
+          },
+          {
+            "label": "Other (Puerto Rico only)",
+            "value": 0
+          },
+          {
+            "label": "White",
+            "value": 1109971
+          }
+        ],
+        "deaths": 1299568
+      },
+      {
+        "key": "Male",
+        "color": "#009aff",
+        "values": [
+          {
+            "label": "American Indian",
+            "value": 9846
+          },
+          {
+            "label": "Asian or Pacific Islander",
+            "value": 32035
+          },
+          {
+            "label": "Black",
+            "value": 157972
+          },
+          {
+            "label": "Other (Puerto Rico only)",
+            "value": 0
+          },
+          {
+            "label": "White",
+            "value": 1131379
+          }
+        ],
+        "deaths": 1331232
+      }
+    ],
+    "title": "label.title.yrbsSex.yrbsRace",
+    "options": {
+      "chart": {
+        "type": "multiBarHorizontalChart",
+        "height": 500,
+        "width": 720,
+        "margin": {
+          "top": 20,
+          "right": 40,
+          "bottom": 120,
+          "left": 210
+        },
+        "showLegend": true,
+        "showControls": true,
+        "showValues": true,
+        "showXAxis": true,
+        "showYAxis": true,
+        "stacked": true,
+        "duration": 500,
+        "xAxis": {
+          "axisLabelDistance":120,
+          "axisLabel":"label.filter.race",
+          "showMaxMin": false
+        },
+        "yAxis": {
+          "axisLabel":"Deaths",
+          "axisLabelDistance":10
+        },
+        "useInteractiveGuideline": false,
+        "interactive": false,
+        "tooltip": {}
+      }
+    }
+  },
+  {
+    "data": [
+      {
+        "label": "American Indian",
+        "value": 18031
+      },
+      {
+        "label": "Asian or Pacific Islander",
+        "value": 62103
+      },
+      {
+        "label": "Black",
+        "value": 309316
+      },
+      {
+        "label": "Other (Puerto Rico only)",
+        "value": 0
+      },
+      {
+        "label": "White",
+        "value": 2241350
+      }
+    ],
+    "title": "label.graph.yrbsGrade",
+    "options": {
+      "chart": {
+        "type": "pieChart",
+        "height": 500,
+        "width": 720,
+        "margin": {
+          "top": 5,
+          "right": 5,
+          "bottom": 5,
+          "left": 5
+        },
+        "showValues": true,
+        "showLabels": false,
+        "transitionDuration": 250,
+        "showLegend": true,
+        "legend": {
+          "margin": {
+            "right": 130,
+            "top": 30
+          }
+        },
+        "labelThreshold": 0.01,
+        "labelSunbeamLayout": true,
+        "styles": {
+          "classes": {
+            "with-3d-shadow": true,
+            "with-transitions": true,
+            "gallery": false
+          }
+        },
+        "useInteractiveGuideline": false,
+        "interactive": false,
+        "tooltip": {},
+        "showControls": true,
+        "showXAxis": true,
+        "showYAxis": true
+      }
+    }
+  }
+]
