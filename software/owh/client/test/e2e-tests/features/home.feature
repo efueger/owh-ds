@@ -1,9 +1,18 @@
 Feature: Home page
   As a user
-  I should be able to access home page
+  I want the OWH website to be password protected
+  So that no one can access it's data without login
+  I should be able to access home page with valid password
   In order to do further activities
   I want to see/know that this site is work in progress
   So that I know it's not complete/live
+
+Scenario: login
+  When I hit app url
+  Then I should see login page if I didn't login
+  When I enter password ""
+  And  I click on login button
+  Then I should be automatically redirected to home page
 
 Scenario: Access home page
   When I hit app url

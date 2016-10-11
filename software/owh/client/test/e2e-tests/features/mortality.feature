@@ -6,6 +6,13 @@ Feature: Mortality page
   I want to see raw data and percentages (as default results) when I select to view "Number of Deaths" in the main search bar
   So that I can see percentages along with number of deaths
 
+Scenario: login
+  When I hit app url
+  Then I should see login page if I didn't login
+  When I enter password ""
+  And  I click on login button
+  Then I should be automatically redirected to home page
+
 Scenario: Access mortality page
   When I am at home page
   And  I click on Explore button in Quick Health Data Online section

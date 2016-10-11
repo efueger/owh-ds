@@ -72,5 +72,17 @@ var homeStepDefinitionsWrapper = function () {
     this.When(/^I am at search page$/, function () {
         browser.get("/search");
     });
+
+    this.Then(/^I should see login page if I didn't login$/, function () {
+       return false;
+    });
+
+    this.When(/^I enter password "([^"]*)"$/, function (arg1) {
+        return false;
+    });
+
+    this.When(/^I click on login button$/, function () {
+        return false;
+    });
 };
 module.exports = homeStepDefinitionsWrapper;
