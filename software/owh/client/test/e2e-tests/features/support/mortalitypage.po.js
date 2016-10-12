@@ -54,6 +54,23 @@ var MortalitySearchPage = function() {
     msp.selectSideFilter = function(filterType, viewType) {
         return element(by.cssContainingText('a', filterType)).element(By.xpath('following-sibling::owh-toggle-switch')).element(by.cssContainingText('a', viewType));
     };
+
+    msp.getCategoryBars = function() {
+        return element.all(by.className('owh-question__title'));
+    };
+
+    msp.getCategoryContents = function() {
+        return element.all(by.className('owh-question__table'));
+    };
+
+    msp.getShowMoreLinks = function() {
+        return element.all(by.className('owh-question__expand'));
+    };
+
+    msp.getCategoryQuestions = function() {
+        return element.all(by.className('owh-question__question'));
+    };
+
 };
 
 module.exports = new MortalitySearchPage;

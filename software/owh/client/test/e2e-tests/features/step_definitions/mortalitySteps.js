@@ -184,7 +184,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^this category must be collapsible$/, function () {
-        mortalityPage.getCategoryContent().get(0).then(function(element) {
+        mortalityPage.getCategoryContents().get(0).then(function(element) {
             expect(element.isDisplayed()).to.eventually.equal(true);
         });
     });
@@ -194,21 +194,23 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the category should expand to show all the questions$/, function () {
-        expect(mortalityPage.getCategoryQuestions(1).get(5).isDisplayed()).to.eventually.equal(true);
+        expect(mortalityPage.getCategoryQuestions(1).isDisplayed()).to.eventually.equal(true);
     });
 
     this.Then(/^'Show \# More' should be replaced with 'Show Less'$/, function () {
-        expect(mortalityPage.getShowMoreLink(1).getText()).to.eventually.equal('Show Less');
+        expect(mortalityPage.getShowMoreLinks().get(1).getText()).to.eventually.equal('Show Less');
     });
 
-    this.When(/^the user clicks on 'Show Less'$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback(null, 'pending');
+    this.When(/^the user clicks on 'Show Less'$/, function () {
+        mortalityPage.getShowMoreLinks(1).click();
     });
 
-    this.Then(/^the category to reset back to the original view of the two questions$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback(null, 'pending');
+    this.Then(/^the category to reset back to the original view of the two questions$/, function () {
+        expect(mortalityPage.getCategoryQuestions(1).get(3).isDisplayed()).to.eventually.equal(true);
+    });
+
+    this.Then(/^'Show Less' should be replaced with 'Show \# More'$/, function () {
+        expect(mortalityPage.getShowMoreLinks().get(1).getText()).to.eventually.equal('Show More');
     });
 
 };
