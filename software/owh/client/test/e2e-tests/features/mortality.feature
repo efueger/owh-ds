@@ -27,6 +27,12 @@ Scenario: Side filter collapse
   When user clicks show filters button
   Then side menu slides back into view
 
+Scenario: Side filter options retain order
+  Given user is on search page
+  When user expands race options
+  When user selects second race option
+  Then race options retain their initial ordering
+
 #Below commented test cases working in local but failing in travis-ci because
 # Elasticsearch running on travis-ci don't have data, until we load data, we commented these test cases.
 # Scenario: Percentages in data table

@@ -11,6 +11,9 @@ var MortalitySearchPage = function() {
     msp.showOrHidePecentageDiv = element(by.id('togglePercentage'));
     msp.showPecentageButton = element(by.id('togglePercentage')).element(by.cssContainingText('a', 'Show'));
     msp.hidePecentageButton = element(by.id('togglePercentage')).element(by.cssContainingText('a', 'Hide'));
+    msp.raceOptionsLink = element(by.partialLinkText('Race'));
+    msp.raceOption2Link = element(by.css('label[for=deaths_race_2]'));
+    msp.raceOption2 = element(by.cssContainingText('a', 'Race')).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.tagName('li')).get(3);
 
     msp.getSelectedFilterType = function() {
        return msp.filterTypeSelectBox.$('option:checked').getText();
@@ -54,6 +57,11 @@ var MortalitySearchPage = function() {
     msp.selectSideFilter = function(filterType, viewType) {
         return element(by.cssContainingText('a', filterType)).element(By.xpath('following-sibling::owh-toggle-switch')).element(by.cssContainingText('a', viewType));
     };
+
+    msp.getOptions = function(filterType) {
+        return element(by.cssContainingText('a', filterType)).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.tagName('li'));
+    }
+
 };
 
 module.exports = new MortalitySearchPage;
