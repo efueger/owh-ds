@@ -177,5 +177,21 @@ var mortalityStepDefinitionsWrapper = function () {
         });
     });
 
+    this.When(/^user expands race options$/, function () {
+        mortalityPage.raceOptionsLink.click();
+    });
+
+    this.When(/^user selects second race option$/, function () {
+        mortalityPage.raceOption2Link.click();
+    });
+
+    this.Then(/^race options retain their initial ordering$/, function () {
+        mortalityPage.getOptions('Race').then(function(elements) {
+            elements[3].getOuterHtml().then(function(value) {
+                expect(mortalityPage.raceOption2.getOuterHtml()).to.eventually.equal(value);
+            });
+        });
+    });
+
 };
 module.exports = mortalityStepDefinitionsWrapper;
