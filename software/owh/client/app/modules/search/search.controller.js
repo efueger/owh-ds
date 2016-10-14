@@ -5,11 +5,11 @@
 
     SearchController.$inject = ['$scope', 'ModalService', 'utilService', 'searchFactory', '$rootScope',
         '$templateCache', '$compile', '$q', '$filter', 'leafletData', '$timeout', 'chartUtilService', 'shareUtilService',
-        '$stateParams', 'xlsService', '$window'];
+        '$stateParams', '$state', 'xlsService', '$window'];
 
     function SearchController($scope, ModalService, utilService, searchFactory, $rootScope,
                                  $templateCache, $compile, $q, $filter, leafletData, $timeout, chartUtilService,
-                                 shareUtilService, $stateParams, xlsService, $window) {
+                                 shareUtilService, $stateParams, $state, xlsService, $window) {
 
         var sc = this;
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
@@ -37,6 +37,19 @@
         populateFilterCounts(mortalityFilter).then(function() {
             search(sc.filters.selectedPrimaryFilter);
         });
+
+        console.log($stateParams);
+
+        /*TODO: we will need to change the order of a few things
+         -when we init the controller we should check for $stateParams.queryId
+         -if queryId is present then we execute the API request
+         -when filters are changed then we call the API to get the queryId
+         -after getting queryId from the backend, redirect the angular router to trigger the actual API request
+         -in order to avoid infinite routing loop, make sure controller is only sending API request when queryId is present
+         --also make sure call to generate queryId is similarly only executed when queryId is absent
+         */
+        //this will reroute angular, should be called right after we get the hash from the backend
+        // $state.go('search', {queryId: Math.ceil(Math.random() * 100)});
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
@@ -126,6 +139,7 @@
 
         function primaryFilterChanged(newFilter) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
+            //TODO: this executes the actualy query, only perform this when queryId is present
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter).then(function() {
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {

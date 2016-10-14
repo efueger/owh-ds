@@ -21,7 +21,7 @@
             controller: 'HomeController',
             controllerAs: 'hc'
         }).state('search', {
-                url:'/search',
+                url:'/search/:queryId',
                 templateUrl: 'app/modules/search/search.html',
                 controller: 'SearchController',
                 controllerAs: 'sc',
