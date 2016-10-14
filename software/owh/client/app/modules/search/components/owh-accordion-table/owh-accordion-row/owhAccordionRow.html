@@ -1,0 +1,14 @@
+<div>
+    <div>
+        {{ oarc.row.title }}
+    </div>
+    <table>
+        <tbody>
+            <tr ng-repeat="eachRow in oarc.data">
+                <td ng-repeat="eachColumn in eachRow" colspan="{{ eachColumn.colspan }}" rowspan="{{ eachColumn.rowspan }}">
+                    {{ eachColumn.title }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

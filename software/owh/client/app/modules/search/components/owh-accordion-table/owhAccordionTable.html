@@ -1,0 +1,9 @@
+<table>
+    <thead>
+    <tr ng-repeat="eachHeaderRow in oatc.headers">
+        <th ng-repeat="eachHeader in eachHeaderRow" ng-bind="eachHeader.title" colspan="{{eachHeader.colspan}}" rowspan="{{eachHeader.rowspan}}" ></th>
+    </tr>
+    </thead>
+</table>
+<owh-accordion-row ng-repeat="eachCategory in oatc.data" data="eachCategory.questions" title="eachCategory.title" >
+</owh-accordion-row>
