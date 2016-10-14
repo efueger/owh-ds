@@ -1023,3 +1023,15 @@ body {
     border-left:none;
     margin-left:-4px;
 }
+
+/* YRBS Table */
+
+.owh-question__expand {
+    float: right;
+    color: white;
+}
+
+.owh-question__title {
+    background-color: #833eb0;
+    color: white;
+}

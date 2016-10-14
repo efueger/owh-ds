@@ -2,6 +2,7 @@ var MortalitySearchPage = function() {
     var msp = this;
     //Filter type select box
     msp.filterTypeSelectBox = element( by.model('ots.filters.selectedPrimaryFilter'));
+    msp.yrbsOption = element(by.cssContainingText('option', 'Youth Risk Behavior'));
     msp.chartDataDiv = element(by.repeater('chartData in startChartData'));
     msp.expandVisualizationLink = element(by.css('a[name=expand_graph]'));
     msp.sideMenu = element(by.className('owh-side-menu'));
@@ -64,11 +65,15 @@ var MortalitySearchPage = function() {
     };
 
     msp.getShowMoreLinks = function() {
-        return element.all(by.className('owh-question__expand'));
+        return element.all(by.className('owh-question__show'));
     };
 
     msp.getCategoryQuestions = function() {
         return element.all(by.className('owh-question__question'));
+    };
+
+    msp.getExpandLinks = function() {
+        return element.all(by.className('owh-question__expand'));
     };
 
 };

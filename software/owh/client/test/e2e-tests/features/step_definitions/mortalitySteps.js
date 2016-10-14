@@ -177,24 +177,33 @@ var mortalityStepDefinitionsWrapper = function () {
         });
     });
 
+    this.Given(/^user select YRBS as primary filter$/, function () {
+        mortalityPage.yrbsOption.click();
+    });
+
     this.When(/^the user clicks on the down arrow at the corner of each category bar$/, function () {
-        mortalityPage.getCategoryBars().get(0).then(function(element) {
-            element.click();
+        console.log(mortalityPage.getExpandLinks());
+        mortalityPage.getExpandLinks().then(function(elements) {
+            elements[0].click();
         })
     });
 
     this.Then(/^this category must be collapsible$/, function () {
-        mortalityPage.getCategoryContents().get(0).then(function(element) {
-            expect(element.isDisplayed()).to.eventually.equal(true);
+        mortalityPage.getCategoryContents().then(function(elements) {
+            expect(elements[0].isDisplayed()).to.eventually.equal(true);
         });
     });
 
     this.When(/^the user clicks on Show \# More under the questions in any category$/, function () {
-        mortalityPage.getShowMoreLinks().get(1).click();
+        mortalityPage.getShowMoreLinks().then(function(elements){
+            elements[1].click();
+        });
     });
 
     this.Then(/^the category should expand to show all the questions$/, function () {
-        expect(mortalityPage.getCategoryQuestions(1).isDisplayed()).to.eventually.equal(true);
+        mortalityPage.getCategoryQuestions().then(function(elements) {
+            expect(elements[6].isDisplayed()).to.eventually.equal(true);
+        });
     });
 
     this.Then(/^'Show \# More' should be replaced with 'Show Less'$/, function () {
@@ -202,15 +211,21 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.When(/^the user clicks on 'Show Less'$/, function () {
-        mortalityPage.getShowMoreLinks(1).click();
+        mortalityPage.getShowMoreLinks().then(function(elements){
+            elements[1].click();
+        });
     });
 
     this.Then(/^the category to reset back to the original view of the two questions$/, function () {
-        expect(mortalityPage.getCategoryQuestions(1).get(3).isDisplayed()).to.eventually.equal(true);
+        mortalityPage.getCategoryQuestions(1).then(function(elements) {
+            expect(elements[9].isDisplayed()).to.eventually.equal(true);
+        });
     });
 
     this.Then(/^'Show Less' should be replaced with 'Show \# More'$/, function () {
-        expect(mortalityPage.getShowMoreLinks().get(1).getText()).to.eventually.equal('Show More');
+        mortalityPage.getShowMoreLinks().then(function(elements) {
+            expect(elements[1].getText()).to.eventually.equal('Show More');
+        });
     });
 
 };

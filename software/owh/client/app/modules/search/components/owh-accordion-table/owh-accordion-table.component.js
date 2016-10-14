@@ -21,18 +21,34 @@
         var categories = 5;
         var questions = 6;
         for(var i = 0; i < categories; i++) {
-            var category = {title: 'Test category ' + i, questions: []};
+            var category = {title: 'Test category ' + i, questions: [], hide: true};
 
             for(var j = 0; j < questions; j++) {
                 var question = [];
                 question.push({title: "Test question " + i + '' + j, colspan: 1, rowspan: 1});
-                angular.forEach(oatc.headers[oatc.headers.length - 1], function() {
+                for(var k = 0; k < oatc.headers[oatc.headers.length - 1].length - 1; k++) {
                     question.push({title: Math.random().toString(), colspan: 1, rowspan: 1});
-                });
+                }
                 category.questions.push(question);
             }
             oatc.data.push(category);
         }
+
+        oatc.collapseRow = function(row) {
+            row.collapse = true;
+        };
+
+        oatc.expandRow = function(row) {
+            row.collapse = false;
+        };
+
+        oatc.showMore = function(row) {
+            row.hide = false;
+        };
+
+        oatc.showLess = function(row) {
+            row.hide = true;
+        };
 
     }
 }());
