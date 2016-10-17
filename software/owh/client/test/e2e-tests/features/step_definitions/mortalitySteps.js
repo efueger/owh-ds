@@ -211,13 +211,14 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.When(/^the user clicks on 'Show Less'$/, function () {
         mortalityPage.getShowMoreLinks().then(function(elements){
+            browser.sleep(300);
             elements[1].click();
         });
     });
 
     this.Then(/^the category to reset back to the original view of the two questions$/, function () {
         mortalityPage.getCategoryQuestions(1).then(function(elements) {
-            expect(elements[9].isDisplayed()).to.eventually.equal(false);
+            expect(elements[9].getAttribute('class')).to.eventually.include('ng-hide');
         });
     });
 
