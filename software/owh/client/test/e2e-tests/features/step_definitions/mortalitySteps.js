@@ -31,7 +31,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Given(/^user is on search page$/, function () {
-        browser.get('/search');
+        browser.get('/search/');
     });
 
     this.Then(/^user sees side filter$/, function () {
