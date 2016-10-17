@@ -18,7 +18,9 @@
         </tr>
         <tr class="owh-question__question" ng-repeat="eachRow in eachCategory.questions" ng-hide="$index > 1 && eachCategory.hide || eachCategory.collapse">
             <td ng-repeat="eachColumn in eachRow" colspan="{{ eachColumn.colspan }}" rowspan="{{ eachColumn.rowspan }}">
-                {{ eachColumn.title }}
+                <div class="owh-question__content">
+                    {{ eachColumn.title }}
+                </div>
             </td>
         </tr>
         <tr ng-hide="eachCategory.collapse">
@@ -29,4 +31,3 @@
         </tr>
     </tbody>
 </table>
-

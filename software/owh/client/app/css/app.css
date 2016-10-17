@@ -1035,3 +1035,31 @@ body {
     background-color: #833eb0;
     color: white;
 }
+
+.owh-question__question {
+    background-color: white;
+}
+
+.owh-question__question.ng-hide {
+    display: table-row!important;
+}
+
+.owh-question__question td {
+    transition: padding-top 0.6s, padding-bottom 0.6s;
+}
+
+.owh-question__question.ng-hide td {
+    padding-top: 0!important;
+    padding-bottom: 0!important;
+    border-bottom: none;
+}
+
+.owh-question__content {
+    transition: height 0.6s;
+    height: 65px;
+    overflow: hidden;
+}
+
+.owh-question__question.ng-hide .owh-question__content {
+    height: 0;
+}
