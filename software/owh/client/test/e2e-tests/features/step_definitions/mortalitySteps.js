@@ -182,7 +182,6 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.When(/^the user clicks on the down arrow at the corner of each category bar$/, function () {
-        console.log(mortalityPage.getExpandLinks());
         mortalityPage.getExpandLinks().then(function(elements) {
             elements[0].click();
         })
@@ -218,13 +217,13 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the category to reset back to the original view of the two questions$/, function () {
         mortalityPage.getCategoryQuestions(1).then(function(elements) {
-            expect(elements[9].isDisplayed()).to.eventually.equal(true);
+            expect(elements[9].isDisplayed()).to.eventually.equal(false);
         });
     });
 
     this.Then(/^'Show Less' should be replaced with 'Show \# More'$/, function () {
         mortalityPage.getShowMoreLinks().then(function(elements) {
-            expect(elements[1].getText()).to.eventually.equal('Show More');
+            expect(elements[1].getText()).to.eventually.equal('Show 4 More');
         });
     });
 

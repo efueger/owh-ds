@@ -43,6 +43,7 @@ Scenario: Show # More
 Scenario: Show Less
   Given user is on search page
   Given user select YRBS as primary filter
+  When the user clicks on Show # More under the questions in any category
   When the user clicks on 'Show Less'
   Then the category to reset back to the original view of the two questions
   And 'Show Less' should be replaced with 'Show # More'
