@@ -21,11 +21,11 @@
             controller: 'HomeController',
             controllerAs: 'hc'
         }).state('search', {
-                url:'/search',
+                url:'/search/:queryId',
                 templateUrl: 'app/modules/search/search.html',
                 controller: 'SearchController',
                 controllerAs: 'sc',
-                params: {primaryFilterKey: 'deaths'}
+                params: {primaryFilterKey: 'deaths', allFilters: null, selectedFilters: null}
         });
 
         $urlRouterProvider.otherwise('/');

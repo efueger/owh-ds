@@ -74,8 +74,8 @@ var mortalityStepDefinitionsWrapper = function () {
         });
     });
 
-    this.When(/^I update criteria in filter options$/, function () {
-        mortalityPage.selectSideFilter('Autopsy', 'Column').click();
+    this.When(/^I update criteria in filter options with column "([^"]*)"$/, function (arg1) {
+        mortalityPage.selectSideFilter(arg1, 'Column').click();
     });
 
     this.Then(/^data table is updated and the number of deaths and percentages are updated too$/, function () {

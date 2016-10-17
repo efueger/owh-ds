@@ -5,48 +5,78 @@
 
     SearchController.$inject = ['$scope', 'ModalService', 'utilService', 'searchFactory', '$rootScope',
         '$templateCache', '$compile', '$q', '$filter', 'leafletData', '$timeout', 'chartUtilService', 'shareUtilService',
-        '$stateParams', 'xlsService', '$window'];
+        '$stateParams', '$state', 'xlsService', '$window'];
 
     function SearchController($scope, ModalService, utilService, searchFactory, $rootScope,
                                  $templateCache, $compile, $q, $filter, leafletData, $timeout, chartUtilService,
-                                 shareUtilService, $stateParams, xlsService, $window) {
+                                 shareUtilService, $stateParams, $state, xlsService, $window) {
 
         var sc = this;
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
-        sc.filters = searchFactory.getAllFilters();
-        sc.filters.primaryFilters = utilService.findAllByKeyAndValue(sc.filters.search, 'primary', true);
-        var mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
-        sc.filters.selectedPrimaryFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', $stateParams.primaryFilterKey);
+        var mortalityFilter = null;
         sc.sideMenu = {visible: true};
+        //For intial search call
+        if($stateParams.selectedFilters == null) {
+            sc.filters = searchFactory.getAllFilters();
+            sc.filters.primaryFilters = utilService.findAllByKeyAndValue(sc.filters.search, 'primary', true);
+            mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
+            sc.filters.selectedPrimaryFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', $stateParams.primaryFilterKey);
+        }
+        //If user change filter then we are re routing search call and setting 'selectedFilters' and 'allFilters' params at line
+        else {
+            sc.filters = $stateParams.allFilters;
+            sc.filters.primaryFilters = utilService.findAllByKeyAndValue(sc.filters.search, 'primary', true);
+            mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
+            sc.filters.selectedPrimaryFilter = $stateParams.selectedFilters;
+        }
         sc.downloadCSV = downloadCSV;
         sc.downloadXLS = downloadXLS;
         sc.getSelectedYears = getSelectedYears;
         sc.showPhaseTwoGraphs = showPhaseTwoGraphs;
         sc.showExpandedGraph = showExpandedGraph;
         sc.search = search;
-        sc.selectedMapSize='small';
+        sc.selectedMapSize = 'small';
         sc.showMeOptions = [
-            {key:'number_of_deaths',title:'Number of Deaths'},
-            {key:'crude_death_rates',title:'Crude Death Rates'},
-            {key:'age-adjusted_death_rates',title:'Age Adjusted Death Rates'}
+            {key: 'number_of_deaths', title: 'Number of Deaths'},
+            {key: 'crude_death_rates', title: 'Crude Death Rates'},
+            {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}
         ];
         sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
         sc.showFbDialog = showFbDialog;
-        //initial populate of the side filter options
+        sc.queryId = $stateParams.queryId;
         populateFilterCounts(mortalityFilter).then(function() {
-            search(sc.filters.selectedPrimaryFilter);
+           search(sc.filters.selectedPrimaryFilter, sc.filters, false);
         });
-
+        //TODO: we will need to change the order of a few things
+        //Intial call queryId will be empty
+        if($stateParams.queryId === "") {
+            //Eventually we will generate hash code using query, save in catche index in elasticsearch database
+            var intialHashCode = Math.ceil(Math.random()* 100);
+            sc.queryId = intialHashCode;
+            $state.go('search', {queryId: intialHashCode });
+        }
+        //If url has hashcode then using hashcode get the query from database and return results.
+        //If hash code not exists in database, then save hashcode, query, results in database and return results.
+        else {
+            //TODO: we will implement else in another task.
+        }
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter);
             }
         }, true);
 
-        function search(selectedFilter) {
-            /*To render the inline bars for the sideBar filters*/
+        function search(selectedFilter, allFilters, isFilterChanged) {
             //TODO: would be better if there was a way to filter using query but also get all possible values back from api
+            if(isFilterChanged) {
+                //If user change filter, generate hash and see if hash exists in database
+                //if exists get the results and return
+                //if not exists then call search using new hash
+                var filterHash = Math.ceil(Math.random()* 100);
+                sc.queryId = filterHash;
+                $state.go('search', {queryId: filterHash, allFilters: allFilters, selectedFilters: selectedFilter});
+            }
             populateFilterCounts(mortalityFilter, selectedFilter).then(function() {
                 primaryFilterChanged(selectedFilter);
             });
@@ -126,6 +156,7 @@
 
         function primaryFilterChanged(newFilter) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
+            //TODO: this executes the actualy query, only perform this when queryId is present
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter).then(function() {
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
