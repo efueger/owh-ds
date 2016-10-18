@@ -1,5 +1,3 @@
-addons:
-  firefox: "45.4"
 language: node_js
 node_js:
   - '4.4'
@@ -16,6 +14,7 @@ cache:
 addons:
   code_climate:
     repo_token: aa4bb84528f703e93a68f03079e9870898d452659e9498bbba8fb043c66e3083
+  firefox: "45.4"
 
 env:
   global:
