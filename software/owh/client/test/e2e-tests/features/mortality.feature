@@ -33,6 +33,15 @@ Scenario: Side filter options retain order
   When user selects second race option
   Then race options retain their initial ordering
 
+Scenario: Display show/hide percentage button only on mortality page
+  When I am at home page
+  And  I click on Explore button in Quick Health Data Online section
+  Then I should get search page with default filter type mortality
+  And an option to show/hide percentages is displayed
+  When I change 'I'm interested in' dropdown value to "Youth Risk Behavior"
+  Then I should be redirected to YRBS page
+  And show/hide percentages button shouldn't display
+
 #Below commented test cases working in local but failing in travis-ci because
 # Elasticsearch running on travis-ci don't have data, until we load data, we commented these test cases.
 # Scenario: Percentages in data table
@@ -53,7 +62,7 @@ Scenario: Side filter options retain order
 
 #Scenario: Show/Hide percentages
 #  When I see the results
-#  Then an option to view/hide percentages is displayed
+#  Then an option to show/hide percentages is displayed
 #  And when that option is toggled, the percentages are either displayed/hidden
 
 #Scenario: enario: Decimal Precision
