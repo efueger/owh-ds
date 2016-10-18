@@ -26,7 +26,7 @@ var homeStepDefinitionsWrapper = function () {
 
     this.Then(/^I should get search page with default filter type mortality$/, function () {
         browser.getCurrentUrl().then(function(url) {
-            expect(url).to.equal(browser.baseUrl+"search");
+            expect(url).to.contains("/search/");
         });
         mortalityPage.getSelectedFilterType().then(function(value){
             expect(value).to.equal("Mortality");
@@ -42,7 +42,7 @@ var homeStepDefinitionsWrapper = function () {
 
     this.Then(/^I should get search page with default filter type "([^"]*)"$/, function (arg1) {
         browser.getCurrentUrl().then(function(url) {
-            expect(url).to.equal(browser.baseUrl+'search');
+            expect(url).to.contains("/search/");
         });
         mortalityPage.getSelectedFilterType().then(function(value){
             expect(value).to.equal(arg1)

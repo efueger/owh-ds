@@ -42,7 +42,7 @@ describe("Search controller: ", function () {
 
     it("With selectedPrimaryfilter as disease ",function(){
 
-        var stateparams = { primaryFilterKey: "deaths" };
+        var stateparams = { primaryFilterKey: "deaths", queryId: "", allFilters: null, selectedFilters: null };
         var primaryFilterChangedFn, searchResultThenFn;
         var allFilters = [
             /*Demographics*/
@@ -177,6 +177,17 @@ describe("Search controller: ", function () {
         //on event
         //var args = {leafletEvent:{leafEvent:{latlng:{lat:3434,lng:42234}, target:{feature: {properties:{}}}, _map:{}}}}
         //$rootScope.$broadcast('leafletDirectiveGeoJson.click',event, args);
+
+        //Verify queryID has not empty value
+        var queryIdForIntialCall = searchController.queryId;
+        expect(queryIdForIntialCall).not.toEqual("");
+        //Call search method with filter params
+        stateparams.allFilters = searchController.filters;
+        stateparams.selectedFilters = searchController.filters.selectedPrimaryFilter;
+        var searchController= $controller('SearchController',{$scope: $scope, searchFactory:searchFactory, $stateParams:stateparams});
+        expect(searchController.filters).toBeDefined();
+        expect(queryIdForIntialCall).not.toEqual("");
+        expect(searchController.queryId).not.toEqual(queryIdForIntialCall);
     });
 
     it("downloadCSV should prepare mixedTable and call out to xlsService",inject(function(utilService, xlsService) {
