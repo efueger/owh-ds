@@ -124,12 +124,34 @@
             return selectedFilter.header + '_' + yearRange + '_Filtered';
         }
 
+        //takes mixedTable and returns categories array for use with owhAccordionTable
+        function categorizeQuestions(data) {
+            var categories = [];
+            angular.forEach($rootScope.questions, function(questionCategory){
+                var category = {title: questionCategory.text, questions: [], hide: true};
+                angular.forEach(questionCategory.children, function(categoryChild) {
+                    angular.forEach(data, function(row) {
+                        if(row[0].key === categoryChild.id) {
+                          category.questions.push(row);
+                        }
+                    });
+                });
+                categories.push(category);
+            });
+            return categories;
+        }
+
         function primaryFilterChanged(newFilter) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter).then(function() {
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
+                }
+                if(sc.filters.selectedPrimaryFilter.key === 'mental_health') {
+                  var mixedTable = getMixedTable(sc.filters.selectedPrimaryFilter);
+                  sc.filters.selectedPrimaryFilter.headers = mixedTable.headers;
+                  sc.filters.selectedPrimaryFilter.data = categorizeQuestions(mixedTable.data);
                 }
             });
         }

@@ -224,7 +224,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^'Show Less' should be replaced with 'Show \# More'$/, function () {
         mortalityPage.getShowMoreLinks().then(function(elements) {
-            expect(elements[1].getText()).to.eventually.equal('Show 4 More');
+            expect(elements[1].getText()).to.eventually.equal('Show 10 More');
         });
     });
 
