@@ -1,3 +1,5 @@
+addons:
+  firefox: "45.4"
 language: node_js
 node_js:
   - '4.4'
@@ -20,14 +22,14 @@ env:
     - AWS_ACCESS_KEY_ID=$OWH_ACCESS_KEY
     - AWS_SECRET_ACCESS_KEY=$OWH_ACCESS_SECRET
     - NODE_ENV=test
-  
+
 before_install:
   - curl -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.0/elasticsearch-2.4.0.deb && sudo dpkg -i --force-confnew elasticsearch-2.4.0.deb && sudo service elasticsearch restart
   - docker info
   - openssl aes-256-cbc -K $encrypted_515f2799f321_key -iv $encrypted_515f2799f321_iv -in .owh/owh-config.yaml.enc -out .owh/owh-config.yaml -d
   - pip install awscli
   - export PATH=$PATH:$HOME/.local/bin
-   
+
 install:
   - cd software/owh/server
   - npm install
