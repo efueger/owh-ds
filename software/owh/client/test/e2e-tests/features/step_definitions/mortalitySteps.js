@@ -31,7 +31,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Given(/^user is on search page$/, function () {
-        browser.get('/search');
+        browser.get('/search/');
     });
 
     this.Then(/^user sees side filter$/, function () {
@@ -74,8 +74,8 @@ var mortalityStepDefinitionsWrapper = function () {
         });
     });
 
-    this.When(/^I update criteria in filter options$/, function () {
-        mortalityPage.selectSideFilter('Autopsy', 'Column').click();
+    this.When(/^I update criteria in filter options with column "([^"]*)"$/, function (arg1) {
+        mortalityPage.selectSideFilter(arg1, 'Column').click();
     });
 
     this.Then(/^data table is updated and the number of deaths and percentages are updated too$/, function () {
@@ -174,6 +174,22 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^the Rates and Percentages should have a one decimal precision$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
             expect(value[2]).to.equal('86 (18.9%)');
+        });
+    });
+
+    this.When(/^user expands race options$/, function () {
+        mortalityPage.raceOptionsLink.click();
+    });
+
+    this.When(/^user selects second race option$/, function () {
+        mortalityPage.raceOption2Link.click();
+    });
+
+    this.Then(/^race options retain their initial ordering$/, function () {
+        mortalityPage.getOptions('Race').then(function(elements) {
+            elements[3].getOuterHtml().then(function(value) {
+                expect(mortalityPage.raceOption2.getOuterHtml()).to.eventually.equal(value);
+            });
         });
     });
 
