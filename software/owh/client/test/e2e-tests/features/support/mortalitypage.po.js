@@ -14,6 +14,7 @@ var MortalitySearchPage = function() {
     msp.raceOptionsLink = element(by.partialLinkText('Race'));
     msp.raceOption2Link = element(by.css('label[for=deaths_race_2]'));
     msp.raceOption2 = element(by.cssContainingText('a', 'Race')).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.tagName('li')).get(3);
+    msp.interestedInSelectBox = element(by.id('interestedIn'));
 
     msp.getSelectedFilterType = function() {
        return msp.filterTypeSelectBox.$('option:checked').getText();
