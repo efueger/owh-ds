@@ -4,6 +4,8 @@ import datetime
 import logging.config
 import os
 import boto
+import json
+from zipfile import ZipFile
 
 logging.config.fileConfig(os.path.join(os.path.dirname(__file__),'logging.conf'))
 
@@ -57,7 +59,7 @@ class ETL :
             os.makedirs(self.dataDirectory)
 
     def retrieve_data_files(self):
-        """Retrieve data files from AWS bucket"""
+        """Retrieve data files from AWS bucket and unpack all downloaded files with extension .zip into the same folder where the file is downloaded to"""
         logger.info("Retrieving data files")
         self._create_data_dir()
         if not (self.config['data_file'] and 'aws_access_key_id' in self.config['data_file'] and 'aws_secret_access_key' in self.config['data_file']
@@ -85,8 +87,19 @@ class ETL :
                         if not os.path.exists(localDir):
                             os.makedirs(localDir)
                     else:
-                        logger.debug("Downloading file remote file '%s' to '%s'", remotePath, localPath)
+                        logger.info("Downloading file remote file '%s' to '%s'", remotePath, localPath)
                         file.get_contents_to_filename(localPath)
+                        if remoteStrippedPath.endswith('.zip'):
+                            logger.info("Unzipping file %s", localPath)
+                            ZipFile(localPath).extractall(localDir)
+
+    def create_index(self, mappingFile, recreate_index):
+        if recreate_index:
+            with open(mappingFile, "r") as mapping:
+                self.esRepository.recreate_index(json.load(mapping))
+        else:
+            with open(mappingFile, "r") as mapping:
+                self.esRepository.create_mappings(json.load(mapping))
 
     def _print_metrics(self):
         """Print the metrics of the ETL"""
