@@ -1023,3 +1023,12 @@ body {
     border-left:none;
     margin-left:-4px;
 }
+
+
+/* owh-table */
+.owh-table__label {
+    margin-top: 0;
+    font-size: 12px;
+    color: #B6B6B6;
+    font-weight: normal;
+}

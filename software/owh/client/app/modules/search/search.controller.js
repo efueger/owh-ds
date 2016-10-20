@@ -45,6 +45,10 @@
         sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
         sc.showFbDialog = showFbDialog;
         sc.queryId = $stateParams.queryId;
+        sc.tableView = sc.showMeOptions[0].key;
+        sc.changeViewFilter = function(selectedFilter){
+            sc.tableView = selectedFilter.key;
+        };
         populateFilterCounts(mortalityFilter).then(function() {
            search(sc.filters.selectedPrimaryFilter, sc.filters, false);
         });

@@ -26,7 +26,7 @@
         <div class="usa-width-one-fourth" ng-show="ots.filters.selectedPrimaryFilter.key === 'deaths'">
             <div class="usa-width-one-fourth show-me-text" ng-bind="'label.show.me' | translate"></div>
             <select ng-model="ots.selectedShowFilter"
-                    ng-change="ots.phaseTwoImpl()"
+                    ng-change="ots.onViewFilter({selectedFilter: ots.selectedShowFilter})"
                     ng-options="eachFilter.title | translate for eachFilter in ots.showFilters"
                     class="usa-width-two-thirds add-on-element gray-border margin-0"></select>
         </div>

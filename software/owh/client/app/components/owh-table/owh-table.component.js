@@ -15,7 +15,8 @@
                 groupCssClass: '@',
                 tableDataPrepared: '=',
                 calculatePercentage: '=',
-                calculateRowTotal: '='
+                calculateRowTotal: '=',
+                tableView: '@'
             }
         });
     OWHTableController.$inject = ['$scope', 'utilService', '$rootScope'];

@@ -17,7 +17,8 @@
         <div class="usa-width-one-whole margin-top-30 margin-bottom-30">
             <div class="usa-grid-full usa-width-one-whole">
                 <owh-search filters="sc.filters" show-filters="sc.showMeOptions"
-                            search-results="sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter)"></owh-search>
+                            search-results="sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter)"
+                            on-view-filter="sc.changeViewFilter(selectedFilter)"></owh-search>
             </div>
         </div>
     </div>
@@ -88,7 +89,7 @@
                 <div class="usa-width-one-whole overflow-auto">
                     <hr />
                     <!-- show hide percentage -->
-                    <div id="togglePercentage" class="togglePercentage pull-left">
+                    <div id="togglePercentage" class="togglePercentage pull-left" ng-show="sc.tableView === 'number_of_deaths'">
                         <a id="showPercentage" class="active-link custom-link " ng-class="{'selected': sc.filters.selectedPrimaryFilter.calculatePercentage === true}" ng-click="sc.filters.selectedPrimaryFilter.calculatePercentage = true;" title="Show percentage">
                             <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === false" ng-bind="'label.mortality.search.table.show.percentage.button' | translate"></span>
                             <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === true" ng-bind="'label.mortality.search.table.showing.percentage.button' | translate"></span>
@@ -116,7 +117,8 @@
                                table-data-prepared="sc.filters.selectedPrimaryFilter.dataPrepared"
                                calculate-percentage="sc.filters.selectedPrimaryFilter.calculatePercentage"
                                calculate-row-total="sc.filters.selectedPrimaryFilter.calculateRowTotal"
-                               ng-if="sc.filters.selectedPrimaryFilter.headers"></owh-table>
+                               ng-if="sc.filters.selectedPrimaryFilter.headers"
+                               table-view="{{sc.tableView}}"></owh-table>
                 </div>
             </div>
             <!--Table-->
