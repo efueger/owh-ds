@@ -14,6 +14,7 @@ var MortalitySearchPage = function() {
     msp.raceOptionsLink = element(by.partialLinkText('Race'));
     msp.raceOption2Link = element(by.css('label[for=deaths_race_2]'));
     msp.raceOption2 = element(by.cssContainingText('a', 'Race')).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.tagName('li')).get(3);
+    msp.interestedInSelectBox = element(by.id('interestedIn'));
 
     msp.getSelectedFilterType = function() {
        return msp.filterTypeSelectBox.$('option:checked').getText();
@@ -58,9 +59,29 @@ var MortalitySearchPage = function() {
         return element(by.cssContainingText('a', filterType)).element(By.xpath('following-sibling::owh-toggle-switch')).element(by.cssContainingText('a', viewType));
     };
 
+    msp.getCategoryBars = function() {
+        return element.all(by.className('owh-question__title'));
+    };
+
+    msp.getCategoryContents = function() {
+        return element.all(by.className('owh-question__table'));
+    };
+
+    msp.getShowMoreLinks = function() {
+        return element.all(by.className('owh-question__show'));
+    };
+
+    msp.getCategoryQuestions = function() {
+        return element.all(by.className('owh-question__question'));
+    };
+
+    msp.getExpandLinks = function() {
+        return element.all(by.className('owh-question__expand'));
+    };
+
     msp.getOptions = function(filterType) {
         return element(by.cssContainingText('a', filterType)).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.tagName('li'));
-    }
+    };
 
 };
 

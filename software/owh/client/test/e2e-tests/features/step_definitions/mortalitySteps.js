@@ -143,10 +143,16 @@ var mortalityStepDefinitionsWrapper = function () {
         });
     });
 
-    this.Then(/^an option to view\/hide percentages is displayed$/, function () {
+    this.Then(/^an option to show\/hide percentages is displayed$/, function () {
         expect(mortalityPage.showOrHidePecentageDiv.isPresent()).to.eventually.equal(true);
         expect(mortalityPage.showPecentageButton.isPresent()).to.eventually.equal(true);
         expect(mortalityPage.hidePecentageButton.isPresent()).to.eventually.equal(true);
+    });
+
+    this.Then(/^show\/hide percentages button shouldn't display$/, function () {
+        expect(mortalityPage.showOrHidePecentageDiv.isDisplayed()).to.eventually.equal(false);
+        expect(mortalityPage.showPecentageButton.isDisplayed()).to.eventually.equal(false);
+        expect(mortalityPage.hidePecentageButton.isDisplayed()).to.eventually.equal(false);
     });
 
     this.Then(/^when that option is toggled, the percentages are either displayed\/hidden$/, function () {
@@ -193,5 +199,15 @@ var mortalityStepDefinitionsWrapper = function () {
         });
     });
 
+    this.When(/^I change 'I'm interested in' dropdown value to "([^"]*)"$/, function (arg1) {
+        mortalityPage.interestedInSelectBox.element(by.cssContainingText('option', arg1)).click();
+    });
+
+    this.Then(/^I should be redirected to YRBS page$/, function () {
+        var text = mortalityPage.sideMenu.getText();
+        expect(text).to.eventually.contains("Question");
+        expect(text).to.eventually.contains("Select Questions");
+        expect(text).to.eventually.contains("Grade");
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;

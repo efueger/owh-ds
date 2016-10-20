@@ -88,7 +88,7 @@
                 <div class="usa-width-one-whole overflow-auto">
                     <hr />
                     <!-- show hide percentage -->
-                    <div id="togglePercentage" class="togglePercentage pull-left">
+                    <div id="togglePercentage" class="togglePercentage pull-left" ng-show="sc.filters.selectedPrimaryFilter.title === 'label.filter.mortality'">
                         <a id="showPercentage" class="active-link custom-link " ng-class="{'selected': sc.filters.selectedPrimaryFilter.calculatePercentage === true}" ng-click="sc.filters.selectedPrimaryFilter.calculatePercentage = true;" title="Show percentage">
                             <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === false" ng-bind="'label.mortality.search.table.show.percentage.button' | translate"></span>
                             <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === true" ng-bind="'label.mortality.search.table.showing.percentage.button' | translate"></span>
@@ -116,7 +116,9 @@
                                table-data-prepared="sc.filters.selectedPrimaryFilter.dataPrepared"
                                calculate-percentage="sc.filters.selectedPrimaryFilter.calculatePercentage"
                                calculate-row-total="sc.filters.selectedPrimaryFilter.calculateRowTotal"
-                               ng-if="sc.filters.selectedPrimaryFilter.headers"></owh-table>
+                               ng-if="sc.filters.selectedPrimaryFilter.headers && sc.filters.selectedPrimaryFilter.key === 'deaths'"></owh-table>
+                    <owh-accordion-table headers="sc.filters.selectedPrimaryFilter.headers" data="sc.filters.selectedPrimaryFilter.data"
+                                ng-if="sc.filters.selectedPrimaryFilter.key === 'mental_health'"></owh-accordion-table>
                 </div>
             </div>
             <!--Table-->
