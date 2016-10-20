@@ -55,6 +55,21 @@ describe('owhAccordionTable component: ', function() {
         expect(data[0].collapse).toBeTruthy();
     });
 
+    it('should toggle row collapse', function() {
+      var data = [{questions: [{}, {}]}, {questions: []}];
+      var bindings = {
+        data: data,
+        headers: [[{}, {}], [{}, {}]]
+      };
+      var ctrl = $componentController('owhAccordionTable', null, bindings);
+
+      ctrl.toggleRowCollapse(data[0]);
+      expect(data[0].collapse).toBeTruthy();
+
+      ctrl.toggleRowCollapse(data[0]);
+      expect(data[0].collapse).toBeFalsy();
+    });
+
     it('should show/hide questions', function() {
         var data = [{questions: [{}, {}]}, {questions: []}]
         var bindings = {
