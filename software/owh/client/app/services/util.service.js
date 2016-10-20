@@ -506,8 +506,6 @@
                     var title = Number(count);
                     if(isNaN(title)) {
                         title = count;
-                    } else {
-                        title = numberWithCommas(title);
                     }
                     columnData.push({
                         title: title,
@@ -515,7 +513,8 @@
                         isCount: true,
                         rowspan: 1,
                         colspan: 1,
-                        isBold: true
+                        isBold: true,
+                        pop: Math.ceil(Math.random() * 1000000)
                     });
                 }
                 tableData.push(columnData);
@@ -553,15 +552,14 @@
                             var title = Number(count);
                             if(isNaN(title)) {
                                 title = count;
-                            } else {
-                                title = numberWithCommas(title);
                             }
                             tableData.push({
                                 title: title,
                                 percentage: (calculatePercentage && totalCount != undefined)? ((Number(count) / totalCount) * 100).toFixed(1): undefined,
                                 isCount: true,
                                 rowspan: 1,
-                                colspan: 1
+                                colspan: 1,
+                                pop: Math.ceil(Math.random() * 1000000)
                             });
                         }
                     } else {

@@ -1032,6 +1032,15 @@ body {
     font-weight: normal;
 }
 
+.owh-table__cell-content {
+    min-width: 160px;
+}
+
+.owh-table__left-col {
+    margin-top: 6%;
+    font-weight: bold;
+}
+
 /* YRBS Table */
 
 .owh-question__expand {
