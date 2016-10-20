@@ -1041,6 +1041,10 @@ body {
     font-weight: bold;
 }
 
+#death-rate-disclaimer {
+  color: #808080;
+}
+
 /* YRBS Table */
 
 .owh-question__expand {

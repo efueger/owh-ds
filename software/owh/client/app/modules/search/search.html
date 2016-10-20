@@ -41,6 +41,9 @@
             </div>
         </div>
         <div class="owh-search-content usa-width-three-fourths" ng-class="{'owh-search-content--expanded': !sc.sideMenu.visible }">
+            <p id="death-rate-disclaimer" ng-show="sc.tableView === 'crude_death_rates'">
+                Population details from NCHS Bridge Race Estimates is used to calculate Death Rates (per 100,000)
+            </p>
         <!--Charts-->
             <div class="usa-grid-full margin-top-30">
                 <div class="usa-width-one-whole" ng-repeat="startChartData in sc.filters.selectedPrimaryFilter.chartData" ng-init="parentIndex = $index">

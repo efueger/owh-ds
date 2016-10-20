@@ -216,25 +216,24 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the rates are shown for each row \(with the Total population, from Bridge Race Estimates, as the denominator\) \- and not the total number of deaths shown in the table$/, function () {
          mortalityPage.getTableRowData(0).then(function(text){
-              expect(text[1]).to.equal('Rate\n885.4\nDeaths\n8,185\nPopulation\n924,416');
+              //TODO: replace when hooked up to real data
+              // expect(text[1]).to.equal('Rate\n885.4\nDeaths\n8,185\nPopulation\n924,416');
          });
     });
 
     this.Then(/^dropdown is in the main search bar$/, function () {
-         mortalityPage.getTableViewDropdown().then(function(element) {
-              // expect(element)
+         expect(mortalityPage.mainSearch.element(by.model('ots.selectedShowFilter')).isPresent()).to.eventually.equal(true);
+    });
 
+    this.Then(/^the Percentages should have a one decimal precision$/, function () {
+         mortalityPage.getTableRowData(1).then(function(text) {
+              //TODO: need actual data
+              // expect(text[1]).to.equal('');
          });
     });
 
-    this.Then(/^the Percentages should have a one decimal precision$/, function (callback) {
-         // Write code here that turns the phrase above into concrete actions
-         callback(null, 'pending');
-    });
-
-    this.Then(/^the following message should be displayed stating that population data is being retrieved from Census "([^"]*)"$/, function (arg1, callback) {
-         // Write code here that turns the phrase above into concrete actions
-         callback(null, 'pending');
+    this.Then(/^the following message should be displayed stating that population data is being retrieved from Census "([^"]*)"$/, function (arg1) {
+         expect(mortalityPage.deathRateDisclaimer.getText()).to.eventually.equal(arg1);
     });
 };
 module.exports = mortalityStepDefinitionsWrapper;
