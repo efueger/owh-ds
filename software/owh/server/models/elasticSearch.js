@@ -11,6 +11,8 @@ var _index = "owh";
 var mortality_type = "mortality";
 //var mortality_type = "deaths";
 var mental_health_type = "yrbs";
+var census_index="census";
+var census_type="census";
 
 
 var ElasticClient = function() {
@@ -24,12 +26,31 @@ ElasticClient.prototype.getClient = function(database) {
     });
 };
 
+ElasticClient.prototype.aggregateCensusDataForMortalityQuery = function(query){
+    var client = this.getClient(census_index);
+    var deferred = Q.defer();
+    client.search({
+        index:census_type,
+        body:query,
+        request_cache:true
+    }).then(function (resp) {
+        deferred.resolve(resp);
+    }, function (err) {
+        logger.error(err.message);
+        deferred.reject(err);
+    });
+};
+
+
 ElasticClient.prototype.aggregateDeaths = function(query){
     var client = this.getClient(_index);
     var deferred = Q.defer();
+    if(query[1]){
+        this.aggregateCensusDataForMortalityQuery(query[1]);
+    }
     client.search({
         index:mortality_type,
-        body:query,
+        body:query[0],
         request_cache:true
     }).then(function (resp) {
         deferred.resolve(searchUtils.populateDataWithMappings(resp, 'deaths'));

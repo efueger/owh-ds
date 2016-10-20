@@ -14,14 +14,14 @@ var searchRouter = function(app, rConfig) {
                 res.send( new result('OK', response.data, response.pagination, "success") );
             });
         } else if ( q.searchFor === "mental_health" ) {
-            q['pagination'] = {from: 0, size: 1000000000};
+            q['pagination'] = {from: 0, size: 10000};
             var finalQuery = queryBuilder.buildSearchQuery(q, false);
             /*finalQuery.sort = [
                 { "percent" : {"order" : "desc"}},
                 "_score"
             ];*/
             console.log(JSON.stringify(finalQuery));
-            new elasticSearch().aggregateMentalHealth(finalQuery, q.dataKeys, q.aggregations.nested.table).then(function(response){
+            new elasticSearch().aggregateMentalHealth(finalQuery[0], q.dataKeys, q.aggregations.nested.table).then(function(response){
                 res.send( new result('OK', response, response.pagination, "success") );
             });
         }
