@@ -14,6 +14,7 @@
     OWHAccordionTableController.$inject = ['$scope', 'utilService', '$rootScope'];
     function OWHAccordionTableController($scope, utilService, $rootScope) {
         var oatc = this;
+        oatc.categoryFilter = null;
 
         oatc.collapseRow = function(row) {
             row.collapse = true;
@@ -29,6 +30,20 @@
 
         oatc.showLess = function(row) {
             row.hide = true;
+        };
+
+        oatc.filterCategory = function(value, index, array) {
+            if (oatc.categoryFilter == null) {
+                return true;
+            } else if (value == oatc.categoryFilter) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        oatc.showOnly = function(category) {
+            oatc.categoryFilter = category;
         };
 
     }
