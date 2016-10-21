@@ -8,7 +8,7 @@ Feature: Mortality page
 
 Scenario: Access mortality page
   When I am at home page
-  And  I click on Explore button in Quick Health Information Gateway section
+  And  I click on Explore button in Health Information Gateway section
   Then I should get search page with default filter type mortality
 
 Scenario: Axis labels
@@ -35,7 +35,7 @@ Scenario: Side filter options retain order
 
 Scenario: Display show/hide percentage button only on mortality page
   When I am at home page
-  And  I click on Explore button in Quick Health Information Gateway section
+  And  I click on Explore button in Health Information Gateway section
   Then I should get search page with default filter type mortality
   And an option to show/hide percentages is displayed
   When I change 'I'm interested in' dropdown value to "Youth Risk Behavior"

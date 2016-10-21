@@ -13,7 +13,7 @@ Scenario: Access home page
   And I see the name of application as "Health Information Gateway"
 
 Scenario: Access search page with default filter type mortality
-  When I click on Explore button in Quick Health Information Gateway section
+  When I click on Explore button in Health Information Gateway section
   Then I should get search page with default filter type mortality
   And I see the name of application as "Health Information Gateway"
 

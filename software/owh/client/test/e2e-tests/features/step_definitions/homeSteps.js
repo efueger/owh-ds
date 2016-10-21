@@ -20,7 +20,7 @@ var homeStepDefinitionsWrapper = function () {
 
     });
 
-    this.When(/^I click on Explore button in Quick Health Information Gateway section$/, function () {
+    this.When(/^I click on Explore button in Health Information Gateway section$/, function () {
         homePage.quickHealthExploreBtn.click();
     });
 
