@@ -4,14 +4,18 @@ Feature: Home page
   In order to do further activities
   I want to see/know that this site is work in progress
   So that I know it's not complete/live
+  I want to see the name of the application as Health Information Gateway
+  So that it is no longer called Quick Health Data Online
 
 Scenario: Access home page
   When I hit app url
   Then I should be automatically redirected to home page
+  And I see the name of application as "Health Information Gateway"
 
 Scenario: Access search page with default filter type mortality
-  When I click on Explore button in Quick Health Data Online section
+  When I click on Explore button in Quick Health Information Gateway section
   Then I should get search page with default filter type mortality
+  And I see the name of application as "Health Information Gateway"
 
 Scenario: Access search page with filter type YRBS
   When I am at home page
