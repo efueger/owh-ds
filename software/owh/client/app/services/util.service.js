@@ -328,13 +328,14 @@
          });
          return tableData;
          }*/
-        function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal) {
+        function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKey) {
+            console.log('prepare mix table', secondaryCountKey);
             var tableData = {
                 headers: prepareMixedTableHeaders(headers, countLabel),
                 data: [],
                 calculatePercentage: calculatePercentage
             };
-            tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal);
+            tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
             return tableData;
         }
 
@@ -436,11 +437,12 @@
          * @param totalCount
          * @param calculatePercentage
          * @param calculateRowTotal
+         * @param secondaryCountKey
          * @returns {Array}
          */
-        function prepareMixedTableRowData(rowHeaders, columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal) {
+        function prepareMixedTableRowData(rowHeaders, columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey) {
             var tableData = [];
-
+            console.log(secondaryCountKey);
             /**
              * This if condition prepares data
              * Ex: If we are filtering data by Race and Sex then table have columns like Race, Female, Male, NumberOfDeaths, So this function
@@ -469,7 +471,7 @@
                         iconClass: eachHeader.iconClass,
                         onIconClick: eachHeader.onIconClick
                     };
-                    var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachData, countKey, totalCount, calculatePercentage, calculateRowTotal);
+                    var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachData, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
                     if(rowHeaders.length > 1 && calculateRowTotal) {
                         var totalArray = [];
                         totalArray.push({
@@ -501,21 +503,29 @@
              */
             else {
                 var count = data[countKey];
-                var columnData = prepareMixedTableColumnData(columnHeaders, data, countKey, count, calculatePercentage);
+                var columnData = prepareMixedTableColumnData(columnHeaders, data, countKey, count, calculatePercentage, secondaryCountKey);
                 if(typeof data[countKey] !== 'undefined') {
                     var title = Number(count);
                     if(isNaN(title)) {
                         title = count;
                     }
-                    columnData.push({
+                    var cell = {
                         title: title,
                         percentage: calculatePercentage ? (Number(data[countKey]) / totalCount) * 100 : undefined,
                         isCount: true,
                         rowspan: 1,
                         colspan: 1,
-                        isBold: true,
-                        pop: Math.ceil(Math.random() * 1000000)
-                    });
+                        isBold: true
+                    };
+                    //add additional data to the cell, used for population
+                    if(secondaryCountKey) {
+                        console.log('has second count key');
+                        var secondaryCount = data[secondaryCountKey];
+                        console.log(secondaryCount);
+                        cell[secondaryCountKey] = secondaryCount;
+                        console.log('modified cell', cell);
+                    }
+                    columnData.push(cell);
                 }
                 tableData.push(columnData);
             }
@@ -531,9 +541,10 @@
          * @param countKey
          * @param totalCount
          * @param calculatePercentage
+         * @param secondaryCountKey
          * @returns {Array}
          */
-        function prepareMixedTableColumnData(columnHeaders, data, countKey, totalCount, calculatePercentage) {
+        function prepareMixedTableColumnData(columnHeaders, data, countKey, totalCount, calculatePercentage, secondaryCountKey) {
             var tableData = [];
             if(columnHeaders && columnHeaders.length > 0) {
                 var eachColumnHeader = columnHeaders[0];
@@ -553,14 +564,19 @@
                             if(isNaN(title)) {
                                 title = count;
                             }
-                            tableData.push({
+                            var cell = {
                                 title: title,
                                 percentage: (calculatePercentage && totalCount != undefined)? ((Number(count) / totalCount) * 100).toFixed(1): undefined,
                                 isCount: true,
                                 rowspan: 1,
-                                colspan: 1,
-                                pop: Math.ceil(Math.random() * 1000000)
-                            });
+                                colspan: 1
+                            };
+                            // add population
+                            if(secondaryCountKey) {
+                                var secondaryCount = matchedData[secondaryCountKey];
+                                cell[secondaryCountKey] = secondaryCount;
+                            }
+                            tableData.push(cell);
                         }
                     } else {
                         if(eachOptionLength <= 0) {

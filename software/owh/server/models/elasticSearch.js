@@ -53,23 +53,21 @@ function mergeWithCensusData(data, censusData) {
 }
 
 function mergeCensusRecursively(mort, census) {
-  console.log('merge recursively-----------------------------------');
-  console.log('mort', mort);
-  console.log('census', census);
+  // console.log('merge recursively-----------------------------------');
+  // console.log('mort', mort);
+  // console.log('census', census);
   if(census && census.pop && typeof census.pop === 'number') {
-      console.log('census pop', census.pop);
+      // console.log('census pop', census.pop);
       mort.pop = census.pop;
-      console.log('modified mort data-------------------------------------', mort);
+      // console.log('modified mort data-------------------------------------', mort);
   }
   if(typeof mort === 'string' || typeof mort === 'number') {
       return;
   }
   for (var prop in mort) {
-      console.log('loop', mort[prop]);
-      console.log('property check', mort.hasOwnProperty(prop));
-      // if(Array.isArray(mort)) {
-          if(!mort.hasOwnProperty(prop)) continue;
-      // }
+      // console.log('loop', mort[prop]);
+      // console.log('property check', mort.hasOwnProperty(prop));
+      if(!mort.hasOwnProperty(prop)) continue;
       mergeCensusRecursively(mort[prop], census[prop]);
   }
 }
@@ -87,9 +85,9 @@ ElasticClient.prototype.aggregateDeaths = function(query){
                 request_cache:true
             }).then(function (resp) {
                 var data = searchUtils.populateDataWithMappings(resp, 'deaths');
-                console.log('mort data-----------------------------', JSON.stringify(data));
+                // console.log('mort data-----------------------------', JSON.stringify(data));
                 mergeWithCensusData(data, censusData);
-                console.log('promise resolved-------------------------------------------------------');
+                // console.log('promise resolved-------------------------------------------------------');
                 deferred.resolve(data);
             }, function (err) {
                 logger.error(err.message);

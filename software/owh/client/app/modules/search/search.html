@@ -121,6 +121,7 @@
                                calculate-percentage="sc.filters.selectedPrimaryFilter.calculatePercentage"
                                calculate-row-total="sc.filters.selectedPrimaryFilter.calculateRowTotal"
                                ng-if="sc.filters.selectedPrimaryFilter.headers && sc.filters.selectedPrimaryFilter.key === 'deaths'"
+                               secondary-count-key="pop"
                                table-view="{{sc.tableView}}"></owh-table>
                     <owh-accordion-table headers="sc.filters.selectedPrimaryFilter.headers" data="sc.filters.selectedPrimaryFilter.data"
                                 ng-if="sc.filters.selectedPrimaryFilter.key === 'mental_health'"></owh-accordion-table>

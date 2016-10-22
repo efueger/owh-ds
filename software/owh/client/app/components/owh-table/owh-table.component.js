@@ -16,6 +16,7 @@
                 tableDataPrepared: '=',
                 calculatePercentage: '=',
                 calculateRowTotal: '=',
+                secondaryCountKey: '@',
                 tableView: '@'
             }
         });
@@ -42,7 +43,7 @@
                 otc.dataToMixedTable.data = angular.copy(otc.data);
             } else {
                 //TODO: we can construct the mixedTable object outside of this component and just pass it in, allows for more flexibility and simpler component interface
-                otc.dataToMixedTable = utilService.prepareMixedTableData(otc.headers, otc.data, otc.countKey, otc.totalCount, otc.countLabel, otc.calculatePercentage, otc.calculateRowTotal);
+                otc.dataToMixedTable = utilService.prepareMixedTableData(otc.headers, otc.data, otc.countKey, otc.totalCount, otc.countLabel, otc.calculatePercentage, otc.calculateRowTotal, otc.secondaryCountKey);
             }
         }
         owhTableDataUpdated();
