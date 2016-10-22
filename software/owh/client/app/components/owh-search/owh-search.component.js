@@ -9,7 +9,8 @@
             bindings: {
                 filters : '=',
                 showFilters : '=',
-                searchResults : '&'
+                searchResults : '&',
+                onViewFilter: '&'
             }
         });
 

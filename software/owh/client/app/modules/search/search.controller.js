@@ -45,6 +45,8 @@
         sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
         sc.showFbDialog = showFbDialog;
         sc.queryId = $stateParams.queryId;
+        sc.tableView = sc.showMeOptions[0].key;
+        sc.changeViewFilter = changeViewFilter;
         populateFilterCounts(mortalityFilter).then(function() {
            search(sc.filters.selectedPrimaryFilter, sc.filters, false);
         });
@@ -66,6 +68,10 @@
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter);
             }
         }, true);
+
+        function changeViewFilter(selectedFilter) {
+            sc.tableView = selectedFilter.key;
+        }
 
         function search(selectedFilter, allFilters, isFilterChanged) {
             //TODO: would be better if there was a way to filter using query but also get all possible values back from api

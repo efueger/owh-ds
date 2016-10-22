@@ -1024,6 +1024,27 @@ body {
     margin-left:-4px;
 }
 
+/* owh-table */
+.owh-table__label {
+    margin-top: 0;
+    font-size: 12px;
+    color: #B6B6B6;
+    font-weight: normal;
+}
+
+.owh-table__cell-content {
+    min-width: 160px;
+}
+
+.owh-table__left-col {
+    margin-top: 6%;
+    font-weight: bold;
+}
+
+#death-rate-disclaimer {
+  color: #808080;
+}
+
 /* YRBS Table */
 
 .owh-question__expand {

@@ -209,5 +209,31 @@ var mortalityStepDefinitionsWrapper = function () {
         expect(text).to.eventually.contains("Select Questions");
         expect(text).to.eventually.contains("Grade");
     });
+
+    this.When(/^the user chooses the option 'Death Rates'$/, function () {
+         mortalityPage.deathRatesOption.click();
+    });
+
+    this.Then(/^the rates are shown for each row \(with the Total population, from Bridge Race Estimates, as the denominator\) \- and not the total number of deaths shown in the table$/, function () {
+         mortalityPage.getTableRowData(0).then(function(text){
+              //TODO: replace when hooked up to real data
+              // expect(text[1]).to.equal('Rate\n885.4\nDeaths\n8,185\nPopulation\n924,416');
+         });
+    });
+
+    this.Then(/^dropdown is in the main search bar$/, function () {
+         expect(mortalityPage.mainSearch.element(by.model('ots.selectedShowFilter')).isPresent()).to.eventually.equal(true);
+    });
+
+    this.Then(/^the Percentages should have a one decimal precision$/, function () {
+         mortalityPage.getTableRowData(1).then(function(text) {
+              //TODO: need actual data
+              // expect(text[1]).to.equal('');
+         });
+    });
+
+    this.Then(/^the following message should be displayed stating that population data is being retrieved from Census "([^"]*)"$/, function (arg1) {
+         expect(mortalityPage.deathRateDisclaimer.getText()).to.eventually.equal(arg1);
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;
