@@ -27,7 +27,6 @@ ElasticClient.prototype.getClient = function(database) {
 };
 
 ElasticClient.prototype.aggregateCensusDataForMortalityQuery = function(query){
-    // console.log('aggregate census------------------------------', JSON.stringify(query));
     var client = this.getClient(census_index);
     var deferred = Q.defer();
     client.search({
@@ -35,7 +34,6 @@ ElasticClient.prototype.aggregateCensusDataForMortalityQuery = function(query){
         body:query,
         request_cache:true
     }).then(function (resp) {
-        // console.log('census resp----------------------------------', JSON.stringify(searchUtils.populateDataWithMappings(resp, 'pop')));
         deferred.resolve(searchUtils.populateDataWithMappings(resp, 'pop'));
     }, function (err) {
         logger.error(err.message);
@@ -46,30 +44,23 @@ ElasticClient.prototype.aggregateCensusDataForMortalityQuery = function(query){
 };
 
 function mergeWithCensusData(data, censusData) {
-    console.log('merge------------------------------------------');
-    console.log('mort data', JSON.stringify(data));
-    console.log('census data', JSON.stringify(censusData));
+    // console.log('merge------------------------------------------');
+    // console.log('mort data', JSON.stringify(data));
+    // console.log('census data', JSON.stringify(censusData));
     mergeCensusRecursively(data.data.nested.table, censusData.data.nested.table);
 }
 
 function mergeCensusRecursively(mort, census) {
-  // console.log('merge recursively-----------------------------------');
-  // console.log('mort', mort);
-  // console.log('census', census);
-  if(census && census.pop && typeof census.pop === 'number') {
-      // console.log('census pop', census.pop);
-      mort.pop = census.pop;
-      // console.log('modified mort data-------------------------------------', mort);
-  }
-  if(typeof mort === 'string' || typeof mort === 'number') {
-      return;
-  }
-  for (var prop in mort) {
-      // console.log('loop', mort[prop]);
-      // console.log('property check', mort.hasOwnProperty(prop));
-      if(!mort.hasOwnProperty(prop)) continue;
-      mergeCensusRecursively(mort[prop], census[prop]);
-  }
+    if(census && census.pop && typeof census.pop === 'number') {
+        mort.pop = census.pop;
+    }
+    if(typeof mort === 'string' || typeof mort === 'number') {
+        return;
+    }
+    for (var prop in mort) {
+        if(!mort.hasOwnProperty(prop)) continue;
+        mergeCensusRecursively(mort[prop], census[prop]);
+    }
 }
 
 
@@ -78,16 +69,13 @@ ElasticClient.prototype.aggregateDeaths = function(query){
     var deferred = Q.defer();
     if(query[1]){
         this.aggregateCensusDataForMortalityQuery(query[1]).then(function(censusData) {
-            // console.log('census promise resp--------------------------------------', censusData);
             client.search({
                 index:mortality_type,
                 body:query[0],
                 request_cache:true
             }).then(function (resp) {
                 var data = searchUtils.populateDataWithMappings(resp, 'deaths');
-                // console.log('mort data-----------------------------', JSON.stringify(data));
                 mergeWithCensusData(data, censusData);
-                // console.log('promise resolved-------------------------------------------------------');
                 deferred.resolve(data);
             }, function (err) {
                 logger.error(err.message);
@@ -102,7 +90,6 @@ ElasticClient.prototype.aggregateDeaths = function(query){
             request_cache:true
         }).then(function (resp) {
             var data = searchUtils.populateDataWithMappings(resp, 'deaths');
-            // console.log('data-----------------------------', JSON.stringify(data));
             deferred.resolve(data);
         }, function (err) {
             logger.error(err.message);

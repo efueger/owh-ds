@@ -329,7 +329,6 @@
          return tableData;
          }*/
         function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKey) {
-            console.log('prepare mix table', secondaryCountKey);
             var tableData = {
                 headers: prepareMixedTableHeaders(headers, countLabel),
                 data: [],
@@ -442,7 +441,6 @@
          */
         function prepareMixedTableRowData(rowHeaders, columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey) {
             var tableData = [];
-            console.log(secondaryCountKey);
             /**
              * This if condition prepares data
              * Ex: If we are filtering data by Race and Sex then table have columns like Race, Female, Male, NumberOfDeaths, So this function
@@ -519,11 +517,8 @@
                     };
                     //add additional data to the cell, used for population
                     if(secondaryCountKey) {
-                        console.log('has second count key');
                         var secondaryCount = data[secondaryCountKey];
-                        console.log(secondaryCount);
                         cell[secondaryCountKey] = secondaryCount;
-                        console.log('modified cell', cell);
                     }
                     columnData.push(cell);
                 }
