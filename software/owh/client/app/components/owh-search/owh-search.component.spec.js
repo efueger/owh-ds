@@ -40,7 +40,7 @@ describe('OWH search component: ', function() {
         var showMeOptions = [
             {key:'crude_death_rates',title:'Crude Death Rates'}
         ];
-        var bindings = {showFilters:showMeOptions};
+        var bindings = {showFilters:showMeOptions, tableView: 'crude_death_rates'};
         var ctrl = $componentController('owhSearch', null, bindings);
         expect(ctrl).toBeDefined();
         ctrl.phaseTwoImpl();
@@ -51,7 +51,7 @@ describe('OWH search component: ', function() {
         var showMeOptions = [
             {key:'number_of_deaths',title:'Number of Deaths'}
         ];
-        var bindings = {showFilters:showMeOptions};
+        var bindings = {showFilters:showMeOptions, tableView: 'number_of_deaths'};
         var ctrl = $componentController('owhSearch', null, bindings);
         expect(ctrl).toBeDefined();
         ctrl.phaseTwoImpl();
@@ -81,7 +81,7 @@ describe('OWH search component: ', function() {
         ];
 
 
-        var bindings = {showFilters:showMeOptions, filters:filters, searchResults:searchResults };
+        var bindings = {showFilters:showMeOptions, filters:filters, searchResults:searchResults, tableView: 'crude_death_rates' };
         var ctrl = $componentController('owhSearch', null, bindings);
         expect(ctrl).toBeDefined();
         ctrl.groupByFiltersUpdated(true);
@@ -111,7 +111,7 @@ describe('OWH search component: ', function() {
             {key:'crude_death_rates',title:'Crude Death Rates'}
         ];
 
-        var bindings = {showFilters:showMeOptions, filters:filters, searchResults:searchResults };
+        var bindings = {showFilters:showMeOptions, filters:filters, searchResults:searchResults, tableView: 'crude_death_rates' };
         var ctrl = $componentController('owhSearch', null, bindings);
         expect(ctrl).toBeDefined();
         ctrl.groupByFiltersUpdated(false);
@@ -120,4 +120,3 @@ describe('OWH search component: ', function() {
     }));
 
 });
-

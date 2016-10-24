@@ -25,7 +25,7 @@
                 templateUrl: 'app/modules/search/search.html',
                 controller: 'SearchController',
                 controllerAs: 'sc',
-                params: {primaryFilterKey: 'deaths', allFilters: null, selectedFilters: null, tableView: 'deaths'}
+                params: {primaryFilterKey: 'deaths', allFilters: null, selectedFilters: null, tableView: 'number_of_deaths'}
         });
 
         $urlRouterProvider.otherwise('/');
