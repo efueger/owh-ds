@@ -1026,6 +1026,22 @@ body {
 
 /* YRBS Table */
 
+.owh-question__expand {
+    color: white;
+}
+
+.owh-question__show-only {
+    display: none;
+    margin-left: 10px;
+    text-decoration: underline !important;
+    cursor: pointer;
+}
+
+.owh-question__title-row:hover .owh-question__show-only {
+    display: inline;
+    color: white;
+}
+
 .owh-question__title {
     background-color: #833eb0;
     color: white;
