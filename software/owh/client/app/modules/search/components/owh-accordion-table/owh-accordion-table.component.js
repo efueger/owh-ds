@@ -34,6 +34,14 @@
             row.collapse = false;
         };
 
+        oatc.toggleRowCollapse = function(row) {
+            if(row.collapse) {
+                oatc.expandRow(row);
+            } else {
+                oatc.collapseRow(row);
+            }
+        };
+
         oatc.showMore = function(row) {
             row.hide = false;
         };

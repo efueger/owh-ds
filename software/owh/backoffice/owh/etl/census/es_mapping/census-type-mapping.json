@@ -17,7 +17,7 @@
       "hispanic_origin": {
         "type":"string", "index":"not_analyzed"
       },
-      "year": {
+      "current_year": {
           "type":"string", "index":"not_analyzed"
       },
       "pop": {
