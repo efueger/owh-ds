@@ -36,35 +36,58 @@ var populateDataWithMappings = function(resp, countKey) {
                 dataKey = keySplits[3];
                 var dataIndex = Number(keySplits[2]);
                 var aggData = {};
-                console.log("dataIndex: "+JSON.stringify(data[key].buckets));
+                // console.log("dataIndex: "+JSON.stringify(data[key].buckets));
                 aggData[dataKey] = populateAggregatedData(data[key].buckets, countKey, 3);
-                console.log("data");
-                console.log(dataIndex);
-                console.log(dataKey);
+                // console.log("data");
+                // console.log(dataIndex);
+                // console.log(dataKey);
                 result.data.nested.maps[dataKey]= aggData[dataKey];
-                console.log("done");
+                // console.log("done");
             } else {
                 result.data.simple[key] = populateAggregatedData(data[key].buckets, countKey);
             }
         });
     }
-    console.log(JSON.stringify(result));
+    // console.log(JSON.stringify(result));
     return result;
 };
 
 var populateAggregatedData = function(buckets, countKey, splitIndex) {
+    if(countKey === 'pop') {
+        console.log('populate aggregated');
+        console.log('countKey----------------', countKey);
+        console.log('buckets*************************', JSON.stringify(buckets));
+    }
+
     var result = [];
     for(var index in buckets) {
-        console.log(buckets[index]);
+        // console.log(buckets[index]);
         //ignoring key -9 for blank data.
         if (buckets[index].key!=='-9') {
+            if(countKey === 'pop') {
+                console.log('bucket----------------', JSON.stringify(buckets[index]));
+            }
             var aggregation = new Aggregation(buckets[index], countKey);
+            //take from pop.value instead of doc_count for census data
+            if(countKey === 'pop') {
+                aggregation = {name: buckets[index]['key']};
+                console.log('bucket has pop value---------------', !!buckets[index]['pop']);
+                if(buckets[index]['pop']) {
+                    aggregation[countKey] = buckets[index]['pop'].value;
+                }
+            }
             var innerObjKey = isValueHasGroupData(buckets[index]);
             if( innerObjKey ){
                 aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex);
             }
+            if(countKey === 'pop') {
+                console.log('aggregation------------------', JSON.stringify(aggregation));
+            }
             result.push(aggregation);
         }
+    }
+    if(countKey === 'pop') {
+        console.log('result------------------', JSON.stringify(result));
     }
     return result;
 };
