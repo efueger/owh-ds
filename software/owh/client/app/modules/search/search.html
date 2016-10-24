@@ -37,7 +37,11 @@
                 <span>&lt;&lt; Hide Filters</span>
             </a>
             <div class="sort-by side-filter-padding">
-                <owh-side-filter filters="sc.filters" on-filter="sc.search(sc.filters.selectedPrimaryFilter, sc.filters, true)" sort="sc.sort"></owh-side-filter>
+                <owh-side-filter filters="sc.filters"
+                    on-filter="sc.search(sc.filters.selectedPrimaryFilter, sc.filters, true)"
+                    sort="sc.sort"
+                    show-filters="sc.availableFilters[sc.tableView]"
+                    ></owh-side-filter>
             </div>
         </div>
         <div class="owh-search-content usa-width-three-fourths" ng-class="{'owh-search-content--expanded': !sc.sideMenu.visible }">
