@@ -48,12 +48,28 @@ ElasticClient.prototype.mergeWithCensusData = function(data, censusData){
 };
 
 function mergeCensusRecursively(mort, census) {
+    // sort arrays by name, before merging, so that the values for the matching
+    var sortFn = function (a, b){
+        if (a.name > b.name) { return 1; }
+        if (a.name < b.name) { return -1; }
+        return 0;
+    };
+
+    if (Array.isArray(mort)){
+        mort.sort(sortFn);
+    }
+
+    if (Array.isArray(census)){
+        census.sort(sortFn);
+    }
+
     if(census && census.pop && typeof census.pop === 'number') {
         mort.pop = census.pop;
     }
     if(typeof mort === 'string' || typeof mort === 'number') {
         return;
     }
+
     for (var prop in mort) {
         if(!mort.hasOwnProperty(prop)) continue;
         mergeCensusRecursively(mort[prop], census[prop]);
