@@ -121,6 +121,13 @@ var buildSearchQuery = function(params, isAggregation) {
     //check if primary query is empty
     elasticQuery.query.filtered.query = primaryQuery;
     elasticQuery.query.filtered.filter = filterQuery;
+    if(censusQuery) {
+        censusQuery.query = {};
+        censusQuery.query.filtered = {};
+
+        censusQuery.query.filtered.query = primaryQuery;
+        censusQuery.query.filtered.filter = filterQuery;
+    }
     return [elasticQuery, censusQuery];
 };
 
