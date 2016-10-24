@@ -53,43 +53,38 @@ var populateDataWithMappings = function(resp, countKey) {
 };
 
 var populateAggregatedData = function(buckets, countKey, splitIndex) {
-    if(countKey === 'pop') {
-        console.log('populate aggregated');
-        console.log('countKey----------------', countKey);
-        console.log('buckets*************************', JSON.stringify(buckets));
-    }
-
     var result = [];
     for(var index in buckets) {
         // console.log(buckets[index]);
         //ignoring key -9 for blank data.
         if (buckets[index].key!=='-9') {
-            if(countKey === 'pop') {
-                console.log('bucket----------------', JSON.stringify(buckets[index]));
-            }
             var aggregation = new Aggregation(buckets[index], countKey);
-            //take from pop.value instead of doc_count for census data
+            var innerObjKey = isValueHasGroupData(buckets[index]);
+            // take from pop.value instead of doc_count for census data
             if(countKey === 'pop') {
                 aggregation = {name: buckets[index]['key']};
-                console.log('bucket has pop value---------------', !!buckets[index]['pop']);
                 if(buckets[index]['pop']) {
                     aggregation[countKey] = buckets[index]['pop'].value;
+                    hasValue = true;
+                } else {
+                    aggregation[countKey] = sumBucketProperty(buckets[index][innerObjKey], 'pop');
                 }
             }
-            var innerObjKey = isValueHasGroupData(buckets[index]);
             if( innerObjKey ){
                 aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex);
-            }
-            if(countKey === 'pop') {
-                console.log('aggregation------------------', JSON.stringify(aggregation));
             }
             result.push(aggregation);
         }
     }
-    if(countKey === 'pop') {
-        console.log('result------------------', JSON.stringify(result));
-    }
     return result;
+};
+
+var sumBucketProperty = function(bucket, key) {
+    var sum = 0;
+    for(var i = 0; i < bucket.buckets.length; i++) {
+        sum+= bucket.buckets[i][key].value;
+    }
+    return sum;
 };
 
 var isValueHasGroupData = function(bucket) {
