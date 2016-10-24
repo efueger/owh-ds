@@ -43,12 +43,9 @@ ElasticClient.prototype.aggregateCensusDataForMortalityQuery = function(query){
     return deferred.promise;
 };
 
-function mergeWithCensusData(data, censusData) {
-    // console.log('merge------------------------------------------');
-    // console.log('mort data', JSON.stringify(data));
-    // console.log('census data', JSON.stringify(censusData));
+ElasticClient.prototype.mergeWithCensusData = function(data, censusData){
     mergeCensusRecursively(data.data.nested.table, censusData.data.nested.table);
-}
+};
 
 function mergeCensusRecursively(mort, census) {
     if(census && census.pop && typeof census.pop === 'number') {
@@ -65,6 +62,7 @@ function mergeCensusRecursively(mort, census) {
 
 
 ElasticClient.prototype.aggregateDeaths = function(query){
+    var self = this;
     var client = this.getClient(_index);
     var deferred = Q.defer();
     if(query[1]){
@@ -75,7 +73,7 @@ ElasticClient.prototype.aggregateDeaths = function(query){
                 request_cache:true
             }).then(function (resp) {
                 var data = searchUtils.populateDataWithMappings(resp, 'deaths');
-                mergeWithCensusData(data, censusData);
+                self.mergeWithCensusData(data, censusData);
                 deferred.resolve(data);
             }, function (err) {
                 logger.error(err.message);
