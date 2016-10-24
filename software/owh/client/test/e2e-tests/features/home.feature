@@ -9,9 +9,9 @@ Scenario: Access home page
   When I hit app url
   Then I should be automatically redirected to home page
 
-Scenario: Access search page with default filter type mortality
-  When I click on Explore button in Quick Health Data Online section
-  Then I should get search page with default filter type mortality
+#Scenario: Access search page with default filter type mortality
+#  When I click on Explore button in Quick Health Data Online section
+#  Then I should get search page with default filter type mortality
 
 Scenario: Access search page with filter type YRBS
   When I am at home page

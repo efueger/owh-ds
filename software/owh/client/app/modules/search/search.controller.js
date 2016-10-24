@@ -45,11 +45,11 @@
         sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
         //show certain filters for different table views
         sc.availableFilters = {
-            'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin']
+            'crude_death_rates': ['year', 'gender', 'race']
         };
         sc.showFbDialog = showFbDialog;
         sc.queryId = $stateParams.queryId;
-        sc.tableView = sc.showMeOptions[0].key;
+        sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
         sc.changeViewFilter = changeViewFilter;
         populateFilterCounts(mortalityFilter).then(function() {
            search(sc.filters.selectedPrimaryFilter, sc.filters, false);
@@ -85,7 +85,7 @@
                 //if not exists then call search using new hash
                 var filterHash = Math.ceil(Math.random()* 100);
                 sc.queryId = filterHash;
-                $state.go('search', {queryId: filterHash, allFilters: allFilters, selectedFilters: selectedFilter});
+                $state.go('search', {queryId: filterHash, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
             }
             populateFilterCounts(mortalityFilter, selectedFilter).then(function() {
                 primaryFilterChanged(selectedFilter);

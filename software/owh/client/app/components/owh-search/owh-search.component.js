@@ -10,7 +10,8 @@
                 filters : '=',
                 showFilters : '=',
                 searchResults : '&',
-                onViewFilter: '&'
+                onViewFilter: '&',
+                tableView: '@'
             }
         });
 
@@ -20,7 +21,11 @@
         var ots = this;
         ots.groupByFiltersUpdated = groupByFiltersUpdated;
         ots.phaseTwoImpl = phaseTwoImpl;
-        ots.selectedShowFilter = ots.showFilters[0];
+        angular.forEach(ots.showFilters, function(filter) {
+            if(filter.key === ots.tableView) {
+                ots.selectedShowFilter = filter;
+            }
+        });
 
         function groupByFiltersUpdated(added) {
             var selectedFilterKeys = utilService.getValuesByKey(ots.filters.selectedPrimaryFilter.value, 'key');
