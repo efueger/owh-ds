@@ -215,10 +215,10 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the rates are shown for each row \(with the Total population, from Bridge Race Estimates, as the denominator\) \- and not the total number of deaths shown in the table$/, function () {
-         mortalityPage.getTableRowData(0).then(function(text){
+        //  mortalityPage.getTableRowData(0).then(function(text){
               //TODO: replace when hooked up to real data
               // expect(text[1]).to.equal('Rate\n885.4\nDeaths\n8,185\nPopulation\n924,416');
-         });
+        //  });
     });
 
     this.Then(/^dropdown is in the main search bar$/, function () {
@@ -226,10 +226,10 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the Percentages should have a one decimal precision$/, function () {
-         mortalityPage.getTableRowData(1).then(function(text) {
+        //  mortalityPage.getTableRowData(1).then(function(text) {
               //TODO: need actual data
               // expect(text[1]).to.equal('');
-         });
+        //  });
     });
 
     this.Then(/^the following message should be displayed stating that population data is being retrieved from Census "([^"]*)"$/, function (arg1) {
