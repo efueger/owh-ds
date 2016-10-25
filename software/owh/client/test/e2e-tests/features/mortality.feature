@@ -19,7 +19,7 @@ Feature: Mortality page
 
 Scenario: Side filter collapse
   Given user is on search page
-  Then user sees side filter
+#  Then user sees side filter
   Then there is button to hide filter
   When user clicks hide filter button
   Then side menu slides away
