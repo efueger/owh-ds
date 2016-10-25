@@ -194,11 +194,9 @@ ElasticClient.prototype.insertQueryData = function (query) {
         type: "object",
         body: query
     }).then(function (resp){
-        console.log(" insert query successfully completed &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& ");
         logger.info("inserted new record in queryData");
         deferred.resolve(resp);
     }, function(err){
-        console.log(" insert query not completed ***************************************** ", err.message);
         logger.error("Failed to insert record in queryResults ", err.message);
         deferred.reject(err);
     });

@@ -181,7 +181,7 @@
             return deferred.promise;
         }
 
-        function getResults(primaryFilter) {
+       /* function getResults(primaryFilter) {
             var deferred = $q.defer();
             var apiQuery = buildAPIQuery(primaryFilter);
             var headers = apiQuery.headers;
@@ -205,7 +205,7 @@
             var apiQuery = buildAPIQuery(queryJson);
             //var headers = apiQuery.headers;
             return SearchService.generateHashCode(apiQuery.apiQuery.query);
-        }
+        }*/
 
         //search results by grouping
         function queryMortalityAPI(primaryFilter, queryID) {
@@ -782,7 +782,7 @@
             filters.search = [
                 {
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
-                    allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, generateHashFromQueryJson: generateHashFromQueryJson, getResults: getResults, showMap:true,
+                    allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, showMap:true,
                     countLabel: 'Number of Deaths', mapData:{},
                     sideFilters:[
                         {

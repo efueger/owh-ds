@@ -9,8 +9,7 @@
         var service = {
             searchResults : searchResults,
             uploadImage : uploadImage,
-            generateHashCode: generateHashCode,
-            getResults:   getResults
+            generateHashCode: generateHashCode
         };
         return service;
 
@@ -34,7 +33,7 @@
             return 10101;
         }
 
-        function getResults(query) {
+        /*function getResults(query) {
             //if(query.queryJSON) {
                 var deferred = $q.defer();
                 API.getResults({q:query}).$promise.then(onComplete).catch(onFailed);
@@ -42,7 +41,7 @@
                 function onFailed(error) { deferred.reject(error) }
                 return deferred.promise;
             //}
-        }
+        }*/
     }
 
 }());
