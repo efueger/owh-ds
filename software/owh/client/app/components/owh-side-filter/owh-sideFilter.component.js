@@ -10,7 +10,8 @@
                 //TODO: change to one-way binding and bubble filter changes up with event bindings
                 filters : "=",
                 onFilter: '&',
-                sort: '<'
+                sort: '<',
+                showFilters: '<'
             }
         });
 
@@ -24,6 +25,7 @@
         sfc.clearSelection = clearSelection;
         sfc.updateGroupValue = updateGroupValue;
         sfc.getFilterOrder = getFilterOrder;
+        sfc.isVisible = isVisible;
 
         function getOptionCountPercentage(option) {
             var countKey = sfc.filters.selectedPrimaryFilter.key;
@@ -106,6 +108,13 @@
         //called to determine order of side filters, looks at sort array passed in
         function getFilterOrder(filter) {
             return sfc.sort.indexOf(filter.filters.key);
+        }
+
+        function isVisible(filter) {
+            if(!sfc.showFilters) {
+                return true;
+            }
+            return sfc.showFilters.indexOf(filter.filters.key) >= 0;
         }
     }
 }());

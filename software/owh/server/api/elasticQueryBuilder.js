@@ -1,6 +1,45 @@
 const util = require('util');
 var merge = require('merge');
 
+var prepareCensusAggregationQuery = function(aggregations) {
+    var censusQuery = {};
+    censusQuery.aggregations = {};
+    if (aggregations['nested']) {
+        if (aggregations['nested']['table'] && aggregations['nested']['table'].length > 0) {
+            censusQuery.aggregations = merge(censusQuery.aggregations, generateNestedCensusAggQuery(aggregations['nested']['table'], 'group_table_'));
+        }
+    }
+    return censusQuery;
+};
+
+var generateNestedCensusAggQuery = function(aggregations, groupByKeyStart) {
+    var aggQuery = generateCensusAggregationQuery(aggregations[0], groupByKeyStart);
+    if(aggregations.length > 1) {
+        aggQuery[Object.keys(aggQuery)[0]].aggregations = generateNestedCensusAggQuery(aggregations.slice(1), groupByKeyStart);
+    }else{
+        aggQuery[Object.keys(aggQuery)[0]].aggregations = {
+            "pop": {
+                "sum": {
+                    "field": "pop"
+                }
+            }
+        };
+    }
+    return aggQuery;
+};
+
+var generateCensusAggregationQuery = function( aggQuery, groupByKeyStart ) {
+    groupByKeyStart = groupByKeyStart ? groupByKeyStart : '';
+    var query = {};
+    query[ groupByKeyStart + aggQuery.key] = {
+        "terms": {
+            "field": aggQuery.queryKey,
+            "size": aggQuery.size
+        }
+    };
+    return query;
+};
+
 var prepareAggregationQuery = function(aggregations) {
     console.log(aggregations);
     var elasticQuery = {};
@@ -60,9 +99,14 @@ var generateAggregationQuery = function( aggQuery, groupByKeyStart ) {
 var buildSearchQuery = function(params, isAggregation) {
     var userQuery = params.query ? params.query : {};
     var elasticQuery = {};
+    var censusQuery = undefined;
     if ( isAggregation ){
         elasticQuery.size = 0;
         elasticQuery = merge(elasticQuery, prepareAggregationQuery(params.aggregations));
+        if(params.aggregations['nested'] && params.aggregations['nested']['table']){
+            censusQuery = prepareCensusAggregationQuery(params.aggregations);
+        }
+
     } else {
         elasticQuery.from = params.pagination.from;
         elasticQuery.size = params.pagination.size;
@@ -77,7 +121,14 @@ var buildSearchQuery = function(params, isAggregation) {
     //check if primary query is empty
     elasticQuery.query.filtered.query = primaryQuery;
     elasticQuery.query.filtered.filter = filterQuery;
-    return elasticQuery;
+    if(censusQuery) {
+        censusQuery.query = {};
+        censusQuery.query.filtered = {};
+
+        censusQuery.query.filtered.query = primaryQuery;
+        censusQuery.query.filtered.filter = filterQuery;
+    }
+    return [elasticQuery, censusQuery];
 };
 
 //build top-level bool query

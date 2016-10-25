@@ -43,8 +43,14 @@
             {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}
         ];
         sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
+        //show certain filters for different table views
+        sc.availableFilters = {
+            'crude_death_rates': ['year', 'gender', 'race']
+        };
         sc.showFbDialog = showFbDialog;
         sc.queryId = $stateParams.queryId;
+        sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
+        sc.changeViewFilter = changeViewFilter;
         populateFilterCounts(mortalityFilter).then(function() {
            search(sc.filters.selectedPrimaryFilter, sc.filters, false);
         });
@@ -67,6 +73,10 @@
             }
         }, true);
 
+        function changeViewFilter(selectedFilter) {
+            sc.tableView = selectedFilter.key;
+        }
+
         function search(selectedFilter, allFilters, isFilterChanged) {
             //TODO: would be better if there was a way to filter using query but also get all possible values back from api
             if(isFilterChanged) {
@@ -75,7 +85,7 @@
                 //if not exists then call search using new hash
                 var filterHash = Math.ceil(Math.random()* 100);
                 sc.queryId = filterHash;
-                $state.go('search', {queryId: filterHash, allFilters: allFilters, selectedFilters: selectedFilter});
+                $state.go('search', {queryId: filterHash, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
             }
             populateFilterCounts(mortalityFilter, selectedFilter).then(function() {
                 primaryFilterChanged(selectedFilter);
