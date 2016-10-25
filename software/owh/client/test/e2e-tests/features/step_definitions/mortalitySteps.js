@@ -31,7 +31,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Given(/^user is on search page$/, function () {
-        browser.get('/search');
+        browser.get('/search/');
     });
 
     this.Then(/^user sees side filter$/, function () {
@@ -74,8 +74,8 @@ var mortalityStepDefinitionsWrapper = function () {
         });
     });
 
-    this.When(/^I update criteria in filter options$/, function () {
-        mortalityPage.selectSideFilter('Autopsy', 'Column').click();
+    this.When(/^I update criteria in filter options with column "([^"]*)"$/, function (arg1) {
+        mortalityPage.selectSideFilter(arg1, 'Column').click();
     });
 
     this.Then(/^data table is updated and the number of deaths and percentages are updated too$/, function () {
@@ -143,10 +143,16 @@ var mortalityStepDefinitionsWrapper = function () {
         });
     });
 
-    this.Then(/^an option to view\/hide percentages is displayed$/, function () {
+    this.Then(/^an option to show\/hide percentages is displayed$/, function () {
         expect(mortalityPage.showOrHidePecentageDiv.isPresent()).to.eventually.equal(true);
         expect(mortalityPage.showPecentageButton.isPresent()).to.eventually.equal(true);
         expect(mortalityPage.hidePecentageButton.isPresent()).to.eventually.equal(true);
+    });
+
+    this.Then(/^show\/hide percentages button shouldn't display$/, function () {
+        expect(mortalityPage.showOrHidePecentageDiv.isDisplayed()).to.eventually.equal(false);
+        expect(mortalityPage.showPecentageButton.isDisplayed()).to.eventually.equal(false);
+        expect(mortalityPage.hidePecentageButton.isDisplayed()).to.eventually.equal(false);
     });
 
     this.Then(/^when that option is toggled, the percentages are either displayed\/hidden$/, function () {
@@ -177,5 +183,57 @@ var mortalityStepDefinitionsWrapper = function () {
         });
     });
 
+    this.When(/^user expands race options$/, function () {
+        mortalityPage.raceOptionsLink.click();
+    });
+
+    this.When(/^user selects second race option$/, function () {
+        mortalityPage.raceOption2Link.click();
+    });
+
+    this.Then(/^race options retain their initial ordering$/, function () {
+        mortalityPage.getOptions('Race').then(function(elements) {
+            elements[3].getOuterHtml().then(function(value) {
+                expect(mortalityPage.raceOption2.getOuterHtml()).to.eventually.equal(value);
+            });
+        });
+    });
+
+    this.When(/^I change 'I'm interested in' dropdown value to "([^"]*)"$/, function (arg1) {
+        mortalityPage.interestedInSelectBox.element(by.cssContainingText('option', arg1)).click();
+    });
+
+    this.Then(/^I should be redirected to YRBS page$/, function () {
+        var text = mortalityPage.sideMenu.getText();
+        expect(text).to.eventually.contains("Question");
+        expect(text).to.eventually.contains("Select Questions");
+        expect(text).to.eventually.contains("Grade");
+    });
+
+    this.When(/^the user chooses the option 'Death Rates'$/, function () {
+         mortalityPage.deathRatesOption.click();
+    });
+
+    this.Then(/^the rates are shown for each row \(with the Total population, from Bridge Race Estimates, as the denominator\) \- and not the total number of deaths shown in the table$/, function () {
+        //  mortalityPage.getTableRowData(0).then(function(text){
+              //TODO: replace when hooked up to real data
+              // expect(text[1]).to.equal('Rate\n885.4\nDeaths\n8,185\nPopulation\n924,416');
+        //  });
+    });
+
+    this.Then(/^dropdown is in the main search bar$/, function () {
+         expect(mortalityPage.mainSearch.element(by.model('ots.selectedShowFilter')).isPresent()).to.eventually.equal(true);
+    });
+
+    this.Then(/^the Percentages should have a one decimal precision$/, function () {
+        //  mortalityPage.getTableRowData(1).then(function(text) {
+              //TODO: need actual data
+              // expect(text[1]).to.equal('');
+        //  });
+    });
+
+    this.Then(/^the following message should be displayed stating that population data is being retrieved from Census "([^"]*)"$/, function (arg1) {
+         expect(mortalityPage.deathRateDisclaimer.getText()).to.eventually.equal(arg1);
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;

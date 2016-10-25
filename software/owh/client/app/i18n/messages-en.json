@@ -1,5 +1,5 @@
 {
-  "app.title": "OWH-Quick Health Data Online",
+  "app.title": "OWH-Health Information Gateway",
   "label.total": "Total",
   "label.search": "Search",
   "label.inline.charting": "Inline charting",
@@ -10,7 +10,7 @@
   "label.hide.more": "- {{hideLength}} less",
   "label.project.title": "OWH-Quick Health Data Online",
   "label.app.title.description": "OWH-Quick Health Data Online",
-  "label.app.title.qhdo": "Quick Health Data Online",
+  "label.app.title.qhdo": "Health Information Gateway",
   "label.filter.births": "Births",
   "label.filter.total.deaths": "Total deaths",
   "label.filter.mental.health": "Mental Health",

@@ -41,23 +41,28 @@ describe("Aggregations", function(){
 describe("Build elastic search queries", function(){
     it("Build search query with empty query and aggregations", function(done){
         var params = {query:{}, aggregations:{}};
-        var query = elasticQueryBuilder.buildSearchQuery(params, true);
+        var result = elasticQueryBuilder.buildSearchQuery(params, true)
+        var query = result[0];
         should(query).have.property('aggregations', {});
         should(query).have.property('size', 0);
+        should(result[1]).be.not.ok;
+
         done()
     });
 
     it("Build search query with empty query and simple aggregations", function(done){
         var params = {query:{}, aggregations:{ simple:[{ key:"year", queryKey:"current_year", size:100000}]}};
-        var query = elasticQueryBuilder.buildSearchQuery(params, true);
+        var result = elasticQueryBuilder.buildSearchQuery(params, true);
+        var query = result[0];
         should(query).have.property('aggregations', {"year":{"terms":{"field":"current_year","size":100000}}});
         should(query).have.properties('query', 'size');
         should(query).have.property('size', 0);
+        should(result[1]).be.not.ok;
         done()
     });
     it("Build search query with empty query and simple and nested aggregations", function(done){
         var params = {query:{}, aggregations:{ simple:[{ key:"year", queryKey:"current_year", size:100000}], nested:[]}};
-        var query = elasticQueryBuilder.buildSearchQuery(params, true);
+        var query = elasticQueryBuilder.buildSearchQuery(params, true)[0];
         should(query).have.property('aggregations', {"year":{"terms":{"field":"current_year","size":100000}}});
         should(query).have.properties('query', 'size');
         should(query).have.property('size', 0);
@@ -74,12 +79,20 @@ describe("Build elastic search queries", function(){
             }
         }
         };
-        var query = elasticQueryBuilder.buildSearchQuery(params, true);
+        var result = elasticQueryBuilder.buildSearchQuery(params, true);
+        var query =result[0];
+        var censusQuery = result[1];
         should(query.aggregations).have.properties('year', 'group_table_gender', 'group_chart_0_gender','group_maps_0_states');
         should(query.aggregations.group_table_gender.aggregations).have.properties('group_table_race');
         should(query.aggregations.group_table_gender.aggregations.group_table_race.aggregations).have.properties('group_table_year');
         should(query).have.properties('query', 'size');
         should(query).have.property('size', 0);
+        should(censusQuery).be.ok;
+        should(censusQuery.aggregations).have.properties('group_table_gender');
+        should(censusQuery.aggregations.group_table_gender.aggregations).have.properties('group_table_race');
+        should(censusQuery.aggregations.group_table_gender.aggregations.group_table_race.aggregations).have.properties('group_table_year');
+        should(censusQuery.aggregations.group_table_gender.aggregations.group_table_race.aggregations.group_table_year.aggregations).have.properties('pop');
+        should(censusQuery.aggregations.group_table_gender.aggregations.group_table_race.aggregations.group_table_year.aggregations.pop.sum.field).be.equal("pop");
         done()
     });
 
@@ -100,6 +113,8 @@ describe("Build elastic search queries", function(){
                 "dummy":{"key":"dummy","queryKey":"","value":["N"],"primary":true, caseChange:true}
             }, aggregations:{}, pagination:{from:0, size:0}};
         var query = elasticQueryBuilder.buildSearchQuery(params, false);
+        should(query[0]).be.ok;
+        should(query[1]).not.be.ok;
         /*console.log("query")
         console.log(JSON.stringify(query))
         console.log("query")*/
@@ -115,6 +130,8 @@ describe("Build elastic search queries", function(){
                 "week_of_death":{"key":"weekday","queryKey":"week_of_death","value":"6","primary":false, caseChange:true}
             }, aggregations:{}, pagination:{from:0, size:0}};
         var query = elasticQueryBuilder.buildSearchQuery(params, false);
+        should(query[0]).be.ok;
+        should(query[1]).not.be.ok;
         /*console.log("query")
         console.log(JSON.stringify(query))
         console.log("query")*/
@@ -126,6 +143,8 @@ describe("Build elastic search queries", function(){
                 "current_year":{"key":"year","queryKey": new Object(),"value":"2014","primary":false, caseChange:false}
             }, aggregations:{}, pagination:{from:0, size:0}};
         var query = elasticQueryBuilder.buildSearchQuery(params, false);
+        should(query[0]).be.ok;
+        should(query[1]).not.be.ok;
         /*console.log("query")
         console.log(JSON.stringify(query))
         console.log("query")*/
@@ -162,5 +181,18 @@ describe("Utils", function(){
         var result = searchUtils.populateYRBSData(response, headers, aggregations)
         should(result).have.properties('table');
         done()
+    });
+});
+
+describe('ElasticClient', function(){
+    it('should merge populations into mortality response', function(done){
+        var mort =   {"data":{"nested":{"table":{"group_table_race":[{"name":"1","deaths":2106697,"undefined":[{"name":"F","deaths":1079109},{"name":"M","deaths":1027588}]},{"name":"2","deaths":291706,"undefined":[{"name":"M","deaths":148258},{"name":"F","deaths":143448}]}]}}}};
+        var census = {"data":{"nested":{"table":{"group_table_race":[{"name":"2","undefined":[{"name":"F","pop":4444},{"name":"M","pop":3333}]},{"name":"1","undefined":[{"name":"M","pop":5555},{"name":"F","pop":6666}]}]}}}};
+        var mergedData = {"data":{"nested":{"table":{"group_table_race":[{"name":"1","deaths":2106697,"undefined":[{"name":"F","deaths":1079109, "pop":6666},{"name":"M","deaths":1027588,"pop":5555 }]},{"name":"2","deaths":291706,"undefined":[{"name":"F","deaths":143448, "pop":4444},{"name":"M","deaths":148258, "pop":3333}]}]}}}};
+        var es = new elasticSearch();
+        
+        es.mergeWithCensusData(mort, census);
+        should(JSON.stringify(mort)).equal(JSON.stringify(mergedData));
+        done();
     });
 });

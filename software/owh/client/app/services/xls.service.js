@@ -110,7 +110,7 @@
             var numOfPercentageColumns = 0;
             angular.forEach(table.headers, function(headerRow, idx) {
                 var headers = [];
-                if(idx === table.headers.length - 1 && table.headers.length > 1) {
+                if(idx > 0 && table.headers.length > 1) {
                     //add cell to account for row headers
                     headers.push({title: "", colspan: table.rowHeaders.length, rowspan: 1});
                 }

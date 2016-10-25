@@ -3,7 +3,7 @@
         <div class="usa-width-one-third margin-right-0" >
             <div class="usa-width-one-whole ">
                 <div class="usa-width-one-third text-right interested-text" ng-bind="'label.interested.in' | translate"></div>
-                <select ng-model="ots.filters.selectedPrimaryFilter"
+                <select id="interestedIn" ng-model="ots.filters.selectedPrimaryFilter"
                         ng-options="primaryFilter.title | translate for primaryFilter in ots.filters.primaryFilters"
                         class="usa-width-one-half add-on-element gray-border margin-0"></select>
                 <div class="usa-width-one-twelfth" style="padding-top:15px;">by</div>
@@ -26,7 +26,7 @@
         <div class="usa-width-one-fourth" ng-show="ots.filters.selectedPrimaryFilter.key === 'deaths'">
             <div class="usa-width-one-fourth show-me-text" ng-bind="'label.show.me' | translate"></div>
             <select ng-model="ots.selectedShowFilter"
-                    ng-change="ots.phaseTwoImpl()"
+                    ng-change="ots.onViewFilter({selectedFilter: ots.selectedShowFilter})"
                     ng-options="eachFilter.title | translate for eachFilter in ots.showFilters"
                     class="usa-width-two-thirds add-on-element gray-border margin-0"></select>
         </div>

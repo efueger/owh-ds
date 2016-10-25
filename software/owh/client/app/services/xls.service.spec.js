@@ -106,19 +106,100 @@ describe('xlsService', function(){
         });
     });
 
-    it('getSheetArrayFromMixedTable should return the proper sheet json from a mixed table object', function () {
-        var mixedTable = {
-            headers: [[{title: 'header1', colspan: 1, rowspan: 1}, {title: 'header2', colspan: 1, rowspan: 1}]],
-            data: [
-              [{title: 'data1', colspan: 1, rowspan: 1}, {title: 'data2', colspan: 1, rowspan: 1}],
-              [{title: 'data3', colspan: 1, rowspan: 1}, {title: 'data4', colspan: 1, rowspan: 1}]
-            ],
-            rowHeaders: [{}]
-        };
-        var sheetArray = xlsService.getSheetArrayFromMixedTable(mixedTable);
+    describe('getSheetArrayFromMixedTable', function() {
+        it('should return the proper sheet json from a mixed table object', function () {
+            var mixedTable = {
+                headers: [[{title: 'header1', colspan: 1, rowspan: 1}, {title: 'header2', colspan: 1, rowspan: 1}]],
+                data: [
+                    [{title: 'data1', colspan: 1, rowspan: 1}, {title: 'data2', colspan: 1, rowspan: 1}],
+                    [{title: 'data3', colspan: 1, rowspan: 1}, {title: 'data4', colspan: 1, rowspan: 1}]
+                ],
+                rowHeaders: [{}]
+            };
+            var sheetArray = xlsService.getSheetArrayFromMixedTable(mixedTable);
 
-        expect(sheetArray[0]).toEqual([{title: 'header1', colspan: 1, rowspan: 1}, {title: 'header2', colspan: 1, rowspan: 1}]);
-        expect(sheetArray[2]).toEqual([{title: 'data3', colspan: 1, rowspan: 1}, {title: 'data4', colspan: 1, rowspan: 1}]);
+            expect(sheetArray[0]).toEqual([{title: 'header1', colspan: 1, rowspan: 1}, {title: 'header2', colspan: 1, rowspan: 1}]);
+            expect(sheetArray[2]).toEqual([{title: 'data3', colspan: 1, rowspan: 1}, {title: 'data4', colspan: 1, rowspan: 1}]);
+        });
+
+        it('should account for merge cells and pad accordingly', function () {
+            /*
+             [1][2][3]
+             | || |[4]
+             |a||b|[5]
+             | |[6][7]
+             */
+            var mixedTable = {
+                headers: [[{title: '1', colspan: 1, rowspan: 1}, {title: '2', colspan: 1, rowspan: 1}, {title: '3', colspan: 1, rowspan: 1}]],
+                data: [
+                    [{title: 'a', colspan: 1, rowspan: 3}, {title: 'b', colspan: 1, rowspan: 2}, {title: '4', colspan: 1, rowspan: 1}],
+                    [{title: '5', colspan: 1, rowspan: 1}],
+                    [{title: '6', colspan: 1, rowspan: 1}, {title: '7', colspan: 1, rowspan: 1}]
+                ],
+                rowHeaders: [{}, {}, {}]
+            };
+            var sheetArray = xlsService.getSheetArrayFromMixedTable(mixedTable);
+
+            expect(sheetArray[2]).toEqual([{title: "", colspan: 2, rowspan: 1}, {title: '5', colspan: 1, rowspan: 1}]);
+            expect(sheetArray[3]).toEqual([{title: "", colspan: 1, rowspan: 1}, {title: "6", colspan: 1, rowspan: 1}, {title: '7', colspan: 1, rowspan: 1}]);
+        });
+
+        it('should pad column headers properly', function () {
+            /*
+            | || || |[d]| |
+            |a||b||c|[e]|g|
+            | || || |[f]| |
+             */
+            var mixedTable = {
+                headers: [
+                    [{title: 'a', colspan: 1, rowspan: 3}, {title: 'b', colspan: 1, rowspan: 3}, {title: 'c', colspan: 1, rowspan: 3}, {title: 'd', colspan: 1, rowspan: 1}, {title: 'g', colspan: 1, rowspan: 3}],
+                    [{title: 'e', colspan: 1, rowspan: 1}],
+                    [{title: 'f', colspan: 1, rowspan: 1}]
+                ],
+                data: [[]],
+                rowHeaders: [{}, {}, {}]
+            };
+            var sheetArray = xlsService.getSheetArrayFromMixedTable(mixedTable);
+
+            expect(sheetArray[1]).toEqual([{title: "", colspan: 3, rowspan: 1}, {title: 'e', colspan: 1, rowspan: 1}]);
+        });
+
+        it('should extend column headers properly to account for percentages', function() {
+            /*
+             | |[b]| |
+             |a|[c]|d|
+             */
+            var mixedTable = {
+                headers: [
+                    [{title: 'a', colspan: 1, rowspan: 2}, {title: 'b', colspan: 1, rowspan: 1}, {title: 'd', colspan: 1, rowspan: 2}],
+                    [{title: 'c', colspan: 1, rowspan: 1}]
+                ],
+                data: [[]],
+                rowHeaders: [{}],
+                calculatePercentage: true
+            };
+            var sheetArray = xlsService.getSheetArrayFromMixedTable(mixedTable);
+
+            expect(sheetArray[0]).toEqual([{title: "a", colspan: 1, rowspan: 2}, {title: 'b', colspan: 2, rowspan: 1}, {title: 'd', colspan: 1, rowspan: 2}]);
+        });
+
+        it('should extend Total row to account for percentage columns', function() {
+            /*
+            [a][b][c][d][e]
+            [Total     ][1]
+             */
+            var mixedTable = {
+                headers: [
+                    [{title: 'a', colspan: 1, rowspan: 2}, {title: 'b', colspan: 1, rowspan: 1}, {title: 'c', colspan: 1, rowspan: 1}, {title: 'd', colspan: 1, rowspan: 1}, {title: 'e', colspan: 1, rowspan: 1}]
+                ],
+                data: [[{title: 'Total', colspan: 3, rowspan: 1}, {title: "1", colspan: 1, rowspan: 1}]],
+                rowHeaders: [{}],
+                calculatePercentage: true
+            };
+            var sheetArray = xlsService.getSheetArrayFromMixedTable(mixedTable);
+
+            expect(sheetArray[1]).toEqual([{title: "Total", colspan: 6, rowspan: 1}, {title: "1", colspan: 1, rowspan: 1}]);
+        })
     });
 
     describe('getCSVFromSheet', function () {

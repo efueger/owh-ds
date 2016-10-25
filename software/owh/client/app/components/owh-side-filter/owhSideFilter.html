@@ -1,6 +1,6 @@
 <aside>
     <ul class="usa-sidenav-list side-filters">
-        <li class="accordion" ng-repeat="sideFilter in sfc.filters.selectedPrimaryFilter.sideFilters | orderBy: sfc.getFilterOrder">
+        <li class="accordion" ng-repeat="sideFilter in sfc.filters.selectedPrimaryFilter.sideFilters | orderBy: sfc.getFilterOrder" ng-show="sfc.isVisible(sideFilter)">
             <span ng-init="group = (sideFilter.filterGroup ? sideFilter : sideFilter.filters)">
                 <label class="side-pane-label custom-label">
                     <a href="javascript:void(0)" ng-click="sideFilter.collapse = !sideFilter.collapse" class="custom-link">
@@ -114,7 +114,7 @@
                             <span>All</span>
                         </label>
                     </li>
-                    <li ng-repeat="option in group.autoCompleteOptions | orderBy:'-count'" ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' "
+                    <li ng-repeat="option in group.autoCompleteOptions | orderBy:'+key'" ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' "
                         class="group-option" ng-show="$index < 3 || sideFilter.showAll">
                         <input id="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" type="checkbox"
                                checklist-model="group.value" checklist-value="option.key" ng-click="sfc.onFilter()">
