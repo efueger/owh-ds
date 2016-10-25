@@ -9,9 +9,9 @@ Feature: Common functionality
 #  Then I should get search page with default filter type mortality
 #  And URL in browser bar should not be base URL
 
-Scenario: Filter options updated
-  When I update criteria in filter options with column "Autopsy"
-  Then URL in browser bar should change
+#Scenario: Filter options updated
+#  When I update criteria in filter options with column "Autopsy"
+#  Then URL in browser bar should change
 
 Scenario: Browser back button
   When I selects the back button then browser URL should change
