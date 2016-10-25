@@ -11,6 +11,7 @@ var _index = "owh";
 var mortality_type = "mortality";
 //var mortality_type = "deaths";
 var mental_health_type = "yrbs";
+var query_data = "queryResults1";
 
 
 var ElasticClient = function() {
@@ -58,4 +59,37 @@ ElasticClient.prototype.aggregateMentalHealth = function(query, headers, aggrega
     return deferred.promise;
 };
 
+ElasticClient.prototype.getQueryData = function(query){
+    var client = this.getClient(_index);
+    var deferred = Q.defer();
+    client.search({
+       index: query_data,
+       type: 'object',
+       body: query,
+       request_cache:true
+    }).then(function (resp){
+        logger.info("Get queryData successfully completed");
+        deferred.resolve(resp);
+    }, function(err){
+        logger.error("While searching for queryData object ", err.message);
+        deferred.reject(err);
+    });
+    return deferred.promise;
+};
+
+ElasticClient.prototype.insertQueryData = function (query) {
+    var client = this.getClient(_index);
+    var deferred = Q.defer();
+    client.create({
+        index: query_data,
+        body: query
+    }).then(function (resp){
+        logger.info("inserted new record in queryData");
+        deferred.resolve(resp);
+    }, function(err){
+        logger.error("Failed to insert record in queryData ", err.message);
+        deferred.reject(err);
+    });
+    return deferred.promise;
+}
 module.exports = ElasticClient;

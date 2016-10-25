@@ -8,13 +8,15 @@
     function SearchService($q, API){
         var service = {
             searchResults : searchResults,
-            uploadImage : uploadImage
+            uploadImage : uploadImage,
+            generateHashCode: generateHashCode,
+            getResults:   getResults
         };
         return service;
 
-        function searchResults(query) {
+        function searchResults(query, queryID) {
             var deferred = $q.defer();
-            API.search({q:query}).$promise.then(onComplete).catch(onFailed);
+            API.search({q:query, qID:queryID}).$promise.then(onComplete).catch(onFailed);
             function onComplete(response) { deferred.resolve(response); }
             function onFailed(error) { deferred.reject(error) }
             return deferred.promise;
@@ -26,6 +28,20 @@
             function onComplete(response) { deferred.resolve(response); }
             function onFailed(error) { deferred.reject(error) }
             return deferred.promise;
+        }
+
+        function generateHashCode(queryJson){
+            return 10101;
+        }
+
+        function getResults(query) {
+            //if(query.queryJSON) {
+                var deferred = $q.defer();
+                API.getResults({q:query}).$promise.then(onComplete).catch(onFailed);
+                function onComplete(response) { deferred.resolve(response); }
+                function onFailed(error) { deferred.reject(error) }
+                return deferred.promise;
+            //}
         }
     }
 

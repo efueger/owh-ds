@@ -50,6 +50,17 @@ var generateAggregationQuery = function( aggQuery, groupByKeyStart ) {
     return query;
 };
 
+var insertQuery = function insertQuery(params, results) {
+    var userQuery = params.query;
+    var insertQuery = {};
+    insertQuery.queryJSON = userQuery;
+    insertQuery.resultJSON = results;
+    insertQuery.dataset = 'Mortality';  //Find a way to get dataset value
+    insertQuery.lastupdate = '2016-06-06';
+    insertQuery.queryID = 12345;
+    return insertQuery;
+}
+
 
 /**
  * Builds a search query
@@ -67,6 +78,7 @@ var buildSearchQuery = function(params, isAggregation) {
         elasticQuery.from = params.pagination.from;
         elasticQuery.size = params.pagination.size;
     }
+    elasticQuery.queryID = params.queryId;
     elasticQuery.query = {};
     elasticQuery.query.filtered = {};
 
@@ -193,3 +205,4 @@ var isEmptyObject = function(obj) {
 module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;
+module.exports.insertQuery = insertQuery;

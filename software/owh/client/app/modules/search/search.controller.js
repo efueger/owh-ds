@@ -44,17 +44,16 @@
         ];
         sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
         sc.showFbDialog = showFbDialog;
-        sc.queryId = $stateParams.queryId;
-        populateFilterCounts(mortalityFilter).then(function() {
-           search(sc.filters.selectedPrimaryFilter, sc.filters, false);
-        });
+        sc.queryID = $stateParams.queryID;
         //TODO: we will need to change the order of a few things
         //Intial call queryId will be empty
-        if($stateParams.queryId === "") {
+        if(sc.queryID === "") {
+            //Generate 5 char HEX has from queryJson
+            var hashCode = Math.ceil(Math.random()* 100);//sc.filters.selectedPrimaryFilter.generateHashFromQueryJson(sc.filters.selectedPrimaryFilter);
             //Eventually we will generate hash code using query, save in catche index in elasticsearch database
-            var intialHashCode = Math.ceil(Math.random()* 100);
-            sc.queryId = intialHashCode;
-            $state.go('search', {queryId: intialHashCode });
+            sc.queryID = hashCode;
+
+            $state.go('search', {queryID: sc.queryID});
         }
         //If url has hashcode then using hashcode get the query from database and return results.
         //If hash code not exists in database, then save hashcode, query, results in database and return results.
@@ -75,15 +74,15 @@
                 //if not exists then call search using new hash
                 var filterHash = Math.ceil(Math.random()* 100);
                 sc.queryId = filterHash;
-                $state.go('search', {queryId: filterHash, allFilters: allFilters, selectedFilters: selectedFilter});
+                $state.go('search', {queryId: sc.queryId, allFilters: allFilters, selectedFilters: selectedFilter});
             }
-            populateFilterCounts(mortalityFilter, selectedFilter).then(function() {
-                primaryFilterChanged(selectedFilter);
+            populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
+                primaryFilterChanged(selectedFilter, sc.queryID);
             });
         }
 
-        function populateFilterCounts(filter, query) {
-            return searchFactory.addCountsToAutoCompleteOptions(filter, query);
+        function populateFilterCounts(filter, query, queryID) {
+            return searchFactory.addCountsToAutoCompleteOptions(filter, query, queryID);
         }
 
         function downloadCSV() {
@@ -171,10 +170,11 @@
             return categories;
         }
 
-        function primaryFilterChanged(newFilter) {
+        function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
-            sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter).then(function() {
+            console.log(" ************ calling search results method with query ID = " + sc.queryID);
+            sc.filters.selectedPrimaryFilter.searchResults(newFilter, queryID).then(function() {
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);

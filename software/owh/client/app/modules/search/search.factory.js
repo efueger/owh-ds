@@ -164,9 +164,9 @@
             });
         }
 
-        function searchMortalityResults(primaryFilter) {
+        function searchMortalityResults(primaryFilter, queryID) {
             var deferred = $q.defer();
-            queryMortalityAPI(primaryFilter).then(function(response){
+            queryMortalityAPI(primaryFilter, queryID).then(function(response){
                 primaryFilter.data = response.data;
                 primaryFilter.headers = response.headers;
                 primaryFilter.calculatePercentage = true;
@@ -180,13 +180,40 @@
             });
             return deferred.promise;
         }
+
+        function getResults(primaryFilter) {
+            var deferred = $q.defer();
+            var apiQuery = buildAPIQuery(primaryFilter);
+            var headers = apiQuery.headers;
+            SearchService.getResults(apiQuery.apiQuery).then(function(response){
+                console.log(" in search factory..... after service getResults call");
+                deferred.resolve({
+                    data : "",
+                    dataPrepared : false,
+                    headers : headers,
+                    chartDataFromAPI : "",
+                    chartData: "",
+                    maps: "",
+                    totalCount: ""
+                });
+            });
+            return deferred.promise;
+        }
+
+        function generateHashFromQueryJson(queryJson) {
+            var deferred = $q.defer();
+            var apiQuery = buildAPIQuery(queryJson);
+            //var headers = apiQuery.headers;
+            return SearchService.generateHashCode(apiQuery.apiQuery.query);
+        }
+
         //search results by grouping
-        function queryMortalityAPI(primaryFilter) {
+        function queryMortalityAPI(primaryFilter, queryID) {
             var deferred = $q.defer();
             var apiQuery = buildAPIQuery(primaryFilter);
             var headers = apiQuery.headers;
             var query = apiQuery.apiQuery;
-            SearchService.searchResults(query).then(function(response) {
+            SearchService.searchResults(query, queryID).then(function(response) {
                 //resolve data for controller
                 deferred.resolve({
                     data : response.data.nested.table,
@@ -400,7 +427,7 @@
             return result;
         }
 
-        function addCountsToAutoCompleteOptions(primaryFilter, query) {
+        function addCountsToAutoCompleteOptions(primaryFilter, query, queryID) {
             var deferred = $q.defer();
             var apiQuery = {
                 searchFor: primaryFilter.key,
@@ -418,7 +445,7 @@
                 apiQuery.query = filterQuery;
             }
             //search results and populate according owh design
-            SearchService.searchResults(apiQuery).then(function(response) {
+            SearchService.searchResults(apiQuery, queryID).then(function(response) {
                 primaryFilter.count = response.pagination.total;
                 angular.forEach(response.data.simple, function(eachFilterData, key) {
                     //fill auto-completer data with counts
@@ -755,7 +782,7 @@
             filters.search = [
                 {
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
-                    allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, showMap:true,
+                    allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, generateHashFromQueryJson: generateHashFromQueryJson, getResults: getResults, showMap:true,
                     countLabel: 'Number of Deaths', mapData:{},
                     sideFilters:[
                         {
