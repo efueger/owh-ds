@@ -31,9 +31,9 @@ var homeStepDefinitionsWrapper = function () {
         mortalityPage.getSelectedFilterType().then(function(value){
             expect(value).to.equal("Mortality");
         });
-        mortalityPage.getByTypeSelectedFilters().then(function(filterArray){
-            expect(filterArray.length).to.equal(2);
-        });
+        // mortalityPage.getByTypeSelectedFilters().then(function(filterArray){
+        //     expect(filterArray.length).to.equal(2);
+        // });
     });
 
     this.When(/^I click on Explore button in Youth Related card under Behavioral Risk$/, function () {
