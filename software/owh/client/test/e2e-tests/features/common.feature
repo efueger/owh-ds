@@ -3,11 +3,11 @@ Feature: Common functionality
   I want to be able to go back few steps by the 'browser back button' and 'in-application back button' and undo the recently selected filters one at a time
   So that I can switch and update my filter selections
 
-Scenario: Access mortality page
-  When I am at home page
-  And  I click on Explore button in Quick Health Data Online section
+#Scenario: Access mortality page
+#  When I am at home page
+#  And  I click on Explore button in Quick Health Data Online section
 #  Then I should get search page with default filter type mortality
-  And URL in browser bar should not be base URL
+#  And URL in browser bar should not be base URL
 
 Scenario: Filter options updated
   When I update criteria in filter options with column "Autopsy"
