@@ -6,10 +6,10 @@ Feature: Mortality page
   I want to see raw data and percentages (as default results) when I select to view "Number of Deaths" in the main search bar
   So that I can see percentages along with number of deaths
 
-#Scenario: Access mortality page
-#  When I am at home page
-#  And  I click on Explore button in Quick Health Data Online section
-#  Then I should get search page with default filter type mortality
+Scenario: Access mortality page
+  When I am at home page
+  And  I click on Explore button in Quick Health Data Online section
+  Then I should get search page with default filter type mortality
 
 #Scenario: Axis labels
 #  When user sees a visualization
@@ -19,7 +19,7 @@ Feature: Mortality page
 
 Scenario: Side filter collapse
   Given user is on search page
-#  Then user sees side filter
+  Then user sees side filter
   Then there is button to hide filter
   When user clicks hide filter button
   Then side menu slides away
@@ -36,7 +36,7 @@ Scenario: Side filter options retain order
 Scenario: Display show/hide percentage button only on mortality page
   When I am at home page
   And  I click on Explore button in Quick Health Data Online section
-#  Then I should get search page with default filter type mortality
+  Then I should get search page with default filter type mortality
   And an option to show/hide percentages is displayed
   When I change 'I'm interested in' dropdown value to "Youth Risk Behavior"
   Then I should be redirected to YRBS page
