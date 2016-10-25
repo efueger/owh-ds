@@ -95,6 +95,9 @@ ElasticClient.prototype.aggregateDeaths = function(query){
                 logger.error(err.message);
                 deferred.reject(err);
             });
+        }, function(err) {
+            logger.error(err.message);
+            deferred.reject(err);
         });
     }
     else {
@@ -110,7 +113,6 @@ ElasticClient.prototype.aggregateDeaths = function(query){
             deferred.reject(err);
         });
     }
-
     return deferred.promise;
 };
 
