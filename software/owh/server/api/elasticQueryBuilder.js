@@ -89,17 +89,37 @@ var generateAggregationQuery = function( aggQuery, groupByKeyStart ) {
     return query;
 };
 
-var insertQuery = function insertQuery(params, results) {
-    var userQuery = params.query;
+/**
+ *
+ * @param query
+ * @param results
+ * @param dataset
+ * @param hashcode
+ * @returns {{}}
+ */
+var buildInsertQueryResultsQuery = function (query, results, dataset, hashcode) {
     var insertQuery = {};
-    insertQuery.queryJSON = userQuery;
-    insertQuery.resultJSON = results;
-    insertQuery.dataset = 'Mortality';  //Find a way to get dataset value
-    insertQuery.lastupdate = '2016-06-06';
-    insertQuery.queryID = 12345;
+    //@TODO to work with my local ES DB I changed 'queryJSON' and 'resultsJSON' to 'queryJSON1' and 'resultsJSON1'. Need to revert before commit
+    insertQuery.queryJSON1 = query;
+    insertQuery.resultJSON1 = results;
+    insertQuery.dataset = dataset;  //Find a way to get dataset value
+    //@TODO current data with yyy-mm-dd format
+    insertQuery.lastupdate = "2016-10-25";
+    insertQuery.queryID = hashcode;
     return insertQuery;
-}
+};
 
+
+var buildSearchQueryResultsQuery = function(hascode) {
+    var searchQuery = {
+        "query": {
+            "match": {
+                "queryID": hascode
+            }
+        }
+    }
+    return searchQuery;
+};
 
 /**
  * Builds a search query
@@ -122,7 +142,6 @@ var buildSearchQuery = function(params, isAggregation) {
         elasticQuery.from = params.pagination.from;
         elasticQuery.size = params.pagination.size;
     }
-    elasticQuery.queryID = params.queryId;
     elasticQuery.query = {};
     elasticQuery.query.filtered = {};
 
@@ -256,4 +275,5 @@ var isEmptyObject = function(obj) {
 module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;
-module.exports.insertQuery = insertQuery;
+module.exports.buildInsertQueryResultsQuery = buildInsertQueryResultsQuery;
+module.exports.buildSearchQueryResultsQuery = buildSearchQueryResultsQuery;

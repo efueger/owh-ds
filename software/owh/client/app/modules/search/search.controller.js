@@ -51,22 +51,23 @@
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
         sc.changeViewFilter = changeViewFilter;
-        populateFilterCounts(mortalityFilter).then(function() {
-           search(sc.filters.selectedPrimaryFilter, sc.filters, false);
-        });
         //TODO: we will need to change the order of a few things
         //Intial call queryId will be empty
         if(sc.queryID === "") {
            //Eventually we will generate hash code using query, save in catche index in elasticsearch database
+            //@TODO need to generate HEX hash
             var intialHashCode = Math.ceil(Math.random()* 100);
             sc.queryID = intialHashCode;
             $state.go('search', {queryID: sc.queryID});
         }
+        populateFilterCounts(mortalityFilter, null, sc.queryID).then(function() {
+            search(sc.filters.selectedPrimaryFilter, sc.filters, false);
+        });
         //If url has hashcode then using hashcode get the query from database and return results.
         //If hash code not exists in database, then save hashcode, query, results in database and return results.
-        else {
+       // else {
             //TODO: we will implement else in another task.
-        }
+       // }
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter);
@@ -83,8 +84,7 @@
                 //If user change filter, generate hash and see if hash exists in database
                 //if exists get the results and return
                 //if not exists then call search using new hash
-                var filterHash = Math.ceil(Math.random()* 100);
-                sc.queryID = filterHash;
+                sc.queryID = Math.ceil(Math.random()* 100);;
                 $state.go('search', {queryId: sc.queryID, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
             }
             populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
