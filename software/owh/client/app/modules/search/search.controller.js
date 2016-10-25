@@ -43,16 +43,23 @@
             {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}
         ];
         sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
+        //show certain filters for different table views
+        sc.availableFilters = {
+            'crude_death_rates': ['year', 'gender', 'race']
+        };
         sc.showFbDialog = showFbDialog;
         sc.queryID = $stateParams.queryID;
+        sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
+        sc.changeViewFilter = changeViewFilter;
+        populateFilterCounts(mortalityFilter).then(function() {
+           search(sc.filters.selectedPrimaryFilter, sc.filters, false);
+        });
         //TODO: we will need to change the order of a few things
         //Intial call queryId will be empty
         if(sc.queryID === "") {
-            //Generate 5 char HEX has from queryJson
-            var hashCode = Math.ceil(Math.random()* 100);//sc.filters.selectedPrimaryFilter.generateHashFromQueryJson(sc.filters.selectedPrimaryFilter);
-            //Eventually we will generate hash code using query, save in catche index in elasticsearch database
-            sc.queryID = hashCode;
-
+           //Eventually we will generate hash code using query, save in catche index in elasticsearch database
+            var intialHashCode = Math.ceil(Math.random()* 100);
+            sc.queryID = intialHashCode;
             $state.go('search', {queryID: sc.queryID});
         }
         //If url has hashcode then using hashcode get the query from database and return results.
@@ -66,6 +73,10 @@
             }
         }, true);
 
+        function changeViewFilter(selectedFilter) {
+            sc.tableView = selectedFilter.key;
+        }
+
         function search(selectedFilter, allFilters, isFilterChanged) {
             //TODO: would be better if there was a way to filter using query but also get all possible values back from api
             if(isFilterChanged) {
@@ -73,8 +84,8 @@
                 //if exists get the results and return
                 //if not exists then call search using new hash
                 var filterHash = Math.ceil(Math.random()* 100);
-                sc.queryId = filterHash;
-                $state.go('search', {queryId: sc.queryId, allFilters: allFilters, selectedFilters: selectedFilter});
+                sc.queryID = filterHash;
+                $state.go('search', {queryId: sc.queryID, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
             }
             populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
                 primaryFilterChanged(selectedFilter, sc.queryID);
@@ -173,7 +184,6 @@
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
-            console.log(" ************ calling search results method with query ID = " + sc.queryID);
             sc.filters.selectedPrimaryFilter.searchResults(newFilter, queryID).then(function() {
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {

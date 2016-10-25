@@ -449,21 +449,21 @@
           "key": "1"
         },
         {
-          "title": "50,390",
+          "title": 50390,
           "percentage": "31.9",
           "isCount": true,
           "rowspan": 1,
           "colspan": 1
         },
         {
-          "title": "107,460",
+          "title": 107460,
           "percentage": "68.1",
           "isCount": true,
           "rowspan": 1,
           "colspan": 1
         },
         {
-          "title": "157,850",
+          "title": 157850,
           "percentage": 1.2358582892934038,
           "isCount": true,
           "rowspan": 1,

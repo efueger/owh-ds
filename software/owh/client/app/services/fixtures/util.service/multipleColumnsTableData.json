@@ -546,13 +546,13 @@
           "key": "1"
         },
         {
-          "title": "50,390",
+          "title": 50390,
           "isCount": true,
           "rowspan": 1,
           "colspan": 1
         },
         {
-          "title": "49,699",
+          "title": 49699,
           "isCount": true,
           "rowspan": 1,
           "colspan": 1
@@ -568,7 +568,7 @@
           "isCount": false
         },
         {
-          "title": "314,748",
+          "title": 314748,
           "isCount": true,
           "rowspan": 1,
           "colspan": 1,

@@ -11,11 +11,11 @@ Scenario: Access mortality page
   And  I click on Explore button in Health Information Gateway section
   Then I should get search page with default filter type mortality
 
-Scenario: Axis labels
-  When user sees a visualization
-  Then labels are displayed on both the axes for minimized visualization
-  When user expand visualization
-  Then labels are displayed on both the axes for expanded visualization
+#Scenario: Axis labels
+#  When user sees a visualization
+#  Then labels are displayed on both the axes for minimized visualization
+#  When user expand visualization
+#  Then labels are displayed on both the axes for expanded visualization
 
 Scenario: Side filter collapse
   Given user is on search page
@@ -41,6 +41,25 @@ Scenario: Display show/hide percentage button only on mortality page
   When I change 'I'm interested in' dropdown value to "Youth Risk Behavior"
   Then I should be redirected to YRBS page
   And show/hide percentages button shouldn't display
+
+Scenario: Death Rates
+  Given user is on search page
+  When the user chooses the option 'Death Rates'
+  Then the rates are shown for each row (with the Total population, from Bridge Race Estimates, as the denominator) - and not the total number of deaths shown in the table
+
+Scenario: Dropdown Location
+  Given user is on search page
+  Then dropdown is in the main search bar
+
+Scenario: Decimal Precision
+  Given user is on search page
+  When the user chooses the option 'Death Rates'
+  Then the Percentages should have a one decimal precision
+
+Scenario: Help Message above the quick visualization pane
+  Given user is on search page
+  When the user chooses the option 'Death Rates'
+  Then the following message should be displayed stating that population data is being retrieved from Census "Population details from NCHS Bridge Race Estimates is used to calculate Death Rates (per 100,000)"
 
 #Below commented test cases working in local but failing in travis-ci because
 # Elasticsearch running on travis-ci don't have data, until we load data, we commented these test cases.

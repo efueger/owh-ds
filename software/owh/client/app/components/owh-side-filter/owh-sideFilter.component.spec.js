@@ -251,4 +251,12 @@ describe('OWH Side filter component: ', function() {
         expect(ctrl.getFilterOrder({filters: {key: 'height'}})).toEqual(2);
         expect(ctrl.getFilterOrder({filters: {key: 'iq'}})).toEqual(-1);
     });
+
+    it('should get visibility based on showFilters', function() {
+        var showFilters = ['year', 'gender'];
+        var bindings = {filters: [], showFilters: showFilters};
+        var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
+        var filter = {filters: {key: 'year'}};
+        expect(ctrl.isVisible(filter)).toEqual(true);
+    });
 });
