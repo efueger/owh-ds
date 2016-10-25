@@ -12,6 +12,8 @@ var searchRouter = function(app, rConfig) {
             //console.log(JSON.stringify(finalQuery));
             new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
                 res.send( new result('OK', response.data, response.pagination, "success") );
+            }, function(response){
+                res.send( new result('error', response, "failed"));
             });
         } else if ( q.searchFor === "mental_health" ) {
             q['pagination'] = {from: 0, size: 10000};
@@ -23,6 +25,8 @@ var searchRouter = function(app, rConfig) {
             console.log(JSON.stringify(finalQuery));
             new elasticSearch().aggregateMentalHealth(finalQuery[0], q.dataKeys, q.aggregations.nested.table).then(function(response){
                 res.send( new result('OK', response, response.pagination, "success") );
+            }, function(response){
+                res.send( new result('error', response, "failed"));
             });
         }
     });
