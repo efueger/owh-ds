@@ -6,7 +6,7 @@ Feature: Common functionality
 Scenario: Access mortality page
   When I am at home page
   And  I click on Explore button in Quick Health Data Online section
-  Then I should get search page with default filter type mortality
+#  Then I should get search page with default filter type mortality
   And URL in browser bar should not be base URL
 
 Scenario: Filter options updated
@@ -32,4 +32,3 @@ Scenario: Browser forward button
   #TODO When we implement feature to save query, results, hascode in database then we can enable commented steps
   #Then I am taken forward by one step
   #And the results page (data table and visualizations) should be refreshed to reflect the currently selected filter options
-
