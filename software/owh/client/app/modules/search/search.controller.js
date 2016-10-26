@@ -12,6 +12,16 @@
                                  shareUtilService, $stateParams, $state, xlsService, $window) {
 
         var sc = this;
+        sc.downloadCSV = downloadCSV;
+        sc.downloadXLS = downloadXLS;
+        sc.getSelectedYears = getSelectedYears;
+        sc.showPhaseTwoGraphs = showPhaseTwoGraphs;
+        sc.showExpandedGraph = showExpandedGraph;
+        sc.search = search;
+        sc.showFbDialog = showFbDialog;
+        sc.changeViewFilter = changeViewFilter;
+        sc.getMixedTable = getMixedTable;
+
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
         var mortalityFilter = null;
@@ -30,12 +40,7 @@
             mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
             sc.filters.selectedPrimaryFilter = $stateParams.selectedFilters;
         }
-        sc.downloadCSV = downloadCSV;
-        sc.downloadXLS = downloadXLS;
-        sc.getSelectedYears = getSelectedYears;
-        sc.showPhaseTwoGraphs = showPhaseTwoGraphs;
-        sc.showExpandedGraph = showExpandedGraph;
-        sc.search = search;
+
         sc.selectedMapSize = 'small';
         sc.showMeOptions = [
             {key: 'number_of_deaths', title: 'Number of Deaths'},
@@ -47,10 +52,10 @@
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race']
         };
-        sc.showFbDialog = showFbDialog;
+
         sc.queryId = $stateParams.queryId;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
-        sc.changeViewFilter = changeViewFilter;
+
         populateFilterCounts(mortalityFilter).then(function() {
            search(sc.filters.selectedPrimaryFilter, sc.filters, false);
         });
@@ -97,14 +102,14 @@
         }
 
         function downloadCSV() {
-            var data = getMixedTable(sc.filters.selectedPrimaryFilter);
+            var data = sc.getMixedTable(sc.filters.selectedPrimaryFilter);
             addRowHeaders(data, sc.filters.selectedPrimaryFilter);
             var filename = getFilename(sc.filters.selectedPrimaryFilter);
             xlsService.exportCSVFromMixedTable(data, filename);
         }
 
         function downloadXLS() {
-            var data = getMixedTable(sc.filters.selectedPrimaryFilter);
+            var data = sc.getMixedTable(sc.filters.selectedPrimaryFilter);
             addRowHeaders(data, sc.filters.selectedPrimaryFilter);
             var filename = getFilename(sc.filters.selectedPrimaryFilter);
             xlsService.exportXLSFromMixedTable(data, filename);
@@ -128,9 +133,9 @@
             var totalCount = selectedFilter.count;
             var calculatePercentage = selectedFilter.calculatePercentage;
             var calculateRowTotal = selectedFilter.calculateRowTotal;
+            var secondaryCountKey = 'pop';
 
-            //TODO: see comment in owh-table.component.js, we can construct this object once and pass it into the various components
-            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal);
+            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKey);
         }
 
         function getFilename(selectedFilter) {
@@ -186,13 +191,14 @@
             //TODO: this executes the actualy query, only perform this when queryId is present
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter).then(function() {
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
+                sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
                 }
                 if(sc.filters.selectedPrimaryFilter.key === 'mental_health') {
-                  var mixedTable = getMixedTable(sc.filters.selectedPrimaryFilter);
-                  sc.filters.selectedPrimaryFilter.headers = mixedTable.headers;
-                  sc.filters.selectedPrimaryFilter.data = categorizeQuestions(mixedTable.data);
+                  // var mixedTable = getMixedTable(sc.filters.selectedPrimaryFilter);
+                  sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                  sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
                 }
             });
         }
