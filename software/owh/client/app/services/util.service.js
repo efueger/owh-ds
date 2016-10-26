@@ -362,39 +362,43 @@
          */
         function prepareMixedTableHeaders(headers, countLabel) {
             var tableHeaders = [[]];
-            var tableRowHeaders = [];
             var tableColumnHeaders = prepareMixedTableColumnHeaders(headers.columnHeaders);
+            var tableRowHeaders = prepareMixedTableRowHeaders(headers.rowHeaders, tableColumnHeaders.headers.length);
+            var tableHeaders = mergeMixedTableHeaders(tableColumnHeaders, tableRowHeaders, countLabel);
 
-            angular.forEach(headers.rowHeaders, function(eachRowHeader) {
-                var  eachTableRowHeader = {
-                    colspan: 1,
-                    rowspan: tableColumnHeaders.headers.length > 0 ? tableColumnHeaders.headers.length : 1
-                };
-                //$translate(eachRowHeader.title).then(function (translation) {
-                eachTableRowHeader.title = $filter('translate')(eachRowHeader.title);
-                //});
-                tableRowHeaders.push(eachTableRowHeader)
-            });
-            if(tableColumnHeaders.headers.length > 0) {
-                tableHeaders = tableColumnHeaders.headers;
+            return tableHeaders;
+        }
+
+        function mergeMixedTableHeaders(colHeaders, rowHeaders, countLabel) {
+            var tableHeaders = [[]];
+            if(colHeaders.headers.length > 0) {
+                tableHeaders = colHeaders.headers;
             }
-            tableHeaders[0] = tableRowHeaders.concat(tableHeaders[0]);
-            if(tableRowHeaders.length > 0 && countLabel) {
+            tableHeaders[0] = rowHeaders.concat(tableHeaders[0]);
+            if(rowHeaders.length > 0 && countLabel) {
                 tableHeaders[0].push({
                     title: countLabel,
                     colspan: 1,
-                    rowspan: tableColumnHeaders.headers.length > 0 ? tableColumnHeaders.headers.length : 1
+                    rowspan: colHeaders.headers.length > 0 ? colHeaders.headers.length : 1
                 });
             }
-            //mark each data column header as isData to set alignment
-            angular.forEach(tableColumnHeaders.headers, function(row, index) {
-                var skip = (index === 0 ? headers.rowHeaders.length : 0);
-                for(var i = skip; i < row.length; i++) {
-                    row[i].isData = true;
-                }
-            });
             return tableHeaders;
         }
+
+        function prepareMixedTableRowHeaders(rowHeaders, colHeight) {
+            var tableRowHeaders = [];
+            angular.forEach(rowHeaders, function(eachRowHeader) {
+                var eachTableRowHeader = {
+                    colspan: 1,
+                    rowspan: colHeight > 0 ? colHeight.length : 1
+                };
+
+                eachTableRowHeader.title = $filter('translate')(eachRowHeader.title);
+                tableRowHeaders.push(eachTableRowHeader)
+            });
+            return tableRowHeaders;
+        }
+
         function prepareMixedTableColumnHeaders(columnHeaders) {
             var tableColumnHeaderData = {
                 totalColspan: 0,
@@ -418,7 +422,8 @@
                     tableColumnHeaderData.headers[0].push({
                         title: eachOption.title,
                         colspan: colspan,
-                        rowspan: 1
+                        rowspan: 1,
+                        isData: true
                     });
                     tableColumnHeaderData.totalColspan += colspan;
                 });
