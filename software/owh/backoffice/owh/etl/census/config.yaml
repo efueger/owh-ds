@@ -10,7 +10,7 @@ data_file:
 elastic_search:
   host: 127.0.0.1
   port: 9200
-  bulk_load_size: 5000
-  index: census
+  bulk_load_size: 10000
+  index: owh_census
   type: census
   type_mapping: census-type-mapping.json
