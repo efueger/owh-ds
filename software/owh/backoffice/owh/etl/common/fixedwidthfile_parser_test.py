@@ -3,7 +3,12 @@ import os
 from owh.etl.common.fixedwidthfile_parser import FixedWidthFileParser
 
 class TestFixedWithFileParser(unittest.TestCase):
+    """FWF parser test
+       To run test, set PYTHONPATH to backoffice folder and run the following command from backoffice folder
+       python -m unittest owh.etl.common.fixedwidthfile_parser_test
 
+       Requires python 2.x
+    """
     def setUp(self):
         datafile = os.path.join(os.path.dirname(__file__),'testdata/testdata.txt')
         datamapping =  os.path.join(os.path.dirname(__file__),'testdata/mapping.json')

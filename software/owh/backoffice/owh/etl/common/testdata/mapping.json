@@ -49,38 +49,38 @@
     "start":12,
     "stop":12,
     "field":"Bridged-race-sex",
-    "mappings":{  
-      "1":{  
-        "race":1,
-        "sex":"M"
+    "mappings": {
+      "1": {
+        "race": "1",
+        "sex": "M"
       },
-      "2":{  
-        "race":1,
-        "sex":"F"
+      "2": {
+        "race": "1",
+        "sex": "F"
       },
-      "3":{  
-        "race":2,
-        "sex":"M"
+      "3": {
+        "race": "2",
+        "sex": "M"
       },
-      "4":{  
-        "race":2,
-        "sex":"F"
+      "4": {
+        "race": "2",
+        "sex": "F"
       },
-      "5":{  
-        "race":3,
-        "sex":"M"
+      "5": {
+        "race": "3",
+        "sex": "M"
       },
-      "6":{  
-        "race":3,
-        "sex":"F"
+      "6": {
+        "race": "3",
+        "sex": "F"
       },
-      "7":{  
-        "race":4,
-        "sex":"M"
+      "7": {
+        "race": "4",
+        "sex": "M"
       },
-      "8":{  
-        "race":4,
-        "sex":"F"
+      "8": {
+        "race": "4",
+        "sex": "F"
       }
     }
   },
