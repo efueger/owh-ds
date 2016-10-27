@@ -65,7 +65,6 @@ var populateAggregatedData = function(buckets, countKey, splitIndex) {
                 aggregation = {name: buckets[index]['key']};
                 if(buckets[index]['pop']) {
                     aggregation[countKey] = buckets[index]['pop'].value;
-                    hasValue = true;
                 } else {
                     aggregation[countKey] = sumBucketProperty(buckets[index][innerObjKey], 'pop');
                 }
@@ -82,7 +81,12 @@ var populateAggregatedData = function(buckets, countKey, splitIndex) {
 var sumBucketProperty = function(bucket, key) {
     var sum = 0;
     for(var i = 0; i < bucket.buckets.length; i++) {
-        sum+= bucket.buckets[i][key].value;
+        if(bucket.buckets[i][key]) {
+            sum+= bucket.buckets[i][key].value;
+        } else {
+            //recurse with next bucket
+            sum+= sumBucketProperty(bucket.buckets[i][isValueHasGroupData(bucket.buckets[i])], key);
+        }
     }
     return sum;
 };
