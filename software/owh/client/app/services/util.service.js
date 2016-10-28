@@ -382,6 +382,13 @@
                     rowspan: colHeaders.headers.length > 0 ? colHeaders.headers.length : 1
                 });
             }
+            //mark each data column header as isData to set alignment
+            angular.forEach(colHeaders.headers, function(row, index) {
+                var skip = (index === 0 ? rowHeaders.length : 0);
+                for(var i = skip; i < row.length; i++) {
+                    row[i].isData = true;
+                }
+            });
             return tableHeaders;
         }
 
@@ -390,7 +397,7 @@
             angular.forEach(rowHeaders, function(eachRowHeader) {
                 var eachTableRowHeader = {
                     colspan: 1,
-                    rowspan: colHeight > 0 ? colHeight.length : 1
+                    rowspan: colHeight > 0 ? colHeight : 1
                 };
 
                 eachTableRowHeader.title = $filter('translate')(eachRowHeader.title);
@@ -459,42 +466,19 @@
                     if(!eachData) {
                         return;
                     }
-                    /*});
-                     angular.forEach(eachHeaderData, function(eachData, index) {
-                     var matchedOption;
-                     if(eachHeader.autoCompleteOptions) {
-                     matchedOption = findByKeyAndValue(eachHeader.autoCompleteOptions, 'key', eachData.name);
-                     }*/
+                    var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachData, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
+                    if(rowHeaders.length > 1 && calculateRowTotal) {
+                        childTableData.push(prepareTotalRow(eachData[countKey], childTableData[0].length, totalCount));
+                    }
                     var eachTableRow = {
                         title: matchedOption.title,
                         isCount: false,
-                        rowspan: 1,
+                        rowspan: childTableData.length,
                         colspan: 1,
                         key: matchedOption.key,
                         iconClass: eachHeader.iconClass,
                         onIconClick: eachHeader.onIconClick
                     };
-                    var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachData, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
-                    if(rowHeaders.length > 1 && calculateRowTotal) {
-                        var totalArray = [];
-                        totalArray.push({
-                            title: 'Total',
-                            isCount: false,
-                            rowspan: 1,
-                            colspan: childTableData[0].length - 1,
-                            isBold: true
-                        });
-                        totalArray.push({
-                            title: numberWithCommas(eachData[countKey]),
-                            percentage: (Number(eachData[countKey]) / totalCount) * 100,
-                            isCount: true,
-                            rowspan: 1,
-                            colspan: 1,
-                            isBold: true
-                        });
-                        childTableData.push(totalArray);
-                    }
-                    eachTableRow.rowspan = childTableData.length;
                     childTableData[0].unshift(eachTableRow);
                     tableData = tableData.concat(childTableData);
                 });
@@ -530,6 +514,26 @@
                 tableData.push(columnData);
             }
             return tableData;
+        }
+
+        function prepareTotalRow(total, colspan, totalCount) {
+            var totalArray = [];
+            totalArray.push({
+                title: 'Total',
+                isCount: false,
+                rowspan: 1,
+                colspan: colspan - 1,
+                isBold: true
+            });
+            totalArray.push({
+                title: total,
+                percentage: total / totalCount * 100,
+                isCount: true,
+                rowspan: 1,
+                colspan: 1,
+                isBold: true
+            });
+            return totalArray;
         }
 
         /**
