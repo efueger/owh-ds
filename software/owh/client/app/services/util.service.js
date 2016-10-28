@@ -492,28 +492,34 @@
                 var count = data[countKey];
                 var columnData = prepareMixedTableColumnData(columnHeaders, data, countKey, count, calculatePercentage, secondaryCountKey);
                 if(typeof data[countKey] !== 'undefined') {
-                    var title = Number(count);
-                    if(isNaN(title)) {
-                        title = count;
-                    }
-                    var cell = {
-                        title: title,
-                        percentage: calculatePercentage ? (Number(data[countKey]) / totalCount) * 100 : undefined,
-                        isCount: true,
-                        rowspan: 1,
-                        colspan: 1,
-                        isBold: true
-                    };
-                    //add additional data to the cell, used for population
-                    if(secondaryCountKey) {
-                        var secondaryCount = data[secondaryCountKey];
-                        cell[secondaryCountKey] = secondaryCount;
-                    }
-                    columnData.push(cell);
+                    columnData.push(prepareCountCell(count, data, countKey, totalCount, calculatePercentage, secondaryCountKey, true));
                 }
                 tableData.push(columnData);
             }
             return tableData;
+        }
+
+        function prepareCountCell(count, data, countKey, totalCount, calculatePercentage, secondaryCountKey, bold) {
+            var title = Number(count);
+            if(isNaN(title)) {
+                title = count;
+            }
+            var cell = {
+                title: title,
+                percentage: (calculatePercentage && totalCount !== undefined) ? (Number(data[countKey]) / totalCount) * 100 : undefined,
+                isCount: true,
+                rowspan: 1,
+                colspan: 1
+            };
+            if(bold) {
+                cell['isBold'] = true;
+            }
+            //add additional data to the cell, used for population
+            if(secondaryCountKey) {
+                var secondaryCount = data[secondaryCountKey];
+                cell[secondaryCountKey] = secondaryCount;
+            }
+            return cell;
         }
 
         function prepareTotalRow(total, colspan, totalCount) {
@@ -564,23 +570,7 @@
                         } else {
                             var count = matchedData[countKey];
                             eachOptionLength = 1;
-                            var title = Number(count);
-                            if(isNaN(title)) {
-                                title = count;
-                            }
-                            var cell = {
-                                title: title,
-                                percentage: (calculatePercentage && totalCount != undefined)? ((Number(count) / totalCount) * 100).toFixed(1): undefined,
-                                isCount: true,
-                                rowspan: 1,
-                                colspan: 1
-                            };
-                            // add population
-                            if(secondaryCountKey) {
-                                var secondaryCount = matchedData[secondaryCountKey];
-                                cell[secondaryCountKey] = secondaryCount;
-                            }
-                            tableData.push(cell);
+                            tableData.push(prepareCountCell(count, matchedData, countKey, totalCount, calculatePercentage, secondaryCountKey, false));
                         }
                     } else {
                         if(eachOptionLength <= 0) {
