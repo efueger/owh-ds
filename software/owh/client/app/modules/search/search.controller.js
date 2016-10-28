@@ -126,8 +126,8 @@
         }
 
         function getMixedTable(selectedFilter){
-            var file = selectedFilter.data;
-            var headers = selectedFilter.headers;
+            var file = selectedFilter.data ? selectedFilter.data : {};
+            var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
             var countKey = selectedFilter.key;
             var countLabel = selectedFilter.countLabel;
             var totalCount = selectedFilter.count;
