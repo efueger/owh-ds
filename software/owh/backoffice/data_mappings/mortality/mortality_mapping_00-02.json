@@ -33,46 +33,33 @@
   },
   {
     "type":"range",
-    "column": "race",
-    "start": 60,
-    "stop": 61,
-    "field": "Detail Race",
-    "mappings": {
-      "01-01": "1",
-      "02-02": "2",
-      "03-03": "3",
-      "04-78": "4"
-    }
-  },
-  { 
-    "type":"range",
     "column": "age_5_interval",
     "start": 69,
     "stop": 70,
     "field": "Age Recode 27",
     "mappings": {
-      "01-06": "0-4years",
-      "07-07": "5-9years",
-      "08-08": "10-14years",
-      "09-09": "15-19years",
-      "10-10": "20-24years",
-      "11-11": "25-29years",
-      "12-12": "30-34years",
-      "13-13": "35-39years",
-      "14-14": "40-44years",
-      "15-15": "45-49years",
-      "16-16": "50-54years",
-      "17-17": "55-59years",
-      "18-18": "60-64years",
-      "19-19": "65-69years",
-      "20-20": "70-74years",
-      "21-21": "75-79years",
-      "22-22": "80-84years",
-      "23-23": "85-89years",
-      "24-24": "90-94years",
-      "25-25": "95-99years",
-      "26-26": "100 years and over",
-      "27-27":"Age not started"
+      "01-06": "01-06",
+      "07-07": "07-07",
+      "08-08": "08-08",
+      "09-09": "09-09",
+      "10-10": "10-10",
+      "11-11": "11-11",
+      "12-12": "12-12",
+      "13-13": "13-13",
+      "14-14": "14-14",
+      "15-15": "15-15",
+      "16-16": "16-16",
+      "17-17": "17-17",
+      "18-18": "18-18",
+      "19-19": "19-19",
+      "20-20": "20-20",
+      "21-21": "21-21",
+      "22-22": "22-22",
+      "23-23": "23-23",
+      "24-24": "24-24",
+      "25-25": "25-25",
+      "26-26": "26-26",
+      "27-27": "27-27"
     }
   },
   {
@@ -129,23 +116,23 @@
     }
   },
   {
-    "type":"simple",
+    "type":"map",
     "column":"place_of_death",
     "start": 75,
     "stop": 75,
     "field": "Place of Death and Decedent’s Status",
     "mappings": {
-      "1": "Hospital, clinic or Medical Center-  Inpatient",
-      "2": "Hospital, Clinic or Medical Center-  Outpatient or admitted to Emergency Room",
-      "3": "Hospital, Clinic or Medical Center-  Dead on Arrival",
-      "4": "Hospital, Clinic or Medical Center- Patient status unknown",
-      "5": "Nursing home",
-      "6": "Residence",
-      "7": "Other",
-      "9": "Place of death unknown"
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "10",
+      "5": "6",
+      "6": "4",
+      "7": "7",
+      "9": "9"
     }
   },
-  { 
+  {
     "type":"simple",
     "column":"week_of_death",
     "start": 83,
@@ -167,10 +154,7 @@
     "column":"current_year",
     "start": 115,
     "stop": 118,
-    "field": "Current Data Year",
-    "mappings": {
-      "2002": "2002"
-    }
+    "field": "Current Data Year"
   },
   {
     "type":"simple",
@@ -206,7 +190,7 @@
   },
   {
     "type":"simple",
-    "column":"EAC1",
+    "column":"EAC1", 
     "start": 162,
     "stop": 168,
     "field":"EAC1",
@@ -302,7 +286,7 @@
   },
   {
     "type":"simple",
-    "column":"EAC13",
+    "column":"EAC13", 
     "start": 246,
     "stop": 252,
     "field":"EAC13",
@@ -499,7 +483,7 @@
     "field":"RAC16",
     "mappings":{}
   },
-  {  
+  {
     "type":"simple",
     "column":"RAC17",
     "start": 421,
@@ -530,5 +514,34 @@
     "stop": 440,
     "field":"RAC20",
     "mappings":{}
+  },
+  {
+    "type": "range",
+    "column": "race",
+    "start": 60,
+    "stop": 61,
+    "field": "Detail Race",
+    "mappings": {
+      "01-01": "1",
+      "02-02": "2",
+      "03-03": "3",
+      "04-78": "4"
+    }
+  },
+  {
+    "type":"map",
+    "column": "hispanic_origin",
+    "start": 80,
+    "stop": 81,
+    "field": "Hispanic Origin",
+    "mappings": {
+      "00": "100-199",
+      "01": "210-219",
+      "02": "260-269",
+      "03": "270-274",
+      "04": "220",
+      "05": "280-299",
+      "99": "996-999"
+    }
   }
 ]

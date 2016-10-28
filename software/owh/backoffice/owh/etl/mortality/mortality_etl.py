@@ -62,6 +62,8 @@ class MortalityIndexer (ETL):
 
             if year <= 2014 and year >= 2003:   # data file for year 2003 to 2014
                 config_file =  os.path.join(self.dataDirectory, 'data_mapping', 'mortality_mapping_03-14.json')
+            elif year <= 2002 and year >= 2000:
+                config_file =  os.path.join(self.dataDirectory, 'data_mapping', 'mortality_mapping_00-02.json')
             else:
                 logger.warn("No mapping available for data file %s, skipping", file_path)
                 continue
