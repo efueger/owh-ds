@@ -397,10 +397,9 @@
             angular.forEach(rowHeaders, function(eachRowHeader) {
                 var eachTableRowHeader = {
                     colspan: 1,
-                    rowspan: colHeight > 0 ? colHeight : 1
+                    rowspan: colHeight > 0 ? colHeight : 1,
+                    title: $filter('translate')(eachRowHeader.title)
                 };
-
-                eachTableRowHeader.title = $filter('translate')(eachRowHeader.title);
                 tableRowHeaders.push(eachTableRowHeader)
             });
             return tableRowHeaders;
@@ -582,6 +581,7 @@
             }
             return tableData;
         }
+
         function getOptionDataLength(columnHeaders) {
             var optionDataLength = 1;
             angular.forEach(columnHeaders, function(eachColumnHeader) {
