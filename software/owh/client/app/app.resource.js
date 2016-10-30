@@ -38,6 +38,10 @@
       'fetch' : {
         method : 'GET',
         url: '/fb/'
+      },
+      'generateHashCode' : {
+        method : 'POST',
+        url: '/generateHashCode'
       }
     }
   }

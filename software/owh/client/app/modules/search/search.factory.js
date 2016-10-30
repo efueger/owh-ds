@@ -16,7 +16,8 @@
             searchMortalityResults: searchMortalityResults,
             showPhaseTwoModal: showPhaseTwoModal,
             uploadImage: uploadImage,
-            updateFilterValues: updateFilterValues
+            updateFilterValues: updateFilterValues,
+            generateHashCode: generateHashCode
         };
         return service;
 
@@ -176,7 +177,20 @@
                 primaryFilter.dataPrepared = response.dataPrepared;
                 primaryFilter.maps = response.maps;
                 primaryFilter.searchCount = response.totalCount;
-                deferred.resolve({});
+                primaryFilter.sideFilters = response.sideFilters;
+                //primaryFilter.queryJSON = response.queryJSON;
+                deferred.resolve(primaryFilter);
+            });
+            return deferred.promise;
+        }
+
+        function generateHashCode(primaryFilter) {
+            var deferred = $q.defer();
+            var apiQuery = buildAPIQuery(primaryFilter);
+            var query = apiQuery.apiQuery;
+            SearchService.generateHashCode(query).then(function(response) {
+                console.log(" search factory generatehashcode ", response.data);
+                deferred.resolve(response.data);
             });
             return deferred.promise;
         }
@@ -212,17 +226,20 @@
             var deferred = $q.defer();
             var apiQuery = buildAPIQuery(primaryFilter);
             var headers = apiQuery.headers;
-            var query = apiQuery.apiQuery;
-            SearchService.searchResults(query, queryID).then(function(response) {
+            //var query = apiQuery.apiQuery;
+            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
+                //console.log(" response................................", response.data.queryJSON);
                 //resolve data for controller
                 deferred.resolve({
-                    data : response.data.nested.table,
+                    data : response.data.resultData.nested.table,
                     dataPrepared : false,
                     headers : headers,
-                    chartDataFromAPI : response.data.simple,
-                    chartData: prepareChartData(headers, response.data.nested, primaryFilter),
-                    maps: response.data.nested.maps,
-                    totalCount: response.pagination.total
+                    chartDataFromAPI : response.data.resultData.simple,
+                    chartData: prepareChartData(headers, response.data.resultData.nested, primaryFilter),
+                    maps: response.data.resultData.nested.maps,
+                    totalCount: response.pagination.total,
+                    sideFilters: response.data.queryJSON.sideFilters
+                    //queryJSON: response.data.queryJSON
                 });
             });
             return deferred.promise;

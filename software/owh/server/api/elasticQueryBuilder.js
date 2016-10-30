@@ -99,12 +99,11 @@ var generateAggregationQuery = function( aggQuery, groupByKeyStart ) {
  */
 var buildInsertQueryResultsQuery = function (query, results, dataset, hashcode) {
     var insertQuery = {};
-    //@TODO to work with my local ES DB I changed 'queryJSON' and 'resultsJSON' to 'queryJSON1' and 'resultsJSON1'. Need to revert before commit
-    insertQuery.queryJSON1 = query;
-    insertQuery.resultJSON1 = results;
+    insertQuery.queryJSON = query;
+    insertQuery.resultJSON = results;
     insertQuery.dataset = dataset;  //Find a way to get dataset value
     //@TODO current data with yyy-mm-dd format
-    insertQuery.lastupdate = "2016-10-25";
+    insertQuery.lastupdated = "2016-10-25";
     insertQuery.queryID = hashcode;
     return insertQuery;
 };
@@ -272,8 +271,168 @@ var isEmptyObject = function(obj) {
     return !Object.keys(obj).length;
 };
 
+function buildAPIQuery(primaryFilter) {
+   var apiQuery = {
+        searchFor: primaryFilter.key,
+        query: {},
+        aggregations: {
+            simple: [],
+            nested: {
+                table: [],
+                charts: [],
+                maps:[]
+            }
+        }
+    };
+    //var defaultAggregations = [];
+    var rowAggregations = [];
+    var columnAggregations = [];
+    var headers = {
+        rowHeaders: [],
+        columnHeaders: [],
+        chartHeaders: []
+    };
+    //var defaultHeaders = [];
+    var sortedFilters = sortByKey(clone(primaryFilter.allFilters), getAutoCompleteOptionsLength);
+    sortedFilters.forEach  (function(eachFilter) {
+        console.log(" in sortedFilter each");
+        if(eachFilter.groupBy) {
+            var eachGroupQuery = getGroupQuery(eachFilter);
+            if ( eachFilter.groupBy === 'row' ) {
+                //user defined aggregations for rendering table
+                rowAggregations.push(eachGroupQuery);
+                headers.rowHeaders.push(eachFilter);
+            } else if( eachFilter.groupBy === 'column' ) {
+                columnAggregations.push(eachGroupQuery);
+                headers.columnHeaders.push(eachFilter);
+            }
+        }
+        var eachFilterQuery = buildFilterQuery(eachFilter);
+        if(eachFilterQuery) {
+            apiQuery.query[eachFilter.queryKey] = eachFilterQuery;
+        }
+    });
+    apiQuery.aggregations.nested.table = rowAggregations.concat(columnAggregations);
+    var result = prepareChartAggregations(headers.rowHeaders.concat(headers.columnHeaders));
+    headers.chartHeaders = result.chartHeaders;
+    apiQuery.aggregations.nested.charts = result.chartAggregations;
+    apiQuery.aggregations.nested.maps = prepareMapAggregations();
+    //apiQuery.aggregations.nested = apiQuery.aggregations.nested.concat(defaultAggregations);
+    //headers = headers.concat(defaultHeaders);
+    return {
+        apiQuery: apiQuery,
+        headers: headers
+    };
+}
+
+function clone(a) {
+    return JSON.parse(JSON.stringify(a));
+}
+
+function sortByKey(array, key, asc) {
+    return array.sort(function(a, b) {
+        var x = typeof(key) === 'function' ? key(a) : a[key];
+        var y = typeof(key) === 'function' ? key(b) : b[key];
+        if(asc===undefined || asc === true) {
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        }else {
+            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+        }
+    });
+}
+
+
+function getGroupQuery(filter/*, isPrimary*/) {
+    var groupQuery = {
+        key: filter.key,
+        queryKey: filter.aggregationKey ? filter.aggregationKey : filter.queryKey,
+        getPercent: filter.getPercent,
+        size: 100000
+    };/*
+     if(isPrimary) {
+     groupQuery.isPrimary = true;
+     }*/
+    return groupQuery;
+}
+
+function buildFilterQuery(filter) {
+    if( isValueNotEmpty(filter.value) && filter.value.length !== getAutoCompleteOptionsLength(filter)) {
+        return getFilterQuery(filter);
+    }
+    return false;
+}
+
+function getFilterQuery(filter) {
+    var values = [];
+    return {
+        key: filter.key,
+        queryKey: filter.queryKey,
+        value: filter.value,
+        primary: filter.primary
+    };
+}
+
+function isValueNotEmpty(value) {
+    return typeof value === 'defined' && value !== null && !jQuery.isEmptyObject(value) &&
+        (!typeof value === 'String' || value != '');
+}
+
+function getAutoCompleteOptionsLength(filter) {
+    return filter.autoCompleteOptions ? filter.autoCompleteOptions.length : 0;
+}
+
+function prepareChartAggregations(headers) {
+    var chartHeaders = [];
+    var chartAggregations = [];
+    headers.forEach( function(eachPrimaryHeader) {
+        var primaryGroupQuery = getGroupQuery(eachPrimaryHeader);
+        headers.forEach( function(eachSecondaryHeader) {
+            var chartType = chartMappings[eachPrimaryHeader.key + '&' + eachSecondaryHeader.key];
+            if(chartType) {
+                var secondaryGroupQuery = getGroupQuery(eachSecondaryHeader);
+                chartHeaders.push({headers: [eachPrimaryHeader, eachSecondaryHeader], chartType: chartType});
+                chartAggregations.push([primaryGroupQuery, secondaryGroupQuery]);
+            }
+        });
+    });
+    return {
+        chartHeaders: chartHeaders,
+        chartAggregations: chartAggregations
+    }
+}
+
+var chartMappings = {
+    "gender&race": "horizontalStack",
+    "race&agegroup": "verticalStack",
+    "gender&agegroup":	"horizontalBar",
+    "race&hispanicOrigin": "horizontalStack",
+    "gender&hispanicOrigin": "verticalBar",
+    "agegroup&hispanicOrigin": "verticalStack",
+    "race&autopsy": "verticalStack",
+    "gender&autopsy": "verticalBar",
+    "agegroup&autopsy": "horizontalBar",
+    "gender&placeofdeath": "verticalStack"
+};
+
+function prepareMapAggregations() {
+    var chartAggregations = [];
+    var primaryGroupQuery = {
+        key: "states",
+        queryKey: "state",
+        size: 100000
+    };
+    var secondaryGroupQuery = {
+        key: "sex",
+        queryKey: "sex",
+        size: 100000
+    };
+    chartAggregations.push([primaryGroupQuery, secondaryGroupQuery]);
+    return chartAggregations;
+}
+
 module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;
 module.exports.buildInsertQueryResultsQuery = buildInsertQueryResultsQuery;
 module.exports.buildSearchQueryResultsQuery = buildSearchQueryResultsQuery;
+module.exports.buildAPIQuery = buildAPIQuery;

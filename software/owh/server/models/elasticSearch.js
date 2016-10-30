@@ -14,7 +14,8 @@ var mental_health_type = "yrbs";
 var census_index="census";
 var census_type="census";
 //@TODO to work with my local ES DB I changed mapping name to 'queryResults1', revert before check in to 'queryResults'
-var query_data = "queryResults1";
+var _queryIndex = "owhquery";
+var _queryType = "queryData";
 
 
 var ElasticClient = function() {
@@ -23,9 +24,25 @@ var ElasticClient = function() {
 
 ElasticClient.prototype.getClient = function(database) {
     //elastic search client configuration
-    return new elasticsearch.Client({
+    /*return new elasticsearch.Client({
         host: _host+'/'+database
-    });
+    });*/
+
+     var configuration = {};
+     configuration.apiVersion = '1.5';
+    /* configuration.log = [{
+     type: 'stdio',
+     levels: ['info', 'debug', 'error', 'warning']
+     }];*/
+    if(database) {
+        configuration.host = _host + '/' + database;
+    }
+    else {
+        configuration.host = _host;
+    }
+    //elastic search client configuration
+    return new elasticsearch.Client(configuration);
+
 };
 
 ElasticClient.prototype.aggregateCensusDataForMortalityQuery = function(query){
@@ -137,18 +154,17 @@ ElasticClient.prototype.aggregateMentalHealth = function(query, headers, aggrega
 };
 
 ElasticClient.prototype.getQueryResults = function(query){
-    var client = this.getClient(_index);
+    var client = this.getClient(_queryIndex);
     var deferred = Q.defer();
     client.search({
-       index: query_data,
+       index: _queryType,
        body: query,
        request_cache:true
     }).then(function (resp){
         logger.info("Get queryData successfully completed");
-        var results = resp.hits.hits.length > 0 ? resp.hits.hits[0]:[] ;
+        var results = resp.hits.hits.length > 0 ? resp.hits.hits[0]:null ;
         deferred.resolve(results);
     }, function(err){
-        console.log(" getqueryresults query not completed ***************************************** ", err.message);
         logger.error("While searching for queryData object ", err.message);
         deferred.reject(err);
     });
@@ -156,47 +172,24 @@ ElasticClient.prototype.getQueryResults = function(query){
 };
 
 
-//@TODO: @Gopal this is the JSON that used to create elasticsearch mapping
-//for now I created manually using chrome 'Postman' plugin in my local ES DB
-//How are we planning to create this mapping?
-/*
-{
-    "queryResults": {
-    "properties" : {
-        "queryJSON" : {
-            "type": "object"
-        },
-        "dataset" : {
-            "type": "string",
-                "index": "not_analyzed"
-        },
-        "queryID" : {
-            "type": "string",
-            "index": "not_analyzed"
-        },
-        "lastupdated" : {
-            "type": "date",
-            "index": "not_analyzed"
-        },
-        "resultJSON" : {
-            "type": "object"
-        }
-    }
-}
-}
-*/
-
+/**
+ *
+ * @param query
+ * @returns {*}
+ */
 ElasticClient.prototype.insertQueryData = function (query) {
-    var client = this.getClient(_index);
+    var client = this.getClient();
     var deferred = Q.defer();
     client.create({
-        index: query_data,
-        type: "object",
+        index: _queryIndex,
+        type: _queryType,
         body: query
     }).then(function (resp){
         logger.info("inserted new record in queryData");
         deferred.resolve(resp);
     }, function(err){
+        console.log("query **************** ", query);
+        console.log("insert failed **************** ", err.message);
         logger.error("Failed to insert record in queryResults ", err.message);
         deferred.reject(err);
     });

@@ -6,25 +6,32 @@ const util = require('util');
 var searchRouter = function(app, rConfig) {
     app.post('/search', function(req, res) {
         var q = req.body.q;
-        if ( q.searchFor === "deaths" ) {
-            console.log("Querying deaths");
-            var finalQuery = queryBuilder.buildSearchQuery(q, true);
+        var preparedQuery = queryBuilder.buildAPIQuery(q);
+        if ( preparedQuery.apiQuery.searchFor === "deaths" ) {
+           // console.log("Querying deaths", q);
+
+            var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
             var hashCode = req.body.qID;
             var searchQueryResultsQuery = queryBuilder.buildSearchQueryResultsQuery(hashCode);
             //if queryID exists and it has results
             //then return results
+          //  console.log("*********************************************************** getqueryresults ********************** ", q.rawQuery);
             new elasticSearch().getQueryResults(searchQueryResultsQuery).then(function (searchResultsResponse) {
-                 if(searchResultsResponse.length > 0  && searchResultsResponse._source.queryID === hashCode ) {
-                     //@TODO change resultsJSON1 to resultJSON
-                     res.send( new result('OK', searchResultsResponse._source.resultJSON1.data, searchResultsResponse._source.resultJSON1.pagination, "success") );
+                 if(searchResultsResponse && searchResultsResponse._source.queryID === hashCode ) {
+                     var resData = {};
+                     resData.queryJSON = searchResultsResponse._source.queryJSON;
+                     resData.resultData = searchResultsResponse._source.resultJSON.data;
+                     res.send( new result('OK', resData, searchResultsResponse._source.resultJSON.pagination, "success") );
                  }
                  else {
                      new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
-                         var aggreageDeathsResponse = response;
-                         var insertQuery = queryBuilder.buildInsertQueryResultsQuery(finalQuery, response, "Mortality", hashCode);
-                         //@TODO When I try to insert new record, getting document_already_exists_exception, looking into it.
+                        // var aggregateResponse = response;
+                         var insertQuery = queryBuilder.buildInsertQueryResultsQuery(q, response, "Mortality", hashCode);
                          new elasticSearch().insertQueryData(insertQuery).then(function(anotherResponse){
-                             res.send( new result('OK', aggreageDeathsResponse.data, aggreageDeathsResponse.pagination, "success") );
+                             var resData = {};
+                             resData.queryJSON = q;
+                             resData.resultData = response.data; //AggregateD
+                             res.send( new result('OK', resData, response.pagination, "success") );
                          }, function(anotherResponse){
                              res.send( new result('error', anotherResponse, "failed"));
                          });
@@ -33,16 +40,20 @@ var searchRouter = function(app, rConfig) {
                      });
                  }
             });
-            //res.send( new result('OK', capturedResponse.data, capturedResponse.pagination, "success") );
-        } else if ( q.searchFor === "mental_health" ) {
+           /* new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
+                console.log(" searchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh ");
+                res.send( new result('OK', response.data, response.pagination, "success") );
+            });*/
+
+        } else if ( preparedQuery.apiQuery.searchFor === "mental_health" ) {
             q['pagination'] = {from: 0, size: 10000};
-            var finalQuery = queryBuilder.buildSearchQuery(q, false);
+            var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, false);
             /*finalQuery.sort = [
                 { "percent" : {"order" : "desc"}},
                 "_score"
             ];*/
             console.log(JSON.stringify(finalQuery));
-            new elasticSearch().aggregateMentalHealth(finalQuery[0], q.dataKeys, q.aggregations.nested.table).then(function(response){
+            new elasticSearch().aggregateMentalHealth(finalQuery[0], preparedQuery.apiQuery.dataKeys, preparedQuery.apiQuery.aggregations.nested.table).then(function(response){
                 res.send( new result('OK', response, response.pagination, "success") );
             }, function(response){
                 res.send( new result('error', response, "failed"));

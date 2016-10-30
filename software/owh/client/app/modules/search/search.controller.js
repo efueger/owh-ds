@@ -54,15 +54,18 @@
         //TODO: we will need to change the order of a few things
         //Intial call queryId will be empty
         if(sc.queryID === "") {
-           //Eventually we will generate hash code using query, save in catche index in elasticsearch database
-            //@TODO need to generate HEX hash
-            var intialHashCode = Math.ceil(Math.random()* 100);
-            sc.queryID = intialHashCode;
-            $state.go('search', {queryID: sc.queryID});
+            searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
+                sc.queryID = hash;
+                $state.go('search', {queryID: sc.queryID});
+            });
         }
-        populateFilterCounts(mortalityFilter, null, sc.queryID).then(function() {
+        //console.log(" first call........... ", sc.queryID);
+        //populateFilterCounts(mortalityFilter, null, sc.queryID).then(function() {
+
+        if(sc.queryID) {
             search(sc.filters.selectedPrimaryFilter, sc.filters, false);
-        });
+        }
+        //});
         //If url has hashcode then using hashcode get the query from database and return results.
         //If hash code not exists in database, then save hashcode, query, results in database and return results.
        // else {
@@ -84,12 +87,18 @@
                 //If user change filter, generate hash and see if hash exists in database
                 //if exists get the results and return
                 //if not exists then call search using new hash
-                sc.queryID = Math.ceil(Math.random()* 100);;
-                $state.go('search', {queryId: sc.queryID, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
+                searchFactory.generateHashCode(selectedFilter).then(function(hash){
+                    sc.queryID = hash;
+                    $state.go('search', {queryID: sc.queryID, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
+                });
+
             }
-            populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
+            else {
+                //console.log(" second call........... ");
+                // populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
                 primaryFilterChanged(selectedFilter, sc.queryID);
-            });
+                //});
+            }
         }
 
         function populateFilterCounts(filter, query, queryID) {
@@ -184,7 +193,11 @@
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
-            sc.filters.selectedPrimaryFilter.searchResults(newFilter, queryID).then(function() {
+            sc.filters.selectedPrimaryFilter.searchResults(newFilter, queryID).then(function(response) {
+                console.log(" response ******************* ", response);
+               // sc.filters.selectedPrimaryFilter.sideFilters = response.data.sideFilters;
+                //sc.filters.selectedPrimaryFilter.data = response.data;
+                //sc.filters.selectedPrimaryFilter.header = response.header;
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
