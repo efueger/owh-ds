@@ -97,7 +97,7 @@ var generateAggregationQuery = function( aggQuery, groupByKeyStart ) {
  * @param hashcode
  * @returns {{}}
  */
-var buildInsertQueryResultsQuery = function (query, results, dataset, hashcode) {
+var buildInsertQueryResultsQuery = function (query, results, dataset, hashcode, sideFilterResults) {
     var insertQuery = {};
     insertQuery.queryJSON = query;
     insertQuery.resultJSON = results;
@@ -105,6 +105,7 @@ var buildInsertQueryResultsQuery = function (query, results, dataset, hashcode) 
     //@TODO current data with yyy-mm-dd format
     insertQuery.lastupdated = "2016-10-25";
     insertQuery.queryID = hashcode;
+    insertQuery.sideFilterResults = sideFilterResults;
     return insertQuery;
 };
 
@@ -295,7 +296,6 @@ function buildAPIQuery(primaryFilter) {
     //var defaultHeaders = [];
     var sortedFilters = sortByKey(clone(primaryFilter.allFilters), getAutoCompleteOptionsLength);
     sortedFilters.forEach  (function(eachFilter) {
-        console.log(" in sortedFilter each");
         if(eachFilter.groupBy) {
             var eachGroupQuery = getGroupQuery(eachFilter);
             if ( eachFilter.groupBy === 'row' ) {
@@ -373,7 +373,7 @@ function getFilterQuery(filter) {
 }
 
 function isValueNotEmpty(value) {
-    return typeof value === 'defined' && value !== null && !jQuery.isEmptyObject(value) &&
+    return typeof value != 'undefined' && value !== null && !isEmptyObject(value) &&
         (!typeof value === 'String' || value != '');
 }
 
@@ -430,9 +430,28 @@ function prepareMapAggregations() {
     return chartAggregations;
 }
 
+function addCountsToAutoCompleteOptions(primaryFilter) {
+   var apiQuery = {
+        searchFor: primaryFilter.key,
+        aggregations: { simple: [] }
+    };
+    var filters = [];
+    primaryFilter.sideFilters.forEach(function(eachSideFilter) {
+        filters = filters.concat(eachSideFilter.filterGroup ? eachSideFilter.filters : [eachSideFilter.filters]);
+    });
+     filters.forEach(function(eachFilter) {
+        apiQuery.aggregations.simple.push(getGroupQuery(eachFilter));
+     });
+    //if(query) {
+        var filterQuery = buildAPIQuery(primaryFilter).apiQuery.query;
+        apiQuery.query = filterQuery;
+    //}
+    return apiQuery;
+}
 module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;
 module.exports.buildInsertQueryResultsQuery = buildInsertQueryResultsQuery;
 module.exports.buildSearchQueryResultsQuery = buildSearchQueryResultsQuery;
 module.exports.buildAPIQuery = buildAPIQuery;
+module.exports.addCountsToAutoCompleteOptions = addCountsToAutoCompleteOptions;

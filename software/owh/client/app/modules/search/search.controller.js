@@ -59,18 +59,15 @@
                 $state.go('search', {queryID: sc.queryID});
             });
         }
-        //console.log(" first call........... ", sc.queryID);
+        /*TODO: Commented populateFilterCounts because, instead multiple backend
+          requests to searchResutls, combine it to one request and in backend making
+          two elasticsearch request
+        */
         //populateFilterCounts(mortalityFilter, null, sc.queryID).then(function() {
-
-        if(sc.queryID) {
-            search(sc.filters.selectedPrimaryFilter, sc.filters, false);
-        }
+            if(sc.queryID) {
+                search(sc.filters.selectedPrimaryFilter, sc.filters, false);
+            }
         //});
-        //If url has hashcode then using hashcode get the query from database and return results.
-        //If hash code not exists in database, then save hashcode, query, results in database and return results.
-       // else {
-            //TODO: we will implement else in another task.
-       // }
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter);
@@ -84,9 +81,7 @@
         function search(selectedFilter, allFilters, isFilterChanged) {
             //TODO: would be better if there was a way to filter using query but also get all possible values back from api
             if(isFilterChanged) {
-                //If user change filter, generate hash and see if hash exists in database
-                //if exists get the results and return
-                //if not exists then call search using new hash
+               // sc.sideFilterQuery = true;
                 searchFactory.generateHashCode(selectedFilter).then(function(hash){
                     sc.queryID = hash;
                     $state.go('search', {queryID: sc.queryID, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
@@ -94,16 +89,20 @@
 
             }
             else {
-                //console.log(" second call........... ");
-                // populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
-                primaryFilterChanged(selectedFilter, sc.queryID);
-                //});
+                /*TODO: Commented populateFilterCounts because, instead multiple backend
+                 requests to searchResutls, combine it to one request and in backend making
+                 two elasticsearch request
+                 */
+              //   populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
+                    primaryFilterChanged(selectedFilter, sc.queryID);
+               // });
             }
         }
 
-        function populateFilterCounts(filter, query, queryID) {
+        //@TODO we don't need this method.
+        /*function populateFilterCounts(filter, query, queryID) {
             return searchFactory.addCountsToAutoCompleteOptions(filter, query, queryID);
-        }
+        }*/
 
         function downloadCSV() {
             var data = getMixedTable(sc.filters.selectedPrimaryFilter);
@@ -193,11 +192,7 @@
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
-            sc.filters.selectedPrimaryFilter.searchResults(newFilter, queryID).then(function(response) {
-                console.log(" response ******************* ", response);
-               // sc.filters.selectedPrimaryFilter.sideFilters = response.data.sideFilters;
-                //sc.filters.selectedPrimaryFilter.data = response.data;
-                //sc.filters.selectedPrimaryFilter.header = response.header;
+            sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);

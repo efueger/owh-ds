@@ -27,10 +27,6 @@
         method : 'POST',
         url: '/search'
       },
-      'getResults' : {
-        method: 'GET',
-        url: '/search'
-      },
       'upload' : {
         method : 'POST',
         url: '/fb/upload'

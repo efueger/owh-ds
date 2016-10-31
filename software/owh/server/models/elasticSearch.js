@@ -188,11 +188,9 @@ ElasticClient.prototype.insertQueryData = function (query) {
         logger.info("inserted new record in queryData");
         deferred.resolve(resp);
     }, function(err){
-        console.log("query **************** ", query);
-        console.log("insert failed **************** ", err.message);
         logger.error("Failed to insert record in queryResults ", err.message);
         deferred.reject(err);
     });
     return deferred.promise;
-}
+};
 module.exports = ElasticClient;
