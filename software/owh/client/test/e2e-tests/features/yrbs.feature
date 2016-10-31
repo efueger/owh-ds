@@ -20,3 +20,15 @@ Feature: YRBS Page
 #  When the user clicks on 'Show Less'
 #  Then the category to reset back to the original view of the two questions
 #  And 'Show Less' should be replaced with 'Show # More'
+
+Scenario: Category Title
+    Given user is on search page
+    Given user select YRBS as primary filter
+    When the user hovers the mouse over a category name
+    Then an option/link to 'Show only this Category' should be seen
+
+Scenario: Show only this Category button
+    Given user is on search page
+    Given user select YRBS as primary filter
+    When the user clicks on 'Show only this Category'
+    Then the data table must show all the questions only from that category

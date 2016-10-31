@@ -70,4 +70,18 @@ describe('owhAccordionTable component: ', function() {
         expect(data[0].hide).toBeTruthy();
     });
 
+    it('should showOnly one category', function() {
+        var data = [{questions: [{}, {}]}, {questions: []}]
+        var bindings = {
+            data: data,
+            headers: [[{}, {}], [{}, {}]]
+        };
+        var ctrl = $componentController('owhAccordionTable', null, bindings);
+
+        expect(ctrl.filterCategory(data[1])).toBeTruthy();
+        ctrl.showOnly(data[0]);
+        expect(ctrl.filterCategory(data[0])).toBeTruthy();
+        expect(ctrl.filterCategory(data[1])).toBeFalsy();
+    });
+
 });
