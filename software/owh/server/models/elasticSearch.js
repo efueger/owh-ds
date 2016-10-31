@@ -70,9 +70,11 @@ function mergeCensusRecursively(mort, census) {
         return;
     }
 
-    for (var prop in mort) {
-        if(!mort.hasOwnProperty(prop)) continue;
-        mergeCensusRecursively(mort[prop], census[prop]);
+    if(census) {
+        for (var prop in mort) {
+            if(!mort.hasOwnProperty(prop)) continue;
+            mergeCensusRecursively(mort[prop], census[prop]);
+        }
     }
 }
 
