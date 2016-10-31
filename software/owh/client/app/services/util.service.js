@@ -479,14 +479,19 @@
                             colspan: childTableData[0].length - 1,
                             isBold: true
                         });
-                        totalArray.push({
-                            title: numberWithCommas(eachData[countKey]),
+                        var cell = {
+                            title: eachData[countKey],
                             percentage: (Number(eachData[countKey]) / totalCount) * 100,
                             isCount: true,
                             rowspan: 1,
                             colspan: 1,
                             isBold: true
-                        });
+                        };
+                        if(secondaryCountKey) {
+                            var secondaryCount = eachData[secondaryCountKey];
+                            cell[secondaryCountKey] = secondaryCount;
+                        }
+                        totalArray.push(cell);
                         childTableData.push(totalArray);
                     }
                     eachTableRow.rowspan = childTableData.length;
