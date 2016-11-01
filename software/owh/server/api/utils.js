@@ -36,30 +36,39 @@ var populateDataWithMappings = function(resp, countKey) {
                 dataKey = keySplits[3];
                 var dataIndex = Number(keySplits[2]);
                 var aggData = {};
-                console.log("dataIndex: "+JSON.stringify(data[key].buckets));
+                // console.log("dataIndex: "+JSON.stringify(data[key].buckets));
                 aggData[dataKey] = populateAggregatedData(data[key].buckets, countKey, 3);
-                console.log("data");
-                console.log(dataIndex);
-                console.log(dataKey);
+                // console.log("data");
+                // console.log(dataIndex);
+                // console.log(dataKey);
                 result.data.nested.maps[dataKey]= aggData[dataKey];
-                console.log("done");
+                // console.log("done");
             } else {
                 result.data.simple[key] = populateAggregatedData(data[key].buckets, countKey);
             }
         });
     }
-    console.log(JSON.stringify(result));
+    // console.log(JSON.stringify(result));
     return result;
 };
 
 var populateAggregatedData = function(buckets, countKey, splitIndex) {
     var result = [];
     for(var index in buckets) {
-        console.log(buckets[index]);
+        // console.log(buckets[index]);
         //ignoring key -9 for blank data.
         if (buckets[index].key!=='-9') {
             var aggregation = new Aggregation(buckets[index], countKey);
             var innerObjKey = isValueHasGroupData(buckets[index]);
+            // take from pop.value instead of doc_count for census data
+            if(countKey === 'pop') {
+                aggregation = {name: buckets[index]['key']};
+                if(buckets[index]['pop']) {
+                    aggregation[countKey] = buckets[index]['pop'].value;
+                } else {
+                    aggregation[countKey] = sumBucketProperty(buckets[index][innerObjKey], 'pop');
+                }
+            }
             if( innerObjKey ){
                 aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex);
             }
@@ -67,6 +76,19 @@ var populateAggregatedData = function(buckets, countKey, splitIndex) {
         }
     }
     return result;
+};
+
+var sumBucketProperty = function(bucket, key) {
+    var sum = 0;
+    for(var i = 0; i < bucket.buckets.length; i++) {
+        if(bucket.buckets[i][key]) {
+            sum+= bucket.buckets[i][key].value;
+        } else {
+            //recurse with next bucket
+            sum+= sumBucketProperty(bucket.buckets[i][isValueHasGroupData(bucket.buckets[i])], key);
+        }
+    }
+    return sum;
 };
 
 var isValueHasGroupData = function(bucket) {

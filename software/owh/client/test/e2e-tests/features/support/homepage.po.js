@@ -10,13 +10,16 @@ var OwhHomepage = function() {
     hp.mentalExplorerLink = element( by.id('br_mental_health_explorer'));
 
     hp.getPhaseTwoPopupHeading =  function() {
-        return element( by.binding("'label.next.impl' | translate")).getText()
+        return element( by.binding("'label.next.impl' | translate")).getText();
     }
     hp.getYouCanSectionContent = function() {
         return element(by.css('.youCanContent')).all(by.tagName('p'));
     }
     hp.getWorkInProgressMessage = function () {
         return element(by.css('.usa-disclaimer-official')).element(by.tagName('span')).getText();
+    }
+    hp.getOWHAppName = function() {
+        return element( by.binding("'label.app.title.qhdo' | translate")).getText();
     }
 };
 

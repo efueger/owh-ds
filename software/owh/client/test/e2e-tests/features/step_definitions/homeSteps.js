@@ -20,7 +20,7 @@ var homeStepDefinitionsWrapper = function () {
 
     });
 
-    this.When(/^I click on Explore button in Quick Health Data Online section$/, function () {
+    this.When(/^I click on Explore button in Health Information Gateway section$/, function () {
         homePage.quickHealthExploreBtn.click();
     });
 
@@ -31,9 +31,9 @@ var homeStepDefinitionsWrapper = function () {
         mortalityPage.getSelectedFilterType().then(function(value){
             expect(value).to.equal("Mortality");
         });
-        mortalityPage.getByTypeSelectedFilters().then(function(filterArray){
-            expect(filterArray.length).to.equal(2);
-        });
+        // mortalityPage.getByTypeSelectedFilters().then(function(filterArray){
+        //     expect(filterArray.length).to.equal(2);
+        // });
     });
 
     this.When(/^I click on Explore button in Youth Related card under Behavioral Risk$/, function () {
@@ -71,6 +71,13 @@ var homeStepDefinitionsWrapper = function () {
 
     this.When(/^I am at search page$/, function () {
         browser.get("/search");
+    });
+
+    this.Then(/^I see the name of application as "([^"]*)"$/, function (arg1) {
+        browser.sleep(10000);
+        homePage.getOWHAppName().then(function(appName){
+            expect(appName).to.equal(arg1)
+        });
     });
 };
 module.exports = homeStepDefinitionsWrapper;

@@ -12,6 +12,16 @@
                                  shareUtilService, $stateParams, $state, xlsService, $window) {
 
         var sc = this;
+        sc.downloadCSV = downloadCSV;
+        sc.downloadXLS = downloadXLS;
+        sc.getSelectedYears = getSelectedYears;
+        sc.showPhaseTwoGraphs = showPhaseTwoGraphs;
+        sc.showExpandedGraph = showExpandedGraph;
+        sc.search = search;
+        sc.showFbDialog = showFbDialog;
+        sc.changeViewFilter = changeViewFilter;
+        sc.getMixedTable = getMixedTable;
+
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
         var mortalityFilter = null;
@@ -30,12 +40,7 @@
             mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
             sc.filters.selectedPrimaryFilter = $stateParams.selectedFilters;
         }
-        sc.downloadCSV = downloadCSV;
-        sc.downloadXLS = downloadXLS;
-        sc.getSelectedYears = getSelectedYears;
-        sc.showPhaseTwoGraphs = showPhaseTwoGraphs;
-        sc.showExpandedGraph = showExpandedGraph;
-        sc.search = search;
+
         sc.selectedMapSize = 'small';
         sc.showMeOptions = [
             {key: 'number_of_deaths', title: 'Number of Deaths'},
@@ -43,8 +48,14 @@
             {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}
         ];
         sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
-        sc.showFbDialog = showFbDialog;
+        //show certain filters for different table views
+        sc.availableFilters = {
+            'crude_death_rates': ['year', 'gender', 'race']
+        };
+
         sc.queryId = $stateParams.queryId;
+        sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
+
         populateFilterCounts(mortalityFilter).then(function() {
            search(sc.filters.selectedPrimaryFilter, sc.filters, false);
         });
@@ -67,6 +78,10 @@
             }
         }, true);
 
+        function changeViewFilter(selectedFilter) {
+            sc.tableView = selectedFilter.key;
+        }
+
         function search(selectedFilter, allFilters, isFilterChanged) {
             //TODO: would be better if there was a way to filter using query but also get all possible values back from api
             if(isFilterChanged) {
@@ -75,7 +90,7 @@
                 //if not exists then call search using new hash
                 var filterHash = Math.ceil(Math.random()* 100);
                 sc.queryId = filterHash;
-                $state.go('search', {queryId: filterHash, allFilters: allFilters, selectedFilters: selectedFilter});
+                $state.go('search', {queryId: filterHash, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
             }
             populateFilterCounts(mortalityFilter, selectedFilter).then(function() {
                 primaryFilterChanged(selectedFilter);
@@ -87,14 +102,14 @@
         }
 
         function downloadCSV() {
-            var data = getMixedTable(sc.filters.selectedPrimaryFilter);
+            var data = sc.getMixedTable(sc.filters.selectedPrimaryFilter);
             addRowHeaders(data, sc.filters.selectedPrimaryFilter);
             var filename = getFilename(sc.filters.selectedPrimaryFilter);
             xlsService.exportCSVFromMixedTable(data, filename);
         }
 
         function downloadXLS() {
-            var data = getMixedTable(sc.filters.selectedPrimaryFilter);
+            var data = sc.getMixedTable(sc.filters.selectedPrimaryFilter);
             addRowHeaders(data, sc.filters.selectedPrimaryFilter);
             var filename = getFilename(sc.filters.selectedPrimaryFilter);
             xlsService.exportXLSFromMixedTable(data, filename);
@@ -111,16 +126,16 @@
         }
 
         function getMixedTable(selectedFilter){
-            var file = selectedFilter.data;
-            var headers = selectedFilter.headers;
+            var file = selectedFilter.data ? selectedFilter.data : {};
+            var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
             var countKey = selectedFilter.key;
             var countLabel = selectedFilter.countLabel;
             var totalCount = selectedFilter.count;
             var calculatePercentage = selectedFilter.calculatePercentage;
             var calculateRowTotal = selectedFilter.calculateRowTotal;
+            var secondaryCountKey = 'pop';
 
-            //TODO: see comment in owh-table.component.js, we can construct this object once and pass it into the various components
-            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal);
+            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKey);
         }
 
         function getFilename(selectedFilter) {
@@ -176,13 +191,14 @@
             //TODO: this executes the actualy query, only perform this when queryId is present
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter).then(function() {
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
+                sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
                 }
                 if(sc.filters.selectedPrimaryFilter.key === 'mental_health') {
-                  var mixedTable = getMixedTable(sc.filters.selectedPrimaryFilter);
-                  sc.filters.selectedPrimaryFilter.headers = mixedTable.headers;
-                  sc.filters.selectedPrimaryFilter.data = categorizeQuestions(mixedTable.data);
+                  // var mixedTable = getMixedTable(sc.filters.selectedPrimaryFilter);
+                  sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                  sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
                 }
             });
         }
