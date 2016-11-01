@@ -467,7 +467,7 @@
                     }
                     var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachData, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
                     if(rowHeaders.length > 1 && calculateRowTotal) {
-                        childTableData.push(prepareTotalRow(eachData[countKey], childTableData[0].length, totalCount));
+                        childTableData.push(prepareTotalRow(eachData, countKey, childTableData[0].length, totalCount, secondaryCountKey));
                     }
                     var eachTableRow = {
                         title: matchedOption.title,
@@ -521,7 +521,7 @@
             return cell;
         }
 
-        function prepareTotalRow(total, colspan, totalCount) {
+        function prepareTotalRow(data, countKey, colspan, totalCount, secondaryCountKey) {
             var totalArray = [];
             totalArray.push({
                 title: 'Total',
@@ -530,14 +530,20 @@
                 colspan: colspan - 1,
                 isBold: true
             });
-            totalArray.push({
+            var total = data[countKey];
+            var cell = {
                 title: total,
                 percentage: total / totalCount * 100,
                 isCount: true,
                 rowspan: 1,
                 colspan: 1,
                 isBold: true
-            });
+            }
+            if(secondaryCountKey) {
+                var secondaryCount = data[secondaryCountKey];
+                cell[secondaryCountKey] = secondaryCount;
+            }
+            totalArray.push(cell);
             return totalArray;
         }
 
