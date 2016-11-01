@@ -70,4 +70,25 @@ describe('owhAccordionTable component: ', function() {
         expect(data[0].hide).toBeTruthy();
     });
 
+    it('should listRows in the proper order', function() {
+        var data = [{questions: [{}, {}]}, {questions: []}]
+        var bindings = {
+            data: data,
+            headers: [[{}, {}], [{}, {}]]
+        };
+        var ctrl = $componentController('owhAccordionTable', null, bindings);
+
+        var category = {title: 'Alcohol and Other Drug Use', questions: [
+            [{title: 'Currently Drinks'}],
+            [{title: 'Never use'}],
+            [{title: 'Sometimes'}],
+            [{title: 'Currently Use'}]
+        ]};
+
+        var list = ctrl.listRows(category);
+
+        expect(list[0][0].title).toEqual('Currently Drinks');
+        expect(list[1][0].title).toEqual('Currently Use');
+    });
+
 });
