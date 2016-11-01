@@ -59,5 +59,30 @@ var yrbsStepDefinitionsWrapper = function () {
         });
     });
 
+    this.When(/^the user hovers the mouse over a category name$/, function () {
+        yrbsPage.getExpandLinks().then(function(elements) {
+            browser.actions().mouseMove(elements[0]).perform();
+        });
+    });
+
+    this.Then(/^an option\/link to 'Show only this Category' should be seen$/, function () {
+        yrbsPage.getShowOnlyLinks().then(function(elements) {
+            expect(elements[0].isDisplayed()).to.eventually.equal(true);
+        });
+    });
+
+    this.When(/^the user clicks on 'Show only this Category'$/, function () {
+        yrbsPage.getShowOnlyLinks().then(function(elements) {
+            elements[0].click();
+        });
+    });
+
+    this.Then(/^the data table must show all the questions only from that category$/, function () {
+        yrbsPage.getExpandLinks().then(function(elements) {
+            expect(elements[0].isDisplayed()).to.eventually.equal(true);
+            expect(elements.length).to.equal(1);
+        });
+    });
+
 };
 module.exports = yrbsStepDefinitionsWrapper;
