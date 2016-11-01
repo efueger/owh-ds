@@ -68,6 +68,7 @@ var yrbsStepDefinitionsWrapper = function () {
     this.Then(/^an option\/link to 'Show only this Category' should be seen$/, function () {
         yrbsPage.getShowOnlyLinks().then(function(elements) {
             expect(elements[0].isDisplayed()).to.eventually.equal(true);
+            expect(elements[0].getText()).to.eventually.equal('Show only this category');
         });
     });
 
@@ -77,10 +78,25 @@ var yrbsStepDefinitionsWrapper = function () {
         });
     });
 
-    this.Then(/^the data table must show all the questions only from that category$/, function () {
+    this.Then(/^the data table must show only that category$/, function () {
         yrbsPage.getExpandLinks().then(function(elements) {
             expect(elements[0].isDisplayed()).to.eventually.equal(true);
             expect(elements.length).to.equal(1);
+        });
+    });
+
+    this.Then(/^an option\/link to 'Show all Categories' should be seen$/, function () {
+        yrbsPage.getShowOnlyLinks().then(function(elements) {
+            expect(elements[0].isDisplayed()).to.eventually.equal(true);
+            expect(elements[0].getText()).to.eventually.equal('Show all categories');
+        });
+    });
+
+    this.Then(/^the data table should show all categories$/, function () {
+        yrbsPage.getExpandLinks().then(function(elements) {
+            expect(elements[0].isDisplayed()).to.eventually.equal(true);
+            expect(elements[1].isDisplayed()).to.eventually.equal(true);
+            expect(elements.length).to.be.above(1);
         });
     });
 
