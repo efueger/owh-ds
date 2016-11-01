@@ -172,11 +172,9 @@
                  one is for side filters and one request is to update right table and chart data
                  as combine two request into one, we are doing two request to elastsearch(at the backend) and in reponse returning required data
                  So we have move logic from searchFactory.addCountsToAutoCompleteOptions method (line 518 to 554) to here.
-                 But replace 'response' with 'response.'
-
-                 */
-
-                /*primaryFilter.count = response.sideFilterResults.pagination.total;
+                */
+               //@TODO: @Joe here I am getting sideFilters from ES 'response.sideFilterResults'
+                primaryFilter.count = response.sideFilterResults.pagination.total;
                 angular.forEach(response.sideFilterResults.data.simple, function(eachFilterData, key) {
                     //fill auto-completer data with counts
                     var filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', key);
@@ -211,7 +209,7 @@
                     }
                 });
                 var ucd10Filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'ucd-chapter-10');
-                ucd10Filter.autoCompleteOptions = $rootScope.conditionsListICD10;*/
+                ucd10Filter.autoCompleteOptions = $rootScope.conditionsListICD10;
 
                 primaryFilter.data = response.data;
                 primaryFilter.headers = response.headers;
@@ -222,7 +220,7 @@
                 primaryFilter.dataPrepared = response.dataPrepared;
                 primaryFilter.maps = response.maps;
                 primaryFilter.searchCount = response.totalCount;
-                deferred.resolve(primaryFilter);
+                deferred.resolve();
             });
             return deferred.promise;
         }
@@ -282,7 +280,8 @@
                     chartData: prepareChartData(headers, response.data.resultData.nested, primaryFilter),
                     maps: response.data.resultData.nested.maps,
                     totalCount: response.pagination.total,
-                    sideFilterResults: response.data.sideFilterResults
+                    sideFilterResults: response.data.sideFilterResults,
+                    queryJSON: response.data.queryJSON
                 });
             });
             return deferred.promise;
