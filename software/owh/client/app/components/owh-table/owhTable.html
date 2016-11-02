@@ -1,12 +1,12 @@
 <!--<owh-nested-accordion accordion-data="otc.dataToAccordion"></owh-nested-accordion>-->
 <table>
     <thead>
-    <tr ng-repeat="eachHeaderRow in otc.dataToMixedTable.headers">
+    <tr ng-repeat="eachHeaderRow in otc.tableData.headers">
         <th ng-repeat="eachHeader in eachHeaderRow" ng-bind="eachHeader.title" colspan="{{eachHeader.colspan}}" rowspan="{{eachHeader.rowspan}}" ng-class="{'text-right': eachHeader.isCount && eachHeader.colspan <= 3}"></th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="eachRow in otc.dataToMixedTable.data track by $index" ng-init="$outerIndex = $index">
+    <tr ng-repeat="eachRow in otc.tableData.data track by $index" ng-init="$outerIndex = $index">
         <td ng-repeat="eachColumn in eachRow track by $index" colspan="{{eachColumn.colspan}}" rowspan="{{eachColumn.rowspan}}" ng-class="{'bold-class': eachColumn.isBold, 'text-right': eachColumn.isCount && eachRow.length > 5}">
             <span ng-if="!eachColumn.isCount" ng-bind-html="eachColumn.title"></span>
             <i class="cursor-pointer {{eachColumn.iconClass}}" ng-if="eachColumn.iconClass" ng-click="eachColumn.onIconClick(eachColumn.key)"></i>
@@ -26,11 +26,10 @@
                             {{ eachColumn.pop | number }}
                         </div>
                     </div>
-                    <!-- <span>{{ otc.tableView }}</span> -->
                 </div>
                 <div ng-if="otc.tableView === 'number_of_deaths'">
                     <span ng-bind="eachColumn.title | number" class="count-value"></span>
-                    <span ng-show="$index != eachRow.length - 1 && eachColumn.percentage != undefined" class="count-value">({{eachColumn.percentage}}%)</span>
+                    <span ng-show="$index != eachRow.length - 1 && eachColumn.percentage != undefined" class="count-value">({{eachColumn.percentage | number : 1}}%)</span>
                 </div>
             </label>
             <!-- <span ng-if="eachColumn.isCount" class="inline-bar" style="width: {{eachColumn.percentage}}%"></span> -->

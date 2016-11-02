@@ -1,0 +1,167 @@
+[
+  {
+     "column":"state",
+     "type":"simple",
+     "start": 9,
+     "stop": 10,
+     "field": "State",
+     "mappings": {
+       "01": "AL",
+       "02": "AK",
+       "04": "AZ",
+       "05": "AR",
+       "06": "CA",
+       "08": "CO",
+       "09": "CT",
+       "10": "DE",
+       "11": "DC",
+       "12": "FL",
+       "13": "GA",
+       "15": "HI",
+       "16": "ID",
+       "17": "IL",
+       "18": "IN",
+       "19": "IA",
+       "20": "KS",
+       "21": "KY",
+       "22": "LA",
+       "23": "ME",
+       "24": "MD",
+       "25": "MA",
+       "26": "MI",
+       "27": "MN",
+       "28": "MS",
+       "29": "MO",
+       "30": "MT",
+       "31": "NE",
+       "32": "NV",
+       "33": "NH",
+       "34": "NJ",
+       "35": "NM",
+       "36": "NY",
+       "37": "NC",
+       "38": "ND",
+       "39": "OH",
+       "40": "OK",
+       "41": "OR",
+       "42": "PA",
+       "44": "RI",
+       "45": "SC",
+       "46": "SD",
+       "47": "TN",
+       "48": "TX",
+       "49": "UT",
+       "50": "VT",
+       "51": "VA",
+       "53": "WA",
+       "54": "WV",
+       "55": "WI",
+       "56": "WY"
+     }
+ },
+  {
+    "column":"age",
+    "type":"simple",
+    "start": 14,
+    "stop": 15,
+    "field": "Age",
+    "mappings": {}
+  },
+  {
+    "columns":[
+      "race",
+      "sex"
+    ],
+    "type":"split",
+    "start":16,
+    "stop":16,
+    "field":"Bridged-race-sex",
+    "mappings":{
+	  "1":{
+	    "race":"1",
+	    "sex":"M"
+	  },
+	  "2":{
+	    "race":"1",
+	    "sex":"F"
+	  },
+	  "3":{
+	    "race":"2",
+	    "sex":"M"
+	  },
+	  "4":{
+	    "race":"2",
+	    "sex":"F"
+	  },
+	  "5":{
+	    "race":"3",
+	    "sex":"M"
+	  },
+	  "6":{
+	    "race":"3",
+	    "sex":"F"
+	  },
+	  "7":{
+	    "race":"4",
+	    "sex":"M"
+	  },
+	  "8":{
+	    "race":"4",
+	    "sex":"F"
+         }
+     }
+  },
+  {
+    "column":"hispanic_origin",
+    "type":"simple",
+    "start": 17,
+    "stop": 17,
+    "field": "Hispanic origin",
+    "mappings": {
+      "1":"not Hispanic or Latino",
+      "2":"Hispanic or Latino"
+    }
+  },
+  {
+    "column":"pop",
+    "type":"union",
+    "index_column":"current_year",
+    "fields":[
+      {
+        "start":18,
+        "stop":25,
+        "index_value":"2005",
+        "field":"Population estimate for July 1, 2005",
+        "mappings":{}
+      },
+      {
+        "start":26,
+        "stop":33,
+        "index_value":"2006",
+        "field":"Population estimate for July 1, 2006",
+        "mappings":{}
+      },
+      {
+        "start":34,
+        "stop":41,
+        "index_value":"2007",
+        "field":"Population estimate for July 1, 2007",
+        "mappings":{}
+      },
+      {
+        "start":42,
+        "stop":49,
+        "index_value":"2008",
+        "field":"Population estimate for July 1, 2008",
+        "mappings":{}
+      },
+      {
+        "start":50,
+        "stop":57,
+        "index_value":"2009",
+        "field":"Population estimate for July 1, 2009",
+        "mappings":{}
+      }
+    ]
+  }
+]
