@@ -183,7 +183,7 @@
                             angular.forEach(filter.autoCompleteOptions, function (option) {
                                 var optionData = utilService.findByKeyAndValue(eachFilterData, 'name', option.key);
                                 if (optionData) {
-                                    option[primaryFilter.key] = utilService.numberWithCommas(optionData[primaryFilter.key]);
+                                    option[primaryFilter.key] = optionData[primaryFilter.key];
                                     option['count'] = optionData[primaryFilter.key];
                                     option[primaryFilter.key + 'Percentage'] = 0;
                                     option[primaryFilter.key + 'Percentage'] = Number(((optionData[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
@@ -197,7 +197,7 @@
                             var autoCompleteOptions = [];
                             angular.forEach(eachFilterData, function(eachData) {
                                 var eachOption = {  key: eachData.name, title: eachData.name };
-                                eachOption[primaryFilter.key] = utilService.numberWithCommas(eachData[primaryFilter.key]);
+                                eachOption[primaryFilter.key] = eachData[primaryFilter.key];
                                 eachOption['count'] = eachData[primaryFilter.key];
                                 eachOption[primaryFilter.key + 'Percentage'] = Number(((eachData[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
                                 autoCompleteOptions.push(eachOption);
@@ -220,7 +220,7 @@
                 primaryFilter.dataPrepared = response.dataPrepared;
                 primaryFilter.maps = response.maps;
                 primaryFilter.searchCount = response.totalCount;
-                deferred.resolve();
+                deferred.resolve(response);
             });
             return deferred.promise;
         }
