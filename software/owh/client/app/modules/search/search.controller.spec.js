@@ -130,6 +130,8 @@ describe("Search controller: ", function () {
         primaryFilterChangedFn();
         primaryFilterChangedFn();
 
+        // $rootScope.$digest();
+
         //Call SearchResultFn
         searchResultThenFn();
 
