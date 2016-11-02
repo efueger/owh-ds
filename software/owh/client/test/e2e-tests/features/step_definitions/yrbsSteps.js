@@ -59,5 +59,32 @@ var yrbsStepDefinitionsWrapper = function () {
         });
     });
 
+
+    this.When(/^I looks at the filter sub categories$/, function () {
+        expect(yrbsPage.sideFilterUnOrderedList.getAttribute("li").length).to.eventually.greaterThan(0);
+    });
+
+
+    this.Then(/^I should be able to select more than one\. The radio buttons must be changed to checkboxes$/, function () {
+        yrbsPage.selectSideFilter("Race", "Asian").click();
+        yrbsPage.selectSideFilter("Grade", "9th").click();
+    });
+
+    this.Then(/^the default filter pre\-selected should be Race$/, function () {
+        yrbsPage.selectSideFilter("Race", "All").click();
+    });
+
+    this.Then(/^then table and visualizations adjust to that they use up the entire available screen space$/, function () {
+        expect(element(by.css("owh-search-content--expanded")).isPresent()).to.eventually.equal(true);
+    });
+    this.Then(/^the entire table and visualizations adjust to the reduced screen space$/, function () {
+        expect(element(by.css("owh-search-content--expanded")).isPresent()).to.eventually.equal(false);
+    });
+
+    this.Given(/^the background highlight is in lighter purple \(button color\)$/, function () {
+        element(by.className('owh-side-menu__handle--collapsed')).getCssValue('background-color').then(function(bgColor) {
+            expect(bgColor).toEqual('#F6F6F6');
+        });
+    });
 };
 module.exports = yrbsStepDefinitionsWrapper;
