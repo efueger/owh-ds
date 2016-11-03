@@ -59,18 +59,23 @@ var populateAggregatedData = function(buckets, countKey, splitIndex) {
         //ignoring key -9 for blank data.
         if (buckets[index].key!=='-9') {
             var aggregation = new Aggregation(buckets[index], countKey);
+            aggregation[countKey] = applySuppressionRules(countKey, aggregation[countKey]);
             var innerObjKey = isValueHasGroupData(buckets[index]);
             // take from pop.value instead of doc_count for census data
             if(countKey === 'pop') {
                 aggregation = {name: buckets[index]['key']};
                 if(buckets[index]['pop']) {
-                    aggregation[countKey] = buckets[index]['pop'].value;
+                    aggregation[countKey] = applySuppressionRules(countKey, buckets[index]['pop'].value);
                 } else {
                     aggregation[countKey] = sumBucketProperty(buckets[index][innerObjKey], 'pop');
                 }
             }
             if( innerObjKey ){
                 aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex);
+            }
+            //replaces suppressed with 0 for map and chart data
+            if(splitIndex === 3) {
+                aggregation[countKey] = aggregation[countKey] === 'suppressed' ? 0 : aggregation[countKey];
             }
             result.push(aggregation);
         }
@@ -98,6 +103,20 @@ var isValueHasGroupData = function(bucket) {
         }
     }
     return false;
+};
+
+var applySuppressionRules = function(key, value) {
+    if(key === 'deaths') {
+        if(value < 10) {
+            return 'suppressed';
+        }
+    }
+    if(key === 'pop') {
+        if(value < 10) {
+            return 'suppressed';
+        }
+    }
+    return value;
 };
 
 var populateYRBSData = function( results, headers, aggregations) {
