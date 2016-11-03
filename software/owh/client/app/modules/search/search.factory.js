@@ -17,7 +17,8 @@
             showPhaseTwoModal: showPhaseTwoModal,
             uploadImage: uploadImage,
             updateFilterValues: updateFilterValues,
-            generateHashCode: generateHashCode
+            generateHashCode: generateHashCode,
+            buildAPIQuery: buildAPIQuery
         };
         return service;
 

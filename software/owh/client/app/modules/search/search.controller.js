@@ -202,6 +202,8 @@
                     sc.filters.selectedPrimaryFilter.sideFilters[index].filters.value = filter.filters.value;
                 });
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
+                //update table headers based on cached query
+                sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
                 sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
