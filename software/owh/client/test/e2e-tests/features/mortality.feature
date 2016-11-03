@@ -92,3 +92,11 @@ Scenario: Help Message above the quick visualization pane
 #Scenario: Quick visualizations
 #  When I see the quick visualizations
 #  Then they're displayed same as before and nothing changes
+
+#Scenario: Suppressed
+#  When counts fall below the determined "cut-off" value and the conditions for suppression are met
+#  Then the value should be suppressed
+
+#Scenario: Data table
+#  When the user looks at a suppressed value in the data table
+#  Then the word suppressed must be displayed in it's place
