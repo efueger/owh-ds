@@ -23,3 +23,9 @@ production:
     host:
       user:
       password:
+
+data_suppression:
+  mortality:
+    deaths_count_threshold: 10
+    population_count_threshold: 10
+    unreliable_deaths_threshold: 20
