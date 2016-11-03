@@ -97,6 +97,7 @@
                  two elasticsearch request
                  */
               //   populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
+                    console.log('query hash detected');
                     primaryFilterChanged(selectedFilter, sc.queryID);
                // });
             }
@@ -196,15 +197,18 @@
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
+                //populate side filters based on cached query filters
+                angular.forEach(response.queryJSON.sideFilters, function(filter, index) {
+                    sc.filters.selectedPrimaryFilter.sideFilters[index].filters.value = filter.filters.value;
+                });
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
                 }
                 if(sc.filters.selectedPrimaryFilter.key === 'mental_health') {
-                  // var mixedTable = getMixedTable(sc.filters.selectedPrimaryFilter);
-                  sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
-                  sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
+                    sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                    sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
                 }
             });
         }
