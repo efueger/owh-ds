@@ -67,7 +67,8 @@ var populateAggregatedData = function(buckets, countKey, splitIndex) {
                 if(buckets[index]['pop']) {
                     aggregation[countKey] = applySuppressionRules(countKey, buckets[index]['pop'].value);
                 } else {
-                    aggregation[countKey] = sumBucketProperty(buckets[index][innerObjKey], 'pop');
+                    aggregation[countKey] = applySuppressionRules(countKey, sumBucketProperty(buckets[index][innerObjKey], 'pop'));
+
                 }
             }
             if( innerObjKey ){
@@ -88,7 +89,7 @@ var sumBucketProperty = function(bucket, key) {
     for(var i = 0; i < bucket.buckets.length; i++) {
         if(bucket.buckets[i][key]) {
             sum+= bucket.buckets[i][key].value;
-        } else {
+        } else if(bucket.buckets[i].key !== '-9'){
             //recurse with next bucket
             sum+= sumBucketProperty(bucket.buckets[i][isValueHasGroupData(bucket.buckets[i])], key);
         }
