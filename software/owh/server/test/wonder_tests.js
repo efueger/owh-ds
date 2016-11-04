@@ -118,7 +118,7 @@ describe("WONDER API", function () {
             var duration = new Date() - startTime;
             console.log("invoke wonder API bigger query (group by 5) duration: "+duration);
             expect(resp).to.not.be.empty();
-            expect(duration).to.be.lessThan(4000);
+            expect(duration).to.be.lessThan(5000);
         }, function(err){
             console.log(err);
             expect(err).to.be.undefined();
