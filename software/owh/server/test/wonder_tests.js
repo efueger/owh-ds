@@ -16,7 +16,7 @@ describe("WONDER API", function () {
         return w.invokeWONDER(query).then(function (resp) {
             var duration = new Date() - startTime;
             console.log("invoke wonder API default query duration: "+duration);
-            expect(resp).deep.equal({ 'American Indian or Alaska Native':
+            expect(resp).to.eql({ 'American Indian or Alaska Native':
             { Female: { ageAdjustedRate: '514.1' },
                 Male: { ageAdjustedRate: '685.4' },
                 Total: { ageAdjustedRate: '594.1' } },
@@ -33,7 +33,7 @@ describe("WONDER API", function () {
                     Male: { ageAdjustedRate: '853.4' },
                     Total: { ageAdjustedRate: '725.4' } },
                 Total: { ageAdjustedRate: '724.6' } });
-                expect(duration).to.be.at.most(2000);
+                expect(duration).to.be.lessThan(2000);
         }, function(err){
             console.log(err);
             expect(err).to.be.undefined();
@@ -49,7 +49,7 @@ describe("WONDER API", function () {
         return w.invokeWONDER(query).then(function (resp) {
             var duration = new Date() - startTime;
             console.log("invoke wonder API query (group by 3) duration: "+duration);
-            expect(resp).to.deep.equal( { 'American Indian or Alaska Native':
+            expect(resp).to.eql( { 'American Indian or Alaska Native':
             { Female:
             { 'Hispanic or Latino': { ageAdjustedRate: '79.3' },
                 'Not Hispanic or Latino': { ageAdjustedRate: '671.9' },
@@ -98,7 +98,7 @@ describe("WONDER API", function () {
                         Total: { ageAdjustedRate: '856.3' } },
                     Total: { ageAdjustedRate: '728.2' } },
                 Total: { ageAdjustedRate: '728.2' } });
-            expect(duration).to.be.at.most(2000);
+            expect(duration).to.be.lessThan(3000);
         }, function(err){
             console.log(err);
             expect(err).to.be.undefined();
@@ -117,8 +117,23 @@ describe("WONDER API", function () {
         return w.invokeWONDER(query).then(function (resp) {
             var duration = new Date() - startTime;
             console.log("invoke wonder API bigger query (group by 5) duration: "+duration);
-            expect(resp).to.not.be(undefined);
-            expect(duration).to.be.at.most(2000);
+            expect(resp).to.not.be.empty();
+            expect(duration).to.be.lessThan(4000);
+        }, function(err){
+            console.log(err);
+            expect(err).to.be.undefined();
+        });
+    })
+
+    it("invoke wonder API with no aggregations specified", function (){
+        query = {"searchFor":"deaths","query":{},
+            "aggregations":{"simple":[],"nested":{"table":[]}}}
+        var startTime = new Date();
+        return w.invokeWONDER(query).then(function (resp) {
+            var duration = new Date() - startTime;
+            console.log("invoke wonder API bigger query (group by 5) duration: "+duration);
+            expect(resp).to.be.empty();
+            expect(duration).to.be.lessThan(2000);
         }, function(err){
             console.log(err);
             expect(err).to.be.undefined();
