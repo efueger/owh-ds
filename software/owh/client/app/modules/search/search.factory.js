@@ -626,13 +626,11 @@
             };
 
             filters.yrbsGenderOptions =  [
-                { "key": "both", "title": "Both", isAllOption: true },
                 { "key": "female", "title": "Female" },
                 { "key": "male", "title": "Male" }
             ];
 
             filters.yrbsRaceOptions =  [
-                { "key": "all-races-ethnicities", "title": "All", isAllOption: true },
                 { "key": "ai_an", "title": "American Indian or Alaska Native" },
                 { "key": "asian", "title": "Asian" },
                 { "key": "black_african_american", "title": "Black or African American" },
@@ -643,7 +641,6 @@
             ];
 
             filters.yrbsGradeOptions = [
-                { "key": "all", "title": "All Grades", isAllOption: true },
                 { "key": "9th", "title": "9th" },
                 { "key": "10th", "title": "10th" },
                 { "key": "11th", "title": "11th" },
@@ -664,15 +661,15 @@
 
             filters.yrbsFilters = [
                 {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: ['2015'], groupBy: false,
-                    autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
-                { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: 'both', groupBy: false,
-                    filterType: 'radio', autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
-                { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"grade", primary: false, value: 'all', groupBy: false,
-                    filterType: 'radio', autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column" },
-                { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race", primary: false, value: 'all-races-ethnicities', groupBy: 'column',
-                    filterType: 'radio', autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column" },
+                   autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
+                { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: [], groupBy: false,
+                    autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
+                { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"grade", primary: false, value: [], groupBy: false,
+                     autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column" },
+                { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race", primary: false, value: [], groupBy: 'column',
+                   autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column" },
                 { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
-                    filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
+                     autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
                     selectTitle: 'select.label.yrbs.filter.question', iconClass: 'fa fa-pie-chart purple-text', onIconClick: function(question) {
                         showChartForQuestion(filters.selectedPrimaryFilter, question);
                     }
@@ -810,23 +807,23 @@
                     additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total',
                     sideFilters:[
                         {
-                            filterGroup: false, collapse: false, allowGrouping: false, dontShowCounts: true,
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'year')
                         },
                         {
-                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsSex')
                         },
                         {
-                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsRace')
                         },
                         {
-                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsGrade')
                         },
                         {
-                            filterGroup: false, collapse: false, allowGrouping: false,
+                            filterGroup: false, collapse: true, allowGrouping: false,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'question')
                         }
                     ]

@@ -67,11 +67,13 @@ var yrbsStepDefinitionsWrapper = function () {
 
     this.Then(/^I should be able to select more than one\. The radio buttons must be changed to checkboxes$/, function () {
         yrbsPage.selectSideFilter("Race", "Asian").click();
-        yrbsPage.selectSideFilter("Grade", "9th").click();
+        yrbsPage.selectSideFilter("Race", "American Indian or Alaska Native").click();
     });
 
     this.Then(/^the default filter pre\-selected should be Race$/, function () {
-        yrbsPage.selectSideFilter("Race", "All").click();
+        var RaceFilter = element(by.className('side-filters')).element(by.text('Race'));
+        var columnButton = RaceFilter.element(by.tag('owh-toggle-switch')).element(by.tag('a'));
+        expect(hasClass(columnButton, 'selected')).to.equal(true);
     });
 
     this.Then(/^then table and visualizations adjust to that they use up the entire available screen space$/, function () {
