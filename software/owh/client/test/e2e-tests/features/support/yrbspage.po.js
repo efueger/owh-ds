@@ -24,6 +24,10 @@ var YRBSSearchPage = function() {
         return element.all(by.className('owh-question__title'));
     };
 
+    ysp.getShowOnlyLinks = function() {
+        return element.all(by.className('owh-question__show-only'));
+    };
+
     ysp.selectSideFilter = function(filterType, value) {
         var filter = element(by.className('side-filters')).element(by.text(filterType));
         var iTag = filter.element(by.xpath('..')).element(by.tag('i'));
