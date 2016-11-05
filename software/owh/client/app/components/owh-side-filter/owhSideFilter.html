@@ -1,6 +1,6 @@
 <aside>
     <ul class="usa-sidenav-list side-filters">
-        <li class="accordion" ng-repeat="sideFilter in sfc.filters.selectedPrimaryFilter.sideFilters | orderBy: sfc.getFilterOrder">
+        <li class="accordion" ng-repeat="sideFilter in sfc.filters.selectedPrimaryFilter.sideFilters | orderBy: sfc.getFilterOrder" ng-show="sfc.isVisible(sideFilter)">
             <span ng-init="group = (sideFilter.filterGroup ? sideFilter : sideFilter.filters)">
                 <label class="side-pane-label custom-label">
                     <a href="javascript:void(0)" ng-click="sideFilter.collapse = !sideFilter.collapse" class="custom-link">

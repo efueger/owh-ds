@@ -3,7 +3,7 @@ from random import randint
 from owh.etl.common.etl import ETL
 import logging
 from owh.etl.common.fixedwidthfile_parser import FixedWidthFileParser
-logger = logging.getLogger('mortality_etl')
+logger = logging.getLogger('census_etl')
 
 class CensusETL (ETL):
     """
@@ -35,11 +35,11 @@ class CensusETL (ETL):
             file_path = os.path.join(self.dataDirectory, f)
             logger.info("Processing file: %s", f)
             config_file =  os.path.join(self.dataDirectory, 'data_mapping',f.replace(".txt", ".json"))
-            sensusParser = FixedWidthFileParser(file_path, config_file)
+            censusParser = FixedWidthFileParser(file_path, config_file)
             stateAggregatedRecods = {}
             curState = None
             while True:
-                record  = sensusParser.parseNextLine()
+                record  = censusParser.parseNextLine()
                 if not record:
                     # reached end of the file, persist the aggregated data and break
                     self._persistStateRecords(stateAggregatedRecods)
@@ -53,12 +53,14 @@ class CensusETL (ETL):
                      stateAggregatedRecods = {}
 
                 for row in record:
-                    aggkey = '{:4s}{:1s}{:1d}{:1d}{:02d}'.format(row['year'],row['sex'],row['race'],row['hispanic_origin'],row['age'])
+                    aggkey = '{:4s}{:1s}{:1s}{:1s}{:2s}'.format(row['current_year'],row['sex'],row['race'],row['hispanic_origin'],row['age'])
                     # if the key is not yet in the aggdata, add the key and data, else aggr population
                     if not stateAggregatedRecods.has_key(aggkey):
                         stateAggregatedRecods[aggkey] = row
+                        stateAggregatedRecods[aggkey]['pop'] = int(stateAggregatedRecods[aggkey]['pop'])
                     else:
-                        stateAggregatedRecods[aggkey]['pop'] += row['pop']
+                        stateAggregatedRecods[aggkey]['pop'] += int(row['pop'])
+            self.refresh_index()
         self.metrics.insertCount = self.savedreccount
         logger.info("*** Processed %s records from all census data files", self.processreccount)
 

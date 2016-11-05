@@ -55,6 +55,21 @@ describe('owhAccordionTable component: ', function() {
         expect(data[0].collapse).toBeTruthy();
     });
 
+    it('should toggle row collapse', function() {
+      var data = [{questions: [{}, {}]}, {questions: []}];
+      var bindings = {
+        data: data,
+        headers: [[{}, {}], [{}, {}]]
+      };
+      var ctrl = $componentController('owhAccordionTable', null, bindings);
+
+      ctrl.toggleRowCollapse(data[0]);
+      expect(data[0].collapse).toBeTruthy();
+
+      ctrl.toggleRowCollapse(data[0]);
+      expect(data[0].collapse).toBeFalsy();
+    });
+
     it('should show/hide questions', function() {
         var data = [{questions: [{}, {}]}, {questions: []}]
         var bindings = {
@@ -70,7 +85,7 @@ describe('owhAccordionTable component: ', function() {
         expect(data[0].hide).toBeTruthy();
     });
 
-    it('should listRows in the proper order', function() {
+    it('should showOnly one category', function() {
         var data = [{questions: [{}, {}]}, {questions: []}]
         var bindings = {
             data: data,
@@ -78,6 +93,19 @@ describe('owhAccordionTable component: ', function() {
         };
         var ctrl = $componentController('owhAccordionTable', null, bindings);
 
+        expect(ctrl.filterCategory(data[1])).toBeTruthy();
+        ctrl.showOnly(data[0]);
+        expect(ctrl.filterCategory(data[0])).toBeTruthy();
+        expect(ctrl.filterCategory(data[1])).toBeFalsy();
+    });
+
+    it('should listRows in the proper order', function() {
+        var data = [{questions: [{}, {}]}, {questions: []}]
+        var bindings = {
+            data: data,
+            headers: [[{}, {}], [{}, {}]]
+        };
+        var ctrl = $componentController('owhAccordionTable', null, bindings);
         var category = {title: 'Alcohol and Other Drug Use', questions: [
             [{title: 'Currently Drinks'}],
             [{title: 'Never use'}],

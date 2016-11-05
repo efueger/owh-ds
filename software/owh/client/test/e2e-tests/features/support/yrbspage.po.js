@@ -20,7 +20,11 @@ var YRBSSearchPage = function() {
     };
 
     ysp.getExpandLinks = function() {
-        return element.all(by.className('owh-question__expand'));
+        return element.all(by.className('owh-question__title'));
+    };
+
+    ysp.getShowOnlyLinks = function() {
+        return element.all(by.className('owh-question__show-only'));
     };
 
 };

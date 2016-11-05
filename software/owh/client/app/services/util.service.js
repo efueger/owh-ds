@@ -328,13 +328,13 @@
          });
          return tableData;
          }*/
-        function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal) {
+        function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKey) {
             var tableData = {
                 headers: prepareMixedTableHeaders(headers, countLabel),
                 data: [],
                 calculatePercentage: calculatePercentage
             };
-            tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal);
+            tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
             return tableData;
         }
 
@@ -362,39 +362,49 @@
          */
         function prepareMixedTableHeaders(headers, countLabel) {
             var tableHeaders = [[]];
-            var tableRowHeaders = [];
             var tableColumnHeaders = prepareMixedTableColumnHeaders(headers.columnHeaders);
+            var tableRowHeaders = prepareMixedTableRowHeaders(headers.rowHeaders, tableColumnHeaders.headers.length);
+            var tableHeaders = mergeMixedTableHeaders(tableColumnHeaders, tableRowHeaders, countLabel);
 
-            angular.forEach(headers.rowHeaders, function(eachRowHeader) {
-                var  eachTableRowHeader = {
-                    colspan: 1,
-                    rowspan: tableColumnHeaders.headers.length > 0 ? tableColumnHeaders.headers.length : 1
-                };
-                //$translate(eachRowHeader.title).then(function (translation) {
-                eachTableRowHeader.title = $filter('translate')(eachRowHeader.title);
-                //});
-                tableRowHeaders.push(eachTableRowHeader)
-            });
-            if(tableColumnHeaders.headers.length > 0) {
-                tableHeaders = tableColumnHeaders.headers;
+            return tableHeaders;
+        }
+
+        function mergeMixedTableHeaders(colHeaders, rowHeaders, countLabel) {
+            var tableHeaders = [[]];
+            if(colHeaders.headers.length > 0) {
+                tableHeaders = colHeaders.headers;
             }
-            tableHeaders[0] = tableRowHeaders.concat(tableHeaders[0]);
-            if(tableRowHeaders.length > 0 && countLabel) {
+            tableHeaders[0] = rowHeaders.concat(tableHeaders[0]);
+            if(rowHeaders.length > 0 && countLabel) {
                 tableHeaders[0].push({
                     title: countLabel,
                     colspan: 1,
-                    rowspan: tableColumnHeaders.headers.length > 0 ? tableColumnHeaders.headers.length : 1
+                    rowspan: colHeaders.headers.length > 0 ? colHeaders.headers.length : 1
                 });
             }
             //mark each data column header as isData to set alignment
-            angular.forEach(tableColumnHeaders.headers, function(row, index) {
-                var skip = (index === 0 ? headers.rowHeaders.length : 0);
+            angular.forEach(colHeaders.headers, function(row, index) {
+                var skip = (index === 0 ? rowHeaders.length : 0);
                 for(var i = skip; i < row.length; i++) {
                     row[i].isData = true;
                 }
             });
             return tableHeaders;
         }
+
+        function prepareMixedTableRowHeaders(rowHeaders, colHeight) {
+            var tableRowHeaders = [];
+            angular.forEach(rowHeaders, function(eachRowHeader) {
+                var eachTableRowHeader = {
+                    colspan: 1,
+                    rowspan: colHeight > 0 ? colHeight : 1,
+                    title: $filter('translate')(eachRowHeader.title)
+                };
+                tableRowHeaders.push(eachTableRowHeader)
+            });
+            return tableRowHeaders;
+        }
+
         function prepareMixedTableColumnHeaders(columnHeaders) {
             var tableColumnHeaderData = {
                 totalColspan: 0,
@@ -418,7 +428,8 @@
                     tableColumnHeaderData.headers[0].push({
                         title: eachOption.title,
                         colspan: colspan,
-                        rowspan: 1
+                        rowspan: 1,
+                        isData: true
                     });
                     tableColumnHeaderData.totalColspan += colspan;
                 });
@@ -436,11 +447,11 @@
          * @param totalCount
          * @param calculatePercentage
          * @param calculateRowTotal
+         * @param secondaryCountKey
          * @returns {Array}
          */
-        function prepareMixedTableRowData(rowHeaders, columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal) {
+        function prepareMixedTableRowData(rowHeaders, columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey) {
             var tableData = [];
-
             /**
              * This if condition prepares data
              * Ex: If we are filtering data by Race and Sex then table have columns like Race, Female, Male, NumberOfDeaths, So this function
@@ -454,42 +465,19 @@
                     if(!eachData) {
                         return;
                     }
-                    /*});
-                     angular.forEach(eachHeaderData, function(eachData, index) {
-                     var matchedOption;
-                     if(eachHeader.autoCompleteOptions) {
-                     matchedOption = findByKeyAndValue(eachHeader.autoCompleteOptions, 'key', eachData.name);
-                     }*/
+                    var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachData, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
+                    if(rowHeaders.length > 1 && calculateRowTotal) {
+                        childTableData.push(prepareTotalRow(eachData, countKey, childTableData[0].length, totalCount, secondaryCountKey));
+                    }
                     var eachTableRow = {
                         title: matchedOption.title,
                         isCount: false,
-                        rowspan: 1,
+                        rowspan: childTableData.length,
                         colspan: 1,
                         key: matchedOption.key,
                         iconClass: eachHeader.iconClass,
                         onIconClick: eachHeader.onIconClick
                     };
-                    var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachData, countKey, totalCount, calculatePercentage, calculateRowTotal);
-                    if(rowHeaders.length > 1 && calculateRowTotal) {
-                        var totalArray = [];
-                        totalArray.push({
-                            title: 'Total',
-                            isCount: false,
-                            rowspan: 1,
-                            colspan: childTableData[0].length - 1,
-                            isBold: true
-                        });
-                        totalArray.push({
-                            title: numberWithCommas(eachData[countKey]),
-                            percentage: (Number(eachData[countKey]) / totalCount) * 100,
-                            isCount: true,
-                            rowspan: 1,
-                            colspan: 1,
-                            isBold: true
-                        });
-                        childTableData.push(totalArray);
-                    }
-                    eachTableRow.rowspan = childTableData.length;
                     childTableData[0].unshift(eachTableRow);
                     tableData = tableData.concat(childTableData);
                 });
@@ -501,26 +489,62 @@
              */
             else {
                 var count = data[countKey];
-                var columnData = prepareMixedTableColumnData(columnHeaders, data, countKey, count, calculatePercentage);
+                var columnData = prepareMixedTableColumnData(columnHeaders, data, countKey, count, calculatePercentage, secondaryCountKey);
                 if(typeof data[countKey] !== 'undefined') {
-                    var title = Number(count);
-                    if(isNaN(title)) {
-                        title = count;
-                    } else {
-                        title = numberWithCommas(title);
-                    }
-                    columnData.push({
-                        title: title,
-                        percentage: calculatePercentage ? (Number(data[countKey]) / totalCount) * 100 : undefined,
-                        isCount: true,
-                        rowspan: 1,
-                        colspan: 1,
-                        isBold: true
-                    });
+                    columnData.push(prepareCountCell(count, data, countKey, totalCount, calculatePercentage, secondaryCountKey, true));
                 }
                 tableData.push(columnData);
             }
             return tableData;
+        }
+
+        function prepareCountCell(count, data, countKey, totalCount, calculatePercentage, secondaryCountKey, bold) {
+            var title = Number(count);
+            if(isNaN(title)) {
+                title = count;
+            }
+            var cell = {
+                title: title,
+                percentage: (calculatePercentage && totalCount !== undefined) ? (Number(data[countKey]) / totalCount) * 100 : undefined,
+                isCount: true,
+                rowspan: 1,
+                colspan: 1
+            };
+            if(bold) {
+                cell['isBold'] = true;
+            }
+            //add additional data to the cell, used for population
+            if(secondaryCountKey) {
+                var secondaryCount = data[secondaryCountKey];
+                cell[secondaryCountKey] = secondaryCount;
+            }
+            return cell;
+        }
+
+        function prepareTotalRow(data, countKey, colspan, totalCount, secondaryCountKey) {
+            var totalArray = [];
+            totalArray.push({
+                title: 'Total',
+                isCount: false,
+                rowspan: 1,
+                colspan: colspan - 1,
+                isBold: true
+            });
+            var total = data[countKey];
+            var cell = {
+                title: total,
+                percentage: total / totalCount * 100,
+                isCount: true,
+                rowspan: 1,
+                colspan: 1,
+                isBold: true
+            }
+            if(secondaryCountKey) {
+                var secondaryCount = data[secondaryCountKey];
+                cell[secondaryCountKey] = secondaryCount;
+            }
+            totalArray.push(cell);
+            return totalArray;
         }
 
         /**
@@ -532,9 +556,10 @@
          * @param countKey
          * @param totalCount
          * @param calculatePercentage
+         * @param secondaryCountKey
          * @returns {Array}
          */
-        function prepareMixedTableColumnData(columnHeaders, data, countKey, totalCount, calculatePercentage) {
+        function prepareMixedTableColumnData(columnHeaders, data, countKey, totalCount, calculatePercentage, secondaryCountKey) {
             var tableData = [];
             if(columnHeaders && columnHeaders.length > 0) {
                 var eachColumnHeader = columnHeaders[0];
@@ -550,19 +575,7 @@
                         } else {
                             var count = matchedData[countKey];
                             eachOptionLength = 1;
-                            var title = Number(count);
-                            if(isNaN(title)) {
-                                title = count;
-                            } else {
-                                title = numberWithCommas(title);
-                            }
-                            tableData.push({
-                                title: title,
-                                percentage: (calculatePercentage && totalCount != undefined)? ((Number(count) / totalCount) * 100).toFixed(1): undefined,
-                                isCount: true,
-                                rowspan: 1,
-                                colspan: 1
-                            });
+                            tableData.push(prepareCountCell(count, matchedData, countKey, totalCount, calculatePercentage, secondaryCountKey, false));
                         }
                     } else {
                         if(eachOptionLength <= 0) {
@@ -574,6 +587,7 @@
             }
             return tableData;
         }
+
         function getOptionDataLength(columnHeaders) {
             var optionDataLength = 1;
             angular.forEach(columnHeaders, function(eachColumnHeader) {

@@ -14,6 +14,7 @@
     OWHAccordionTableController.$inject = ['$scope', 'utilService', '$rootScope'];
     function OWHAccordionTableController($scope, utilService, $rootScope) {
         var oatc = this;
+        oatc.categoryFilter = null;
 
         var questionDefaults = {
             "Tobbacco Use": [/^Currently Used E/, /^Currently Used C/], // SP
@@ -34,12 +35,34 @@
             row.collapse = false;
         };
 
+        oatc.toggleRowCollapse = function(row) {
+            if(row.collapse) {
+                oatc.expandRow(row);
+            } else {
+                oatc.collapseRow(row);
+            }
+        };
+
         oatc.showMore = function(row) {
             row.hide = false;
         };
 
         oatc.showLess = function(row) {
             row.hide = true;
+        };
+
+        oatc.filterCategory = function(value, index, array) {
+            if (oatc.categoryFilter == null) {
+                return true;
+            } else if (value == oatc.categoryFilter) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        oatc.showOnly = function(category) {
+            oatc.categoryFilter = category;
         };
 
         oatc.listRows = function(catagory) {
