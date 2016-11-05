@@ -113,7 +113,6 @@ var sumBucketProperty = function(bucket, key) {
     for(var i = 0; i < bucket.buckets.length; i++) {
         if(bucket.buckets[i][key]) {
             var value = applySuppressionRules(key, bucket.buckets[i][key].value);
-            // sum+= bucket.buckets[i][key].value;
             if(value === 'suppressed') {
                 return value;
             } else {
@@ -122,7 +121,6 @@ var sumBucketProperty = function(bucket, key) {
         } else if(bucket.buckets[i].key !== '-9'){
             //recurse with next bucket
             var value = sumBucketProperty(bucket.buckets[i][isValueHasGroupData(bucket.buckets[i])], key);
-            // sum+= sumBucketProperty(bucket.buckets[i][isValueHasGroupData(bucket.buckets[i])], key);
             if(value === 'suppressed') {
                 return value;
             } else {
