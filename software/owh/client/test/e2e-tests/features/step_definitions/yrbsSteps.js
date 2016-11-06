@@ -100,5 +100,11 @@ var yrbsStepDefinitionsWrapper = function () {
         });
     });
 
+    this.Then(/^each category has two questions in the given order$/, function () {
+        yrbsPage.getCategoryQuestions().then(function(elements) {
+            expect(elements[9].getAttribute('class')).to.eventually.include('ng-hide');
+        });
+    });
+
 };
 module.exports = yrbsStepDefinitionsWrapper;

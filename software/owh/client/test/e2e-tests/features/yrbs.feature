@@ -50,3 +50,8 @@ Scenario: Show all Categories works
     When the user hovers the mouse over a category name
     When the user clicks on 'Show only this Category'
     Then the data table should show all categories
+
+Scenario: Default Questions
+    Given user is on search page
+    Given user select YRBS as primary filter
+    Then each category has two questions in the given order
