@@ -14,17 +14,17 @@ var searchRouter = function(app, rConfig) {
             new elasticSearch().getQueryResults(searchQueryResultsQuery).then(function (searchResultsResponse) {
                  if(searchResultsResponse && searchResultsResponse._source.queryID === hashCode ) {
                      var resData = {};
-                     resData.queryJSON = searchResultsResponse._source.queryJSON;
-                     resData.resultData = searchResultsResponse._source.resultJSON.data;
-                     resData.sideFilterResults = searchResultsResponse._source.sideFilterResults;
-                     res.send( new result('OK', resData, searchResultsResponse._source.resultJSON.pagination, "success") );
+                     resData.queryJSON = JSON.parse(searchResultsResponse._source.queryJSON);
+                     resData.resultData = JSON.parse(searchResultsResponse._source.resultJSON).data;
+                     resData.sideFilterResults = JSON.parse(searchResultsResponse._source.sideFilterResults);
+                     res.send( new result('OK', resData, JSON.parse(searchResultsResponse._source.resultJSON).pagination, "success") );
                  }
                  else {
                      var apiQuery = queryBuilder.addCountsToAutoCompleteOptions(q);
                      var finalAPIQuery = queryBuilder.buildSearchQuery(apiQuery, true);
                      new elasticSearch().aggregateDeaths(finalAPIQuery).then(function (sideFilterResults) {
                          new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
-                             var insertQuery = queryBuilder.buildInsertQueryResultsQuery(q, response, "Mortality", hashCode, sideFilterResults);
+                             var insertQuery = queryBuilder.buildInsertQueryResultsQuery(JSON.stringify(q), JSON.stringify(response), "Mortality", hashCode, JSON.stringify(sideFilterResults));
                              new elasticSearch().insertQueryData(insertQuery).then(function(anotherResponse){
                                  var resData = {};
                                  resData.queryJSON = q;

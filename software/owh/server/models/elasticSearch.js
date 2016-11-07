@@ -12,7 +12,7 @@ var mortality_type = "mortality";
 var census_index="owh_census";
 var census_type="census";
 //@TODO to work with my local ES DB I changed mapping name to 'queryResults1', revert before check in to 'queryResults'
-var _queryIndex = "owhquery";
+var _queryIndex = "owh_querycache";
 var _queryType = "queryData";
 var mental_health_type = "yrbs";
 
