@@ -122,7 +122,7 @@ describe('search factory ', function(){
         it('searchMortalityResults without year autocompleters', function () {
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.nested.table));
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.table));
             });
             deferred.resolve(searchResponse);
             $scope.$apply();
@@ -145,7 +145,7 @@ describe('search factory ', function(){
         it('searchMortalityResults', function () {
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.nested.table));
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.table));
             });
             deferred.resolve(searchResponse);
             $scope.$apply();
@@ -157,7 +157,7 @@ describe('search factory ', function(){
 
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.chartDataFromAPI)).toEqual(JSON.stringify(searchResponse.data.simple));
+                expect(JSON.stringify(primaryFilter.chartDataFromAPI)).toEqual(JSON.stringify(searchResponse.data.resultData.simple));
             });
             deferred.resolve(searchResponse);
             $scope.$apply();
@@ -188,7 +188,7 @@ describe('search factory ', function(){
 
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.maps)).toEqual(JSON.stringify(searchResponse.data.nested.maps));
+                expect(JSON.stringify(primaryFilter.maps)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.maps));
             });
             deferred.resolve(searchResponse);
             $scope.$apply();
