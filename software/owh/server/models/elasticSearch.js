@@ -6,13 +6,12 @@ var Q = require('q');
 var logger = require('../config/logging')
 var config = require('../config/config')
 var _host = config.elastic_search.url
-var _index = "owh";
-//var _mortality_index = "mortality";
+var _index= "owh"
+var mortality_index = "owh_mortality";
 var mortality_type = "mortality";
-//var mortality_type = "deaths";
-var mental_health_type = "yrbs";
-var census_index="census";
+var census_index="owh_census";
 var census_type="census";
+var mental_health_type = "yrbs";
 //@TODO to work with my local ES DB I changed mapping name to 'queryResults1', revert before check in to 'queryResults'
 var _queryIndex = "owhquery";
 var _queryType = "queryData";
@@ -89,16 +88,18 @@ function mergeCensusRecursively(mort, census) {
         return;
     }
 
-    for (var prop in mort) {
-        if(!mort.hasOwnProperty(prop)) continue;
-        mergeCensusRecursively(mort[prop], census[prop]);
+    if(census) {
+        for (var prop in mort) {
+            if(!mort.hasOwnProperty(prop)) continue;
+            mergeCensusRecursively(mort[prop], census[prop]);
+        }
     }
 }
 
 
 ElasticClient.prototype.aggregateDeaths = function(query){
     var self = this;
-    var client = this.getClient(_index);
+    var client = this.getClient(mortality_index);
     var deferred = Q.defer();
     if(query[1]){
         this.aggregateCensusDataForMortalityQuery(query[1]).then(function(censusData) {

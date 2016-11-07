@@ -57,7 +57,7 @@ class FixedWidthFileParser:
             elif (config['type'] == 'union'):
                 hasUnion = True
                 for field in config['fields']:
-                    value = self._parse_value(self._get_value(field['start'], field['stop']))
+                    value = self._get_value(field['start'], field['stop'])
                     row[config['column']] = value
                     row[config['index_column']] = field['index_value']
                     result.append(row.copy())
@@ -79,11 +79,11 @@ class FixedWidthFileParser:
             return int(value)
 
     def _simple_value(self, config):
-            return self._parse_value(self._get_value(config['start'], config['stop']))
+            return self._get_value(config['start'], config['stop'])
 
     def _map_value(self, config):
-        if config.mappings:
-            return self._parse_value(config.mappings.get(self._get_value(config['start'], config['stop'])))
+        if config['mappings']:
+            return config['mappings'].get(self._get_value(config['start'], config['stop']))
         else:
             return None
 
@@ -91,14 +91,14 @@ class FixedWidthFileParser:
         mappings = config['mappings']
         value = self._get_value(config['start'], config['stop'])
         if config['mappings'].has_key(value):
-            return self._parse_value(mappings.get(value))
+            return mappings.get(value)
         else:
             for key in mappings.keys():
                 if "-" in key:
                     ranges = key.split("-")
                     if self._parse_value(value) >= self._parse_value(ranges[0]) \
                             and self._parse_value(value) <= self._parse_value(ranges[1]):
-                        return  self._parse_value(mappings.get(key))
+                        return  mappings.get(key)
             return None
 
 
