@@ -40,7 +40,7 @@
             <div class="sort-by side-filter-padding">
                 <owh-side-filter filters="sc.filters"
                     on-filter="sc.search(sc.filters.selectedPrimaryFilter, sc.filters, true)"
-                    sort="sc.sort"
+                    sort="sc.sort[sc.filters.selectedPrimaryFilter.title]"
                     show-filters="sc.availableFilters[sc.tableView]"
                     ></owh-side-filter>
             </div>

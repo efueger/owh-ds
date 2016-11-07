@@ -2,7 +2,7 @@ var YRBSSearchPage = function() {
     var ysp = this;
 
     ysp.yrbsOption = element(by.cssContainingText('option', 'Youth Risk Behavior'));
-    ysp.sideFilterUnOrderedList = element(by.className('side-filters'));
+    ysp.sideFilterUnOrderedList = element(by.css('.side-filters'));
 
     ysp.getCategoryBars = function() {
         return element.all(by.className('owh-question__title'));
@@ -28,15 +28,9 @@ var YRBSSearchPage = function() {
         return element.all(by.className('owh-question__show-only'));
     };
 
-    ysp.selectSideFilter = function(filterType, value) {
-        var filter = element(by.className('side-filters')).element(by.text(filterType));
-        var iTag = filter.element(by.xpath('..')).element(by.tag('i'));
-        if(expect(hasClass(iTag, 'fa-chevron-down')).to.equal(false)) {
-            //Exapnd filter
-            filter.element(by.xpath('..')).click();
-        }
-        var filterOption = filter.element(by.text(value));
-        return filterOption;
+    ysp.selectSideFilter = function(filterType) {
+        var filter = element(by.className('side-filters')).element(by.xpath('.//*[.="'+filterType+'"]'));
+        return filter.element(by.xpath('..')).element(by.tagName('i'));
     };
 };
 

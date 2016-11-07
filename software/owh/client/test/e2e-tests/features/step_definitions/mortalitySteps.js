@@ -39,32 +39,26 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^there is button to hide filter$/, function () {
-        //@TODO try to reuse this step for YRBS page
         expect(mortalityPage.hideFiltersBtn.isDisplayed()).to.eventually.equal(true);
     });
 
     this.When(/^user clicks hide filter button$/, function () {
-        //@TODO try to reuse this step for YRBS page
         mortalityPage.hideFiltersBtn.click();
     });
 
     this.Then(/^side menu slides away$/, function () {
-        //@TODO try to reuse this step for YRBS page
         expect(mortalityPage.sideMenu.getAttribute('class')).to.eventually.include('ng-hide');
     });
 
     this.Then(/^user sees button to show filters$/, function () {
-        //@TODO try to reuse this step for YRBS page
         expect(mortalityPage.showFiltersBtn.isDisplayed()).to.eventually.equal(true);
     });
 
     this.When(/^user clicks show filters button$/, function () {
-        //@TODO try to reuse this step for YRBS page
         mortalityPage.showFiltersBtn.click();
     });
 
     this.Then(/^side menu slides back into view$/, function () {
-        //@TODO try to reuse this step for YRBS page
         expect(mortalityPage.sideMenu.getAttribute('class')).to.not.eventually.include('ng-hide');
     });
 
@@ -212,7 +206,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^I should be redirected to YRBS page$/, function () {
         var text = mortalityPage.sideMenu.getText();
         expect(text).to.eventually.contains("Question");
-        expect(text).to.eventually.contains("Select Questions");
+        //expect(text).to.eventually.contains("Select Questions");
         expect(text).to.eventually.contains("Grade");
     });
 
