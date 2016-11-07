@@ -41,7 +41,7 @@
             var apiQuery = buildQueryForYRBS(primaryFilter);
             var headers = apiQuery.headers;
             var query = apiQuery.apiQuery;
-            SearchService.searchResults(query).then(function(response) {
+            SearchService.searchResults(primaryFilter).then(function(response) {
                 /*var yearsFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
                 if(!yearsFilter.autoCompleteOptions[0][primaryFilter.key]) {
                     var total = 0;

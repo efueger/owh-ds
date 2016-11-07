@@ -144,11 +144,9 @@ var buildSearchQuery = function(params, isAggregation) {
     }
     elasticQuery.query = {};
     elasticQuery.query.filtered = {};
-
     //build top level bool queries
     var primaryQuery = buildTopLevelBoolQuery(groupByPrimary(userQuery, true), true);
     var filterQuery = buildTopLevelBoolQuery(groupByPrimary(userQuery, false), false);
-
     //check if primary query is empty
     elasticQuery.query.filtered.query = primaryQuery;
     elasticQuery.query.filtered.filter = filterQuery;
@@ -293,6 +291,9 @@ function buildAPIQuery(primaryFilter) {
         columnHeaders: [],
         chartHeaders: []
     };
+    if(primaryFilter.searchFor) {
+        apiQuery = primaryFilter;
+    }
     //var defaultHeaders = [];
     var sortedFilters = sortByKey(clone(primaryFilter.allFilters), getAutoCompleteOptionsLength);
     sortedFilters.forEach  (function(eachFilter) {

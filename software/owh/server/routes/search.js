@@ -44,12 +44,12 @@ var searchRouter = function(app, rConfig) {
 
         } else if ( preparedQuery.apiQuery.searchFor === "mental_health" ) {
             q['pagination'] = {from: 0, size: 10000};
+            preparedQuery.apiQuery['pagination'] = {from: 0, size: 10000};
             var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, false);
             /*finalQuery.sort = [
                 { "percent" : {"order" : "desc"}},
                 "_score"
             ];*/
-            console.log(JSON.stringify(finalQuery));
             new elasticSearch().aggregateMentalHealth(finalQuery[0], preparedQuery.apiQuery.dataKeys, preparedQuery.apiQuery.aggregations.nested.table).then(function(response){
                 res.send( new result('OK', response, response.pagination, "success") );
             }, function(response){

@@ -204,10 +204,12 @@
             //TODO: this executes the actualy query, only perform this when queryId is present
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
                 //populate side filters based on cached query filters
-                angular.forEach(response.queryJSON.sideFilters, function(filter, index) {
-                    sc.filters.selectedPrimaryFilter.sideFilters[index].filters.value = filter.filters.value;
-                    sc.filters.selectedPrimaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
-                });
+                if(response.queryJSON) {
+                    angular.forEach(response.queryJSON.sideFilters, function(filter, index) {
+                        sc.filters.selectedPrimaryFilter.sideFilters[index].filters.value = filter.filters.value;
+                        sc.filters.selectedPrimaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
+                    });
+                }
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 //update table headers based on cached query
                 sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
