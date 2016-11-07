@@ -73,6 +73,10 @@ var populateAggregatedData = function(buckets, countKey, splitIndex) {
             }
             if( innerObjKey ){
                 aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex);
+                //check if total should be suppressed
+                if(countKey === 'deaths' && isMortalityTotalSuppressed(buckets[index][innerObjKey].buckets)) {
+                    aggregation[countKey] = 'suppressed';
+                }
             }
             //replaces suppressed with 0 for map and chart data
             if(splitIndex === 3) {
@@ -84,14 +88,44 @@ var populateAggregatedData = function(buckets, countKey, splitIndex) {
     return result;
 };
 
+//determines if any values in the total are suppressed
+var isMortalityTotalSuppressed = function(buckets) {
+    for(var index in buckets) {
+        if(buckets[index].key!=='-9') {
+            var innerObjKey = isValueHasGroupData(buckets[index]);
+            if(innerObjKey) {
+                var suppressed = isMortalityTotalSuppressed(buckets[index][innerObjKey].buckets);
+                if(suppressed) {
+                    return true;
+                }
+            } else {
+                if(applySuppressionRules('deaths', buckets[index]['doc_count']) === 'suppressed') {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+};
+
 var sumBucketProperty = function(bucket, key) {
     var sum = 0;
     for(var i = 0; i < bucket.buckets.length; i++) {
         if(bucket.buckets[i][key]) {
-            sum+= bucket.buckets[i][key].value;
+            var value = applySuppressionRules(key, bucket.buckets[i][key].value);
+            if(value === 'suppressed') {
+                return value;
+            } else {
+                sum+= value;
+            }
         } else if(bucket.buckets[i].key !== '-9'){
             //recurse with next bucket
-            sum+= sumBucketProperty(bucket.buckets[i][isValueHasGroupData(bucket.buckets[i])], key);
+            var value = sumBucketProperty(bucket.buckets[i][isValueHasGroupData(bucket.buckets[i])], key);
+            if(value === 'suppressed') {
+                return value;
+            } else {
+                sum+= value;
+            }
         }
     }
     return sum;
