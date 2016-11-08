@@ -59,19 +59,28 @@ var populateAggregatedData = function(buckets, countKey, splitIndex) {
         //ignoring key -9 for blank data.
         if (buckets[index].key!=='-9') {
             var aggregation = new Aggregation(buckets[index], countKey);
+            aggregation[countKey] = applySuppressionRules(countKey, aggregation[countKey]);
             var innerObjKey = isValueHasGroupData(buckets[index]);
             // take from pop.value instead of doc_count for census data
             if(countKey === 'pop') {
                 aggregation = {name: buckets[index]['key']};
                 if(buckets[index]['pop']) {
-                    aggregation[countKey] = buckets[index]['pop'].value;
-                    hasValue = true;
+                    aggregation[countKey] = applySuppressionRules(countKey, buckets[index]['pop'].value);
                 } else {
-                    aggregation[countKey] = sumBucketProperty(buckets[index][innerObjKey], 'pop');
+                    aggregation[countKey] = applySuppressionRules(countKey, sumBucketProperty(buckets[index][innerObjKey], 'pop'));
+
                 }
             }
             if( innerObjKey ){
                 aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex);
+                //check if total should be suppressed
+                if(countKey === 'deaths' && isMortalityTotalSuppressed(buckets[index][innerObjKey].buckets)) {
+                    aggregation[countKey] = 'suppressed';
+                }
+            }
+            //replaces suppressed with 0 for map and chart data
+            if(splitIndex === 3) {
+                aggregation[countKey] = aggregation[countKey] === 'suppressed' ? 0 : aggregation[countKey];
             }
             result.push(aggregation);
         }
@@ -79,10 +88,45 @@ var populateAggregatedData = function(buckets, countKey, splitIndex) {
     return result;
 };
 
+//determines if any values in the total are suppressed
+var isMortalityTotalSuppressed = function(buckets) {
+    for(var index in buckets) {
+        if(buckets[index].key!=='-9') {
+            var innerObjKey = isValueHasGroupData(buckets[index]);
+            if(innerObjKey) {
+                var suppressed = isMortalityTotalSuppressed(buckets[index][innerObjKey].buckets);
+                if(suppressed) {
+                    return true;
+                }
+            } else {
+                if(applySuppressionRules('deaths', buckets[index]['doc_count']) === 'suppressed') {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+};
+
 var sumBucketProperty = function(bucket, key) {
     var sum = 0;
     for(var i = 0; i < bucket.buckets.length; i++) {
-        sum+= bucket.buckets[i][key].value;
+        if(bucket.buckets[i][key]) {
+            var value = applySuppressionRules(key, bucket.buckets[i][key].value);
+            if(value === 'suppressed') {
+                return value;
+            } else {
+                sum+= value;
+            }
+        } else if(bucket.buckets[i].key !== '-9'){
+            //recurse with next bucket
+            var value = sumBucketProperty(bucket.buckets[i][isValueHasGroupData(bucket.buckets[i])], key);
+            if(value === 'suppressed') {
+                return value;
+            } else {
+                sum+= value;
+            }
+        }
     }
     return sum;
 };
@@ -94,6 +138,20 @@ var isValueHasGroupData = function(bucket) {
         }
     }
     return false;
+};
+
+var applySuppressionRules = function(key, value) {
+    if(key === 'deaths') {
+        if(value < 10) {
+            return 'suppressed';
+        }
+    }
+    if(key === 'pop') {
+        if(value < 10) {
+            return 'suppressed';
+        }
+    }
+    return value;
 };
 
 var populateYRBSData = function( results, headers, aggregations) {

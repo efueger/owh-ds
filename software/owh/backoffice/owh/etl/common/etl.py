@@ -52,6 +52,12 @@ class ETL :
         """Retrieve a record with the specified id from the index user by the ETL"""
         return self.esRepository.get_record_by_id(id)
 
+    def refresh_index(self):
+        """Refresh the index for this ETL,
+           This method will be automatically called after perform_etl completes.
+           Needs to be explicitly called if indexed needs to be refreshed sooner"""
+        self.esRepository.refresh_index()
+
     def _create_data_dir(self):
         """Create work directory and set the dataDirectory property"""
         self.dataDirectory = 'WORK/' + datetime.datetime.now().strftime('%Y%m%d.%H%M%S')+'/'
@@ -141,6 +147,7 @@ class ETL :
                 logger.info("Using local directory %s for data files, skipping data files retrieval from AWS S3", self.config['data_file']['local_directory'])
             logger.info("Starting transfromation and load")
             self.perform_etl()
+            self.refresh_index()
             logger.info("Transfromation and Load completed")
             logger.info("Validating ETL")
             if not self.validate_etl():

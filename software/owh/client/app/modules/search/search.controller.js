@@ -12,6 +12,16 @@
                                  shareUtilService, $stateParams, $state, xlsService, $window) {
 
         var sc = this;
+        sc.downloadCSV = downloadCSV;
+        sc.downloadXLS = downloadXLS;
+        sc.getSelectedYears = getSelectedYears;
+        sc.showPhaseTwoGraphs = showPhaseTwoGraphs;
+        sc.showExpandedGraph = showExpandedGraph;
+        sc.search = search;
+        sc.showFbDialog = showFbDialog;
+        sc.changeViewFilter = changeViewFilter;
+        sc.getMixedTable = getMixedTable;
+
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
         var mortalityFilter = null;
@@ -30,43 +40,46 @@
             mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
             sc.filters.selectedPrimaryFilter = $stateParams.selectedFilters;
         }
-        sc.downloadCSV = downloadCSV;
-        sc.downloadXLS = downloadXLS;
-        sc.getSelectedYears = getSelectedYears;
-        sc.showPhaseTwoGraphs = showPhaseTwoGraphs;
-        sc.showExpandedGraph = showExpandedGraph;
-        sc.search = search;
+
         sc.selectedMapSize = 'small';
         sc.showMeOptions = [
             {key: 'number_of_deaths', title: 'Number of Deaths'},
             {key: 'crude_death_rates', title: 'Crude Death Rates'},
             {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}
         ];
-        sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
+        sc.sort = {
+            "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
+            "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question']
+        };
         //show certain filters for different table views
         sc.availableFilters = {
-            'crude_death_rates': ['year', 'gender', 'race']
+            'crude_death_rates': ['year', 'gender', 'race'],
         };
         sc.showFbDialog = showFbDialog;
-        sc.queryId = $stateParams.queryId;
+        sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
         sc.changeViewFilter = changeViewFilter;
-        populateFilterCounts(mortalityFilter).then(function() {
+
+       /* populateFilterCounts(mortalityFilter).then(function() {
            search(sc.filters.selectedPrimaryFilter, sc.filters, false);
-        });
+        });*/
         //TODO: we will need to change the order of a few things
         //Intial call queryId will be empty
-        if($stateParams.queryId === "") {
-            //Eventually we will generate hash code using query, save in catche index in elasticsearch database
-            var intialHashCode = Math.ceil(Math.random()* 100);
-            sc.queryId = intialHashCode;
-            $state.go('search', {queryId: intialHashCode });
+        if(sc.queryID === "") {
+            searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
+                sc.queryID = hash;
+                $state.go('search', {queryID: sc.queryID});
+            });
         }
-        //If url has hashcode then using hashcode get the query from database and return results.
-        //If hash code not exists in database, then save hashcode, query, results in database and return results.
-        else {
-            //TODO: we will implement else in another task.
-        }
+        /*TODO: Commented populateFilterCounts because, instead multiple backend
+          requests to searchResutls, combine it to one request and in backend making
+          two elasticsearch request
+        */
+        //populateFilterCounts(mortalityFilter, null, sc.queryID).then(function() {
+            if(sc.queryID) {
+                search(sc.filters.selectedPrimaryFilter, sc.filters, false);
+            }
+        //});
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter);
@@ -80,31 +93,39 @@
         function search(selectedFilter, allFilters, isFilterChanged) {
             //TODO: would be better if there was a way to filter using query but also get all possible values back from api
             if(isFilterChanged) {
-                //If user change filter, generate hash and see if hash exists in database
-                //if exists get the results and return
-                //if not exists then call search using new hash
-                var filterHash = Math.ceil(Math.random()* 100);
-                sc.queryId = filterHash;
-                $state.go('search', {queryId: filterHash, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
+               // sc.sideFilterQuery = true;
+                searchFactory.generateHashCode(selectedFilter).then(function(hash){
+                    sc.queryID = hash;
+                    $state.go('search', {queryID: sc.queryID, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
+                });
+
             }
-            populateFilterCounts(mortalityFilter, selectedFilter).then(function() {
-                primaryFilterChanged(selectedFilter);
-            });
+            else {
+                /*TODO: Commented populateFilterCounts because, instead multiple backend
+                 requests to searchResutls, combine it to one request and in backend making
+                 two elasticsearch request
+                 */
+              //   populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
+                    console.log('query hash detected');
+                    primaryFilterChanged(selectedFilter, sc.queryID);
+               // });
+            }
         }
 
-        function populateFilterCounts(filter, query) {
-            return searchFactory.addCountsToAutoCompleteOptions(filter, query);
-        }
+        //@TODO we don't need this method.
+        /*function populateFilterCounts(filter, query, queryID) {
+            return searchFactory.addCountsToAutoCompleteOptions(filter, query, queryID);
+        }*/
 
         function downloadCSV() {
-            var data = getMixedTable(sc.filters.selectedPrimaryFilter);
+            var data = sc.getMixedTable(sc.filters.selectedPrimaryFilter);
             addRowHeaders(data, sc.filters.selectedPrimaryFilter);
             var filename = getFilename(sc.filters.selectedPrimaryFilter);
             xlsService.exportCSVFromMixedTable(data, filename);
         }
 
         function downloadXLS() {
-            var data = getMixedTable(sc.filters.selectedPrimaryFilter);
+            var data = sc.getMixedTable(sc.filters.selectedPrimaryFilter);
             addRowHeaders(data, sc.filters.selectedPrimaryFilter);
             var filename = getFilename(sc.filters.selectedPrimaryFilter);
             xlsService.exportXLSFromMixedTable(data, filename);
@@ -121,16 +142,16 @@
         }
 
         function getMixedTable(selectedFilter){
-            var file = selectedFilter.data;
-            var headers = selectedFilter.headers;
+            var file = selectedFilter.data ? selectedFilter.data : {};
+            var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
             var countKey = selectedFilter.key;
             var countLabel = selectedFilter.countLabel;
             var totalCount = selectedFilter.count;
             var calculatePercentage = selectedFilter.calculatePercentage;
             var calculateRowTotal = selectedFilter.calculateRowTotal;
+            var secondaryCountKey = 'pop';
 
-            //TODO: see comment in owh-table.component.js, we can construct this object once and pass it into the various components
-            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal);
+            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKey);
         }
 
         function getFilename(selectedFilter) {
@@ -181,18 +202,27 @@
             return categories;
         }
 
-        function primaryFilterChanged(newFilter) {
+        function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
-            sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter).then(function() {
+            sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
+                //populate side filters based on cached query filters
+                if(response.queryJSON) {
+                    angular.forEach(response.queryJSON.sideFilters, function(filter, index) {
+                        sc.filters.selectedPrimaryFilter.sideFilters[index].filters.value = filter.filters.value;
+                        sc.filters.selectedPrimaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
+                    });
+                }
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
+                //update table headers based on cached query
+                sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
+                sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
                 }
                 if(sc.filters.selectedPrimaryFilter.key === 'mental_health') {
-                  var mixedTable = getMixedTable(sc.filters.selectedPrimaryFilter);
-                  sc.filters.selectedPrimaryFilter.headers = mixedTable.headers;
-                  sc.filters.selectedPrimaryFilter.data = categorizeQuestions(mixedTable.data);
+                    sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                    sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
                 }
             });
         }
