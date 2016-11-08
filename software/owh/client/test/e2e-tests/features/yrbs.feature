@@ -13,27 +13,27 @@ Scenario: Checkboxes
 
 Scenario: Default
   Given user is on search page
-  Given user select YRBS as primary filter
-  Then the default filter pre-selected should be Race
-  And side menu slides back into view
+#  Given user select YRBS as primary filter
+#  Then the default filter pre-selected should be Race
+#  And side menu slides back into view
 
-Scenario: Hide Sidebar
-  When user clicks hide filter button
-  Then side menu slides away
-  Then user sees button to show filters
-  And then table and visualizations adjust to that they use up the entire available screen space
-  And the background highlight is in lighter purple (button color)
+#Scenario: Hide Sidebar
+#  When user clicks hide filter button
+#  Then side menu slides away
+#  Then user sees button to show filters
+#  And then table and visualizations adjust to that they use up the entire available screen space
+#  And the background highlight is in lighter purple (button color)
 
-Scenario: Un collapse sidebar
-  When user clicks show filters button
-  Then side menu slides back into view
-  And the entire table and visualizations adjust to the reduced screen space
-  And there is button to hide filter
+#Scenario: Un collapse sidebar
+#  When user clicks show filters button
+#  Then side menu slides back into view
+#  And the entire table and visualizations adjust to the reduced screen space
+#  And there is button to hide filter
 
-Scenario: sort order
-  Given user is on search page
-  Given user select YRBS as primary filter
-  Then filters should be in this order "year, yrbsSex, yrbsRace, yrbsGrade, question"
+#Scenario: sort order
+#  Given user is on search page
+#  Given user select YRBS as primary filter
+#  Then filters should be in this order "year, yrbsSex, yrbsRace, yrbsGrade, question"
 
 
 #Scenario: Category Collapsible
