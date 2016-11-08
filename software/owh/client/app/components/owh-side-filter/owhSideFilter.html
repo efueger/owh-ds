@@ -24,7 +24,7 @@
                         <input type="checkbox" ng-model="eachFilter.groupBy" id="{{eachFilter.key}}">
                         <label for="{{eachFilter.key}}" class="custom-label">
                             <span translate="{{eachFilter.title}}"></span>
-                            <span class="pull-right" ng-bind="sfc.getOptionCount(eachFilter.autoCompleteOptions[0])"></span>
+                            <span class="pull-right" ng-bind="sfc.getOptionCount(eachFilter.autoCompleteOptions[0]) | number"></span>
                         </label>
                     </li>
                     <li class="group-option more-options" ng-if="group.filters.length > 3">
@@ -97,12 +97,12 @@
                     <!--Tree filter-->
 
                     <!--Radio button filters (UCD & MCD)-->
-                    <li ng-if="group.filterType === 'radio'" ng-repeat="option in group.autoCompleteOptions" class="group-option" >
+                 <!--   <li ng-if="group.filterType === 'radio'" ng-repeat="option in group.autoCompleteOptions" class="group-option" >
                         <input id="{{option.key}}" type="radio" ng-model="group.value" ng-value="option.key" ng-click="sfc.onFilter()" >
                         <label for="{{option.key}}" class="custom-label" style="margin-bottom: 0">
                             <span translate="{{option.title}}"></span>
                         </label>
-                    </li>
+                    </li>-->
                     <!--Radio button filters (UCD & MCD)-->
 
 
@@ -121,7 +121,7 @@
                         <label for="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" class="custom-label"
                                ng-init="title = option.title == 'Nursing home/long term care' ? 'Nursing home/long term <br>care' : option.title">
                             <span class="count-label" translate="{{title}}"></span>
-                            <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts" ng-bind="sfc.getOptionCount(option)"></span>
+                            <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts" ng-bind="sfc.getOptionCount(option) | number"></span>
                         </label>
                     </li>
                     <li class="group-option more-options" ng-if="group.autoCompleteOptions.length > 3 &&

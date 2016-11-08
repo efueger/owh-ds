@@ -6,8 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var app = express();
-app.use(bodyParser.json({limit: '5mb'}));
-app.use(bodyParser.urlencoded({limit: '5mb'}));
+app.use(bodyParser.json({limit: '10mb'}));
+app.use(bodyParser.urlencoded({limit: '10mb'}));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -25,6 +25,7 @@ app.set('view engine', 'html');
 //all routes goes here
 require("./routes/search")(app);
 require("./routes/fb")(app);
+require("./routes/generateHashCode")(app);
 var allRoutes = require("./routes/route");
 //all routes goes in above section
 

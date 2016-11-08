@@ -11,6 +11,9 @@ var mortality_index = "owh_mortality";
 var mortality_type = "mortality";
 var census_index="owh_census";
 var census_type="census";
+//@TODO to work with my local ES DB I changed mapping name to 'queryResults1', revert before check in to 'queryResults'
+var _queryIndex = "owh_querycache";
+var _queryType = "queryData";
 var mental_health_type = "yrbs";
 
 
@@ -20,9 +23,25 @@ var ElasticClient = function() {
 
 ElasticClient.prototype.getClient = function(database) {
     //elastic search client configuration
-    return new elasticsearch.Client({
+    /*return new elasticsearch.Client({
         host: _host+'/'+database
-    });
+    });*/
+
+     var configuration = {};
+     configuration.apiVersion = '1.5';
+    /* configuration.log = [{
+     type: 'stdio',
+     levels: ['info', 'debug', 'error', 'warning']
+     }];*/
+    if(database) {
+        configuration.host = _host + '/' + database;
+    }
+    else {
+        configuration.host = _host;
+    }
+    //elastic search client configuration
+    return new elasticsearch.Client(configuration);
+
 };
 
 ElasticClient.prototype.aggregateCensusDataForMortalityQuery = function(query){
@@ -135,4 +154,44 @@ ElasticClient.prototype.aggregateMentalHealth = function(query, headers, aggrega
     return deferred.promise;
 };
 
+ElasticClient.prototype.getQueryResults = function(query){
+    var client = this.getClient(_queryIndex);
+    var deferred = Q.defer();
+    client.search({
+       index: _queryType,
+       body: query,
+       request_cache:true
+    }).then(function (resp){
+        logger.info("Get queryData successfully completed");
+        var results = resp.hits.hits.length > 0 ? resp.hits.hits[0]:null ;
+        deferred.resolve(results);
+    }, function(err){
+        logger.error("While searching for queryData object ", err.message);
+        deferred.reject(err);
+    });
+    return deferred.promise;
+};
+
+
+/**
+ *
+ * @param query
+ * @returns {*}
+ */
+ElasticClient.prototype.insertQueryData = function (query) {
+    var client = this.getClient();
+    var deferred = Q.defer();
+    client.create({
+        index: _queryIndex,
+        type: _queryType,
+        body: query
+    }).then(function (resp){
+        logger.info("inserted new record in queryData");
+        deferred.resolve(resp);
+    }, function(err){
+        logger.error("Failed to insert record in queryResults ", err.message);
+        deferred.reject(err);
+    });
+    return deferred.promise;
+};
 module.exports = ElasticClient;

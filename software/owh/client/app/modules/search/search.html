@@ -14,6 +14,7 @@
 
 <div class="usa-grid-full">
     <div class="usa-grid">
+        <!-- @TODO add sc.queryID -->
         <div class="usa-width-one-whole margin-top-30 margin-bottom-30">
             <div class="usa-grid-full usa-width-one-whole">
                 <owh-search filters="sc.filters" show-filters="sc.showMeOptions"
@@ -40,7 +41,7 @@
             <div class="sort-by side-filter-padding">
                 <owh-side-filter filters="sc.filters"
                     on-filter="sc.search(sc.filters.selectedPrimaryFilter, sc.filters, true)"
-                    sort="sc.sort"
+                    sort="sc.sort[sc.filters.selectedPrimaryFilter.title]"
                     show-filters="sc.availableFilters[sc.tableView]"
                     ></owh-side-filter>
             </div>
