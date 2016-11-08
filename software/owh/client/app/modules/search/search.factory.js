@@ -16,7 +16,9 @@
             searchMortalityResults: searchMortalityResults,
             showPhaseTwoModal: showPhaseTwoModal,
             uploadImage: uploadImage,
-            updateFilterValues: updateFilterValues
+            updateFilterValues: updateFilterValues,
+            generateHashCode: generateHashCode,
+            buildAPIQuery: buildAPIQuery
         };
         return service;
 
@@ -39,7 +41,7 @@
             var apiQuery = buildQueryForYRBS(primaryFilter);
             var headers = apiQuery.headers;
             var query = apiQuery.apiQuery;
-            SearchService.searchResults(query).then(function(response) {
+            SearchService.searchResults(primaryFilter).then(function(response) {
                 /*var yearsFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
                 if(!yearsFilter.autoCompleteOptions[0][primaryFilter.key]) {
                     var total = 0;
@@ -164,9 +166,52 @@
             });
         }
 
-        function searchMortalityResults(primaryFilter) {
+        function searchMortalityResults(primaryFilter, queryID) {
             var deferred = $q.defer();
-            queryMortalityAPI(primaryFilter).then(function(response){
+            queryMortalityAPI(primaryFilter, queryID).then(function(response){
+                /*@TODO Our OWH application makes two backend call to display values in search page
+                 one is for side filters and one request is to update right table and chart data
+                 as combine two request into one, we are doing two request to elastsearch(at the backend) and in reponse returning required data
+                 So we have move logic from searchFactory.addCountsToAutoCompleteOptions method (line 518 to 554) to here.
+                */
+               //@TODO: @Joe here I am getting sideFilters from ES 'response.sideFilterResults'
+                primaryFilter.count = response.sideFilterResults.pagination.total;
+                angular.forEach(response.sideFilterResults.data.simple, function(eachFilterData, key) {
+                    //fill auto-completer data with counts
+                    var filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', key);
+                    if(filter) {
+                        if(filter.autoCompleteOptions) {
+                            angular.forEach(filter.autoCompleteOptions, function (option) {
+                                var optionData = utilService.findByKeyAndValue(eachFilterData, 'name', option.key);
+                                if (optionData) {
+                                    option[primaryFilter.key] = optionData[primaryFilter.key];
+                                    option['count'] = optionData[primaryFilter.key];
+                                    option[primaryFilter.key + 'Percentage'] = 0;
+                                    option[primaryFilter.key + 'Percentage'] = Number(((optionData[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
+                                } else {
+                                    option[primaryFilter.key] = 0;
+                                    option['count'] = 0;
+                                    option[primaryFilter.key + 'Percentage'] = 0;
+                                }
+                            });
+                        } else {
+                            var autoCompleteOptions = [];
+                            angular.forEach(eachFilterData, function(eachData) {
+                                var eachOption = {  key: eachData.name, title: eachData.name };
+                                eachOption[primaryFilter.key] = eachData[primaryFilter.key];
+                                eachOption['count'] = eachData[primaryFilter.key];
+                                eachOption[primaryFilter.key + 'Percentage'] = Number(((eachData[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
+                                autoCompleteOptions.push(eachOption);
+                            });
+                            filter.autoCompleteOptions = autoCompleteOptions;
+                        }
+                        //sort on primary filter key.. so that it will rendered in desc order in side filter
+                        //filter.sortedAutoCompleteOptions = utilService.sortByKey(angular.copy(filter.autoCompleteOptions), 'count', false);
+                    }
+                });
+                var ucd10Filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'ucd-chapter-10');
+                ucd10Filter.autoCompleteOptions = $rootScope.conditionsListICD10;
+
                 primaryFilter.data = response.data;
                 primaryFilter.headers = response.headers;
                 primaryFilter.calculatePercentage = true;
@@ -176,26 +221,68 @@
                 primaryFilter.dataPrepared = response.dataPrepared;
                 primaryFilter.maps = response.maps;
                 primaryFilter.searchCount = response.totalCount;
-                deferred.resolve({});
+                deferred.resolve(response);
             });
             return deferred.promise;
         }
-        //search results by grouping
-        function queryMortalityAPI(primaryFilter) {
+
+        function generateHashCode(primaryFilter) {
+            var deferred = $q.defer();
+            var apiQuery = buildAPIQuery(primaryFilter);
+            var query = apiQuery.apiQuery;
+            SearchService.generateHashCode(query).then(function(response) {
+                console.log(" search factory generatehashcode ", response.data);
+                deferred.resolve(response.data);
+            });
+            return deferred.promise;
+        }
+
+       /* function getResults(primaryFilter) {
             var deferred = $q.defer();
             var apiQuery = buildAPIQuery(primaryFilter);
             var headers = apiQuery.headers;
-            var query = apiQuery.apiQuery;
-            SearchService.searchResults(query).then(function(response) {
-                //resolve data for controller
+            SearchService.getResults(apiQuery.apiQuery).then(function(response){
+                console.log(" in search factory..... after service getResults call");
                 deferred.resolve({
-                    data : response.data.nested.table,
+                    data : "",
                     dataPrepared : false,
                     headers : headers,
-                    chartDataFromAPI : response.data.simple,
-                    chartData: prepareChartData(headers, response.data.nested, primaryFilter),
-                    maps: response.data.nested.maps,
-                    totalCount: response.pagination.total
+                    chartDataFromAPI : "",
+                    chartData: "",
+                    maps: "",
+                    totalCount: ""
+                });
+            });
+            return deferred.promise;
+        }
+
+        function generateHashFromQueryJson(queryJson) {
+            var deferred = $q.defer();
+            var apiQuery = buildAPIQuery(queryJson);
+            //var headers = apiQuery.headers;
+            return SearchService.generateHashCode(apiQuery.apiQuery.query);
+        }*/
+
+        //search results by grouping
+        function queryMortalityAPI( primaryFilter, queryID) {
+            var deferred = $q.defer();
+            //@TODO we are bulding api query at server side, but still using this method to build headers
+            var apiQuery = buildAPIQuery(primaryFilter);
+            var headers = apiQuery.headers;
+            //var query = apiQuery.apiQuery;
+            //Passing completed primaryFilters to backend and building query at server side
+            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
+                //resolve data for controller
+                deferred.resolve({
+                    data : response.data.resultData.nested.table,
+                    dataPrepared : false,
+                    headers : headers,
+                    chartDataFromAPI : response.data.resultData.simple,
+                    chartData: prepareChartData(headers, response.data.resultData.nested, primaryFilter),
+                    maps: response.data.resultData.nested.maps,
+                    totalCount: response.pagination.total,
+                    sideFilterResults: response.data.sideFilterResults,
+                    queryJSON: response.data.queryJSON
                 });
             });
             return deferred.promise;
@@ -400,7 +487,7 @@
             return result;
         }
 
-        function addCountsToAutoCompleteOptions(primaryFilter, query) {
+        function addCountsToAutoCompleteOptions(primaryFilter, query, queryID) {
             var deferred = $q.defer();
             var apiQuery = {
                 searchFor: primaryFilter.key,
@@ -418,7 +505,7 @@
                 apiQuery.query = filterQuery;
             }
             //search results and populate according owh design
-            SearchService.searchResults(apiQuery).then(function(response) {
+            SearchService.searchResults(apiQuery, queryID).then(function(response) {
                 primaryFilter.count = response.pagination.total;
                 angular.forEach(response.data.simple, function(eachFilterData, key) {
                     //fill auto-completer data with counts
@@ -699,7 +786,7 @@
 
                 /*Year and Month*/
                 //TODO: consider setting default selected years elsewhere
-                {key: 'year', title: 'label.filter.year', queryKey:"current_year",primary: false, value: ['2014'],
+                {key: 'year', title: 'label.filter.year', queryKey:"current_year",primary: false, value: [],
                     groupBy: false,type:"label.filter.group.year.month", defaultGroup:"row"},
                 {key: 'month', title: 'label.filter.month', queryKey:"month_of_death", primary: false, value: [],
                     groupBy: false,type:"label.filter.group.year.month", defaultGroup:"row",

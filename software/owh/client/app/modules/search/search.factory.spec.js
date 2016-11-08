@@ -86,18 +86,20 @@ describe('search factory ', function(){
     it('updateFilterValues should add proper values to the value array on primaryFilter', function () {
         var primaryFilter = angular.copy(filters.search[0]);
         var yearFilter = primaryFilter.sideFilters[0];
+        var initialLength = yearFilter.filters.value.length;
         yearFilter.filters.groupBy = 'row';
         yearFilter.filters.value.push('2013');
         searchFactory.updateFilterValues(primaryFilter);
 
         expect(primaryFilter.value[0].key).toEqual('year');
-        expect(primaryFilter.value[0].value.length).toEqual(2);
-        expect(primaryFilter.value[0].value[0]).toEqual('2014');
+        expect(primaryFilter.value[0].value.length).toEqual(initialLength + 1);
+        expect(primaryFilter.value[0].value[initialLength]).toEqual('2013');
     });
 
     it('updateFilterValues should work with filterGroups', function () {
         var primaryFilter = angular.copy(filters.search[0]);
         var yearFilter = primaryFilter.sideFilters[0];
+        var initialLength = yearFilter.filters.value.length;
         yearFilter.groupBy = 'row';
         yearFilter.filters.value.push('2013');
         yearFilter.filterGroup = true;
@@ -105,9 +107,8 @@ describe('search factory ', function(){
         searchFactory.updateFilterValues(primaryFilter);
 
         expect(primaryFilter.value[0].key).toEqual('year');
-        expect(primaryFilter.value[0].value.length).toEqual(2);
-        expect(primaryFilter.value[0].value[0]).toEqual('2014');
-        expect(primaryFilter.value[0].value[1]).toEqual('2013');
+        expect(primaryFilter.value[0].value.length).toEqual(initialLength + 1);
+        expect(primaryFilter.value[0].value[initialLength]).toEqual('2013');
     });
 
     describe('test with mortality data', function () {
@@ -122,7 +123,7 @@ describe('search factory ', function(){
         it('searchMortalityResults without year autocompleters', function () {
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.nested.table));
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.table));
             });
             deferred.resolve(searchResponse);
             $scope.$apply();
@@ -145,7 +146,7 @@ describe('search factory ', function(){
         it('searchMortalityResults', function () {
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.nested.table));
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.table));
             });
             deferred.resolve(searchResponse);
             $scope.$apply();
@@ -157,7 +158,7 @@ describe('search factory ', function(){
 
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.chartDataFromAPI)).toEqual(JSON.stringify(searchResponse.data.simple));
+                expect(JSON.stringify(primaryFilter.chartDataFromAPI)).toEqual(JSON.stringify(searchResponse.data.resultData.simple));
             });
             deferred.resolve(searchResponse);
             $scope.$apply();
@@ -188,7 +189,7 @@ describe('search factory ', function(){
 
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.maps)).toEqual(JSON.stringify(searchResponse.data.nested.maps));
+                expect(JSON.stringify(primaryFilter.maps)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.maps));
             });
             deferred.resolve(searchResponse);
             $scope.$apply();
