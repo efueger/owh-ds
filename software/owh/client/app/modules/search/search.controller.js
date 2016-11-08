@@ -47,10 +47,13 @@
             {key: 'crude_death_rates', title: 'Crude Death Rates'},
             {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}
         ];
-        sc.sort = ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'];
+        sc.sort = {
+            "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
+            "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question']
+        };
         //show certain filters for different table views
         sc.availableFilters = {
-            'crude_death_rates': ['year', 'gender', 'race']
+            'crude_death_rates': ['year', 'gender', 'race'],
         };
         sc.showFbDialog = showFbDialog;
         sc.queryID = $stateParams.queryID;

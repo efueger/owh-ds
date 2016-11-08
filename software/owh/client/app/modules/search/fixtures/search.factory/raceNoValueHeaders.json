@@ -7,13 +7,7 @@
       "primary": false,
       "value": "",
       "groupBy": "row",
-      "filterType": "radio",
       "autoCompleteOptions": [
-        {
-          "key": "all-races-ethnicities",
-          "title": "All",
-          "isAllOption": true
-        },
         {
           "key": "ai_an",
           "title": "American Indian or Alaska Native"
