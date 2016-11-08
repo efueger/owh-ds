@@ -142,17 +142,21 @@ var yrbsStepDefinitionsWrapper = function () {
 
     this.Given(/^the background highlight is in lighter purple \(button color\)$/, function () {
        element(by.className('owh-side-menu__handle--collapsed')).getCssValue('background-color').then(function(bgColor) {
-            expect(bgColor).to.equal('rgb(246, 246, 246, 1)');
+            expect(bgColor).to.equal('rgba(246, 246, 246, 1)');
         });
     });
 
     this.Then(/^filters should be in this order "([^"]*)"$/, function (filters) {
-        var allFilters = element(by.css('.side-filters')).all(by.css('li'));
+        var allFilters = element(by.css('.side-filters')).all(by.tagName('li'));
         expect(allFilters.get(0).getText()).to.eventually.contains("Year");
-        expect(allFilters.get(1).getText()).to.eventually.contains("Sex");
-        expect(allFilters.get(2).getText()).to.eventually.contains("Race");
-        expect(allFilters.get(3).getText()).to.eventually.contains("Grade");
-        expect(allFilters.get(4).getText()).to.eventually.contains("Question");
+        expect(allFilters.get(1).getText()).to.eventually.contains("All");
+        expect(allFilters.get(2).getText()).to.eventually.contains("2009");
+        expect(allFilters.get(3).getText()).to.eventually.contains("2011");
+        expect(allFilters.get(4).getText()).to.eventually.contains("2013");
+        expect(allFilters.get(7).getText()).to.eventually.contains("Sex");
+        expect(allFilters.get(11).getText()).to.eventually.contains("Race");
+        expect(allFilters.get(21).getText()).to.eventually.contains("Grade");
+        expect(allFilters.get(28).getText()).to.eventually.contains("Question");
     });
 };
 module.exports = yrbsStepDefinitionsWrapper;
