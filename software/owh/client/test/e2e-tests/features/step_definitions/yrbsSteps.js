@@ -9,6 +9,7 @@ var yrbsStepDefinitionsWrapper = function () {
     var yrbsPage = require('../support/yrbspage.po')
 
     this.Given(/^user select YRBS as primary filter$/, function () {
+        browser.sleep(10000);
         yrbsPage.yrbsOption.click();
     });
 
