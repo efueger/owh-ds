@@ -102,7 +102,8 @@ var yrbsStepDefinitionsWrapper = function () {
 
     this.Then(/^each category has two questions in the given order$/, function () {
         yrbsPage.getCategoryQuestions().then(function(elements) {
-            expect(elements[9].getAttribute('class')).to.eventually.include('ng-hide');
+            expect(elements[0].getText()).to.eventually.contain('Currently Drank Alcohol');
+            expect(elements[1].getText()).to.eventually.contain('Currently Used Marijuana');
         });
     });
 
