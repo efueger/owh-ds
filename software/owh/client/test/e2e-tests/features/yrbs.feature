@@ -30,6 +30,11 @@ Scenario: Un collapse sidebar
   And the entire table and visualizations adjust to the reduced screen space
   And there is button to hide filter
 
+Scenario: show chart for each question
+  Given user is on search page
+  Given user select YRBS as primary filter
+  Then each question should have chart icon displayed
+
 #Scenario: sort order
  # Given user is on search page
 # Given user select YRBS as primary filter
