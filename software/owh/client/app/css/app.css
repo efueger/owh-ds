@@ -1087,11 +1087,12 @@ body {
 }
 
 .owh-question__content {
-    transition: height 0.6s;
-    height: 65px;
+    transition: max-height 0.6s;
+    max-height: 200px;
     overflow: hidden;
 }
 
 .owh-question__question.ng-hide .owh-question__content {
-    height: 0;
+    max-height: 0;
+    overflow: hidden;
 }
