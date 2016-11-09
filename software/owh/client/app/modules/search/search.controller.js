@@ -82,7 +82,7 @@
         //});
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
-                primaryFilterChanged(sc.filters.selectedPrimaryFilter);
+                search(sc.filters.selectedPrimaryFilter, sc.filters, true);
             }
         }, true);
 
