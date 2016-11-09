@@ -144,7 +144,8 @@
                 eachFilter.groupBy = 'column';
                 eachFilter.getPercent = true;
                 pieChartFilters.push(eachFilter);
-                promises.push(SearchService.searchResults(buildQueryForYRBS(eachChartPrimaryFilter, true).apiQuery));
+                promises.push(SearchService.searchResults(eachChartPrimaryFilter));
+
             });
             var barChartPrimaryFilter = angular.copy(copiedPrimaryFilter);
             angular.forEach(barChartFilterKeys, function(eachKey) {
@@ -153,7 +154,7 @@
                 eachFilter.getPercent = true;
                 barChartFilters.push(eachFilter);
             });
-            promises.push(SearchService.searchResults(buildQueryForYRBS(barChartPrimaryFilter, true).apiQuery));
+            promises.push(SearchService.searchResults(barChartPrimaryFilter));
             $q.all(promises).then(function(values) {
                 var chartData = [];
                 angular.forEach(values.slice(0, 2), function(eachValue, index) {
