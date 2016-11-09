@@ -79,39 +79,39 @@
     "stop":12,
     "field":"Bridged-race-sex",
     "mappings":{
-          "1":{
-            "race":"1",
-            "sex":"M"
-          },
-          "2":{
-            "race":"1",
-            "sex":"F"
-          },
-          "3":{
-            "race":"2",
-            "sex":"M"
-          },
-          "4":{
-            "race":"2",
-            "sex":"F"
-          },
-          "5":{
-            "race":"3",
-            "sex":"M"
-          },
-          "6":{
-            "race":"3",
-            "sex":"F"
-          },
-          "7":{
-            "race":"4",
-            "sex":"M"
-          },
-          "8":{
-            "race":"4",
-            "sex":"F"
-          }
+      "1":{
+        "race":"White",
+        "sex":"Male"
+      },
+      "2":{
+        "race":"White",
+        "sex":"Female"
+      },
+      "3":{
+        "race":"Black",
+        "sex":"Male"
+      },
+      "4":{
+        "race":"Black",
+        "sex":"Female"
+      },
+      "5":{
+        "race":"American Indian",
+        "sex":"Male"
+      },
+      "6":{
+        "race":"American Indian",
+        "sex":"Female"
+      },
+      "7":{
+        "race":"Asian or Pacific Islander",
+        "sex":"Male"
+      },
+      "8":{
+        "race":"Asian or Pacific Islander",
+        "sex":"Female"
       }
+    }
   },
   {  
     "column":"hispanic_origin",
@@ -119,8 +119,8 @@
     "start":13,
     "stop":13,
     "field":"Hispanic origin",
-    "mappings":{  
-      "1":"not Hispanic or Latino",
+    "mappings": {
+      "1":"Non Hispanic",
       "2":"Hispanic or Latino"
     }
   },
