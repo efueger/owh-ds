@@ -44,7 +44,11 @@ before_script:
   - sleep 10
   - curl http://localhost:9200/  # To verify ElasticSearch running
   - curl -XPUT 'http://localhost:9200/owh' #create index 'owh' in ElasticSearch
+  - curl -XPUT 'http://localhost:9200/owh_mortality' #create index 'owh_mortality' in ElasticSearch
+  - curl -XPUT 'http://localhost:9200/owh_census' #create index 'owh_census' in ElasticSearch
   - "curl -XPUT \"http://localhost:9200/owh/_settings\" -d '{ \"index\" : { \"max_result_window\" : 1000000000}}\'" #increase result window - forgive the nasty esacping.
+  - "curl -XPUT \"http://localhost:9200/owh_mortality/_settings\" -d '{ \"index\" : { \"max_result_window\" : 1000000000}}\'" #increase result window - forgive the nasty esacping.
+  - "curl -XPUT \"http://localhost:9200/owh_census/_settings\" -d '{ \"index\" : { \"max_result_window\" : 1000000000}}\'" #increase result window - forgive the nasty esacping.
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - npm start > /dev/null &
