@@ -11,11 +11,11 @@ Scenario: Checkboxes
   When I looks at the filter sub categories
   Then I should be able to select more than one. The radio buttons must be changed to checkboxes
 
-Scenario: Default
-  Given user is on search page
-  Given user select YRBS as primary filter
-  Then the default filter pre-selected should be Race
-  And side menu slides back into view
+#Scenario: Default
+ # Given user is on search page
+ # Given user select YRBS as primary filter
+  #Then the default filter pre-selected should be Race
+ # And side menu slides back into view
 
 Scenario: Hide Sidebar
   When user clicks hide filter button
@@ -30,10 +30,10 @@ Scenario: Un collapse sidebar
   And the entire table and visualizations adjust to the reduced screen space
   And there is button to hide filter
 
-Scenario: sort order
-  Given user is on search page
-  Given user select YRBS as primary filter
-  Then filters should be in this order "year, yrbsSex, yrbsRace, yrbsGrade, question"
+#Scenario: sort order
+ # Given user is on search page
+# Given user select YRBS as primary filter
+ # Then filters should be in this order "year, yrbsSex, yrbsRace, yrbsGrade, question"
 
 
 #Scenario: Category Collapsible
