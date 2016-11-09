@@ -32,6 +32,10 @@ var YRBSSearchPage = function() {
         var filter = element(by.className('side-filters')).element(by.xpath('.//*[.="'+filterType+'"]'));
         return filter.element(by.xpath('..')).element(by.tagName('i'));
     };
+
+    ysp.getQuestionContent = function() {
+        return element.all(by.className('owh-question__content'));
+    };
 };
 
 module.exports = new YRBSSearchPage;

@@ -158,5 +158,12 @@ var yrbsStepDefinitionsWrapper = function () {
         expect(allFilters.get(21).getText()).to.eventually.contains("Grade");
         expect(allFilters.get(28).getText()).to.eventually.contains("Question");
     });
+
+    this.Then(/^the data must be right justified in the table$/, function () {
+        yrbsPage.getQuestionContent().then(function(elements) {
+            expect(elements[0].getCssValue('text-align')).to.eventually.equal('start');
+            expect(elements[1].getCssValue('text-align')).to.eventually.equal('right');
+        });
+    });
 };
 module.exports = yrbsStepDefinitionsWrapper;
