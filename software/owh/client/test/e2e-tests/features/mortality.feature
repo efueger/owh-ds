@@ -61,9 +61,7 @@ Scenario: Help Message above the quick visualization pane
   When the user chooses the option 'Death Rates'
   Then the following message should be displayed stating that population data is being retrieved from Census "Population details from NCHS Bridge Race Estimates is used to calculate Death Rates (per 100,000)"
 
-Below commented test cases working in local but failing in travis-ci because
- Elasticsearch running on travis-ci don't have data, until we load data, we commented these test cases.
- Scenario: Percentages in data table
+Scenario: Percentages in data table
   When I see the number of deaths in data table
   Then the percentages are shown for each row are displayed by default
 
