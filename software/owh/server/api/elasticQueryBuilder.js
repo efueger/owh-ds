@@ -270,6 +270,103 @@ var isEmptyObject = function(obj) {
     return !Object.keys(obj).length;
 };
 
+function buildQueryForYRBS(primaryFilter, dontAddYearAgg) {
+    var result = buildAPIQuery(primaryFilter);
+    var apiQuery = result.apiQuery;
+    var headers = result.headers;
+    var resultFilter = headers.columnHeaders.length > 0 ? headers.columnHeaders[0] : headers.rowHeaders[0];
+    var resultAggregation = findByKeyAndValue(apiQuery.aggregations.nested.table, 'key', resultFilter.key);
+    resultAggregation.isPrimary = true;
+    apiQuery.dataKeys = findAllNotContainsKeyAndValue(resultFilter.autoCompleteOptions, 'isAllOption', true);
+    headers.columnHeaders.concat(headers.rowHeaders).forEach(function(eachFilter) {
+        var allValues = getValuesByKeyIncludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
+        if(eachFilter.key === resultFilter.key) {
+            if(apiQuery.query[eachFilter.queryKey]) {
+                apiQuery.query[eachFilter.queryKey].value = allValues;
+            }
+        } else if(eachFilter.key !== resultFilter.key && eachFilter.key !== 'question') {
+            if(!apiQuery.query[eachFilter.queryKey] || allValues.indexOf(apiQuery.query[eachFilter.queryKey].value) >= 0) {
+                apiQuery.query[eachFilter.queryKey] = getFilterQuery(eachFilter);
+                apiQuery.query[eachFilter.queryKey].value = getValuesByKeyExcludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
+            }
+        }
+    });
+    apiQuery.query.primary_filter = getFilterQuery({key: 'primary_filter', queryKey: 'primary_filter', value: resultFilter.queryKey, primary: false});
+    var yearFilter = findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
+    if(yearFilter.value.length != 1 && !dontAddYearAgg) {
+        headers.columnHeaders.push(yearFilter);
+        apiQuery.aggregations.nested.table.push(getGroupQuery(yearFilter));
+    }
+    result.resultFilter = resultFilter;
+    return result;
+}
+
+/**
+ * Finds and returns the first object in array of objects by using the key and value
+ * @param a
+ * @param key
+ * @param value
+ * @returns {*}
+ */
+function findByKeyAndValue(a, key, value) {
+    for (var i = 0; i < a.length; i++) {
+        if ( a[i][key] && a[i][key] === value ) {return a[i];}
+    }
+    return null;
+}
+
+/**
+ * Finds and returns all objects in array of objects that not contains the key and value
+ * @param a
+ * @param key
+ * @param value
+ * @returns {Array}
+ */
+function findAllNotContainsKeyAndValue(a, key, value) {
+    var result = [];
+    for (var i = 0; i < a.length; i++) {
+        if (a[i][key] !== value) {
+            result.push(a[i]);
+        }
+    }
+    return result;
+}
+
+/**
+ * get the array with key
+ * @param data
+ * @param key
+ * @param includeKey
+ * @param includeValue
+ * @returns {Array}
+ */
+function getValuesByKeyIncludingKeyAndValue(data, key, includeKey, includeValue) {
+    var values = [];
+    for (var i = 0; i < data.length; i++) {
+        if(data[i][includeKey] === includeValue) {
+            values.push(data[i][key]);
+        }
+    }
+    return values;
+}
+
+/**
+ * get the array with key
+ * @param data
+ * @param key
+ * @returns {Array}
+ */
+function getValuesByKeyExcludingKeyAndValue(data, key, excludeKey, excludeValue) {
+    var values = [];
+    for (var i = 0; i < data.length; i++) {
+        if(data[i][excludeKey] != excludeValue) {
+            values.push(data[i][key]);
+        }
+    }
+    return values;
+}
+
+
 function buildAPIQuery(primaryFilter) {
    var apiQuery = {
         searchFor: primaryFilter.key,
@@ -455,4 +552,5 @@ module.exports.isEmptyObject = isEmptyObject;
 module.exports.buildInsertQueryResultsQuery = buildInsertQueryResultsQuery;
 module.exports.buildSearchQueryResultsQuery = buildSearchQueryResultsQuery;
 module.exports.buildAPIQuery = buildAPIQuery;
+module.exports.buildQueryForYRBS = buildQueryForYRBS;
 module.exports.addCountsToAutoCompleteOptions = addCountsToAutoCompleteOptions;
