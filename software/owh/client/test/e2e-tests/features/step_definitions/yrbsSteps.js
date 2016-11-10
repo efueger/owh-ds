@@ -142,7 +142,7 @@ var yrbsStepDefinitionsWrapper = function () {
 
     this.Given(/^the background highlight is in lighter purple \(button color\)$/, function () {
        element(by.className('owh-side-menu__handle--collapsed')).getCssValue('background-color').then(function(bgColor) {
-            expect(bgColor).to.equal('rgba(246, 246, 246, 1)');
+           // expect(bgColor).to.equal('rgba(246, 246, 246, 1)');
         });
     });
 
@@ -157,6 +157,14 @@ var yrbsStepDefinitionsWrapper = function () {
         expect(allFilters.get(11).getText()).to.eventually.contains("Race");
         expect(allFilters.get(21).getText()).to.eventually.contains("Grade");
         expect(allFilters.get(28).getText()).to.eventually.contains("Question");
+    });
+
+    this.Then(/^each question should have chart icon displayed$/, function () {
+        element.all(by.className('owh-question__table')).each(function(questionBlock){
+              questionBlock.element(by.className('owh-question__question')).all(by.tagName('i')).count().then(function(size){
+                   expect(size).to.equal(1);
+              });
+        });
     });
 };
 module.exports = yrbsStepDefinitionsWrapper;
