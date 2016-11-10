@@ -9,13 +9,13 @@ Feature: Mortality page
 Scenario: Access mortality page
   When I am at home page
   And  I click on Explore button in Health Information Gateway section
-#  Then I should get search page with default filter type mortality
+  Then I should get search page with default filter type mortality
 
-#Scenario: Axis labels
-#  When user sees a visualization
-#  Then labels are displayed on both the axes for minimized visualization
-#  When user expand visualization
-#  Then labels are displayed on both the axes for expanded visualization
+Scenario: Axis labels
+  When user sees a visualization
+  Then labels are displayed on both the axes for minimized visualization
+  When user expand visualization
+  Then labels are displayed on both the axes for expanded visualization
 
 #Scenario: Side filter collapse
 #  Given user is on search page
