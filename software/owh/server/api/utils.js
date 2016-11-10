@@ -154,6 +154,24 @@ var applySuppressionRules = function(key, value) {
     return value;
 };
 
+//matches suppressed table totals with corresponding side filter total and replace if necessary
+var suppressSideFilterTotals = function(sideFilter, data) {
+    for(var key in data) {
+        if(key !== 'deaths' && key !== 'name') {
+            for(var i = 0; i < data[key].length; i++) {
+                if(data[key][i].deaths === 'suppressed') {
+                    for(var j = 0; j < sideFilter[key].length; j++) {
+                        if(sideFilter[key][j].name === data[key][i].name) {
+                            sideFilter[key][j].deaths = data[key][i].deaths;
+                        }
+                    }
+                }
+                suppressSideFilterTotals(sideFilter, data[key][i]);
+            }
+        }
+    }
+};
+
 var populateYRBSData = function( results, headers, aggregations) {
     var data = {};
     data[aggregations[0].key] = [];
@@ -265,3 +283,4 @@ function numberWithCommas(number) {
 };
 module.exports.populateDataWithMappings = populateDataWithMappings;
 module.exports.populateYRBSData = populateYRBSData;
+module.exports.suppressSideFilterTotals = suppressSideFilterTotals;

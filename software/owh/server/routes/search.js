@@ -1,7 +1,7 @@
 var result = require('../models/result');
 var elasticSearch = require('../models/elasticSearch');
 var queryBuilder = require('../api/elasticQueryBuilder');
-const util = require('util');
+const util = require('../api/utils');
 
 var searchRouter = function(app, rConfig) {
     app.post('/search', function(req, res) {
@@ -23,6 +23,7 @@ var searchRouter = function(app, rConfig) {
                      var apiQuery = queryBuilder.addCountsToAutoCompleteOptions(q);
                      var finalAPIQuery = queryBuilder.buildSearchQuery(apiQuery, true);
                      new elasticSearch().aggregateDeaths(finalAPIQuery).then(function (sideFilterResults) {
+
                          new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
                              var insertQuery = queryBuilder.buildInsertQueryResultsQuery(JSON.stringify(q), JSON.stringify(response), "Mortality", hashCode, JSON.stringify(sideFilterResults));
                              new elasticSearch().insertQueryData(insertQuery).then(function(anotherResponse){
@@ -30,6 +31,7 @@ var searchRouter = function(app, rConfig) {
                                  resData.queryJSON = q;
                                  resData.resultData = response.data; //AggregateD
                                  resData.sideFilterResults = sideFilterResults;
+                                 util.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
                                  res.send( new result('OK', resData, response.pagination, "success") );
                              }, function(anotherResponse){
                                  res.send( new result('error', anotherResponse, "failed"));
