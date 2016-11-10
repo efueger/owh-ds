@@ -19,7 +19,10 @@
         </tr>
         <tr class="owh-question__question" ng-repeat="eachRow in oatc.listRows(eachCategory)" ng-hide="$index > 1 && eachCategory.hide || eachCategory.collapse">
             <td ng-repeat="eachColumn in eachRow" colspan="{{ eachColumn.colspan }}" rowspan="{{ eachColumn.rowspan }}">
-                <div class="owh-question__content" ng-bind-html="eachColumn.title"></div>
+                <div class="owh-question__content">
+                    <span ng-bind-html="eachColumn.title"></span>
+                    <i class="cursor-pointer {{eachColumn.iconClass}}" ng-if="eachColumn.iconClass" ng-click="eachColumn.onIconClick(eachColumn.key)"></i>
+                </div>
             </td>
         </tr>
         <tr ng-hide="eachCategory.collapse">

@@ -158,5 +158,13 @@ var yrbsStepDefinitionsWrapper = function () {
         expect(allFilters.get(21).getText()).to.eventually.contains("Grade");
         expect(allFilters.get(28).getText()).to.eventually.contains("Question");
     });
+
+    this.Then(/^each question should have chart icon displayed$/, function () {
+        element.all(by.className('owh-question__table')).each(function(questionBlock){
+              questionBlock.element(by.className('owh-question__question')).all(by.tagName('i')).count().then(function(size){
+                   expect(size).to.equal(1);
+              });
+        });
+    });
 };
 module.exports = yrbsStepDefinitionsWrapper;

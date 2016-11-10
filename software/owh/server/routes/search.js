@@ -45,14 +45,15 @@ var searchRouter = function(app, rConfig) {
             });
 
         } else if ( preparedQuery.apiQuery.searchFor === "mental_health" ) {
-            q['pagination'] = {from: 0, size: 10000};
-            preparedQuery.apiQuery['pagination'] = {from: 0, size: 10000};
-            var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, false);
+            var yrbsPreparedQuery = queryBuilder.buildQueryForYRBS(q);
+            yrbsPreparedQuery['pagination'] = {from: 0, size: 10000};
+            yrbsPreparedQuery.apiQuery['pagination'] = {from: 0, size: 10000};
+            var finalQuery = queryBuilder.buildSearchQuery(yrbsPreparedQuery.apiQuery, false);
             /*finalQuery.sort = [
                 { "percent" : {"order" : "desc"}},
                 "_score"
             ];*/
-            new elasticSearch().aggregateMentalHealth(finalQuery[0], preparedQuery.apiQuery.dataKeys, preparedQuery.apiQuery.aggregations.nested.table).then(function(response){
+            new elasticSearch().aggregateMentalHealth(finalQuery[0], yrbsPreparedQuery.apiQuery.dataKeys, yrbsPreparedQuery.apiQuery.aggregations.nested.table).then(function(response){
                 res.send( new result('OK', response, response.pagination, "success") );
             }, function(response){
                 res.send( new result('error', response, "failed"));
