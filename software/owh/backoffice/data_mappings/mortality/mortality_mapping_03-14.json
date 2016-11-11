@@ -1,6 +1,6 @@
 [
   {
-    "type":"simple",
+    "type":"map",
     "column": "month_of_death",
     "start": 65,
     "stop": 66,
@@ -21,7 +21,7 @@
     }
   },
   {
-    "type":"simple",
+    "type":"map",
     "column": "sex",
     "start": 69,
     "stop": 69,
