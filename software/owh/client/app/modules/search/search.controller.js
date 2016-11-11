@@ -51,6 +51,11 @@
             "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
             "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question']
         };
+
+        sc.optionsSort = {
+            "hispanicOrigin": ['100-199', '220', '221-230', '270-274', '275-279', '250-259', '210-219', '260-269', '231-249', '200-209', '280-299', '996-999'],
+            "race": ['0', '1', '2', '3', '4']
+        };
         //show certain filters for different table views
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race'],
@@ -142,6 +147,13 @@
         }
 
         function getMixedTable(selectedFilter){
+            //make sure row/column headers are in proper order
+            angular.forEach(selectedFilter.headers.rowHeaders, function(header) {
+                searchFactory.sortFilterOptions(header, sc.optionsSort);
+            });
+            angular.forEach(selectedFilter.headers.columnHeaders, function(header) {
+                searchFactory.sortFilterOptions(header, sc.optionsSort);
+            });
             var file = selectedFilter.data ? selectedFilter.data : {};
             var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
             var countKey = selectedFilter.key;
@@ -216,6 +228,10 @@
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 //update table headers based on cached query
                 sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
+                //make sure side filters are in proper order
+                angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
+                    searchFactory.sortFilterOptions(filter.filters, sc.optionsSort);
+                });
                 sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
