@@ -21,6 +21,7 @@ var MortalitySearchPage = function() {
     msp.deathRateDisclaimer = element(by.id('death-rate-disclaimer'));
     msp.ethnicityOption2 = element(by.id('deaths_hispanicOrigin_200-209')).element(by.xpath('..'));
     msp.showMoreYears = element(by.cssContainingText('a', '+ 12 more'));
+    msp.showMoreEthnicity = element(by.cssContainingText('a', '+ 9 more'));
     msp.expandEthnicity = element(by.cssContainingText('a', 'Ethnicity'));
 
     msp.getSelectedFilterType = function() {
