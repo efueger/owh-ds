@@ -235,5 +235,29 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^the following message should be displayed stating that population data is being retrieved from Census "([^"]*)"$/, function (arg1) {
          expect(mortalityPage.deathRateDisclaimer.getText()).to.eventually.equal(arg1);
     });
+
+    this.When(/^user filters by year (\d+)$/, function (arg1) {
+        mortalityPage.getOptions('Year').then(function(elements) {
+            elements[arg1 - 2000 + 1].click();
+        });
+    });
+
+    this.When(/^user filters by ethnicity Spaniard$/, function () {
+        mortalityPage.ethnicityOption2.click();
+    });
+
+    this.Then(/^user should only see total for white race in side filter$/, function () {
+        mortalityPage.getSideFilterTotals().then(function(elements) {
+            expect(elements[18].getInnerHtml()).to.eventually.equal('611');
+        });
+    });
+
+    this.When(/^user shows more year filters$/, function () {
+        mortalityPage.showMoreYears.click();
+    });
+
+    this.When(/^user expands ethnicity filter$/, function () {
+        mortalityPage.expandEthnicity.click();
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;
