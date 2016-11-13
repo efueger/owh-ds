@@ -147,15 +147,15 @@
         }
 
         function getMixedTable(selectedFilter){
-            //make sure row/column headers are in proper order
-            angular.forEach(selectedFilter.headers.rowHeaders, function(header) {
-                searchFactory.sortFilterOptions(header, sc.optionsSort);
-            });
-            angular.forEach(selectedFilter.headers.columnHeaders, function(header) {
-                searchFactory.sortFilterOptions(header, sc.optionsSort);
-            });
             var file = selectedFilter.data ? selectedFilter.data : {};
             var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
+            //make sure row/column headers are in proper order
+            angular.forEach(headers.rowHeaders, function(header) {
+                searchFactory.sortFilterOptions(header, sc.optionsSort);
+            });
+            angular.forEach(headers.columnHeaders, function(header) {
+                searchFactory.sortFilterOptions(header, sc.optionsSort);
+            });
             var countKey = selectedFilter.key;
             var countLabel = selectedFilter.countLabel;
             var totalCount = selectedFilter.count;
