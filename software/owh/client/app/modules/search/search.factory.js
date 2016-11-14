@@ -23,6 +23,10 @@
         };
         return service;
 
+        function sortAutoCompleteOptions(filter, sort) {
+
+        }
+
         function sortFilterOptions(filter, sort) {
             if(sort[filter.key]) {
                 filter.autoCompleteOptions.sort(function(a, b) {

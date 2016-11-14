@@ -52,18 +52,26 @@
             "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question']
         };
 
-        sc.optionsSort = {
-            "hispanicOrigin": ['100-199', '220', '221-230', '270-274', '275-279', '250-259', '210-219', '260-269', '231-249', '200-209', '280-299', '996-999'],
+        sc.optionsGroup = {
+            "hispanicOrigin": {
+                "hispanic": {
+                    "options": ['220', '221-230', '270-274', '275-279', '250-259', '210-219', '260-269', '231-249', '200-209', '280-299'],
+                    "title": "Hispanic"
+                },
+                "nonHispanic": {
+                    "options": ['100-199'],
+                    "title": 'Non-Hispanic'
+                },
+                "unknown": ['996-999']
+            },
             "race": ['0', '1', '2', '3', '4']
         };
         //show certain filters for different table views
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race'],
         };
-        sc.showFbDialog = showFbDialog;
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
-        sc.changeViewFilter = changeViewFilter;
 
        /* populateFilterCounts(mortalityFilter).then(function() {
            search(sc.filters.selectedPrimaryFilter, sc.filters, false);

@@ -21,5 +21,10 @@
                 if(input === 'M') return 'Male';
                 return input;
             };
+        })
+        .filter('isArray', function() {
+            return function (input) {
+                return angular.isArray(input);
+            };
         });
 }());

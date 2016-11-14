@@ -119,6 +119,10 @@
                             <img src="images/xls.png"/>
                         </a>
                     </div>
+                    <div ng-repeat="filter in sc.optionsGroup">
+                        <span ng-if="filter | isArray">True {{filter}}</span>
+                        <span ng-if="!(filter | isArray)">False {{filter}}</span>
+                    </div>
                     <owh-table table-data="sc.tableData"
                                ng-if="sc.filters.selectedPrimaryFilter.headers && sc.filters.selectedPrimaryFilter.key === 'deaths'"
                                table-view="{{sc.tableView}}"></owh-table>
