@@ -166,9 +166,26 @@
             });
         }
 
+        function createBackendSearchRequest(primaryFilter){
+            var req = {};
+            pFilter = primaryFilter;
+            req.key= pFilter.key;
+            req.searchFor = pFilter.searchFor;
+            req.allFilters = pFilter.allFilters;
+            req.allFilters[9].autoCompleteOptions = [];
+            req.allFilters[10].autoCompleteOptions = [];
+            req.allFilters[11].autoCompleteOptions = [];
+            req.allFilters[12].autoCompleteOptions = [];
+            req.allFilters[13].autoCompleteOptions = [];
+            req.allFilters[14].autoCompleteOptions = [];
+            req.sideFilters = pFilter.sideFilters;
+
+            return req;
+        }
+
         function searchMortalityResults(primaryFilter, queryID) {
             var deferred = $q.defer();
-            queryMortalityAPI(primaryFilter, queryID).then(function(response){
+            queryMortalityAPI(createBackendSearchRequest(primaryFilter), queryID).then(function(response){
                 /*@TODO Our OWH application makes two backend call to display values in search page
                  one is for side filters and one request is to update right table and chart data
                  as combine two request into one, we are doing two request to elastsearch(at the backend) and in reponse returning required data

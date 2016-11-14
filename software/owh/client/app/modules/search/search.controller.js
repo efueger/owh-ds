@@ -219,29 +219,13 @@
             return categories;
         }
 
-        function createBackendSearchRequest(){
-            var req = {};
-            pFilter =sc.filters.selectedPrimaryFilter;
-            req.key= pFilter.key;
-            req.searchFor = pFilter.searchFor;
-            req.allFilters = pFilter.allFilters;
-            req.allFilters[9].autoCompleteOptions = [];
-            req.allFilters[10].autoCompleteOptions = [];
-            req.allFilters[11].autoCompleteOptions = [];
-            req.allFilters[12].autoCompleteOptions = [];
-            req.allFilters[13].autoCompleteOptions = [];
-            req.allFilters[14].autoCompleteOptions = [];
-            req.sideFilters = pFilter.sideFilters;
-
-            return req;
-        }
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
 
-            sc.filters.selectedPrimaryFilter.searchResults(createBackendSearchRequest(), queryID).then(function(response) {
+            sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
                 //populate side filters based on cached query filters
-                console.log("Received search reponse")
+                console.log("Received search reponse");
                 if(response.queryJSON) {
                     angular.forEach(response.queryJSON.sideFilters, function(filter, index) {
                         sc.filters.selectedPrimaryFilter.sideFilters[index].filters.value = filter.filters.value;
