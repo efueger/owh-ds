@@ -2,11 +2,14 @@ var result = require('../models/result');
 var elasticSearch = require('../models/elasticSearch');
 var queryBuilder = require('../api/elasticQueryBuilder');
 const util = require('util');
+var logger = require('../config/logging')
 
 var searchRouter = function(app, rConfig) {
     app.post('/search', function(req, res) {
         var q = req.body.q;
+        logger.debug("Incoming RAW query: ", JSON.stringify(q) );
         var preparedQuery = queryBuilder.buildAPIQuery(q);
+        logger.debug("Incoming query: ", JSON.stringify(preparedQuery) );
         if ( preparedQuery.apiQuery.searchFor === "deaths" ) {
             var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
             var hashCode = req.body.qID;

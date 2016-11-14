@@ -21,10 +21,12 @@
         sc.showFbDialog = showFbDialog;
         sc.changeViewFilter = changeViewFilter;
         sc.getMixedTable = getMixedTable;
+        sc.skipRefresh = false;
 
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
         var mortalityFilter = null;
+
         sc.sideMenu = {visible: true};
         //For intial search call
         if($stateParams.selectedFilters == null) {
@@ -60,6 +62,16 @@
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
         sc.changeViewFilter = changeViewFilter;
 
+        var disableFilterWatch;
+        function enableFilterWatch() {
+            disableFilterWatch = $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    search(sc.filters.selectedPrimaryFilter, sc.filters, true);
+                }
+            });
+        }
+
+        //enableFilterWatch();
        /* populateFilterCounts(mortalityFilter).then(function() {
            search(sc.filters.selectedPrimaryFilter, sc.filters, false);
         });*/
@@ -80,11 +92,8 @@
                 search(sc.filters.selectedPrimaryFilter, sc.filters, false);
             }
         //});
-        $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
-            if(newValue !== oldValue) {
-                search(sc.filters.selectedPrimaryFilter, sc.filters, true);
-            }
-        }, true);
+
+        
 
         function changeViewFilter(selectedFilter) {
             sc.tableView = selectedFilter.key;
@@ -92,11 +101,16 @@
 
         function search(selectedFilter, allFilters, isFilterChanged) {
             //TODO: would be better if there was a way to filter using query but also get all possible values back from api
-            if(isFilterChanged) {
-               // sc.sideFilterQuery = true;
-                searchFactory.generateHashCode(selectedFilter).then(function(hash){
+            if (isFilterChanged && !$rootScope.requestProcessing) {
+                // sc.sideFilterQuery = true;
+                searchFactory.generateHashCode(selectedFilter).then(function (hash) {
                     sc.queryID = hash;
-                    $state.go('search', {queryID: sc.queryID, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
+                    $state.go('search', {
+                        queryID: sc.queryID,
+                        allFilters: allFilters,
+                        selectedFilters: selectedFilter,
+                        tableView: sc.tableView
+                    });
                 });
 
             }
@@ -105,11 +119,14 @@
                  requests to searchResutls, combine it to one request and in backend making
                  two elasticsearch request
                  */
-              //   populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
-                    console.log('query hash detected');
-                    primaryFilterChanged(selectedFilter, sc.queryID);
-               // });
+                //   populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
+                console.log('query hash detected');
+                // disableFilterWatch();
+                primaryFilterChanged(selectedFilter, sc.queryID);
+                //enableFilterWatch();
+                // });
             }
+
         }
 
         //@TODO we don't need this method.
@@ -202,11 +219,29 @@
             return categories;
         }
 
+        function createBackendSearchRequest(){
+            var req = {};
+            pFilter =sc.filters.selectedPrimaryFilter;
+            req.key= pFilter.key;
+            req.searchFor = pFilter.searchFor;
+            req.allFilters = pFilter.allFilters;
+            req.allFilters[9].autoCompleteOptions = [];
+            req.allFilters[10].autoCompleteOptions = [];
+            req.allFilters[11].autoCompleteOptions = [];
+            req.allFilters[12].autoCompleteOptions = [];
+            req.allFilters[13].autoCompleteOptions = [];
+            req.allFilters[14].autoCompleteOptions = [];
+            req.sideFilters = pFilter.sideFilters;
+
+            return req;
+        }
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
-            sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
+
+            sc.filters.selectedPrimaryFilter.searchResults(createBackendSearchRequest(), queryID).then(function(response) {
                 //populate side filters based on cached query filters
+                console.log("Received search reponse")
                 if(response.queryJSON) {
                     angular.forEach(response.queryJSON.sideFilters, function(filter, index) {
                         sc.filters.selectedPrimaryFilter.sideFilters[index].filters.value = filter.filters.value;
@@ -224,6 +259,7 @@
                     sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                     sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
                 }
+                console.log("primaryFilterChanged done");
             });
         }
 
