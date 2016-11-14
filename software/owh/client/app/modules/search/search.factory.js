@@ -166,31 +166,35 @@
             });
         }
 
-        function createBackendSearchRequest(primaryFilter){
+        function createBackendSearchRequest(pFilter){
             var req = {};
-            pFilter = primaryFilter;
             req.key= pFilter.key;
             req.searchFor = pFilter.searchFor;
-            req.allFilters = pFilter.allFilters;
-            req.allFilters[9].autoCompleteOptions = [];
-            req.allFilters[10].autoCompleteOptions = [];
-            req.allFilters[11].autoCompleteOptions = [];
-            req.allFilters[12].autoCompleteOptions = [];
-            req.allFilters[13].autoCompleteOptions = [];
-            req.allFilters[14].autoCompleteOptions = [];
-            req.sideFilters = pFilter.sideFilters;
-
+            req.allFilters = []
+            for (var i = 0; i< pFilter.allFilters.length; i++){
+                var filter = utilService.clone(pFilter.allFilters[i]);
+                // Clear autocomplete options for mcd and ucd
+                if( i == 9 || i == 12){
+                    filter.autoCompleteOptions = [];
+                }
+                req.allFilters.push(filter);
+            }
+            req.sideFilters = [];
+            for (var i = 0; i< pFilter.sideFilters.length; i++){
+                var filter = utilService.clone(pFilter.sideFilters[i]);
+                // Clear autocomplete options for mcd and ucd
+                if( i == 9 || i == 10){
+                    filter.autoCompleteOptions = [];
+                    filter.filters.autoCompleteOptions[0].autoCompleteOptions = [];
+                }
+                req.sideFilters.push(filter);
+            }
             return req;
         }
 
         function searchMortalityResults(primaryFilter, queryID) {
             var deferred = $q.defer();
             queryMortalityAPI(createBackendSearchRequest(primaryFilter), queryID).then(function(response){
-                /*@TODO Our OWH application makes two backend call to display values in search page
-                 one is for side filters and one request is to update right table and chart data
-                 as combine two request into one, we are doing two request to elastsearch(at the backend) and in reponse returning required data
-                 So we have move logic from searchFactory.addCountsToAutoCompleteOptions method (line 518 to 554) to here.
-                */
                //@TODO: @Joe here I am getting sideFilters from ES 'response.sideFilterResults'
                 primaryFilter.count = response.sideFilterResults.pagination.total;
                 angular.forEach(response.sideFilterResults.data.simple, function(eachFilterData, key) {
@@ -590,22 +594,22 @@
                 {key: 'American Indian',title: 'American Indian'},
                 {key: 'Asian or Pacific Islander',title: 'Asian or Pacific Islander'},
                 {key: 'Black',title: 'Black'},
-                {key: '0',title: 'Other (Puerto Rico only)'},
+                {key: 'Other (Puerto Rico only)',title: 'Other (Puerto Rico only)'},
                 {key: 'White',title: 'White'}
             ];
             //TODO check with @Gopal about missing values
             filters.hispanicOptions = [
-                {"key":"221-230","title":"Central American"},
+                {"key":"Central American","title":"Central American"},
                 {"key":"Central and South American","title":"Central and South American"},
                 {"key":"Cuban","title":"Cuban"},
-                {"key":"275-279","title":"Dominican"},
-                {"key":"250-259","title":"Latin American"},
+                {"key":"Dominican","title":"Dominican"},
+                {"key":"Latin American","title":"Latin American"},
                 {"key":"Mexican","title":"Mexican"},
                 {"key":"Non-Hispanic","title":"Non-Hispanic"},
                 {"key":"Other Hispanic","title":"Other Hispanic"},
                 {"key":"Puerto Rican","title":"Puerto Rican"},
-                {"key":"231-249","title":"South American"},
-                {"key":"200-209","title":"Spaniard"},
+                {"key":"South American","title":"South American"},
+                {"key":"Spaniard","title":"Spaniard"},
                 {"key":"Unknown","title":"Unknown"}
             ];
 
@@ -621,9 +625,9 @@
             ];
 
             filters.autopsy = [
-                {key: 'Y', title: 'Yes'},
-                {key: 'N', title: 'No'},
-                {key: 'U', title: 'Unknown'}
+                {key: 'Yes', title: 'Yes'},
+                {key: 'No', title: 'No'},
+                {key: 'Unknown', title: 'Unknown'}
             ];
 
             //TODO: Check with @Gopal about 'Hospital, clinic or Medical Center - Patient status unknown' replace by 'Hospice facility'
@@ -647,27 +651,27 @@
             ];
 
             filters.ageOptions = [
-                {key:'0-4 years',title:'0 -  4 years', min: 1, max: 5},
-                {key:'5-9 years',title:'5 -  9 years', min: 6, max: 10},
-                {key:'10-14 years',title:'10 -  14 years', min: 11, max: 15},
-                {key:'15-19 years',title:'15 - 19 years', min: 16, max: 20},
-                {key:'20-24 years',title:'20 - 24 years', min: 21, max: 25},
-                {key:'25-29 years',title:'25 - 29 years', min: 26, max: 30},
-                {key:'30-34 years',title:'30 - 34 years', min: 31, max: 35},
-                {key:'35-39 years',title:'35 - 39 years', min: 36, max: 40},
-                {key:'40-44 years',title:'40 - 44 years', min: 41, max: 45},
-                {key:'45-49 years',title:'45 - 49 years', min: 46, max: 50},
-                {key:'50-54 years',title:'50 - 54 years', min: 51, max: 55},
-                {key:'55-59 years',title:'55 - 59 years', min: 56, max: 60},
-                {key:'60-64 years',title:'60 - 64 years', min: 61, max: 65},
-                {key:'65-69 years',title:'65 - 69 years', min: 66, max: 70},
-                {key:'70-74 years',title:'70 - 74 years', min: 71, max: 75},
-                {key:'75-79 years',title:'75 - 79 years', min: 76, max: 80},
-                {key:'80-84 years',title:'80 - 84 years', min: 81, max: 85},
-                {key:'85-89 years',title:'85 - 89 years', min: 86, max: 90},
-                {key:'90-94 years',title:'90 - 94 years', min: 91, max: 95},
-                {key:'95-99 years',title:'95 - 99 years', min: 96, max: 100},
-                {key:'100 years and over',title:'>100', min: 101, max: 105},
+                {key:'0-4years',title:'0 - 4 years', min: 1, max: 5},
+                {key:'5-9years',title:'5 - 9 years', min: 6, max: 10},
+                {key:'10-14years',title:'10 - 14 years', min: 11, max: 15},
+                {key:'15-19years',title:'15 - 19 years', min: 16, max: 20},
+                {key:'20-24years',title:'20 - 24 years', min: 21, max: 25},
+                {key:'25-29years',title:'25 - 29 years', min: 26, max: 30},
+                {key:'30-34years',title:'30 - 34 years', min: 31, max: 35},
+                {key:'35-39years',title:'35 - 39 years', min: 36, max: 40},
+                {key:'40-44years',title:'40 - 44 years', min: 41, max: 45},
+                {key:'45-49years',title:'45 - 49 years', min: 46, max: 50},
+                {key:'50-54years',title:'50 - 54 years', min: 51, max: 55},
+                {key:'55-59years',title:'55 - 59 years', min: 56, max: 60},
+                {key:'60-64years',title:'60 - 64 years', min: 61, max: 65},
+                {key:'65-69years',title:'65 - 69 years', min: 66, max: 70},
+                {key:'70-74years',title:'70 - 74 years', min: 71, max: 75},
+                {key:'75-79years',title:'75 - 79 years', min: 76, max: 80},
+                {key:'80-84years',title:'80 - 84 years', min: 81, max: 85},
+                {key:'85-89years',title:'85 - 89 years', min: 86, max: 90},
+                {key:'90-94years',title:'90 - 94 years', min: 91, max: 95},
+                {key:'95-99years',title:'95 - 99 years', min: 96, max: 100},
+                {key:'100years and over',title:'>100', min: 101, max: 105},
                 {key:'Age not stated',title:'Age not stated', min: -5, max: 0}
             ];
 
@@ -713,15 +717,20 @@
                     var minValue = Number(values[0]);
                     var maxValue = Number(values[1]);
                     var agegroupFilter = utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'agegroup');
+
                     var prevValue = angular.copy(agegroupFilter.value);
                     agegroupFilter.value = [];
-                    angular.forEach(agegroupFilter.autoCompleteOptions, function(eachOption) {
-                        if((eachOption.min <= minValue && eachOption.max >= minValue)
-                            || (eachOption.min >= minValue && eachOption.max <= maxValue)
-                            || (eachOption.min <= maxValue && eachOption.max >= maxValue)) {
-                            agegroupFilter.value.push(eachOption.key);
-                        }
-                    });
+                    // set the values list only if the slider selection is different from the default
+                    if(! (minValue == -5  && maxValue == 105)){
+                        angular.forEach(agegroupFilter.autoCompleteOptions, function(eachOption) {
+                            if((eachOption.min <= minValue && eachOption.max >= minValue)
+                                || (eachOption.min >= minValue && eachOption.max <= maxValue)
+                                || (eachOption.min <= maxValue && eachOption.max >= maxValue)) {
+                                agegroupFilter.value.push(eachOption.key);
+                            }
+                        });
+                    }
+
                     if(!agegroupFilter.timer && !angular.equals(prevValue, agegroupFilter.value) && filters.selectedPrimaryFilter.initiated) {
                         agegroupFilter.timer = $timeout(function(){
                             agegroupFilter.timer=undefined;

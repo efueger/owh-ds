@@ -190,7 +190,6 @@ ElasticClient.prototype.getQueryResults = function(query){
        body: query,
        request_cache:true
     }).then(function (resp){
-        logger.info("Get queryData successfully completed");
         var results = resp.hits.hits.length > 0 ? resp.hits.hits[0]:null ;
         deferred.resolve(results);
     }, function(err){
@@ -214,7 +213,7 @@ ElasticClient.prototype.insertQueryData = function (query) {
         type: _queryType,
         body: query
     }).then(function (resp){
-        logger.info("inserted new record in queryData");
+
         deferred.resolve(resp);
     }, function(err){
         logger.error("Failed to insert record in queryResults ", err.message);

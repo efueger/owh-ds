@@ -16,6 +16,7 @@ var searchRouter = function(app, rConfig) {
             var searchQueryResultsQuery = queryBuilder.buildSearchQueryResultsQuery(hashCode);
             new elasticSearch().getQueryResults(searchQueryResultsQuery).then(function (searchResultsResponse) {
                  if(searchResultsResponse && searchResultsResponse._source.queryID === hashCode ) {
+                     logger.info("Retrieved query results for query ID "+hashCode+" from query cache");
                      var resData = {};
                      resData.queryJSON = JSON.parse(searchResultsResponse._source.queryJSON);
                      resData.resultData = JSON.parse(searchResultsResponse._source.resultJSON).data;
@@ -23,15 +24,18 @@ var searchRouter = function(app, rConfig) {
                      res.send( new result('OK', resData, JSON.parse(searchResultsResponse._source.resultJSON).pagination, "success") );
                  }
                  else {
+                     logger.info("Query with ID "+hashCode+" not in cache, executing query");
                      var apiQuery = queryBuilder.addCountsToAutoCompleteOptions(q);
                      var finalAPIQuery = queryBuilder.buildSearchQuery(apiQuery, true);
+
                      new elasticSearch().aggregateDeaths(finalAPIQuery).then(function (sideFilterResults) {
                          new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
                              var insertQuery = queryBuilder.buildInsertQueryResultsQuery(JSON.stringify(q), JSON.stringify(response), "Mortality", hashCode, JSON.stringify(sideFilterResults));
                              new elasticSearch().insertQueryData(insertQuery).then(function(anotherResponse){
+                                 logger.info("Qeury with "+hashCode+" added to query cache");
                                  var resData = {};
                                  resData.queryJSON = q;
-                                 resData.resultData = response.data; //AggregateD
+                                 resData.resultData = response.data;
                                  resData.sideFilterResults = sideFilterResults;
                                  res.send( new result('OK', resData, response.pagination, "success") );
                              }, function(anotherResponse){
