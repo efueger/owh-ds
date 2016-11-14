@@ -245,6 +245,30 @@ var getYRBSCount = function(jsonObject) {
     return '';
 };
 
+//merge age adjust death rates into mortality response
+var mergeAgeAdjustedRates = function(mort, rates) {
+    var keyMap = {
+        'White': '1',
+        'Black': '2',
+        'American Indian or Alaska Native': '3',
+        'Asian or Pacific Islander': '4',
+        'Female': 'F',
+        'Male': 'M'
+    };
+
+    console.log('mort', JSON.stringify(mort));
+    console.log('rates', rates);
+
+    for(var key in mort) {
+        if(key !== 'deaths' && key !== 'name') {
+            console.log('mort key', mort[key]);
+            for(var optionKey in mort[key]) {
+                
+            }
+        }
+    }
+};
+
 
 /**
  * Finds and returns the first object in array of objects by using the key and value
@@ -265,3 +289,4 @@ function numberWithCommas(number) {
 };
 module.exports.populateDataWithMappings = populateDataWithMappings;
 module.exports.populateYRBSData = populateYRBSData;
+module.exports.mergeAgeAdjustedRates = mergeAgeAdjustedRates;
