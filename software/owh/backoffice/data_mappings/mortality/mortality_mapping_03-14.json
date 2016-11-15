@@ -1,6 +1,6 @@
 [
   {
-    "type":"simple",
+    "type":"map",
     "column": "month_of_death",
     "start": 65,
     "stop": 66,
@@ -21,7 +21,7 @@
     }
   },
   {
-    "type":"simple",
+    "type":"map",
     "column": "sex",
     "start": 69,
     "stop": 69,
@@ -38,32 +38,32 @@
     "stop": 78,
     "field": "Age Recode 27",
     "mappings": {
-      "01-06": "01-06",
-      "07-07": "07-07",
-      "08-08": "08-08",
-      "09-09": "09-09",
-      "10-10": "10-10",
-      "11-11": "11-11",
-      "12-12": "12-12",
-      "13-13": "13-13",
-      "14-14": "14-14",
-      "15-15": "15-15",
-      "16-16": "16-16",
-      "17-17": "17-17",
-      "18-18": "18-18",
-      "19-19": "19-19",
-      "20-20": "20-20",
-      "21-21": "21-21",
-      "22-22": "22-22",
-      "23-23": "23-23",
-      "24-24": "24-24",
-      "25-25": "25-25",
-      "26-26": "26-26",
-      "27-27": "27-27"
+      "01-06": "0-4years",
+      "07-07": "5-9years",
+      "08-08": "10-14years",
+      "09-09": "15-19years",
+      "10-10": "20-24years",
+      "11-11": "25-29years",
+      "12-12": "30-34years",
+      "13-13": "35-39years",
+      "14-14": "40-44years",
+      "15-15": "45-49years",
+      "16-16": "50-54years",
+      "17-17": "55-59years",
+      "18-18": "60-64years",
+      "19-19": "65-69years",
+      "20-20": "70-74years",
+      "21-21": "75-79years",
+      "22-22": "80-84years",
+      "23-23": "85-89years",
+      "24-24": "90-94years",
+      "25-25": "95-99years",
+      "26-26": "100 years and over",
+      "27-27":"Age not started"
     }
   },
   {
-    "type":"simple",
+    "type":"map",
     "column":"age",
     "start": 79,
     "stop": 80,
@@ -84,7 +84,7 @@
     }
   },
   {
-    "type":"simple",
+    "type":"map",
     "column":"infant_age",
     "start": 81,
     "stop": 82,
@@ -116,15 +116,15 @@
     }
   },
   {
-    "type":"simple",
+    "type":"map",
     "column":"place_of_death",
     "start": 83,
     "stop": 83,
     "field": "Place of Death and Decedent’s Status",
     "mappings": {
-      "1": "Hospital, clinic or Medical Center-  Inpatient",
-      "2": "Hospital, Clinic or Medical Center-  Outpatient or admitted to Emergency Room",
-      "3": "Hospital, Clinic or Medical Center-  Dead on Arrival",
+      "1": "Hospital, clinic or Medical Center - Inpatient",
+      "2": "Hospital, Clinic or Medical Center - Outpatient or admitted to Emergency Room",
+      "3": "Hospital, Clinic or Medical Center - Dead on Arrival",
       "4": "Decedent's home",
       "5": "Hospice facility",
       "6": "Nursing home/long term care",
@@ -133,7 +133,7 @@
     }
   },
   {
-    "type":"simple",
+    "type":"map",
     "column":"week_of_death",
     "start": 85,
     "stop": 85,
@@ -157,7 +157,7 @@
     "field": "Current Data Year"
   },
   {
-    "type":"simple",
+    "type":"map",
     "column": "autopsy",
     "start": 109,
     "stop": 109,
@@ -528,7 +528,7 @@
     "mappings": {}
   },
   {
-    "type":"simple",
+    "type":"map",
     "column":"race",
     "start": 450,
     "stop": 450,
@@ -538,7 +538,7 @@
       "1":"White",
       "2":"Black",
       "3":"American Indian",
-      "4":"Asian or Pacific Islan"
+      "4":"Asian or Pacific Islander"
 
     }
   },
@@ -549,18 +549,18 @@
     "stop": 486,
     "field": "Hispanic Origin",
     "mappings": {
-      "220" : "220",
-      "100-199": "100-199",
-      "200-209": "200-209",
-      "210-219": "210-219",
-      "260-269": "260-269",
-      "270-274": "270-274",
-      "275-279": "275-279",
-      "221-230": "221-230",
-      "231-249": "231-249",
-      "250-259": "250-259",
-      "280-299": "280-299",
-      "996-999": "996-999"
+      "220":"Central and South American",
+      "100-199":"Non–Hispanic",
+      "200-209":"Spaniard",
+      "210-219":"Mexican",
+      "260-269":"Puerto Rican",
+      "270-274":"Cuban",
+      "275-279":"Dominican",
+      "221-230":"Central American",
+      "231-249":"South American",
+      "250-259":"Latin American",
+      "280-299":"Other Hispanic",
+      "996-999":"Unknown"
     }
   }
 ]
