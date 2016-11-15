@@ -194,7 +194,7 @@
 
         function searchMortalityResults(primaryFilter, queryID) {
             var deferred = $q.defer();
-            queryMortalityAPI(createBackendSearchRequest(primaryFilter), queryID).then(function(response){
+            queryMortalityAPI(primaryFilter, queryID).then(function(response){
                //@TODO: @Joe here I am getting sideFilters from ES 'response.sideFilterResults'
                 primaryFilter.count = response.sideFilterResults.pagination.total;
                 angular.forEach(response.sideFilterResults.data.simple, function(eachFilterData, key) {
@@ -292,7 +292,7 @@
             var headers = apiQuery.headers;
             //var query = apiQuery.apiQuery;
             //Passing completed primaryFilters to backend and building query at server side
-            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
+            SearchService.searchResults(createBackendSearchRequest(primaryFilter), queryID).then(function(response) {
                 //resolve data for controller
                 deferred.resolve({
                     data : response.data.resultData.nested.table,
