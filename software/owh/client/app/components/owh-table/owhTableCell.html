@@ -7,9 +7,9 @@
                 <label ng-if="otcc.rowIndex === 0" class="owh-table__label">Rate</label>
                 <span ng-if="otcc.getRateVisibility(otcc.cell.title, otcc.cell.pop) === 'visible' && otcc.tableView === 'crude_death_rates'">{{ otcc.cell.title / otcc.cell.pop * 100000 | number : 1 }}</span>
                 <span ng-if="otcc.tableView === 'age-adjusted_death_rates'">{{ otcc.cell.ageAdjustedRate }}</span>
-                <span ng-if="otcc.getRateVisibility(otcc.cell.title, otcc.cell.pop) === 'suppressed'">Suppressed</span>
-                <span ng-if="otcc.getRateVisibility(otcc.cell.title, otcc.cell.pop) === 'na'">Not Applicable</span>
-                <span ng-if="otcc.getRateVisibility(otcc.cell.title, otcc.cell.pop) === 'unreliable'">Unreliable</span>
+                <span ng-if="otcc.getRateVisibility(otcc.cell.title, otcc.cell.pop) === 'suppressed' && otcc.tableView === 'crude_death_rates'">Suppressed</span>
+                <span ng-if="otcc.getRateVisibility(otcc.cell.title, otcc.cell.pop) === 'na' && otcc.tableView === 'crude_death_rates'">Not Applicable</span>
+                <span ng-if="otcc.getRateVisibility(otcc.cell.title, otcc.cell.pop) === 'unreliable' && otcc.tableView === 'crude_death_rates'">Unreliable</span>
             </div>
             <div class="usa-width-one-half">
                 <div>
