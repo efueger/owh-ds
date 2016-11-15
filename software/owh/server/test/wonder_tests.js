@@ -125,6 +125,26 @@ describe("WONDER API", function () {
         });
     })
 
+
+
+    it("invoke wonder API with year aggregation", function (){
+        query =   {"searchFor":"deaths","query":{},"aggregations":{"simple":[],"nested":{"table":[
+                    {"key":"race","queryKey":"race","size":100000},
+                    {"key":"year","queryKey":"current_year","size":100000},
+                    {"key":"gender","queryKey":"sex","size":100000}],
+                     "charts":[[{"key":"gender","queryKey":"sex","size":100000},{"key":"race","queryKey":"race","size":100000}]],"maps":[[{"key":"states","queryKey":"state","size":100000},{"key":"sex","queryKey":"sex","size":100000}]]}}}
+        var startTime = new Date();
+        return w.invokeWONDER(query).then(function (resp) {
+            var duration = new Date() - startTime;
+            console.log("invoke wonder API with year aggregation: "+duration);
+            expect(resp).to.not.be.empty();
+            expect(duration).to.be.lessThan(5000);
+        }, function(err){
+            console.log(err);
+            expect(err).to.be.undefined();
+        });
+    })
+
     it("invoke wonder API with no aggregations specified", function (){
         query = {"searchFor":"deaths","query":{},
             "aggregations":{"simple":[],"nested":{"table":[]}}}

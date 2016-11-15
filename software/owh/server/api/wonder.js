@@ -11,7 +11,8 @@ var wonderParamCodeMap = {
     'race': 'D76.V8',
     'gender': 'D76.V7',
     'hispanicOrigin':'D76.V17',
-    'year':'D76.V1-level1',
+    'year':'D76.V1',
+    'year-group':'D76.V1-level1',
     'agegroup':'D76.V51',
     'weekday':'D76.V24',
     'autopsy':'D76.V20',
@@ -160,7 +161,11 @@ function createWONDERRquest(query){
 function addGroupParams(wreq, groups){
     if(groups){
         for (var i =1; i <= groups.length; i++){
-            addParamToWONDERReq(wreq,'B_'+i, wonderParamCodeMap[groups[i-1].key])
+            var gParam = wonderParamCodeMap[groups[i-1].key+'-group'];
+            if(!gParam ){
+                gParam = wonderParamCodeMap[groups[i-1].key];
+            }
+            addParamToWONDERReq(wreq,'B_'+i, gParam);
         }
     }
 };
