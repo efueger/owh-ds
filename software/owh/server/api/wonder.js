@@ -118,14 +118,25 @@ function processWONDERResponse(response){
                     keys.push('Total');
                 }
             }
-            var val;
+            var rate;
             var valCell = cell[cell.length - 1];
             if ('_v' in valCell) {
-                val = valCell._v;
+                rate = valCell._v;
             } else {
-                val = valCell._dt;
+                rate = valCell._dt;
             }
-            addValueToResult(keys, val, result);
+
+            var pop;
+            valCell = cell[cell.length - 3];
+            if ('_v' in valCell) {
+                pop = valCell._v;
+            } else {
+                pop = valCell._dt;
+            }
+            if (pop != 'Not Applicable') {
+                pop = parseInt(pop.replace(/,/g, ''));
+            }
+            addValueToResult(keys, rate,pop, result);
         }
     }
     return result;
@@ -230,14 +241,15 @@ function addParamToWONDERReq(request, paramname, paramvalue) {
 };
 
 
-function addValueToResult(keys, val, result){
+function addValueToResult(keys, rate, pop, result){
     if(!(keys[0] in result)){
         result[keys[0]] = {};
     }
     if (keys.length == 1){
-        result[keys[0]]['ageAdjustedRate'] = val;
+        result[keys[0]]['ageAdjustedRate'] = rate;
+        result[keys[0]]['standardPop'] = pop;
     } else{
-        addValueToResult(keys.slice(1), val,result[keys[0]]);
+        addValueToResult(keys.slice(1), rate,pop,result[keys[0]]);
     }
 }
 
