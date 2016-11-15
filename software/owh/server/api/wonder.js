@@ -11,7 +11,7 @@ var wonderParamCodeMap = {
     'race': 'D76.V8',
     'gender': 'D76.V7',
     'hispanicOrigin':'D76.V17',
-    'year':'D76.V1',
+    'year':'D76.V1-level1',
     'agegroup':'D76.V51',
     'weekday':'D76.V24',
     'autopsy':'D76.V20',
@@ -62,23 +62,29 @@ function wonder(dbID) {
  *
  */
 wonder.prototype.invokeWONDER = function (query){
+    console.log('creating request');
     var req = createWONDERRquest(query);
     //console.log(inspect(req, {depth : null, colors : true} ));
     //var groupattrs = getGroupAttributes(query);
     var defer = q.defer();
+    console.log('sending post');
     request.post({url:WONDER_API_URL+this.dbID, form:{request_xml:req} },function (error, response, body) {
         result = {};
         if (! error) {
             result = processWONDERResponse(body);
+            console.log('wonder result', result);
             //logger.debug("Age adjusted rates: "+inspect(result, {depth:null}));
             logger.debug("Age adjusted rates: "+JSON.stringify(result));
+            console.log('wonder promise resolved');
             defer.resolve(result);
         } else{
+            console.log('wonder error');
             logger.error("WONDER Error: "+error);
             defer.reject('Error invoking WONDER API');
         }
         //console.log(inspect(result, {depth: null, colors: true}));
     }, function (error) {
+        console.log('wonder promise error');
         logger.error("WONDER Error: "+error);
         defer.reject('Error invoking WONDER API');
 
@@ -130,15 +136,21 @@ function processWONDERResponse(response){
  * @returns WONDER request
  */
 function createWONDERRquest(query){
+    console.log('query', JSON.stringify(query));
     var request = xmlbuilder.create('request-parameters', {version: '1.0', encoding: 'UTF-8'});
+    console.log('add param');
     addParamToWONDERReq(request, 'accept_datause_restrictions', 'true');
     request.com("Measures");
+    console.log('add measures');
     addMeasures(request);
     request.com("Groups");
+    console.log('add group params');
     addGroupParams(request, query.aggregations.nested.table);
     request.com("Filters");
+    console.log('add filter params');
     addFilterParams(request, query.query);
     request.com("Options");
+    console.log('add option params');
     addOptionParams(request);
     var reqStr = request.end({pretty:true});
     //logger.info("WONDER Request:",reqStr);

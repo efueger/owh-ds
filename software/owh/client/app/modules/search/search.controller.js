@@ -149,9 +149,9 @@
             var totalCount = selectedFilter.count;
             var calculatePercentage = selectedFilter.calculatePercentage;
             var calculateRowTotal = selectedFilter.calculateRowTotal;
-            var secondaryCountKey = 'pop';
+            var secondaryCountKeys = ['pop', 'ageAdjustedRate'];
 
-            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKey);
+            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKeys);
         }
 
         function getFilename(selectedFilter) {

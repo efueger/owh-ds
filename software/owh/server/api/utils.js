@@ -248,22 +248,32 @@ var getYRBSCount = function(jsonObject) {
 //merge age adjust death rates into mortality response
 var mergeAgeAdjustedRates = function(mort, rates) {
     var keyMap = {
-        'White': '1',
-        'Black': '2',
-        'American Indian or Alaska Native': '3',
-        'Asian or Pacific Islander': '4',
-        'Female': 'F',
-        'Male': 'M'
+        'Black': 'Black or African American',
+        'American Indian': 'American Indian or Alaska Native',
     };
 
     console.log('mort', JSON.stringify(mort));
     console.log('rates', rates);
 
     for(var key in mort) {
-        if(key !== 'deaths' && key !== 'name') {
+        if(key !== 'deaths' && key !== 'name' && key !== 'pop' && key !== 'ageAdjustedRate') {
             console.log('mort key', mort[key]);
-            for(var optionKey in mort[key]) {
-                
+            for(var i = 0; i < mort[key].length; i++) {
+                console.log('age element', rates[mort[key][i].name]);
+                var age = rates[mort[key][i].name];
+                if(!age) {
+                    age = rates[keyMap[mort[key][i].name]];
+                }
+                console.log('mort element', mort[key][i]);
+                console.log('age element', age);
+                if(age['Total']) {
+                    mort[key][i]['ageAdjustedRate'] = age['Total'].ageAdjustedRate;
+                    mergeAgeAdjustedRates(mort[key][i], age);
+                } else {
+                    mort[key][i]['ageAdjustedRate'] = age.ageAdjustedRate;
+                }
+
+
             }
         }
     }

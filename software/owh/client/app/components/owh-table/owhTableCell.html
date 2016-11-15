@@ -2,10 +2,11 @@
     <span ng-if="!otcc.cell.isCount" ng-bind-html="otcc.cell.title"></span>
     <i class="cursor-pointer {{otcc.cell.iconClass}}" ng-if="otcc.cell.iconClass" ng-click="otcc.cell.onIconClick(otcc.cell.key)"></i>
     <label class="custom-label owh-table__cell-content" ng-if="otcc.cell.isCount">
-        <div ng-if="otcc.tableView === 'crude_death_rates'">
+        <div ng-if="otcc.tableView === 'crude_death_rates' || otcc.tableView === 'age-adjusted_death_rates'">
             <div class="usa-width-one-half owh-table__left-col">
                 <label ng-if="otcc.rowIndex === 0" class="owh-table__label">Rate</label>
-                <span ng-if="otcc.getRateVisibility(otcc.cell.title, otcc.cell.pop) === 'visible'">{{ otcc.cell.title / otcc.cell.pop * 100000 | number : 1 }}</span>
+                <span ng-if="otcc.getRateVisibility(otcc.cell.title, otcc.cell.pop) === 'visible' && otcc.tableView === 'crude_death_rates'">{{ otcc.cell.title / otcc.cell.pop * 100000 | number : 1 }}</span>
+                <span ng-if="otcc.tableView === 'age-adjusted_death_rates'">{{ otcc.cell.ageAdjustedRate }}</span>
                 <span ng-if="otcc.getRateVisibility(otcc.cell.title, otcc.cell.pop) === 'suppressed'">Suppressed</span>
                 <span ng-if="otcc.getRateVisibility(otcc.cell.title, otcc.cell.pop) === 'na'">Not Applicable</span>
                 <span ng-if="otcc.getRateVisibility(otcc.cell.title, otcc.cell.pop) === 'unreliable'">Unreliable</span>
