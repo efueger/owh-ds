@@ -576,7 +576,6 @@
                 {key: '0',title: 'Other (Puerto Rico only)'},
                 {key: 'White',title: 'White'}
             ];
-            //TODO check with @Gopal about missing values
             filters.hispanicOptions = [
                 {"key":"Central American","title":"Central American"},
                 {"key":"Central and South American","title":"Central and South American"},
@@ -609,7 +608,6 @@
                 {key: 'Unknown', title: 'Unknown'}
             ];
 
-            //TODO: Check with @Gopal about 'Hospital, clinic or Medical Center - Patient status unknown' replace by 'Hospice facility'
             filters.podOptions = [
                 {key:'Decedent’s home',title:'Decedent’s home'},
                 {key:'Hospital, clinic or Medical Center - Patient status unknown',title:'Hospital, clinic or Medical Center-  Patient status unknown'},
