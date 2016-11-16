@@ -243,5 +243,52 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^the age adjusted rates are shown for each row$/, function () {
         // Write code here that turns the phrase above into concrete actions
     });
+
+    this.When(/^user filters by year (\d+)$/, function (arg1) {
+        mortalityPage.getOptions('Year').then(function(elements) {
+            elements[2014 - arg1 + 1].click();
+        });
+    });
+
+    this.When(/^user filters by ethnicity Spaniard$/, function () {
+        mortalityPage.ethnicityOption2.click();
+    });
+
+    this.Then(/^user should only see total for white race in side filter$/, function () {
+        mortalityPage.getSideFilterTotals().then(function(elements) {
+            expect(elements[18].getInnerHtml()).to.eventually.equal('611');
+            expect(elements[19].getInnerHtml()).to.eventually.equal('');
+            expect(elements[20].getInnerHtml()).to.eventually.equal('');
+        });
+    });
+
+    this.When(/^user shows more year filters$/, function () {
+        mortalityPage.showMoreYears.click();
+    });
+
+    this.When(/^user shows more ethnicity filter$/, function () {
+        mortalityPage.showMoreEthnicity.click();
+    });
+
+    this.When(/^user expands ethnicity filter$/, function () {
+        mortalityPage.expandEthnicity.click();
+    });
+
+    this.Then(/^ethnicity filters should be in given order$/, function () {
+        mortalityPage.getOptions('Ethnicity').then(function(elements) {
+            expect(elements[1].getText()).to.eventually.contains('Non-Hispanic');
+            expect(elements[2].getText()).to.eventually.contains('Central and South American');
+            expect(elements[3].getText()).to.eventually.contains('Central American');
+            expect(elements[4].getText()).to.eventually.contains('Cuban');
+            expect(elements[5].getText()).to.eventually.contains('Dominican');
+            expect(elements[6].getText()).to.eventually.contains('Latin American');
+            expect(elements[7].getText()).to.eventually.contains('Mexican');
+            expect(elements[8].getText()).to.eventually.contains('Puerto Rican');
+            expect(elements[9].getText()).to.eventually.contains('South American');
+            expect(elements[10].getText()).to.eventually.contains('Spaniard');
+            expect(elements[11].getText()).to.eventually.contains('Other Hispanic');
+            expect(elements[12].getText()).to.eventually.contains('Unknown');
+        });
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;

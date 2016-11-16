@@ -63,6 +63,11 @@ Scenario: Un collapse sidebar
 #  Then the category to reset back to the original view of the two questions
 #  And 'Show Less' should be replaced with 'Show # More'
 
+#Scenario: Default Questions
+#    Given user is on search page
+#    Given user select YRBS as primary filter
+#    Then each category has two questions in the given order
+
 #Scenario: Category Title
 #    Given user is on search page
 #    Given user select YRBS as primary filter

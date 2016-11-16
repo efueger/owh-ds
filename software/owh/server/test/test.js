@@ -203,6 +203,30 @@ describe("Utils", function(){
         done()
     });
 
+    it('Apply suppression rules to side filter totals', function(done) {
+        var sideFilter = {
+            'race': [
+                {"name": 1, "deaths": 24},
+                {"name": 2, "deaths": 30}
+            ],
+            'gender': [
+                {"name": 'M', "deaths": 42},
+                {"name": 'F', "deaths": 56}
+            ]
+        };
+
+        var data = {
+            "race": [
+                {'name': 1, 'deaths': 5, "gender": [{'name': 'M', 'deaths': 12}, {'name': 'F', 'deaths': 14}]},
+                {'name': 2, 'deaths': 'suppressed', "gender": [{'name': 'M', 'deaths': 'suppressed'}, {'name': 'F', 'deaths': 14}]}
+            ]
+        };
+        searchUtils.suppressSideFilterTotals(sideFilter, data);
+        should(sideFilter['race'][1]['deaths']).equal('suppressed');
+        should(sideFilter['gender'][0]['deaths']).equal('suppressed');
+        done();
+    });
+
     it("Populate YRBS results with headers ", function(done){
         var response = [{"_index":"owh","_type":"yrbs","_id":"28093","_score":1,"_source":{"count":"15555","primary_filter":"race","nhopi":{"count":"97","lower_confidence":"N/A","percent":"N/A","upper_confidence":"N/A"},"question":{"category":"Unintentional Injuries and Violence","path":["Unintentional Injuries and Violence","Riding with a drinking driver"],"key":"Riding with a drinking driver","label":"Rode with a driver who had been drinking alcohol(in a car or other vehicle one or more times during the 30 days before the survey)"},"lower_confidence":"18.4","percent":"20.0","ai_an":{"count":"161","lower_confidence":"16.8","percent":"25.3","upper_confidence":"36.2"},"grade":"all","black_african_american":{"count":"1655","lower_confidence":"17.2","percent":"21.1","upper_confidence":"25.6"},"hispanic":{"count":"5101","lower_confidence":"24.4","percent":"26.2","upper_confidence":"28.2"},"race":"all-races-ethnicities","asian":{"count":"625","lower_confidence":"7.8","percent":"11.2","upper_confidence":"15.8"},"year":"2015","multiple_race":{"count":"738","lower_confidence":"15.7","percent":"19.6","upper_confidence":"24.2"},"white":{"count":"6837","lower_confidence":"15.9","percent":"17.7","upper_confidence":"19.6"},"sex":"both","upper_confidence":"21.6"}},{"_index":"owh","_type":"yrbs","_id":"28098","_score":1,"_source":{"count":"15468","primary_filter":"race","nhopi":{"count":"99","lower_confidence":"N/A","percent":"N/A","upper_confidence":"N/A"},"question":{"category":"Unintentional Injuries and Violence","path":["Unintentional Injuries and Violence","Weapon carrying at school"],"key":"Weapon carrying at school","label":"Carried a weapon on school property(such as, a gun, knife, or club, on at least 1 day during the 30 days before the survey)"},"lower_confidence":"3.5","percent":"4.1","ai_an":{"count":"160","lower_confidence":"6.4","percent":"10.5","upper_confidence":"16.7"},"grade":"all","black_african_american":{"count":"1642","lower_confidence":"2.3","percent":"3.4","upper_confidence":"5.1"},"hispanic":{"count":"5064","lower_confidence":"3.5","percent":"4.5","upper_confidence":"5.8"},"race":"all-races-ethnicities","asian":{"count":"620","lower_confidence":"1.1","percent":"2.3","upper_confidence":"4.5"},"year":"2015","multiple_race":{"count":"733","lower_confidence":"3.3","percent":"5.7","upper_confidence":"9.7"},"white":{"count":"6814","lower_confidence":"2.9","percent":"3.7","upper_confidence":"4.6"},"sex":"both","upper_confidence":"4.7"}}];
         var headers = [{"key":"ai_an","title":"American Indian or Alaska Native"},{"key":"asian","title":"Asian"},{"key":"black_african_american","title":"Black or African American"},{"key":"hispanic","title":"Hispanic or Latino"},{"key":"nhopi","title":"Native Hawaiian or Other Pacific Islander"},{"key":"white","title":"White"},{"key":"multiple_race","title":"Multiple Race"}];
