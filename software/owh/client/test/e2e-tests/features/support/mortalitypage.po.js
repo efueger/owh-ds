@@ -20,7 +20,8 @@ var MortalitySearchPage = function() {
     msp.mainSearch = element(by.css('owh-search'));
     msp.deathRateDisclaimer = element(by.id('death-rate-disclaimer'));
     msp.ethnicityOption2 = element(by.id('deaths_hispanicOrigin_200-209')).element(by.xpath('..'));
-    msp.showMoreYears = element(by.cssContainingText('a', '+ 12 more'));
+    // msp.showMoreYears = element(by.cssContainingText('a', '+ 12 more'));
+    msp.showMoreYears = element(by.className('owh-side-filter__show-more--year'));
     msp.showMoreEthnicity = element(by.cssContainingText('a', '+ 9 more'));
     msp.expandEthnicity = element(by.cssContainingText('a', 'Ethnicity'));
 

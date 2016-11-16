@@ -127,7 +127,7 @@
                     <li class="group-option more-options" ng-if="group.autoCompleteOptions.length > 3 &&
                         group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions' &&
                         group.filterType !== 'radio' " >
-                        <a ng-show="!sideFilter.showAll" class="custom-link" translate="label.show.more"
+                        <a ng-show="!sideFilter.showAll" class="custom-link owh-side-filter__show-more--{{ group.key }}" translate="label.show.more"
                            translate-values="{showLength: group.autoCompleteOptions.length - 3}"
                            ng-click="sideFilter.showAll = !sideFilter.showAll" href="javascript:void(0)"></a>
                         <a ng-show="sideFilter.showAll" class="custom-link" translate="label.hide.more"
