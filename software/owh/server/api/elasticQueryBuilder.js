@@ -87,7 +87,7 @@ var generateAggregationQuery = function( aggQuery, groupByKeyStart, countQueryKe
         }
     };
 
-    if(countQueryKey) {
+    if(countQueryKey == 'pop') {
         query[ groupByKeyStart + aggQuery.key]["aggregations"] = {
             "group_count_pop": {
                 "sum": {
