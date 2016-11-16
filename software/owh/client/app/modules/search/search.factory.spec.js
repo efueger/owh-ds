@@ -111,6 +111,29 @@ describe('search factory ', function(){
         expect(primaryFilter.value[0].value[initialLength]).toEqual('2013');
     });
 
+    it('sortFilterOptions should sort autocomplete options based on given sort array', function(){
+        var sort = {
+            'race': ['1', '2'],
+            'gender': ['M', 'F']
+        };
+
+        var raceFilter = {
+            key: 'race',
+            autoCompleteOptions: [{key: '2'}, {key: '1'}]
+        };
+
+        var genderFilter = {
+            key: 'gender',
+            autoCompleteOptions: [{key: 'F'}, {key: 'M'}]
+        };
+
+        searchFactory.sortFilterOptions(raceFilter, sort);
+        searchFactory.sortFilterOptions(genderFilter, sort);
+
+        expect(raceFilter.autoCompleteOptions[0].key).toEqual('1');
+        expect(genderFilter.autoCompleteOptions[0].key).toEqual('M');
+    });
+
     describe('test with mortality data', function () {
         beforeAll(function() {
             primaryFilter = filters.search[0];

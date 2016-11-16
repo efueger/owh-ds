@@ -100,6 +100,13 @@ var yrbsStepDefinitionsWrapper = function () {
         });
     });
 
+    this.Then(/^each category has two questions in the given order$/, function () {
+        yrbsPage.getCategoryQuestions().then(function(elements) {
+            expect(elements[0].getText()).to.eventually.contain('Currently Drank Alcohol');
+            expect(elements[1].getText()).to.eventually.contain('Currently Used Marijuana');
+        });
+    });
+
     this.When(/^I looks at the filter sub categories$/, function () {
         yrbsPage.sideFilterUnOrderedList.all(by.tagName('li')).count().then(function (size) {
              expect(size).to.greaterThan(0);
