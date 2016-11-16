@@ -20,9 +20,18 @@
             uploadImage: uploadImage,
             updateFilterValues: updateFilterValues,
             generateHashCode: generateHashCode,
-            buildAPIQuery: buildAPIQuery
+            buildAPIQuery: buildAPIQuery,
+            sortFilterOptions: sortFilterOptions
         };
         return service;
+
+        function sortFilterOptions(filter, sort) {
+            if(sort[filter.key]) {
+                filter.autoCompleteOptions.sort(function(a, b) {
+                    return sort[filter.key].indexOf(a.key) - sort[filter.key].indexOf(b.key);
+                });
+            }
+        }
 
         //Search for YRBS data
         function searchYRBSResults( primaryFilter ) {
