@@ -35,6 +35,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^user sees side filter$/, function () {
+        browser.sleep(300);
         expect(mortalityPage.sideMenu.isDisplayed()).to.eventually.equal(true);
     });
 
@@ -70,7 +71,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the percentages are shown for each row are displayed by default$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[1]).to.equal('8,185 (45.4%)');
+            expect(value[1]).to.equal('98,841 (45.5%)');
         });
     });
 
@@ -80,7 +81,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^data table is updated and the number of deaths and percentages are updated too$/, function () {
         mortalityPage.getTableRowData(0).then(function (value) {
-            expect(value[1]).to.equal('899 (5.0%)');
+            expect(value[1]).to.equal('8,696 (4.0%)');
         });
     });
 
@@ -226,10 +227,9 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the Percentages should have a one decimal precision$/, function () {
-        //  mortalityPage.getTableRowData(1).then(function(text) {
-              //TODO: need actual data
-              // expect(text[1]).to.equal('');
-        //  });
+          mortalityPage.getTableRowData(1).then(function(text) {
+              expect(text[1]).to.equal('338,606 (47.6%)');
+          });
     });
 
     this.Then(/^the following message should be displayed stating that population data is being retrieved from Census "([^"]*)"$/, function (arg1) {

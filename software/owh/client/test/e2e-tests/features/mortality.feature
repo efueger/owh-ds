@@ -9,7 +9,7 @@ Feature: Mortality page
 Scenario: Access mortality page
   When I am at home page
   And  I click on Explore button in Health Information Gateway section
-  Then I should get search page with default filter type mortality
+  Then I should get search page with default filter type "Mortality"
 
 Scenario: Axis labels
   When user sees a visualization
@@ -36,7 +36,7 @@ Scenario: Side filter options retain order
 Scenario: Display show/hide percentage button only on mortality page
   When I am at home page
   And  I click on Explore button in Health Information Gateway section
-  Then I should get search page with default filter type mortality
+  Then I should get search page with default filter type "Mortality"
   And an option to show/hide percentages is displayed
   When I change 'I'm interested in' dropdown value to "Youth Risk Behavior"
   Then I should be redirected to YRBS page
@@ -53,20 +53,14 @@ Scenario: Dropdown Location
 
 Scenario: Decimal Precision
   Given user is on search page
-  When the user chooses the option 'Death Rates'
   Then the Percentages should have a one decimal precision
-
-Scenario: Help Message above the quick visualization pane
-  Given user is on search page
-  When the user chooses the option 'Death Rates'
-  Then the following message should be displayed stating that population data is being retrieved from Census "Population details from NCHS Bridge Race Estimates is used to calculate Death Rates (per 100,000)"
 
 Scenario: Percentages in data table
   When I see the number of deaths in data table
   Then the percentages are shown for each row are displayed by default
 
 Scenario: Filter options updated
-  When I update criteria in filter options
+  When I update criteria in filter options with column "Autopsy"
   Then data table is updated and the number of deaths and percentages are updated too
 
 Scenario: Items added to columns/rows
@@ -82,7 +76,7 @@ Scenario: Show/Hide percentages
   Then an option to show/hide percentages is displayed
   And when that option is toggled, the percentages are either displayed/hidden
 
-Scenario: enario: Decimal Precision
+Scenario: Decimal Precision
   When I look at the table results
   And percentage option is enabled
   Then the Rates and Percentages should have a one decimal precision
@@ -91,10 +85,15 @@ Scenario: Quick visualizations
   When I see the quick visualizations
   Then they're displayed same as before and nothing changes
 
-Scenario: Suppressed
-  When counts fall below the determined "cut-off" value and the conditions for suppression are met
-  Then the value should be suppressed
+Scenario: Help Message above the quick visualization pane
+  Given user is on search page
+  When the user chooses the option 'Death Rates'
+  Then the following message should be displayed stating that population data is being retrieved from Census "Population details from NCHS Bridge Race Estimates is used to calculate Death Rates (per 100,000)"
 
-Scenario: Data table
-  When the user looks at a suppressed value in the data table
-  Then the word suppressed must be displayed in it's place
+#Scenario: Suppressed
+#  When counts fall below the determined "cut-off" value and the conditions for suppression are met
+#  Then the value should be suppressed
+
+#Scenario: Data table
+#  When the user looks at a suppressed value in the data table
+#  Then the word suppressed must be displayed in it's place

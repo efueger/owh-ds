@@ -1,7 +1,6 @@
 var MortalitySearchPage = function() {
     var msp = this;
-    //Filter type select box
-    msp.filterTypeSelectBox = element( by.model('ots.filters.selectedPrimaryFilter'));
+
     msp.chartDataDiv = element(by.repeater('chartData in startChartData'));
     msp.expandVisualizationLink = element(by.css('a[name=expand_graph]'));
     msp.sideMenu = element(by.className('owh-side-menu'));
@@ -12,7 +11,7 @@ var MortalitySearchPage = function() {
     msp.showPecentageButton = element(by.id('togglePercentage')).element(by.cssContainingText('a', 'Show'));
     msp.hidePecentageButton = element(by.id('togglePercentage')).element(by.cssContainingText('a', 'Hide'));
     msp.raceOptionsLink = element(by.partialLinkText('Race'));
-    msp.raceOption2Link = element(by.css('label[for=deaths_race_2]'));
+    msp.raceOption2Link = element(by.cssContainingText('label', 'American Indian'));
     msp.raceOption2 = element(by.cssContainingText('a', 'Race')).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.tagName('li')).get(3);
     msp.interestedInSelectBox = element(by.id('interestedIn'));
     msp.deathRatesOption = element(by.cssContainingText('option', 'Crude Death Rates'));
@@ -21,7 +20,7 @@ var MortalitySearchPage = function() {
     msp.deathRateDisclaimer = element(by.id('death-rate-disclaimer'));
 
     msp.getSelectedFilterType = function() {
-       return msp.filterTypeSelectBox.$('option:checked').getText();
+       return msp.interestedInSelectBox.$('option:checked').getText();
     };
 
     msp.getByTypeSelectedFilters = function() {
