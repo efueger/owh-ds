@@ -100,3 +100,8 @@ Scenario: Access mortality page
 #Scenario: Data table
 #  When the user looks at a suppressed value in the data table
 #  Then the word suppressed must be displayed in it's place
+
+Scenario: Age Adjusted Death Rates
+  Given user is on search page
+  When the user chooses the option 'Age Adjusted Death Rates'
+  Then the age adjusted rates are shown for each row

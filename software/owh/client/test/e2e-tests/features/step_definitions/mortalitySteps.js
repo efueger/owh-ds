@@ -235,5 +235,13 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^the following message should be displayed stating that population data is being retrieved from Census "([^"]*)"$/, function (arg1) {
          expect(mortalityPage.deathRateDisclaimer.getText()).to.eventually.equal(arg1);
     });
+
+    this.When(/^the user chooses the option 'Age Adjusted Death Rates'$/, function () {
+        mortalityPage.ageRatesOption.click();
+    });
+
+    this.Then(/^the age adjusted rates are shown for each row$/, function () {
+        // Write code here that turns the phrase above into concrete actions
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;

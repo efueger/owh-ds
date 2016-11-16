@@ -16,6 +16,7 @@ var MortalitySearchPage = function() {
     msp.raceOption2 = element(by.cssContainingText('a', 'Race')).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.tagName('li')).get(3);
     msp.interestedInSelectBox = element(by.id('interestedIn'));
     msp.deathRatesOption = element(by.cssContainingText('option', 'Crude Death Rates'));
+    msp.ageRatesOption = element(by.cssContainingText('option', 'Age Adjusted Death Rates'));
     msp.tableViewDropdown = element(by.model('ots.selectedShowFilter'));
     msp.mainSearch = element(by.css('owh-search'));
     msp.deathRateDisclaimer = element(by.id('death-rate-disclaimer'));
