@@ -27,9 +27,9 @@ var searchRouter = function(app, rConfig) {
                      logger.info("Query with ID "+hashCode+" not in cache, executing query");
                      var apiQuery = queryBuilder.addCountsToAutoCompleteOptions(q);
                      var finalAPIQuery = queryBuilder.buildSearchQuery(apiQuery, true);
-
                      new elasticSearch().aggregateDeaths(finalAPIQuery).then(function (sideFilterResults) {
                          new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
+                             util.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
                              var insertQuery = queryBuilder.buildInsertQueryResultsQuery(JSON.stringify(q), JSON.stringify(response), "Mortality", hashCode, JSON.stringify(sideFilterResults));
                              new elasticSearch().insertQueryData(insertQuery).then(function(anotherResponse){
                                  logger.info("Qeury with "+hashCode+" added to query cache");

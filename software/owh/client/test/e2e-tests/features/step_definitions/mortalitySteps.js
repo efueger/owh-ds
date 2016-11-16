@@ -35,6 +35,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^user sees side filter$/, function () {
+        browser.sleep(300);
         expect(mortalityPage.sideMenu.isDisplayed()).to.eventually.equal(true);
     });
 
@@ -70,7 +71,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the percentages are shown for each row are displayed by default$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[1]).to.equal('8,185 (45.4%)');
+            expect(value[1]).to.equal('98,841 (45.5%)');
         });
     });
 
@@ -80,7 +81,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^data table is updated and the number of deaths and percentages are updated too$/, function () {
         mortalityPage.getTableRowData(0).then(function (value) {
-            expect(value[1]).to.equal('899 (5.0%)');
+            expect(value[1]).to.equal('8,696 (4.0%)');
         });
     });
 
@@ -89,8 +90,9 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the percentages get re\-calculated based on all the information displayed in a given row$/, function () {
+        browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('86 (18.9%)');
+            expect(value[2]).to.equal('986 (14.3%)');
         });
     });
 
@@ -102,13 +104,13 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^percentages are displayed in the same column\/cell in parenthesis$/, function () {
+        browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('86 (18.9%)');
+            expect(value[2]).to.equal('986 (14.3%)');
         });
     });
 
     this.When(/^I see the quick visualizations$/, function () {
-        browser.get('/search');
         mortalityPage.isVisualizationDisplayed().then(function(value) {
             expect(value).to.equal(true);
         });
@@ -158,7 +160,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^when that option is toggled, the percentages are either displayed\/hidden$/, function () {
         mortalityPage.hidePecentageButton.click();
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('86');
+            expect(value[2]).to.equal('986');
         });
     });
 
@@ -179,7 +181,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the Rates and Percentages should have a one decimal precision$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('86 (18.9%)');
+            expect(value[2]).to.equal('986 (14.3%)');
         });
     });
 
@@ -226,14 +228,60 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the Percentages should have a one decimal precision$/, function () {
-        //  mortalityPage.getTableRowData(1).then(function(text) {
-              //TODO: need actual data
-              // expect(text[1]).to.equal('');
-        //  });
+          mortalityPage.getTableRowData(1).then(function(text) {
+              expect(text[1]).to.equal('338,606 (47.6%)');
+          });
     });
 
     this.Then(/^the following message should be displayed stating that population data is being retrieved from Census "([^"]*)"$/, function (arg1) {
          expect(mortalityPage.deathRateDisclaimer.getText()).to.eventually.equal(arg1);
+    });
+
+    this.When(/^user filters by year (\d+)$/, function (arg1) {
+        mortalityPage.getOptions('Year').then(function(elements) {
+            elements[2014 - arg1 + 1].click();
+        });
+    });
+
+    this.When(/^user filters by ethnicity Spaniard$/, function () {
+        mortalityPage.ethnicityOption2.click();
+    });
+
+    this.Then(/^user should only see total for white race in side filter$/, function () {
+        mortalityPage.getSideFilterTotals().then(function(elements) {
+            expect(elements[18].getInnerHtml()).to.eventually.equal('611');
+            expect(elements[19].getInnerHtml()).to.eventually.equal('');
+            expect(elements[20].getInnerHtml()).to.eventually.equal('');
+        });
+    });
+
+    this.When(/^user shows more year filters$/, function () {
+        mortalityPage.showMoreYears.click();
+    });
+
+    this.When(/^user shows more ethnicity filter$/, function () {
+        mortalityPage.showMoreEthnicity.click();
+    });
+
+    this.When(/^user expands ethnicity filter$/, function () {
+        mortalityPage.expandEthnicity.click();
+    });
+
+    this.Then(/^ethnicity filters should be in given order$/, function () {
+        mortalityPage.getOptions('Ethnicity').then(function(elements) {
+            expect(elements[1].getText()).to.eventually.contains('Non-Hispanic');
+            expect(elements[2].getText()).to.eventually.contains('Central and South American');
+            expect(elements[3].getText()).to.eventually.contains('Central American');
+            expect(elements[4].getText()).to.eventually.contains('Cuban');
+            expect(elements[5].getText()).to.eventually.contains('Dominican');
+            expect(elements[6].getText()).to.eventually.contains('Latin American');
+            expect(elements[7].getText()).to.eventually.contains('Mexican');
+            expect(elements[8].getText()).to.eventually.contains('Puerto Rican');
+            expect(elements[9].getText()).to.eventually.contains('South American');
+            expect(elements[10].getText()).to.eventually.contains('Spaniard');
+            expect(elements[11].getText()).to.eventually.contains('Other Hispanic');
+            expect(elements[12].getText()).to.eventually.contains('Unknown');
+        });
     });
 };
 module.exports = mortalityStepDefinitionsWrapper;

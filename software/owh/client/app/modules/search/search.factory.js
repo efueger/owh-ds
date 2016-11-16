@@ -18,9 +18,18 @@
             uploadImage: uploadImage,
             updateFilterValues: updateFilterValues,
             generateHashCode: generateHashCode,
-            buildAPIQuery: buildAPIQuery
+            buildAPIQuery: buildAPIQuery,
+            sortFilterOptions: sortFilterOptions
         };
         return service;
+
+        function sortFilterOptions(filter, sort) {
+            if(sort[filter.key]) {
+                filter.autoCompleteOptions.sort(function(a, b) {
+                    return sort[filter.key].indexOf(a.key) - sort[filter.key].indexOf(b.key);
+                });
+            }
+        }
 
         //Search for YRBS data
         function searchYRBSResults( primaryFilter ) {
@@ -611,7 +620,6 @@
                 {key: 'Other (Puerto Rico only)',title: 'Other (Puerto Rico only)'},
                 {key: 'White',title: 'White'}
             ];
-            //TODO check with @Gopal about missing values
             filters.hispanicOptions = [
                 {"key":"Central American","title":"Central American"},
                 {"key":"Central and South American","title":"Central and South American"},
@@ -644,7 +652,6 @@
                 {key: 'Unknown', title: 'Unknown'}
             ];
 
-            //TODO: Check with @Gopal about 'Hospital, clinic or Medical Center - Patient status unknown' replace by 'Hospice facility'
             filters.podOptions = [
                 {key:'Decedent’s home',title:'Decedent’s home'},
                 {key:'Hospital, clinic or Medical Center - Patient status unknown',title:'Hospital, clinic or Medical Center-  Patient status unknown'},

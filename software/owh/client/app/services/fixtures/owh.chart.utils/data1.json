@@ -1,7 +1,7 @@
 {
   "gender": [
     {
-      "name": "M",
+      "name": "Male",
       "deaths": 1331232,
       "race": [
         {
@@ -23,7 +23,7 @@
       ]
     },
     {
-      "name": "F",
+      "name": "Female",
       "deaths": 1299568,
       "race": [
         {

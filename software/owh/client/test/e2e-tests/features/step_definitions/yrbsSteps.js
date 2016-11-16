@@ -9,6 +9,7 @@ var yrbsStepDefinitionsWrapper = function () {
     var yrbsPage = require('../support/yrbspage.po')
 
     this.Given(/^user select YRBS as primary filter$/, function () {
+        browser.sleep(300);
         yrbsPage.yrbsOption.click();
     });
 
@@ -97,6 +98,13 @@ var yrbsStepDefinitionsWrapper = function () {
             expect(elements[0].isDisplayed()).to.eventually.equal(true);
             expect(elements[1].isDisplayed()).to.eventually.equal(true);
             expect(elements.length).to.be.above(1);
+        });
+    });
+
+    this.Then(/^each category has two questions in the given order$/, function () {
+        yrbsPage.getCategoryQuestions().then(function(elements) {
+            expect(elements[0].getText()).to.eventually.contain('Currently Drank Alcohol');
+            expect(elements[1].getText()).to.eventually.contain('Currently Used Marijuana');
         });
     });
 

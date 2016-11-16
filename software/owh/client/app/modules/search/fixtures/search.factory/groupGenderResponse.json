@@ -20,11 +20,11 @@
       "simple": {
         "group_table_gender": [
           {
-            "name": "M",
+            "name": "Male",
             "deaths": 1331232
           },
           {
-            "name": "F",
+            "name": "Female",
             "deaths": 1299568
           }
         ]
@@ -33,11 +33,11 @@
         "table": {
           "gender": [
             {
-              "name": "M",
+              "name": "Male",
               "deaths": 1331232
             },
             {
-              "name": "F",
+              "name": "Female",
               "deaths": 1299568
             }
           ]
@@ -50,11 +50,11 @@
               "deaths": 53107,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 27003
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26104
                 }
               ]
@@ -64,11 +64,11 @@
               "deaths": 53060,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26800
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26260
                 }
               ]
@@ -78,11 +78,11 @@
               "deaths": 53057,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26955
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26102
                 }
               ]
@@ -92,11 +92,11 @@
               "deaths": 52961,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26671
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26290
                 }
               ]
@@ -106,11 +106,11 @@
               "deaths": 52928,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26652
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26276
                 }
               ]
@@ -120,11 +120,11 @@
               "deaths": 52872,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26635
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26237
                 }
               ]
@@ -134,11 +134,11 @@
               "deaths": 52850,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26915
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25935
                 }
               ]
@@ -148,11 +148,11 @@
               "deaths": 52817,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26831
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25986
                 }
               ]
@@ -162,11 +162,11 @@
               "deaths": 52813,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26532
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26281
                 }
               ]
@@ -176,11 +176,11 @@
               "deaths": 52785,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26657
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26128
                 }
               ]
@@ -190,11 +190,11 @@
               "deaths": 52782,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26788
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25994
                 }
               ]
@@ -204,11 +204,11 @@
               "deaths": 52747,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26516
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26231
                 }
               ]
@@ -218,11 +218,11 @@
               "deaths": 52745,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26564
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26181
                 }
               ]
@@ -232,11 +232,11 @@
               "deaths": 52741,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26724
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26017
                 }
               ]
@@ -246,11 +246,11 @@
               "deaths": 52723,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26564
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26159
                 }
               ]
@@ -260,11 +260,11 @@
               "deaths": 52716,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26724
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25992
                 }
               ]
@@ -274,11 +274,11 @@
               "deaths": 52696,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26730
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25966
                 }
               ]
@@ -288,11 +288,11 @@
               "deaths": 52681,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26813
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25868
                 }
               ]
@@ -302,11 +302,11 @@
               "deaths": 52666,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26762
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25904
                 }
               ]
@@ -316,11 +316,11 @@
               "deaths": 52663,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26622
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26041
                 }
               ]
@@ -330,11 +330,11 @@
               "deaths": 52645,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26457
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26188
                 }
               ]
@@ -344,11 +344,11 @@
               "deaths": 52633,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26692
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25941
                 }
               ]
@@ -358,11 +358,11 @@
               "deaths": 52633,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26817
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25816
                 }
               ]
@@ -372,11 +372,11 @@
               "deaths": 52628,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26632
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25996
                 }
               ]
@@ -386,11 +386,11 @@
               "deaths": 52613,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26642
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25971
                 }
               ]
@@ -400,11 +400,11 @@
               "deaths": 52604,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26611
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25993
                 }
               ]
@@ -414,11 +414,11 @@
               "deaths": 52603,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26456
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26147
                 }
               ]
@@ -428,11 +428,11 @@
               "deaths": 52597,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26698
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25899
                 }
               ]
@@ -442,11 +442,11 @@
               "deaths": 52588,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26551
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26037
                 }
               ]
@@ -456,11 +456,11 @@
               "deaths": 52579,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26675
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25904
                 }
               ]
@@ -470,11 +470,11 @@
               "deaths": 52555,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26447
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26108
                 }
               ]
@@ -484,11 +484,11 @@
               "deaths": 52549,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26492
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26057
                 }
               ]
@@ -498,11 +498,11 @@
               "deaths": 52524,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26500
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26024
                 }
               ]
@@ -512,11 +512,11 @@
               "deaths": 52523,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26619
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25904
                 }
               ]
@@ -526,11 +526,11 @@
               "deaths": 52486,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26619
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25867
                 }
               ]
@@ -540,11 +540,11 @@
               "deaths": 52477,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26459
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26018
                 }
               ]
@@ -554,11 +554,11 @@
               "deaths": 52460,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26486
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25974
                 }
               ]
@@ -568,11 +568,11 @@
               "deaths": 52440,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26419
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 26021
                 }
               ]
@@ -582,11 +582,11 @@
               "deaths": 52419,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26640
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25779
                 }
               ]
@@ -596,11 +596,11 @@
               "deaths": 52418,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26534
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25884
                 }
               ]
@@ -610,11 +610,11 @@
               "deaths": 52409,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26635
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25774
                 }
               ]
@@ -624,11 +624,11 @@
               "deaths": 52397,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26645
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25752
                 }
               ]
@@ -638,11 +638,11 @@
               "deaths": 52384,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26498
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25886
                 }
               ]
@@ -652,11 +652,11 @@
               "deaths": 52375,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26694
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25681
                 }
               ]
@@ -666,11 +666,11 @@
               "deaths": 52368,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26638
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25730
                 }
               ]
@@ -680,11 +680,11 @@
               "deaths": 52351,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26406
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25945
                 }
               ]
@@ -694,11 +694,11 @@
               "deaths": 52351,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26440
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25911
                 }
               ]
@@ -708,11 +708,11 @@
               "deaths": 52340,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26452
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25888
                 }
               ]
@@ -722,11 +722,11 @@
               "deaths": 52259,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26463
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25796
                 }
               ]
@@ -736,11 +736,11 @@
               "deaths": 52182,
               "sex": [
                 {
-                  "name": "M",
+                  "name": "Male",
                   "deaths": 26457
                 },
                 {
-                  "name": "F",
+                  "name": "Female",
                   "deaths": 25725
                 }
               ]

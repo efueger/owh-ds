@@ -111,6 +111,29 @@ describe('search factory ', function(){
         expect(primaryFilter.value[0].value[initialLength]).toEqual('2013');
     });
 
+    it('sortFilterOptions should sort autocomplete options based on given sort array', function(){
+        var sort = {
+            'race': ['1', '2'],
+            'gender': ['M', 'F']
+        };
+
+        var raceFilter = {
+            key: 'race',
+            autoCompleteOptions: [{key: '2'}, {key: '1'}]
+        };
+
+        var genderFilter = {
+            key: 'gender',
+            autoCompleteOptions: [{key: 'F'}, {key: 'M'}]
+        };
+
+        searchFactory.sortFilterOptions(raceFilter, sort);
+        searchFactory.sortFilterOptions(genderFilter, sort);
+
+        expect(raceFilter.autoCompleteOptions[0].key).toEqual('1');
+        expect(genderFilter.autoCompleteOptions[0].key).toEqual('M');
+    });
+
     describe('test with mortality data', function () {
         beforeAll(function() {
             primaryFilter = filters.search[0];
@@ -219,7 +242,7 @@ describe('search factory ', function(){
         it('ageSliderOptions onstatechange', function () {
             filters.ageSliderOptions.onstatechange('0;10');
             var agegroupFilter = utils.findByKeyAndValue(filters.allMortalityFilters, 'key', 'agegroup');
-            expect(agegroupFilter.value).toEqual([ '0-4 years', '5-9 years', 'Age not stated' ]);
+            expect(agegroupFilter.value).toEqual([ '0-4years', '5-9years', 'Age not stated' ]);
         });
 
         it('ageSliderOptions onstatechange selectedPrimaryFilter initiated', function () {
