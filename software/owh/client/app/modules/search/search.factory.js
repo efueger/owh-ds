@@ -726,7 +726,8 @@
                     pointer: {'background-color': '#914fb5'},
                     range: {"background-color": "#914fb5"}
                 },
-                onstatechange: function(value) {
+                callback: function(value, release) {
+                    var self = this;
                     var values = value.split(';');
                     var minValue = Number(values[0]);
                     var maxValue = Number(values[1]);
@@ -749,9 +750,10 @@
                         agegroupFilter.timer = $timeout(function(){
                             agegroupFilter.timer=undefined;
                             // TODO: We need to call the searchController.search(true) from here, istead of the following lines
-                            generateHashCode(filters.selectedPrimaryFilter).then(function(hash){
-                                filters.selectedPrimaryFilter.searchResults(filters.selectedPrimaryFilter, hash);
-                            });
+                            // generateHashCode(filters.selectedPrimaryFilter).then(function(hash){
+                            //     filters.selectedPrimaryFilter.searchResults(filters.selectedPrimaryFilter, hash);
+                            // });
+                            self.search();
 
                         }, 2000);
                     }
