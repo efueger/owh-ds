@@ -328,13 +328,15 @@
          });
          return tableData;
          }*/
-        function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKey) {
+        function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage,
+                                       calculateRowTotal, secondaryCountKey) {
             var tableData = {
                 headers: prepareMixedTableHeaders(headers, countLabel),
                 data: [],
                 calculatePercentage: calculatePercentage
             };
-            tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
+            tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey,
+                totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
             return tableData;
         }
 
@@ -481,6 +483,9 @@
                     childTableData[0].unshift(eachTableRow);
                     tableData = tableData.concat(childTableData);
                 });
+                console.log("each data.....")
+                console.log(JSON.stringify(tableData));
+                console.log("each data.....")
             }
             /**
              * This else condition prepares column data
@@ -563,9 +568,14 @@
             var tableData = [];
             if(columnHeaders && columnHeaders.length > 0) {
                 var eachColumnHeader = columnHeaders[0];
+                console.log("prepareMixedTableColumnData==============")
+                console.log(eachColumnHeader.key)
+                console.log(data[eachColumnHeader.key])
+                console.log("prepareMixedTableColumnData==========")
                 var eachHeaderData = data[eachColumnHeader.key];
                 var eachOptionLength = 0;
                 angular.forEach(getSelectedAutoCompleteOptions(eachColumnHeader), function(eachOption, optionIndex) {
+                    console.log("key: "+ eachOption.key);
                     var matchedData = findByKeyAndValue(eachHeaderData, 'name', eachOption.key);
                     if(matchedData) {
                         if (columnHeaders.length > 1) {

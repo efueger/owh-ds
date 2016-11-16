@@ -1,7 +1,7 @@
 var Aggregation = require('../models/aggregation');
 var merge = require('merge');
 
-var populateDataWithMappings = function(resp, countKey) {
+var populateDataWithMappings = function(resp, countKey, countQueryKey) {
     var result = {
         data: {
             simple: {},
@@ -21,7 +21,7 @@ var populateDataWithMappings = function(resp, countKey) {
             var dataKey = '';
             if (key.indexOf('group_table_') > -1) {
                 dataKey = key.split("_")[2];
-                result.data.nested.table[dataKey] = populateAggregatedData(data[key].buckets, countKey, 2);
+                result.data.nested.table[dataKey] = populateAggregatedData(data[key].buckets, countKey, 2, countQueryKey);
             }
             if (key.indexOf('group_chart_') > -1) {
                 var keySplits = key.split("_");
@@ -52,13 +52,14 @@ var populateDataWithMappings = function(resp, countKey) {
     return result;
 };
 
-var populateAggregatedData = function(buckets, countKey, splitIndex) {
+var populateAggregatedData = function(buckets, countKey, splitIndex, countQueryKey) {
     var result = [];
     for(var index in buckets) {
         // console.log(buckets[index]);
         //ignoring key -9 for blank data.
         if (buckets[index].key!=='-9') {
-            var aggregation = new Aggregation(buckets[index], countKey);
+            var aggregation = new Aggregation(buckets[index], countKey, countQueryKey);
+
             aggregation[countKey] = applySuppressionRules(countKey, aggregation[countKey]);
             var innerObjKey = isValueHasGroupData(buckets[index]);
             // take from pop.value instead of doc_count for census data
@@ -72,7 +73,7 @@ var populateAggregatedData = function(buckets, countKey, splitIndex) {
                 }
             }
             if( innerObjKey ){
-                aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex);
+                aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex, countQueryKey);
                 //check if total should be suppressed
                 if(countKey === 'deaths' && isMortalityTotalSuppressed(buckets[index][innerObjKey].buckets)) {
                     aggregation[countKey] = 'suppressed';

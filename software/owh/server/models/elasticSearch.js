@@ -154,6 +154,22 @@ ElasticClient.prototype.aggregateMentalHealth = function(query, headers, aggrega
     return deferred.promise;
 };
 
+ElasticClient.prototype.aggregateCensusData = function(query, headers, aggregations){
+    var client = this.getClient(census_index);
+    var deferred = Q.defer();
+    client.search({
+        index:census_type,
+        body:query,
+        request_cache:true
+    }).then(function (resp) {
+        deferred.resolve(searchUtils.populateDataWithMappings(resp, 'bridge_race_sex', 'pop'))
+    }, function (err) {
+        logger.error(err.message);
+        deferred.reject(err);
+    });
+    return deferred.promise;
+};
+
 ElasticClient.prototype.getQueryResults = function(query){
     var client = this.getClient(_queryIndex);
     var deferred = Q.defer();

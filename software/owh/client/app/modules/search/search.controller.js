@@ -49,7 +49,8 @@
         ];
         sc.sort = {
             "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
-            "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question']
+            "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question'],
+            "label.census.bridge.race.pop.estimate": ['state', 'age', 'race', 'ethnicity', 'current_year', 'sex']
         };
         //show certain filters for different table views
         sc.availableFilters = {
