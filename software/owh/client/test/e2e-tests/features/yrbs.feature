@@ -70,6 +70,11 @@ Scenario: Category Title
     When the user hovers the mouse over a category name
     Then an option/link to 'Show only this Category' should be seen
 
+#Scenario: Default Questions
+#    Given user is on search page
+#    Given user select YRBS as primary filter
+#    Then each category has two questions in the given order
+
 Scenario: Show only this Category button
     Given user is on search page
     Given user select YRBS as primary filter

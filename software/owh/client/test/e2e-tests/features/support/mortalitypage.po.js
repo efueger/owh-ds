@@ -18,6 +18,10 @@ var MortalitySearchPage = function() {
     msp.tableViewDropdown = element(by.model('ots.selectedShowFilter'));
     msp.mainSearch = element(by.tagName('owh-search'));
     msp.deathRateDisclaimer = element(by.id('death-rate-disclaimer'));
+    msp.ethnicityOption2 = element(by.id('deaths_hispanicOrigin_200-209')).element(by.xpath('..'));
+    msp.showMoreYears = element(by.cssContainingText('a', '+ 12 more'));
+    msp.showMoreEthnicity = element(by.cssContainingText('a', '+ 9 more'));
+    msp.expandEthnicity = element(by.cssContainingText('a', 'Ethnicity'));
 
     msp.getSelectedFilterType = function() {
        return msp.interestedInSelectBox.$('option:checked').getText();
@@ -84,6 +88,10 @@ var MortalitySearchPage = function() {
 
     msp.getOptions = function(filterType) {
         return element(by.cssContainingText('a', filterType)).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.tagName('li'));
+    };
+
+    msp.getSideFilterTotals = function() {
+        return element(by.tagName('owh-side-filter')).all(by.className('count-value'));
     };
 
 };

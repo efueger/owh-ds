@@ -20,7 +20,7 @@ exports.config = {
   },
 
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'firefox'
   },
   onPrepare: function() {
     browser.driver.manage().window().maximize();
