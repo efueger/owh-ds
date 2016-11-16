@@ -6,9 +6,9 @@
         .module('owh.search')
         .service('searchFactory', searchFactory);
 
-    searchFactory.$inject = ["utilService", "SearchService", "$q", "$translate", "chartUtilService", '$rootScope', '$timeout', 'ModalService'];
+    searchFactory.$inject = ["utilService", "SearchService", "$q", "$translate", "chartUtilService", '$rootScope', '$timeout', 'ModalService', '$state'];
 
-    function searchFactory( utilService, SearchService, $q, $translate, chartUtilService, $rootScope, $timeout, ModalService ){
+    function searchFactory( utilService, SearchService, $q, $translate, chartUtilService, $rootScope, $timeout, ModalService, $state){
         var service = {
             getAllFilters : getAllFilters,
             queryMortalityAPI: queryMortalityAPI,
@@ -164,8 +164,17 @@
                 var selectedQuestion = utilService.findByKeyAndValue(questionFilter.autoCompleteOptions, 'key', question);
                 chartUtilService.showExpandedGraph(chartData, selectedQuestion.title);
             });
-        }
+        };
 
+        function removeSearchResults(ac){
+            if(ac){    
+                for (var i =0; i < ac.length; i++ ){
+                    delete ac[i].deaths;
+                    delete ac[i].count;
+                    delete ac[i].deathsPercentage;
+                }
+            }
+        }
         function createBackendSearchRequest(pFilter){
             var req = {};
             req.key= pFilter.key;
@@ -177,6 +186,7 @@
                 if( i == 9 || i == 12){
                     filter.autoCompleteOptions = [];
                 }
+                removeSearchResults(filter.autoCompleteOptions);
                 req.allFilters.push(filter);
             }
             req.sideFilters = [];
@@ -186,6 +196,10 @@
                 if( i == 9 || i == 10){
                     filter.autoCompleteOptions = [];
                     filter.filters.autoCompleteOptions[0].autoCompleteOptions = [];
+                }
+                removeSearchResults(filter.autoCompleteOptions);
+                if(filter.filters.autoCompleteOptions){
+                    removeSearchResults(filter.filters.autoCompleteOptions[0].autoCompleteOptions);
                 }
                 req.sideFilters.push(filter);
             }
@@ -734,7 +748,11 @@
                     if(!agegroupFilter.timer && !angular.equals(prevValue, agegroupFilter.value) && filters.selectedPrimaryFilter.initiated) {
                         agegroupFilter.timer = $timeout(function(){
                             agegroupFilter.timer=undefined;
-                            filters.selectedPrimaryFilter.searchResults(filters.selectedPrimaryFilter);
+                            // TODO: We need to call the searchController.search(true) from here, istead of the following lines
+                            generateHashCode(filters.selectedPrimaryFilter).then(function(hash){
+                                filters.selectedPrimaryFilter.searchResults(filters.selectedPrimaryFilter, hash);
+                            });
+
                         }, 2000);
                     }
                 }
