@@ -559,41 +559,6 @@ function addCountsToAutoCompleteOptions(primaryFilter) {
     return apiQuery;
 }
 
-function buildQueryForBridgeRacePopulation(primaryFilter) {
-
-    var result = buildAPIQuery(primaryFilter);
-
-    var apiQuery = result.apiQuery;
-    var headers = result.headers;
-    var resultFilter = headers.columnHeaders.length > 0 ? headers.columnHeaders[0] : headers.rowHeaders[0];
-    var resultAggregation = findByKeyAndValue(apiQuery.aggregations.nested.table, 'key', resultFilter.key);
-    resultAggregation.isPrimary = true;
-    apiQuery.dataKeys = findAllNotContainsKeyAndValue(resultFilter.autoCompleteOptions, 'isAllOption', true);
-    headers.columnHeaders.concat(headers.rowHeaders).forEach(function(eachFilter) {
-        var allValues = getValuesByKeyIncludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
-        if(eachFilter.key === resultFilter.key) {
-            if(apiQuery.query[eachFilter.queryKey]) {
-                apiQuery.query[eachFilter.queryKey].value = allValues;
-            }
-        } else {
-            if(!apiQuery.query[eachFilter.queryKey] || allValues.indexOf(apiQuery.query[eachFilter.queryKey].value) >= 0) {
-                apiQuery.query[eachFilter.queryKey] = getFilterQuery(eachFilter);
-                apiQuery.query[eachFilter.queryKey].value = getValuesByKeyExcludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
-            }
-        }
-    });
-
-    var yearFilter = findByKeyAndValue(primaryFilter.allFilters, 'key', 'current_year');
-
-    if(yearFilter.value.length != 1) {
-        headers.columnHeaders.push(yearFilter);
-        apiQuery.aggregations.nested.table.push(getGroupQuery(yearFilter));
-    }
-    result.resultFilter = resultFilter;
-
-    return result;
-}
-
 module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;
@@ -602,4 +567,3 @@ module.exports.buildSearchQueryResultsQuery = buildSearchQueryResultsQuery;
 module.exports.buildAPIQuery = buildAPIQuery;
 module.exports.buildQueryForYRBS = buildQueryForYRBS;
 module.exports.addCountsToAutoCompleteOptions = addCountsToAutoCompleteOptions;
-module.exports.buildQueryForBridgeRacePopulation = buildQueryForBridgeRacePopulation;

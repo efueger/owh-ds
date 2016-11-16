@@ -57,7 +57,7 @@ var searchRouter = function(app, rConfig) {
                 res.send( new result('error', response, "failed"));
             });
         } else if ( preparedQuery.apiQuery.searchFor === "bridge_race_sex" ) {
-            preparedQuery = queryBuilder.buildQueryForBridgeRacePopulation(q);
+            preparedQuery = queryBuilder.buildAPIQuery(q);
             var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
 
             new elasticSearch().aggregateCensusData(finalQuery[0]).then(function(response){

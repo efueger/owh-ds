@@ -548,42 +548,10 @@
             return deferred.promise;
         }
 
-        function buildQueryForBridgeRacePopulation(primaryFilter) {
-            var result = buildAPIQuery(primaryFilter);
-            var apiQuery = result.apiQuery;
-            var headers = result.headers;
-            var resultFilter = headers.columnHeaders.length > 0 ? headers.columnHeaders[0] : headers.rowHeaders[0];
-            var resultAggregation = utilService.findByKeyAndValue(apiQuery.aggregations.nested.table, 'key', resultFilter.key);
-            resultAggregation.isPrimary = true;
-            apiQuery.dataKeys = utilService.findAllNotContainsKeyAndValue(resultFilter.autoCompleteOptions, 'isAllOption', true);
-            angular.forEach(headers.columnHeaders.concat(headers.rowHeaders), function(eachFilter) {
-                var allValues = utilService.getValuesByKeyIncludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
-                if(eachFilter.key === resultFilter.key) {
-                    if(apiQuery.query[eachFilter.queryKey]) {
-                        apiQuery.query[eachFilter.queryKey].value = allValues;
-                    }
-                } else {
-                    if(!apiQuery.query[eachFilter.queryKey] || allValues.indexOf(apiQuery.query[eachFilter.queryKey].value) >= 0) {
-                        apiQuery.query[eachFilter.queryKey] = getFilterQuery(eachFilter);
-                        apiQuery.query[eachFilter.queryKey].value = utilService.getValuesByKeyExcludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
-                    }
-                }
-            });
-
-            var yearFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'current_year');
-
-            if(yearFilter.value.length != 1) {
-                headers.columnHeaders.push(yearFilter);
-                apiQuery.aggregations.nested.table.push(getGroupQuery(yearFilter));
-            }
-            result.resultFilter = resultFilter;
-            return result;
-        }
-
         function queryCensusAPI( primaryFilter ) {
 
             var deferred = $q.defer();
-            var apiQuery = buildQueryForBridgeRacePopulation(primaryFilter);
+            var apiQuery = buildAPIQuery(primaryFilter);
             var headers = apiQuery.headers;
 
             SearchService.searchResults(primaryFilter).then(function(response) {
@@ -861,8 +829,8 @@
             ];
 
             filters.censusHispanicOriginOptions =  [
-                { "key": "1", "title": "not Hispanic or Latino" },
-                { "key": "2", "title": "Hispanic or Latino" }
+                { "key": "Non Hispanic", "title": "Non Hispanic" },
+                { "key": "Hispanic or Latino", "title": "Hispanic or Latino" }
             ];
 
             filters.censusStateOptions =  [
