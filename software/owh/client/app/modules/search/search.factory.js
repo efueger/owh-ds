@@ -577,55 +577,55 @@
                 {key: false,title:'Off', tooltip:'Select to hide inline charts'}
             ];
             filters.allowInlineCharting = false;
+            //TODO check with @Gopal why mapping json don't have 'Other'
             filters.races = [
-                {key: '3',title: 'American Indian'},
-                {key: '4',title: 'Asian or Pacific Islander'},
-                {key: '2',title: 'Black'},
+                {key: 'American Indian',title: 'American Indian'},
+                {key: 'Asian or Pacific Islander',title: 'Asian or Pacific Islander'},
+                {key: 'Black',title: 'Black'},
                 {key: '0',title: 'Other (Puerto Rico only)'},
-                {key: '1',title: 'White'}
+                {key: 'White',title: 'White'}
             ];
-
             filters.hispanicOptions = [
-                {"key":"221-230","title":"Central American"},
-                {"key":"220","title":"Central and South American"},
-                {"key":"270-274","title":"Cuban"},
-                {"key":"275-279","title":"Dominican"},
-                {"key":"250-259","title":"Latin American"},
-                {"key":"210-219","title":"Mexican"},
-                {"key":"100-199","title":"Non-Hispanic"},
-                {"key":"280-299","title":"Other Hispanic"},
-                {"key":"260-269","title":"Puerto Rican"},
-                {"key":"231-249","title":"South American"},
-                {"key":"200-209","title":"Spaniard"},
-                {"key":"996-999","title":"Unknown"}
+                {"key":"Central American","title":"Central American"},
+                {"key":"Central and South American","title":"Central and South American"},
+                {"key":"Cuban","title":"Cuban"},
+                {"key":"Dominican","title":"Dominican"},
+                {"key":"Latin American","title":"Latin American"},
+                {"key":"Mexican","title":"Mexican"},
+                {"key":"Non-Hispanic","title":"Non-Hispanic"},
+                {"key":"Other Hispanic","title":"Other Hispanic"},
+                {"key":"Puerto Rican","title":"Puerto Rican"},
+                {"key":"South American","title":"South American"},
+                {"key":"Spaniard","title":"Spaniard"},
+                {"key":"Unknown","title":"Unknown"}
             ];
 
             filters.weekday = [
-                {key: '1', title: 'Sunday'},
-                {key: '2', title: 'Monday'},
-                {key: '3', title: 'Tuesday'},
-                {key: '4', title: 'Wednesday'},
-                {key: '5', title: 'Thursday'},
-                {key: '6', title: 'Friday'},
-                {key: '7', title: 'Saturday'},
-                {key: '9', title: 'Unknown'}
+                {key: 'Sunday', title: 'Sunday'},
+                {key: 'Monday', title: 'Monday'},
+                {key: 'Tuesday', title: 'Tuesday'},
+                {key: 'Wednesday', title: 'Wednesday'},
+                {key: 'Thursday', title: 'Thursday'},
+                {key: 'Friday', title: 'Friday'},
+                {key: 'Saturday', title: 'Saturday'},
+                {key: 'Unknown', title: 'Unknown'}
             ];
 
             filters.autopsy = [
-                {key: 'Y', title: 'Yes'},
-                {key: 'N', title: 'No'},
-                {key: 'U', title: 'Unknown'}
+                {key: 'Yes', title: 'Yes'},
+                {key: 'No', title: 'No'},
+                {key: 'Unknown', title: 'Unknown'}
             ];
 
             filters.podOptions = [
-                {key:'4',title:'Decedent’s home'},
-                {key:'5',title:'Hospice facility'},
-                {key:'3',title:'Hospital, Clinic or Medical Center-  Dead on Arrival'},
-                {key:'1',title:'Hospital, clinic or Medical Center-  Inpatient'},
-                {key:'2',title:'Hospital, Clinic or Medical Center-  Outpatient or admitted to Emergency Room'},
-                {key:'6',title:'Nursing home/long term care'},
-                {key:'9',title:'Place of death unknown'},
-                {key:'7',title:'Other'}
+                {key:'Decedent’s home',title:'Decedent’s home'},
+                {key:'Hospital, clinic or Medical Center - Patient status unknown',title:'Hospital, clinic or Medical Center-  Patient status unknown'},
+                {key:'Hospital, Clinic or Medical Center - Dead on Arrival',title:'Hospital, Clinic or Medical Center-  Dead on Arrival'},
+                {key:'Hospital, clinic or Medical Center - Inpatient',title:'Hospital, clinic or Medical Center-  Inpatient'},
+                {key:'Hospital, Clinic or Medical Center - Outpatient or admitted to Emergency Room',title:'Hospital, Clinic or Medical Center-  Outpatient or admitted to Emergency Room'},
+                {key:'Nursing home/long term care',title:'Nursing home/long term care'},
+                {key:'Place of death unknown',title:'Place of death unknown'},
+                {key:'Other',title:'Other'}
             ];
 
             filters.maritalStatuses = [
@@ -637,50 +637,50 @@
             ];
 
             filters.ageOptions = [
-                {key:'01-06',title:'0 -  4 years', min: 1, max: 5},
-                {key:'07-07',title:'5 -  9 years', min: 6, max: 10},
-                {key:'08-08',title:'10 -  14 years', min: 11, max: 15},
-                {key:'09-09',title:'15 - 19 years', min: 16, max: 20},
-                {key:'10-10',title:'20 - 24 years', min: 21, max: 25},
-                {key:'11-11',title:'25 - 29 years', min: 26, max: 30},
-                {key:'12-12',title:'30 - 34 years', min: 31, max: 35},
-                {key:'13-13',title:'35 - 39 years', min: 36, max: 40},
-                {key:'14-14',title:'40 - 44 years', min: 41, max: 45},
-                {key:'15-15',title:'45 - 49 years', min: 46, max: 50},
-                {key:'16-16',title:'50 - 54 years', min: 51, max: 55},
-                {key:'17-17',title:'55 - 59 years', min: 56, max: 60},
-                {key:'18-18',title:'60 - 64 years', min: 61, max: 65},
-                {key:'19-19',title:'65 - 69 years', min: 66, max: 70},
-                {key:'20-20',title:'70 - 74 years', min: 71, max: 75},
-                {key:'21-21',title:'75 - 79 years', min: 76, max: 80},
-                {key:'22-22',title:'80 - 84 years', min: 81, max: 85},
-                {key:'23-23',title:'85 - 89 years', min: 86, max: 90},
-                {key:'24-24',title:'90 - 94 years', min: 91, max: 95},
-                {key:'25-25',title:'95 - 99 years', min: 96, max: 100},
-                {key:'26-26',title:'>100', min: 101, max: 105},
-                {key:'27-27',title:'Age not stated', min: -5, max: 0}
+                {key:'0-4years',title:'0 - 4 years', min: 1, max: 5},
+                {key:'5-9years',title:'5 - 9 years', min: 6, max: 10},
+                {key:'10-14years',title:'10 - 14 years', min: 11, max: 15},
+                {key:'15-19years',title:'15 - 19 years', min: 16, max: 20},
+                {key:'20-24years',title:'20 - 24 years', min: 21, max: 25},
+                {key:'25-29years',title:'25 - 29 years', min: 26, max: 30},
+                {key:'30-34years',title:'30 - 34 years', min: 31, max: 35},
+                {key:'35-39years',title:'35 - 39 years', min: 36, max: 40},
+                {key:'40-44years',title:'40 - 44 years', min: 41, max: 45},
+                {key:'45-49years',title:'45 - 49 years', min: 46, max: 50},
+                {key:'50-54years',title:'50 - 54 years', min: 51, max: 55},
+                {key:'55-59years',title:'55 - 59 years', min: 56, max: 60},
+                {key:'60-64years',title:'60 - 64 years', min: 61, max: 65},
+                {key:'65-69years',title:'65 - 69 years', min: 66, max: 70},
+                {key:'70-74years',title:'70 - 74 years', min: 71, max: 75},
+                {key:'75-79years',title:'75 - 79 years', min: 76, max: 80},
+                {key:'80-84years',title:'80 - 84 years', min: 81, max: 85},
+                {key:'85-89years',title:'85 - 89 years', min: 86, max: 90},
+                {key:'90-94years',title:'90 - 94 years', min: 91, max: 95},
+                {key:'95-99years',title:'95 - 99 years', min: 96, max: 100},
+                {key:'100years and over',title:'>100', min: 101, max: 105},
+                {key:'Age not stated',title:'Age not stated', min: -5, max: 0}
             ];
 
             filters.genderOptions=[
-                {key:'F',title:'Female'},
-                {key:'M',title:'Male'}
+                {key:'Female',title:'Female'},
+                {key:'Male',title:'Male'}
             ];
 
             filters.yearOptions = [];
 
             filters.modOptions = [
-                {key:'01',title:'January'},
-                {key:'02',title:'February'},
-                {key:'03',title:'March'},
-                {key:'04',title:'April'},
-                {key:'05',title:'May'},
-                {key:'06',title:'June'},
-                {key:'07',title:'July'},
-                {key:'08',title:'August'},
-                {key:'09',title:'September'},
-                {key:'10',title:'October'},
-                {key:'11',title:'November'},
-                {key:'12',title:'December'}
+                {key:'January',title:'January'},
+                {key:'February',title:'February'},
+                {key:'March',title:'March'},
+                {key:'April',title:'April'},
+                {key:'May',title:'May'},
+                {key:'June',title:'June'},
+                {key:'July',title:'July'},
+                {key:'August',title:'August'},
+                {key:'September',title:'September'},
+                {key:'October',title:'October'},
+                {key:'November',title:'November'},
+                {key:'December',title:'December'}
             ];
 
             filters.ageSliderOptions = {

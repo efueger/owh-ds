@@ -17,8 +17,8 @@
         .filter('GenderTitle', function() {
             return function(input) {
                 input = input || '';
-                if(input === 'F') return 'Female';
-                if(input === 'M') return 'Male';
+                if(input === 'Female') return 'Female';
+                if(input === 'Male') return 'Male';
                 return input;
             };
         });

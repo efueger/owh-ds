@@ -242,7 +242,7 @@ describe('search factory ', function(){
         it('ageSliderOptions onstatechange', function () {
             filters.ageSliderOptions.onstatechange('0;10');
             var agegroupFilter = utils.findByKeyAndValue(filters.allMortalityFilters, 'key', 'agegroup');
-            expect(agegroupFilter.value).toEqual([ '01-06', '07-07', '27-27' ]);
+            expect(agegroupFilter.value).toEqual([ '0-4years', '5-9years', 'Age not stated' ]);
         });
 
         it('ageSliderOptions onstatechange selectedPrimaryFilter initiated', function () {
