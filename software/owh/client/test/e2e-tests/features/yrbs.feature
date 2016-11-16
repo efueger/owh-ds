@@ -11,29 +11,35 @@ Scenario: Checkboxes
   When I looks at the filter sub categories
   Then I should be able to select more than one. The radio buttons must be changed to checkboxes
 
-Scenario: Default
-  Given user is on search page
-#  Given user select YRBS as primary filter
-#  Then the default filter pre-selected should be Race
-#  And side menu slides back into view
+#Scenario: Default
+ # Given user is on search page
+ # Given user select YRBS as primary filter
+  #Then the default filter pre-selected should be Race
+ # And side menu slides back into view
 
-#Scenario: Hide Sidebar
-#  When user clicks hide filter button
-#  Then side menu slides away
-#  Then user sees button to show filters
-#  And then table and visualizations adjust to that they use up the entire available screen space
-#  And the background highlight is in lighter purple (button color)
+Scenario: Hide Sidebar
+  When user clicks hide filter button
+  Then side menu slides away
+  Then user sees button to show filters
+  And then table and visualizations adjust to that they use up the entire available screen space
+  And the background highlight is in lighter purple (button color)
 
-#Scenario: Un collapse sidebar
-#  When user clicks show filters button
-#  Then side menu slides back into view
-#  And the entire table and visualizations adjust to the reduced screen space
-#  And there is button to hide filter
+Scenario: Un collapse sidebar
+  When user clicks show filters button
+  Then side menu slides back into view
+  And the entire table and visualizations adjust to the reduced screen space
+  And there is button to hide filter
 
-#Scenario: sort order
+#TODO: This scenario passing in local, need data to run on Travis-CI
+#Scenario: show chart for each question
 #  Given user is on search page
 #  Given user select YRBS as primary filter
-#  Then filters should be in this order "year, yrbsSex, yrbsRace, yrbsGrade, question"
+#  Then each question should have chart icon displayed
+
+#Scenario: sort order
+ # Given user is on search page
+# Given user select YRBS as primary filter
+ # Then filters should be in this order "year, yrbsSex, yrbsRace, yrbsGrade, question"
 
 
 #Scenario: Category Collapsible
@@ -56,6 +62,11 @@ Scenario: Default
 #  When the user clicks on 'Show Less'
 #  Then the category to reset back to the original view of the two questions
 #  And 'Show Less' should be replaced with 'Show # More'
+
+#Scenario: Default Questions
+#    Given user is on search page
+#    Given user select YRBS as primary filter
+#    Then each category has two questions in the given order
 
 #Scenario: Category Title
 #    Given user is on search page
