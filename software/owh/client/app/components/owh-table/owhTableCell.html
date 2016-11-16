@@ -17,10 +17,15 @@
                     <span ng-if="otcc.cell.title !== 'suppressed'">{{ otcc.cell.title | number }}</span>
                     <span ng-if="otcc.cell.title === 'suppressed'">Suppressed</span>
                 </div>
-                <div>
+                <div ng-if="otcc.tableView === 'crude_death_rates'">
                     <label ng-if="otcc.rowIndex === 0" class="owh-table__label">Population</label>
                     <span ng-if="otcc.cell.pop">{{ otcc.cell.pop | number }}</span>
                     <span ng-if="!otcc.cell.pop">Not Available</span>
+                </div>
+                <div ng-if="otcc.tableView === 'age-adjusted_death_rates'">
+                    <label ng-if="otcc.rowIndex === 0" class="owh-table__label">Population</label>
+                    <span ng-if="otcc.cell.standardPop">{{ otcc.cell.standardPop | number }}</span>
+                    <span ng-if="!otcc.cell.standardPop">Not Available</span>
                 </div>
             </div>
         </div>

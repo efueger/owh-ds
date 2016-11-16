@@ -286,9 +286,11 @@ var mergeAgeAdjustedRates = function(mort, rates) {
                 console.log('age element', age);
                 if(age['Total']) {
                     mort[key][i]['ageAdjustedRate'] = age['Total'].ageAdjustedRate;
+                    mort[key][i]['standardPop'] = age['Total'].standardPop;
                     mergeAgeAdjustedRates(mort[key][i], age);
                 } else {
                     mort[key][i]['ageAdjustedRate'] = age.ageAdjustedRate;
+                    mort[key][i]['standardPop'] = age.standardPop;
                 }
 
 

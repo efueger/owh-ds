@@ -242,7 +242,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the age adjusted rates are shown for each row$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[1]).to.equal('Rate\n562.5\nDeaths\n98,841\nPopulation\n28,544,528');
+            expect(value[1]).to.equal('Rate\n562.5\nDeaths\n98,841\nPopulation\n29,970,935');
         });
     });
 
