@@ -82,6 +82,7 @@ Scenario: Decimal Precision
   Then the Rates and Percentages should have a one decimal precision
 
 Scenario: Quick visualizations
+  Given user is on search page
   When I see the quick visualizations
   Then they're displayed same as before and nothing changes
 

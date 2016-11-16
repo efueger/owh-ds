@@ -16,7 +16,7 @@ var MortalitySearchPage = function() {
     msp.interestedInSelectBox = element(by.id('interestedIn'));
     msp.deathRatesOption = element(by.cssContainingText('option', 'Crude Death Rates'));
     msp.tableViewDropdown = element(by.model('ots.selectedShowFilter'));
-    msp.mainSearch = element(by.css('owh-search'));
+    msp.mainSearch = element(by.tagName('owh-search'));
     msp.deathRateDisclaimer = element(by.id('death-rate-disclaimer'));
 
     msp.getSelectedFilterType = function() {

@@ -13,7 +13,8 @@ Scenario: Checkboxes
 
 Scenario: Default
   Given user is on search page
-  Given user select YRBS as primary filter
+  #Given user select YRBS as primary filter
+  When I change 'I'm interested in' dropdown value to "Youth Risk Behavior"
   Then the default filter pre-selected should be Race
   And side menu slides back into view
 
@@ -32,7 +33,8 @@ Scenario: Un collapse sidebar
 
 Scenario: show chart for each question
   Given user is on search page
-  Given user select YRBS as primary filter
+  #Given user select YRBS as primary filter
+  When I change 'I'm interested in' dropdown value to "Youth Risk Behavior"
   Then each question should have chart icon displayed
 
 Scenario: sort order
