@@ -37,7 +37,7 @@ var populateDataWithMappings = function(resp, countKey) {
                 var dataIndex = Number(keySplits[2]);
                 var aggData = {};
                 // console.log("dataIndex: "+JSON.stringify(data[key].buckets));
-                aggData[dataKey] = populateAggregatedData(data[key].buckets, countKey, 3);
+                aggData[dataKey] = populateAggregatedData(data[key].buckets, countKey, 3, true);
                 // console.log("data");
                 // console.log(dataIndex);
                 // console.log(dataKey);
@@ -52,7 +52,7 @@ var populateDataWithMappings = function(resp, countKey) {
     return result;
 };
 
-var populateAggregatedData = function(buckets, countKey, splitIndex) {
+var populateAggregatedData = function(buckets, countKey, splitIndex, map) {
     var result = [];
     for(var index in buckets) {
         // console.log(buckets[index]);
@@ -72,14 +72,14 @@ var populateAggregatedData = function(buckets, countKey, splitIndex) {
                 }
             }
             if( innerObjKey ){
-                aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex);
+                aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex, map);
                 //check if total should be suppressed
                 if(countKey === 'deaths' && isMortalityTotalSuppressed(buckets[index][innerObjKey].buckets)) {
                     aggregation[countKey] = 'suppressed';
                 }
             }
-            //replaces suppressed with 0 for map and chart data
-            if(splitIndex === 3) {
+            //replaces suppressed with 0 for chart data
+            if(splitIndex === 3 && !map) {
                 aggregation[countKey] = aggregation[countKey] === 'suppressed' ? 0 : aggregation[countKey];
             }
             result.push(aggregation);
@@ -152,6 +152,24 @@ var applySuppressionRules = function(key, value) {
         }
     }
     return value;
+};
+
+//matches suppressed table totals with corresponding side filter total and replace if necessary
+var suppressSideFilterTotals = function(sideFilter, data) {
+    for(var key in data) {
+        if(key !== 'deaths' && key !== 'name') {
+            for(var i = 0; i < data[key].length; i++) {
+                if(data[key][i].deaths === 'suppressed') {
+                    for(var j = 0; j < sideFilter[key].length; j++) {
+                        if(sideFilter[key][j].name === data[key][i].name) {
+                            sideFilter[key][j].deaths = data[key][i].deaths;
+                        }
+                    }
+                }
+                suppressSideFilterTotals(sideFilter, data[key][i]);
+            }
+        }
+    }
 };
 
 var populateYRBSData = function( results, headers, aggregations) {
@@ -265,3 +283,4 @@ function numberWithCommas(number) {
 };
 module.exports.populateDataWithMappings = populateDataWithMappings;
 module.exports.populateYRBSData = populateYRBSData;
+module.exports.suppressSideFilterTotals = suppressSideFilterTotals;
