@@ -35,7 +35,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^user sees side filter$/, function () {
-        browser.sleep(300);
+        browser.sleep(30000);
         expect(mortalityPage.sideMenu.isDisplayed()).to.eventually.equal(true);
     });
 
@@ -186,6 +186,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.When(/^user expands race options$/, function () {
+        browser.sleep(30000);
         mortalityPage.raceOptionsLink.click();
     });
 
@@ -213,6 +214,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.When(/^the user chooses the option 'Death Rates'$/, function () {
+        browser.sleep(30000);
          mortalityPage.deathRatesOption.click();
     });
 
