@@ -2,7 +2,7 @@ const util = require('util');
 var merge = require('merge');
 
 var prepareCensusAggregationQuery = function(aggregations) {
-    var censusQuery = {};
+    var censusQuery = { size: 0};
     censusQuery.aggregations = {};
     if (aggregations['nested']) {
         if (aggregations['nested']['table'] && aggregations['nested']['table'].length > 0) {

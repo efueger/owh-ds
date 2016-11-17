@@ -1,7 +1,7 @@
 var result = require('../models/result');
 var elasticSearch = require('../models/elasticSearch');
 var queryBuilder = require('../api/elasticQueryBuilder');
-const util = require('util');
+var searchUtils = require('../api/utils');
 var logger = require('../config/logging')
 
 var searchRouter = function(app, rConfig) {
@@ -29,7 +29,7 @@ var searchRouter = function(app, rConfig) {
                      var finalAPIQuery = queryBuilder.buildSearchQuery(apiQuery, true);
                      new elasticSearch().aggregateDeaths(finalAPIQuery).then(function (sideFilterResults) {
                          new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
-                             util.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
+                             searchUtils.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
                              var insertQuery = queryBuilder.buildInsertQueryResultsQuery(JSON.stringify(q), JSON.stringify(response), "Mortality", hashCode, JSON.stringify(sideFilterResults));
                              new elasticSearch().insertQueryData(insertQuery).then(function(anotherResponse){
                                  logger.info("Qeury with "+hashCode+" added to query cache");

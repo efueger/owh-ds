@@ -66,17 +66,15 @@
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
         sc.changeViewFilter = changeViewFilter;
-
-        if (sc.queryID) {
-            //Intial call queryId will be empty
-            if(sc.queryID === "") {
-                searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
-                    sc.queryID = hash;
-                    $state.go('search', {queryID: sc.queryID});
-                });
-            } else {
-                search(false);
-            }
+        //Intial call queryId will be empty
+        if(sc.queryID === "") {
+            searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
+                sc.queryID = hash;
+                $state.go('search', {queryID: sc.queryID});
+            });
+        }
+        if (sc.queryID){
+            search(false);
         }
 
         function changeViewFilter(selectedFilter) {
