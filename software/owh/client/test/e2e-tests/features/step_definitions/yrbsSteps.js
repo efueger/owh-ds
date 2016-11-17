@@ -9,6 +9,7 @@ var yrbsStepDefinitionsWrapper = function () {
     var yrbsPage = require('../support/yrbspage.po')
 
     this.Given(/^user select YRBS as primary filter$/, function () {
+        browser.sleep(300);
         yrbsPage.yrbsOption.click();
     });
 
@@ -25,6 +26,7 @@ var yrbsStepDefinitionsWrapper = function () {
     });
 
     this.When(/^the user clicks on Show \# More under the questions in any category$/, function () {
+        browser.sleep(30000);
         yrbsPage.getShowMoreLinks().then(function(elements){
             elements[1].click();
         });
@@ -157,9 +159,9 @@ var yrbsStepDefinitionsWrapper = function () {
         var allFilters = element(by.css('.side-filters')).all(by.tagName('li'));
         expect(allFilters.get(0).getText()).to.eventually.contains("Year");
         expect(allFilters.get(1).getText()).to.eventually.contains("All");
-        expect(allFilters.get(2).getText()).to.eventually.contains("2009");
-        expect(allFilters.get(3).getText()).to.eventually.contains("2011");
-        expect(allFilters.get(4).getText()).to.eventually.contains("2013");
+        expect(allFilters.get(2).getText()).to.eventually.contains("2015");
+        expect(allFilters.get(3).getText()).to.eventually.contains("2013");
+        expect(allFilters.get(4).getText()).to.eventually.contains("2011");
         expect(allFilters.get(7).getText()).to.eventually.contains("Sex");
         expect(allFilters.get(11).getText()).to.eventually.contains("Race");
         expect(allFilters.get(21).getText()).to.eventually.contains("Grade");
@@ -179,6 +181,12 @@ var yrbsStepDefinitionsWrapper = function () {
                 expect(size).to.equal(1);
             });
         });
+    });
+
+    this.Given(/^filter "([^"]*)" and option "([^"]*)" selected$/, function (filterName, option) {
+        var raceFilter = yrbsPage.selectSideFilter(filterName);
+        var raceParentElement = raceFilter.element(by.xpath('..')).element(by.xpath('..')).element(by.xpath('..'));
+        raceParentElement.element(by.xpath('.//*[.="'+option+'"]')).click();
     });
 };
 module.exports = yrbsStepDefinitionsWrapper;

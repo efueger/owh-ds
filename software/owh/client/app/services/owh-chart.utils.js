@@ -111,7 +111,7 @@
 
                     primaryDataObj["key"] = primaryOption.title;
                     if(filter1.key === 'gender') {
-                        primaryDataObj["color"] = primaryOption.key === 'M' ?  "#009aff" : "#fe66ff";
+                        primaryDataObj["color"] = primaryOption.key === 'Male' ?  "#009aff" : "#fe66ff";
                     }
                     primaryDataObj["values"] = [];
                     primaryDataObj[primaryFilter.key] = eachPrimaryData ? eachPrimaryData[primaryFilter.key]: 0;
@@ -220,7 +220,7 @@
                     primaryObj["key"] = primaryOption.title;
                     primaryObj["values"] = [];
                     if(filter1.key === 'gender') {
-                        primaryObj["color"] = primaryOption.key === 'M' ?  "#009aff" : "#fe66ff";
+                        primaryObj["color"] = primaryOption.key === 'Male' ?  "#009aff" : "#fe66ff";
                     }
 
                     if(eachPrimaryData && eachPrimaryData[filter2.key]) {
