@@ -2,7 +2,7 @@ const util = require('util');
 var merge = require('merge');
 
 var prepareCensusAggregationQuery = function(aggregations) {
-    var censusQuery = {};
+    var censusQuery = { size: 0};
     censusQuery.aggregations = {};
     if (aggregations['nested']) {
         if (aggregations['nested']['table'] && aggregations['nested']['table'].length > 0) {
@@ -41,7 +41,6 @@ var generateCensusAggregationQuery = function( aggQuery, groupByKeyStart ) {
 };
 
 var prepareAggregationQuery = function(aggregations) {
-    console.log(aggregations);
     var elasticQuery = {};
     elasticQuery.aggregations = {};
     //build array for
@@ -65,7 +64,6 @@ var prepareAggregationQuery = function(aggregations) {
             }
         }
     }
-    console.log(JSON.stringify(elasticQuery));
     return elasticQuery;
 };
 
@@ -110,11 +108,11 @@ var buildInsertQueryResultsQuery = function (query, results, dataset, hashcode, 
 };
 
 
-var buildSearchQueryResultsQuery = function(hascode) {
+var buildSearchQueryResultsQuery = function(hashcode) {
     var searchQuery = {
         "query": {
-            "match": {
-                "queryID": hascode
+            "term": {
+                "queryID": hashcode
             }
         }
     }
