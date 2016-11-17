@@ -28,10 +28,8 @@ var homeStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^I should get search page with default filter type "([^"]*)"$/, function (arg1) {
-        browser.sleep(3000);
-        mortalityPage.getSelectedFilterType().then(function(value){
-            expect(value).to.equal(arg1)
-        });
+        browser.sleep(60000);
+        expect(mortalityPage.getSelectedFilterType()).to.eventually.equal(arg1);
     });
 
     this.When(/^I click on explore button in Birth card under womens health section$/, function () {
