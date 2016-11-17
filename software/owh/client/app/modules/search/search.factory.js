@@ -240,8 +240,7 @@
                             });
                         } else {
                             var autoCompleteOptions = [];
-                            var sortedEachFilterData = utilService.sortByKey(eachFilterData, 'name', false);
-                            angular.forEach(sortedEachFilterData, function(eachData) {
+                            angular.forEach(eachFilterData, function(eachData) {
                                 var eachOption = {  key: eachData.name, title: eachData.name };
                                 eachOption[primaryFilter.key] = eachData[primaryFilter.key];
                                 eachOption['count'] = eachData[primaryFilter.key];

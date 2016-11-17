@@ -56,7 +56,8 @@
 
         sc.optionsSort = {
             "hispanicOrigin": ['Non-Hispanic', 'Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic', 'Unknown'],
-            "race": ['0', '1', '2', '3', '4']
+            "race": ['Other (Puerto Rico only)', 'White', 'Black', 'American Indian', 'Asian or Pacific Islander'],
+            "year": ['All', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
         };
         //show certain filters for different table views
         sc.availableFilters = {
