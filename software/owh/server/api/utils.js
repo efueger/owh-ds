@@ -271,7 +271,7 @@ var mergeAgeAdjustedRates = function(mort, rates) {
     };
 
     for(var key in mort) {
-        if(key !== 'deaths' && key !== 'name' && key !== 'pop' && key !== 'ageAdjustedRate') {
+        if(key !== 'deaths' && key !== 'name' && key !== 'pop' && key !== 'ageAdjustedRate' && key !== 'standardPop') {
             for(var i = 0; i < mort[key].length; i++) {
                 var age = rates[mort[key][i].name];
                 if(!age) {
