@@ -21,10 +21,12 @@
         sc.showFbDialog = showFbDialog;
         sc.changeViewFilter = changeViewFilter;
         sc.getMixedTable = getMixedTable;
+        sc.skipRefresh = false;
 
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
         var mortalityFilter = null;
+
         sc.sideMenu = {visible: true};
         //For intial search call
         if($stateParams.selectedFilters == null) {
@@ -55,14 +57,14 @@
         sc.optionsGroup = {
             "hispanicOrigin": {
                 "hispanic": {
-                    "options": ['220', '221-230', '270-274', '275-279', '250-259', '210-219', '260-269', '231-249', '200-209', '280-299'],
+                    "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard'],
                     "title": "Hispanic"
                 },
                 "nonHispanic": {
-                    "options": ['100-199'],
+                    "options": ['Non-Hispanic'],
                     "title": 'Non-Hispanic'
                 },
-                "unknown": ['996-999']
+                "unknown": ['Unknown']
             },
             "race": ['0', '1', '2', '3', '4']
         };
@@ -73,10 +75,6 @@
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
 
-       /* populateFilterCounts(mortalityFilter).then(function() {
-           search(sc.filters.selectedPrimaryFilter, sc.filters, false);
-        });*/
-        //TODO: we will need to change the order of a few things
         //Intial call queryId will be empty
         if(sc.queryID === "") {
             searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
@@ -84,18 +82,13 @@
                 $state.go('search', {queryID: sc.queryID});
             });
         }
-        /*TODO: Commented populateFilterCounts because, instead multiple backend
-          requests to searchResutls, combine it to one request and in backend making
-          two elasticsearch request
-        */
-        //populateFilterCounts(mortalityFilter, null, sc.queryID).then(function() {
-            if(sc.queryID) {
-                search(sc.filters.selectedPrimaryFilter, sc.filters, false);
-            }
-        //});
+        if (sc.queryID){
+            search(false);
+        }
+
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
-                search(sc.filters.selectedPrimaryFilter, sc.filters, true);
+                search(true);
             }
         }, true);
 
@@ -103,32 +96,24 @@
             sc.tableView = selectedFilter.key;
         }
 
-        function search(selectedFilter, allFilters, isFilterChanged) {
+        function search(isFilterChanged) {
             //TODO: would be better if there was a way to filter using query but also get all possible values back from api
-            if(isFilterChanged) {
-               // sc.sideFilterQuery = true;
-                searchFactory.generateHashCode(selectedFilter).then(function(hash){
+            if (isFilterChanged && !$rootScope.requestProcessing) {
+                // sc.sideFilterQuery = true;
+                searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function (hash) {
                     sc.queryID = hash;
-                    $state.go('search', {queryID: sc.queryID, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
+                    $state.go('search', {
+                        queryID: sc.queryID,
+                        allFilters: sc.filters,
+                        selectedFilters: sc.filters.selectedPrimaryFilter,
+                        tableView: sc.tableView
+                    });
                 });
-
             }
             else {
-                /*TODO: Commented populateFilterCounts because, instead multiple backend
-                 requests to searchResutls, combine it to one request and in backend making
-                 two elasticsearch request
-                 */
-              //   populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
-                    console.log('query hash detected');
-                    primaryFilterChanged(selectedFilter, sc.queryID);
-               // });
+                primaryFilterChanged(sc.filters.selectedPrimaryFilter, sc.queryID);
             }
         }
-
-        //@TODO we don't need this method.
-        /*function populateFilterCounts(filter, query, queryID) {
-            return searchFactory.addCountsToAutoCompleteOptions(filter, query, queryID);
-        }*/
 
         function downloadCSV() {
             var data = sc.getMixedTable(sc.filters.selectedPrimaryFilter);
@@ -225,6 +210,7 @@
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
+
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
                 //populate side filters based on cached query filters
                 if(response.queryJSON) {
@@ -248,6 +234,7 @@
                     sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                     sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
                 }
+                sc.filters.selectedPrimaryFilter.initiated = true;
             });
         }
 

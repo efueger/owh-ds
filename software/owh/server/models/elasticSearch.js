@@ -45,17 +45,50 @@ ElasticClient.prototype.getClient = function(database) {
 };
 
 ElasticClient.prototype.aggregateCensusDataForMortalityQuery = function(query){
-    var client = this.getClient(census_index);
+    var deferred = Q.defer();
+    this.executeESQuery(census_index, census_type, query).then(function (resp) {
+        deferred.resolve(searchUtils.populateDataWithMappings(resp, 'pop'));
+    });
+    return deferred.promise;
+};
+
+ElasticClient.prototype.executeESQuery = function(index, type, query){
+    var client = this.getClient(index);
     var deferred = Q.defer();
     client.search({
-        index:census_type,
+        index:type,
         body:query,
         request_cache:true
     }).then(function (resp) {
-        deferred.resolve(searchUtils.populateDataWithMappings(resp, 'pop'));
+        deferred.resolve(resp);
     }, function (err) {
         logger.error(err.message);
         deferred.reject(err);
+    });
+
+    return deferred.promise;
+};
+
+
+ElasticClient.prototype.executeMortilyQueries = function(query){
+    var deferred = Q.defer();
+    var queryPromises = [];
+    var aggrs = query.aggregations;
+    for (var aggr in aggrs){
+        var newQ = {size: 0, query: query.query, aggregations:{}};
+        newQ.aggregations[aggr] = aggrs[aggr];
+        var p = this.executeESQuery(mortality_index, mortality_type, newQ);
+        queryPromises.push(p);
+    }
+
+    Q.all(queryPromises).then(function(resp){
+        var mergedResult = resp[0];
+        for (var i =1; i< resp.length; i++){
+            for (var key in resp[i].aggregations){
+                mergedResult.aggregations[key] = resp[i].aggregations[key];
+            }
+        }
+        deferred.resolve(mergedResult);
     });
 
     return deferred.promise;
@@ -102,30 +135,24 @@ ElasticClient.prototype.aggregateDeaths = function(query){
     var client = this.getClient(mortality_index);
     var deferred = Q.defer();
     if(query[1]){
-        this.aggregateCensusDataForMortalityQuery(query[1]).then(function(censusData) {
-            client.search({
-                index:mortality_type,
-                body:query[0],
-                request_cache:true
-            }).then(function (resp) {
-                var data = searchUtils.populateDataWithMappings(resp, 'deaths');
-                self.mergeWithCensusData(data, censusData);
-                deferred.resolve(data);
-            }, function (err) {
-                logger.error(err.message);
-                deferred.reject(err);
-            });
-        }, function(err) {
+        logger.debug("Mortality ES Query: "+ JSON.stringify( query[0]));
+        logger.debug("Census ES Query: "+ JSON.stringify( query[1]));
+        var promises = [
+            this.executeMortilyQueries(query[0]),
+            this.aggregateCensusDataForMortalityQuery(query[1])
+        ];
+        Q.all(promises).then( function (resp) {
+            var data = searchUtils.populateDataWithMappings(resp[0], 'deaths');
+            self.mergeWithCensusData(data, resp[1]);
+            deferred.resolve(data);
+        }, function (err) {
             logger.error(err.message);
             deferred.reject(err);
         });
     }
     else {
-        client.search({
-            index:mortality_type,
-            body:query[0],
-            request_cache:true
-        }).then(function (resp) {
+        logger.debug("Mortality ES Query: "+ JSON.stringify( query[0]));
+        this.executeESQuery(mortality_index, mortality_type,query[0]).then(function (resp) {
             var data = searchUtils.populateDataWithMappings(resp, 'deaths');
             deferred.resolve(data);
         }, function (err) {
@@ -157,12 +184,12 @@ ElasticClient.prototype.aggregateMentalHealth = function(query, headers, aggrega
 ElasticClient.prototype.getQueryResults = function(query){
     var client = this.getClient(_queryIndex);
     var deferred = Q.defer();
+
     client.search({
        index: _queryType,
        body: query,
        request_cache:true
     }).then(function (resp){
-        logger.info("Get queryData successfully completed");
         var results = resp.hits.hits.length > 0 ? resp.hits.hits[0]:null ;
         deferred.resolve(results);
     }, function(err){
@@ -186,7 +213,7 @@ ElasticClient.prototype.insertQueryData = function (query) {
         type: _queryType,
         body: query
     }).then(function (resp){
-        logger.info("inserted new record in queryData");
+
         deferred.resolve(resp);
     }, function(err){
         logger.error("Failed to insert record in queryResults ", err.message);

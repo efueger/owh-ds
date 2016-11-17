@@ -70,9 +70,9 @@ describe("Search controller: ", function () {
             }}
         }
         var maps = {"states":[
-            {"name":"NY","deaths":53107,"sex":[{"name":"M","deaths":27003},{"name":"F","deaths":26104}]},
-            {"name":"MT","deaths":53060,"sex":[{"name":"M","deaths":26800},{"name":"F","deaths":26260}]},
-            {"name":"WA","deaths":53057,"sex":[{"name":"M","deaths":26955},{"name":"F","deaths":26102}]}
+            {"name":"NY","deaths":53107,"sex":[{"name":"Male","deaths":27003},{"name":"Female","deaths":26104}]},
+            {"name":"MT","deaths":53060,"sex":[{"name":"Male","deaths":26800},{"name":"Female","deaths":26260}]},
+            {"name":"WA","deaths":53057,"sex":[{"name":"Male","deaths":26955},{"name":"Female","deaths":26102}]}
         ]};
 
 
