@@ -270,20 +270,13 @@ var mergeAgeAdjustedRates = function(mort, rates) {
         'American Indian': 'American Indian or Alaska Native',
     };
 
-    console.log('mort', JSON.stringify(mort));
-    console.log('rates', rates);
-
     for(var key in mort) {
         if(key !== 'deaths' && key !== 'name' && key !== 'pop' && key !== 'ageAdjustedRate') {
-            console.log('mort key', mort[key]);
             for(var i = 0; i < mort[key].length; i++) {
-                console.log('age element', rates[mort[key][i].name]);
                 var age = rates[mort[key][i].name];
                 if(!age) {
                     age = rates[keyMap[mort[key][i].name]];
                 }
-                console.log('mort element', mort[key][i]);
-                console.log('age element', age);
                 if(age['Total']) {
                     mort[key][i]['ageAdjustedRate'] = age['Total'].ageAdjustedRate;
                     mort[key][i]['standardPop'] = age['Total'].standardPop;
@@ -292,8 +285,6 @@ var mergeAgeAdjustedRates = function(mort, rates) {
                     mort[key][i]['ageAdjustedRate'] = age.ageAdjustedRate;
                     mort[key][i]['standardPop'] = age.standardPop;
                 }
-
-
             }
         }
     }
