@@ -61,6 +61,7 @@
         //show certain filters for different table views
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race'],
+            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters']
         };
         sc.showFbDialog = showFbDialog;
         sc.queryID = $stateParams.queryID;
