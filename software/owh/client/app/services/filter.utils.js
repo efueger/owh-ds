@@ -44,7 +44,7 @@
 
             var censusRaceOptions =  [
                 { "key": "White", "title": "White" },
-                { "key": "Black or African American", "title": "Black or African American" },
+                { "key": "Black", "title": "Black or African American" },
                 { "key": "American Indian", "title": "American Indian" },
                 { "key": "Asian or Pacific Islander", "title": "Asian or Pacific Islander" }
             ];

@@ -21,10 +21,12 @@
         sc.showFbDialog = showFbDialog;
         sc.changeViewFilter = changeViewFilter;
         sc.getMixedTable = getMixedTable;
+        sc.skipRefresh = false;
 
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
         var mortalityFilter = null;
+
         sc.sideMenu = {visible: true};
         //For intial search call
         if($stateParams.selectedFilters == null) {
@@ -65,11 +67,6 @@
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
         sc.changeViewFilter = changeViewFilter;
-
-       /* populateFilterCounts(mortalityFilter).then(function() {
-           search(sc.filters.selectedPrimaryFilter, sc.filters, false);
-        });*/
-        //TODO: we will need to change the order of a few things
         //Intial call queryId will be empty
         if(sc.queryID === "") {
             searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
@@ -77,51 +74,32 @@
                 $state.go('search', {queryID: sc.queryID});
             });
         }
-        /*TODO: Commented populateFilterCounts because, instead multiple backend
-          requests to searchResutls, combine it to one request and in backend making
-          two elasticsearch request
-        */
-        //populateFilterCounts(mortalityFilter, null, sc.queryID).then(function() {
-            if(sc.queryID) {
-                search(sc.filters.selectedPrimaryFilter, sc.filters, false);
-            }
-        //});
-        $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
-            if(newValue !== oldValue) {
-                search(sc.filters.selectedPrimaryFilter, sc.filters, true);
-            }
-        }, true);
+        if (sc.queryID){
+            search(false);
+        }
 
         function changeViewFilter(selectedFilter) {
             sc.tableView = selectedFilter.key;
         }
 
-        function search(selectedFilter, allFilters, isFilterChanged) {
+        function search(isFilterChanged) {
             //TODO: would be better if there was a way to filter using query but also get all possible values back from api
-            if(isFilterChanged) {
-               // sc.sideFilterQuery = true;
-                searchFactory.generateHashCode(selectedFilter).then(function(hash){
+            if (isFilterChanged && !$rootScope.requestProcessing) {
+                // sc.sideFilterQuery = true;
+                searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function (hash) {
                     sc.queryID = hash;
-                    $state.go('search', {queryID: sc.queryID, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
+                    $state.go('search', {
+                        queryID: sc.queryID,
+                        allFilters: sc.filters,
+                        selectedFilters: sc.filters.selectedPrimaryFilter,
+                        tableView: sc.tableView
+                    });
                 });
-
             }
             else {
-                /*TODO: Commented populateFilterCounts because, instead multiple backend
-                 requests to searchResutls, combine it to one request and in backend making
-                 two elasticsearch request
-                 */
-              //   populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
-                    console.log('query hash detected');
-                    primaryFilterChanged(selectedFilter, sc.queryID);
-               // });
+                primaryFilterChanged(sc.filters.selectedPrimaryFilter, sc.queryID);
             }
         }
-
-        //@TODO we don't need this method.
-        /*function populateFilterCounts(filter, query, queryID) {
-            return searchFactory.addCountsToAutoCompleteOptions(filter, query, queryID);
-        }*/
 
         function downloadCSV() {
             var data = sc.getMixedTable(sc.filters.selectedPrimaryFilter);
@@ -241,6 +219,7 @@
                     sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                     sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
                 }
+                sc.filters.selectedPrimaryFilter.initiated = true;
             });
         }
 

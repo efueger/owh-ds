@@ -23,30 +23,13 @@ var homeStepDefinitionsWrapper = function () {
     this.When(/^I click on Explore button in Health Information Gateway section$/, function () {
         homePage.quickHealthExploreBtn.click();
     });
-
-    this.Then(/^I should get search page with default filter type mortality$/, function () {
-        browser.getCurrentUrl().then(function(url) {
-            expect(url).to.contains("/search/");
-        });
-        mortalityPage.getSelectedFilterType().then(function(value){
-            expect(value).to.equal("Mortality");
-        });
-        // mortalityPage.getByTypeSelectedFilters().then(function(filterArray){
-        //     expect(filterArray.length).to.equal(2);
-        // });
-    });
-
     this.When(/^I click on Explore button in Youth Related card under Behavioral Risk$/, function () {
         homePage.mentalExplorerLink.click();
     });
 
     this.Then(/^I should get search page with default filter type "([^"]*)"$/, function (arg1) {
-        browser.getCurrentUrl().then(function(url) {
-            expect(url).to.contains("/search/");
-        });
-        mortalityPage.getSelectedFilterType().then(function(value){
-            expect(value).to.equal(arg1)
-        });
+        browser.sleep(60000);
+        expect(mortalityPage.getSelectedFilterType()).to.eventually.equal(arg1);
     });
 
     this.When(/^I click on explore button in Birth card under womens health section$/, function () {

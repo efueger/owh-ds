@@ -43,7 +43,7 @@
         "queryKey": "race",
         "primary": false,
         "value": [
-          "1"
+          "White"
         ],
         "groupBy": "row",
         "type": "label.filter.group.demographics",
@@ -51,21 +51,21 @@
         "defaultGroup": "column",
         "autoCompleteOptions": [
           {
-            "key": "3",
+            "key": "American Indian",
             "title": "American Indian",
             "deaths": "83,206",
             "count": 83206,
             "deathsPercentage": 0.65
           },
           {
-            "key": "4",
+            "key": "Asian or Pacific Islander",
             "title": "Asian or Pacific Islander",
             "deaths": "284,525",
             "count": 284525,
             "deathsPercentage": 2.23
           },
           {
-            "key": "2",
+            "key": "Black",
             "title": "Black",
             "deaths": "1,486,573",
             "count": 1486573,
@@ -79,7 +79,7 @@
             "deathsPercentage": 0
           },
           {
-            "key": "1",
+            "key": "White",
             "title": "White",
             "deaths": "10,918,196",
             "count": 10918196,
@@ -102,14 +102,14 @@
         "showChart": true,
         "autoCompleteOptions": [
           {
-            "key": "F",
+            "key": "Female",
             "title": "Female",
             "deaths": "6,362,211",
             "count": 6362211,
             "deathsPercentage": 49.81
           },
           {
-            "key": "M",
+            "key": "Male",
             "title": "Male",
             "deaths": "6,410,289",
             "count": 6410289,
@@ -180,7 +180,7 @@
             "queryKey": "race",
             "primary": false,
             "value": [
-              "1"
+              "White"
             ],
             "groupBy": "row",
             "type": "label.filter.group.demographics",
@@ -188,21 +188,21 @@
             "defaultGroup": "column",
             "autoCompleteOptions": [
               {
-                "key": "3",
+                "key": "American Indian",
                 "title": "American Indian",
                 "deaths": "83,206",
                 "count": 83206,
                 "deathsPercentage": 0.65
               },
               {
-                "key": "4",
+                "key": "Asian or Pacific Islander",
                 "title": "Asian or Pacific Islander",
                 "deaths": "284,525",
                 "count": 284525,
                 "deathsPercentage": 2.23
               },
               {
-                "key": "2",
+                "key": "Black",
                 "title": "Black",
                 "deaths": "1,486,573",
                 "count": 1486573,
@@ -216,7 +216,7 @@
                 "deathsPercentage": 0
               },
               {
-                "key": "1",
+                "key": "White",
                 "title": "White",
                 "deaths": "10,918,196",
                 "count": 10918196,
@@ -278,14 +278,14 @@
             "showChart": true,
             "autoCompleteOptions": [
               {
-                "key": "F",
+                "key": "Female",
                 "title": "Female",
                 "deaths": "6,362,211",
                 "count": 6362211,
                 "deathsPercentage": 49.81
               },
               {
-                "key": "M",
+                "key": "Male",
                 "title": "Male",
                 "deaths": "6,410,289",
                 "count": 6410289,
@@ -348,14 +348,14 @@
             "showChart": true,
             "autoCompleteOptions": [
               {
-                "key": "F",
+                "key": "Female",
                 "title": "Female",
                 "deaths": "6,362,211",
                 "count": 6362211,
                 "deathsPercentage": 49.81
               },
               {
-                "key": "M",
+                "key": "Male",
                 "title": "Male",
                 "deaths": "6,410,289",
                 "count": 6410289,
@@ -371,7 +371,7 @@
             "queryKey": "race",
             "primary": false,
             "value": [
-              "1"
+              "White"
             ],
             "groupBy": "row",
             "type": "label.filter.group.demographics",
@@ -379,21 +379,21 @@
             "defaultGroup": "column",
             "autoCompleteOptions": [
               {
-                "key": "3",
+                "key": "American Indian",
                 "title": "American Indian",
                 "deaths": "83,206",
                 "count": 83206,
                 "deathsPercentage": 0.65
               },
               {
-                "key": "4",
+                "key": "Asian or Pacific Islander",
                 "title": "Asian or Pacific Islander",
                 "deaths": "284,525",
                 "count": 284525,
                 "deathsPercentage": 2.23
               },
               {
-                "key": "2",
+                "key": "Black",
                 "title": "Black",
                 "deaths": "1,486,573",
                 "count": 1486573,
@@ -407,7 +407,7 @@
                 "deathsPercentage": 0
               },
               {
-                "key": "1",
+                "key": "White",
                 "title": "White",
                 "deaths": "10,918,196",
                 "count": 10918196,
@@ -428,11 +428,11 @@
         "deaths": 314748,
         "race": [
           {
-            "name": "1",
+            "name": "White",
             "deaths": 314748,
             "gender": [
               {
-                "name": "M",
+                "name": "Male",
                 "deaths": 214659,
                 "year": [
                   {
@@ -446,7 +446,7 @@
                 ]
               },
               {
-                "name": "F",
+                "name": "Female",
                 "deaths": 100089,
                 "year": [
                   {
@@ -543,7 +543,7 @@
           "isCount": false,
           "rowspan": 1,
           "colspan": 1,
-          "key": "1"
+          "key": "White"
         },
         {
           "title": 50390,
