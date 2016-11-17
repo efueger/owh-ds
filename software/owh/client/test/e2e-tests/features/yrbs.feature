@@ -79,6 +79,11 @@ Scenario: Category Title
 #    Given user select YRBS as primary filter
 #    Then each category has two questions in the given order
 
+Scenario: Data Alignment
+  Given user is on search page
+  Given user select YRBS as primary filter
+  Then the data must be right justified in the table
+
 Scenario: Show only this Category button
     Given user is on search page
     Given user select YRBS as primary filter
