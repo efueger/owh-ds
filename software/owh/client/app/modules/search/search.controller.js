@@ -55,7 +55,7 @@
         };
 
         sc.optionsSort = {
-            "hispanicOrigin": ['100-199', '220', '221-230', '270-274', '275-279', '250-259', '210-219', '260-269', '231-249', '200-209', '280-299', '996-999'],
+            "hispanicOrigin": ['Non-Hispanic', 'Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic', 'Unknown'],
             "race": ['0', '1', '2', '3', '4']
         };
         //show certain filters for different table views
