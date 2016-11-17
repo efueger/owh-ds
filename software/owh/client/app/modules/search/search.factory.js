@@ -6,9 +6,9 @@
         .module('owh.search')
         .service('searchFactory', searchFactory);
 
-    searchFactory.$inject = ["utilService", "SearchService", "$q", "$translate", "chartUtilService", '$rootScope', '$timeout', 'ModalService'];
+    searchFactory.$inject = ["utilService", "SearchService", "$q", "$translate", "chartUtilService", '$rootScope', '$timeout', 'ModalService', '$state'];
 
-    function searchFactory( utilService, SearchService, $q, $translate, chartUtilService, $rootScope, $timeout, ModalService ){
+    function searchFactory( utilService, SearchService, $q, $translate, chartUtilService, $rootScope, $timeout, ModalService, $state){
         var service = {
             getAllFilters : getAllFilters,
             queryMortalityAPI: queryMortalityAPI,
@@ -173,16 +173,51 @@
                 var selectedQuestion = utilService.findByKeyAndValue(questionFilter.autoCompleteOptions, 'key', question);
                 chartUtilService.showExpandedGraph(chartData, selectedQuestion.title);
             });
+        };
+
+        function removeSearchResults(ac){
+            if(ac){    
+                for (var i =0; i < ac.length; i++ ){
+                    delete ac[i].deaths;
+                    delete ac[i].count;
+                    delete ac[i].deathsPercentage;
+                }
+            }
+        }
+        function createBackendSearchRequest(pFilter){
+            var req = {};
+            req.key= pFilter.key;
+            req.searchFor = pFilter.searchFor;
+            req.allFilters = []
+            for (var i = 0; i< pFilter.allFilters.length; i++){
+                var filter = utilService.clone(pFilter.allFilters[i]);
+                // Clear autocomplete options for mcd and ucd
+                if( i == 9 || i == 12){
+                    filter.autoCompleteOptions = [];
+                }
+                removeSearchResults(filter.autoCompleteOptions);
+                req.allFilters.push(filter);
+            }
+            req.sideFilters = [];
+            for (var i = 0; i< pFilter.sideFilters.length; i++){
+                var filter = utilService.clone(pFilter.sideFilters[i]);
+                // Clear autocomplete options for mcd and ucd
+                if( i == 9 || i == 10){
+                    filter.autoCompleteOptions = [];
+                    filter.filters.autoCompleteOptions[0].autoCompleteOptions = [];
+                }
+                removeSearchResults(filter.autoCompleteOptions);
+                if(filter.filters.autoCompleteOptions){
+                    removeSearchResults(filter.filters.autoCompleteOptions[0].autoCompleteOptions);
+                }
+                req.sideFilters.push(filter);
+            }
+            return req;
         }
 
         function searchMortalityResults(primaryFilter, queryID) {
             var deferred = $q.defer();
             queryMortalityAPI(primaryFilter, queryID).then(function(response){
-                /*@TODO Our OWH application makes two backend call to display values in search page
-                 one is for side filters and one request is to update right table and chart data
-                 as combine two request into one, we are doing two request to elastsearch(at the backend) and in reponse returning required data
-                 So we have move logic from searchFactory.addCountsToAutoCompleteOptions method (line 518 to 554) to here.
-                */
                //@TODO: @Joe here I am getting sideFilters from ES 'response.sideFilterResults'
                 primaryFilter.count = response.sideFilterResults.pagination.total;
                 angular.forEach(response.sideFilterResults.data.simple, function(eachFilterData, key) {
@@ -280,7 +315,7 @@
             var headers = apiQuery.headers;
             //var query = apiQuery.apiQuery;
             //Passing completed primaryFilters to backend and building query at server side
-            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
+            SearchService.searchResults(createBackendSearchRequest(primaryFilter), queryID).then(function(response) {
                 //resolve data for controller
                 deferred.resolve({
                     data : response.data.resultData.nested.table,
@@ -582,10 +617,9 @@
                 {key: 'American Indian',title: 'American Indian'},
                 {key: 'Asian or Pacific Islander',title: 'Asian or Pacific Islander'},
                 {key: 'Black',title: 'Black'},
-                {key: '0',title: 'Other (Puerto Rico only)'},
+                {key: 'Other (Puerto Rico only)',title: 'Other (Puerto Rico only)'},
                 {key: 'White',title: 'White'}
             ];
-            //TODO check with @Gopal about missing values
             filters.hispanicOptions = [
                 {"key":"Central American","title":"Central American"},
                 {"key":"Central and South American","title":"Central and South American"},
@@ -618,7 +652,6 @@
                 {key: 'Unknown', title: 'Unknown'}
             ];
 
-            //TODO: Check with @Gopal about 'Hospital, clinic or Medical Center - Patient status unknown' replace by 'Hospice facility'
             filters.podOptions = [
                 {key:'Decedent’s home',title:'Decedent’s home'},
                 {key:'Hospital, clinic or Medical Center - Patient status unknown',title:'Hospital, clinic or Medical Center-  Patient status unknown'},
@@ -700,24 +733,35 @@
                     pointer: {'background-color': '#914fb5'},
                     range: {"background-color": "#914fb5"}
                 },
-                onstatechange: function(value) {
+                callback: function(value, release) {
+                    var self = this;
                     var values = value.split(';');
                     var minValue = Number(values[0]);
                     var maxValue = Number(values[1]);
                     var agegroupFilter = utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'agegroup');
+
                     var prevValue = angular.copy(agegroupFilter.value);
                     agegroupFilter.value = [];
-                    angular.forEach(agegroupFilter.autoCompleteOptions, function(eachOption) {
-                        if((eachOption.min <= minValue && eachOption.max >= minValue)
-                            || (eachOption.min >= minValue && eachOption.max <= maxValue)
-                            || (eachOption.min <= maxValue && eachOption.max >= maxValue)) {
-                            agegroupFilter.value.push(eachOption.key);
-                        }
-                    });
+                    // set the values list only if the slider selection is different from the default
+                    if(! (minValue == -5  && maxValue == 105)){
+                        angular.forEach(agegroupFilter.autoCompleteOptions, function(eachOption) {
+                            if((eachOption.min <= minValue && eachOption.max >= minValue)
+                                || (eachOption.min >= minValue && eachOption.max <= maxValue)
+                                || (eachOption.min <= maxValue && eachOption.max >= maxValue)) {
+                                agegroupFilter.value.push(eachOption.key);
+                            }
+                        });
+                    }
+
                     if(!agegroupFilter.timer && !angular.equals(prevValue, agegroupFilter.value) && filters.selectedPrimaryFilter.initiated) {
                         agegroupFilter.timer = $timeout(function(){
                             agegroupFilter.timer=undefined;
-                            filters.selectedPrimaryFilter.searchResults(filters.selectedPrimaryFilter);
+                            // TODO: We need to call the searchController.search(true) from here, istead of the following lines
+                            // generateHashCode(filters.selectedPrimaryFilter).then(function(hash){
+                            //     filters.selectedPrimaryFilter.searchResults(filters.selectedPrimaryFilter, hash);
+                            // });
+                            self.search();
+
                         }, 2000);
                     }
                 }

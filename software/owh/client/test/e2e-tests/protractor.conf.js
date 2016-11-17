@@ -25,5 +25,6 @@ exports.config = {
   onPrepare: function() {
     browser.driver.manage().window().maximize();
   },
-  baseUrl: 'http://localhost:9900/'
+  baseUrl: 'http://localhost:9900/',
+  //jasmineNodeOpts: {defaultTimeoutInterval: 60000}
 };

@@ -37,7 +37,8 @@
             generateMapLegendLabels : generateMapLegendLabels,
             generateMapLegendRanges : generateMapLegendRanges,
             getMinAndMaxValue : getMinAndMaxValue,
-            getSelectedAutoCompleteOptions: getSelectedAutoCompleteOptions
+            getSelectedAutoCompleteOptions: getSelectedAutoCompleteOptions,
+            clone: clone
         };
 
         return service;
@@ -765,5 +766,10 @@
             labels[lastLabelIndex] = '<'+ labels[lastLabelIndex];
             return labels;
         }
+
+
+        function clone (a) {
+            return JSON.parse(JSON.stringify(a));
+        };
     }
 }());
