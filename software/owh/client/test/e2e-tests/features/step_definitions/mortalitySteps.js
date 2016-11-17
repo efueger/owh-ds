@@ -285,5 +285,32 @@ var mortalityStepDefinitionsWrapper = function () {
             expect(elements[12].getText()).to.eventually.contains('Unknown');
         });
     });
+
+    this.Then(/^years should be in descending order$/, function () {
+        mortalityPage.getOptions('Year').then(function(elements) {
+            expect(elements[0].getText()).to.eventually.contains('All');
+            expect(elements[1].getText()).to.eventually.contains('2014');
+            expect(elements[2].getText()).to.eventually.contains('2013');
+            expect(elements[3].getText()).to.eventually.contains('2012');
+            expect(elements[4].getText()).to.eventually.contains('2011');
+            expect(elements[5].getText()).to.eventually.contains('2010');
+            expect(elements[6].getText()).to.eventually.contains('2009');
+            expect(elements[7].getText()).to.eventually.contains('2008');
+            expect(elements[8].getText()).to.eventually.contains('2007');
+            expect(elements[9].getText()).to.eventually.contains('2006');
+            expect(elements[10].getText()).to.eventually.contains('2005');
+            expect(elements[11].getText()).to.eventually.contains('2004');
+            expect(elements[12].getText()).to.eventually.contains('2003');
+            expect(elements[13].getText()).to.eventually.contains('2002');
+            expect(elements[14].getText()).to.eventually.contains('2001');
+            expect(elements[15].getText()).to.eventually.contains('2000');
+        });
+    });
+
+
+    this.Then(/^user clicks on "([^"]*)" more link for "([^"]*)" filter$/, function (linkText, filterType) {
+        var yearFilter = element(by.cssContainingText('a', filterType)).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul'));
+        yearFilter.element(by.cssContainingText('a', linkText)).click();
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;
