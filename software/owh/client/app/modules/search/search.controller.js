@@ -77,6 +77,12 @@
             search(false);
         }
 
+        $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
+            if(newValue !== oldValue) {
+                search(true);
+            }
+        }, true);
+
         function changeViewFilter(selectedFilter) {
             sc.tableView = selectedFilter.key;
         }
