@@ -614,8 +614,6 @@
         function searchCensusInfo(primaryFilter) {
             var deferred = $q.defer();
 
-            console.log(primaryFilter);
-
             queryCensusAPI(primaryFilter).then(function(response){
                 primaryFilter.data = response.data;
                 primaryFilter.headers = response.headers;

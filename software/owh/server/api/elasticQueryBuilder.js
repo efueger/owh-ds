@@ -79,24 +79,45 @@ var generateNestedAggQuery = function(aggregations, groupByKeyStart, countQueryK
 var generateAggregationQuery = function( aggQuery, groupByKeyStart, countQueryKey ) {
     groupByKeyStart = groupByKeyStart ? groupByKeyStart : '';
     var query = {};
-    query[ groupByKeyStart + aggQuery.key] = {
+
+    //for bridge race sex data
+    if(countQueryKey == 'pop') {
+        query[ groupByKeyStart + aggQuery.key] = getTermQuery(aggQuery);
+        query[ groupByKeyStart + aggQuery.key].aggregations=getPopulationSumQuery();
+        merge(query, getPopulationSumQuery());
+    } else {//for yrbs and mortality
+        query[ groupByKeyStart + aggQuery.key] = getTermQuery(aggQuery);
+    }
+    return query;
+};
+
+/**
+ * Preapare term query
+ * @param aggQuery
+ * @returns {{terms: {field: *, size: *}}}
+ */
+function getTermQuery(aggQuery) {
+    return {
         "terms": {
             "field": aggQuery.queryKey,
             "size": aggQuery.size
         }
-    };
+    }
+}
 
-    if(countQueryKey == 'pop') {
-        query[ groupByKeyStart + aggQuery.key]["aggregations"] = {
-            "group_count_pop": {
-                "sum": {
-                    "field": countQueryKey
-                }
+/**
+ * prepare population sum query
+ * @returns {{group_count_pop: {sum: {field: string}}}}
+ */
+function getPopulationSumQuery() {
+    return {
+        "group_count_pop": {
+            "sum": {
+                "field": "pop"
             }
         }
     }
-    return query;
-};
+}
 
 /**
  *
