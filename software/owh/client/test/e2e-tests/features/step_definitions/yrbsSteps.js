@@ -168,11 +168,18 @@ var yrbsStepDefinitionsWrapper = function () {
         expect(allFilters.get(28).getText()).to.eventually.contains("Question");
     });
 
+    this.Then(/^the data must be right justified in the table$/, function () {
+        yrbsPage.getQuestionContent().then(function (elements) {
+            expect(elements[0].getCssValue('text-align')).to.eventually.equal('start');
+            expect(elements[1].getCssValue('text-align')).to.eventually.equal('right');
+        });
+    });
+
     this.Then(/^each question should have chart icon displayed$/, function () {
         element.all(by.className('owh-question__table')).each(function(questionBlock){
-              questionBlock.element(by.className('owh-question__question')).all(by.tagName('i')).count().then(function(size){
-                   expect(size).to.equal(1);
-              });
+            questionBlock.element(by.className('owh-question__question')).all(by.tagName('i')).count().then(function(size){
+                expect(size).to.equal(1);
+            });
         });
     });
 
