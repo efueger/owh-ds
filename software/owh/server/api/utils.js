@@ -277,6 +277,10 @@ var mergeAgeAdjustedRates = function(mort, rates) {
                 if(!age) {
                     age = rates[keyMap[mort[key][i].name]];
                 }
+                //if key still doesn't exist, exit without merging
+                if(!age) {
+                    return;
+                }
                 if(age['Total']) {
                     mort[key][i]['ageAdjustedRate'] = age['Total'].ageAdjustedRate;
                     mort[key][i]['standardPop'] = age['Total'].standardPop;

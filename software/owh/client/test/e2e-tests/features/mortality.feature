@@ -124,8 +124,8 @@ Scenario: Side filter total suppression
   When user filters by ethnicity Spaniard
   Then user should only see total for white race in side filter
 
-#Scenario: Ethnicity order
-#  Given user is on search page
-#  When user expands ethnicity filter
-#  When user shows more ethnicity filter
-#  Then ethnicity filters should be in given order
+Scenario: Ethnicity order
+  Given user is on search page
+  When user expands ethnicity filter
+  When user shows more ethnicity filter
+  Then ethnicity filters should be in given order
