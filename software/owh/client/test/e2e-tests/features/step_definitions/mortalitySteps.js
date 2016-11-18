@@ -295,5 +295,9 @@ var mortalityStepDefinitionsWrapper = function () {
             expect(elements[12].getText()).to.eventually.contains('Unknown');
         });
     });
+
+    this.Then(/^the age filter should be hidden$/, function () {
+        expect(mortalityPage.selectSideFilter('Age Groups', 'Row').isDisplayed()).to.eventually.equal(false);
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;

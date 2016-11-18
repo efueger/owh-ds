@@ -104,6 +104,11 @@ Scenario: Age Adjusted Death Rates
   When the user chooses the option 'Age Adjusted Death Rates'
   Then the age adjusted rates are shown for each row
 
+Scenario: Age filter for age adjusted rates
+  Given user is on search page
+  When the user chooses the option 'Age Adjusted Death Rates'
+  Then the age filter should be hidden
+
 #Scenario: Side filter total suppression
 #  Given user is on search page
 #  When user shows more year filters
