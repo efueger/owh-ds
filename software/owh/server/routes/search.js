@@ -16,7 +16,7 @@ var searchRouter = function(app, rConfig) {
             var hashCode = req.body.qID;
             var searchQueryResultsQuery = queryBuilder.buildSearchQueryResultsQuery(hashCode);
             new elasticSearch().getQueryResults(searchQueryResultsQuery).then(function (searchResultsResponse) {
-                 if(searchResultsResponse && searchResultsResponse._source.queryID === hashCode ) {
+                 if(searchResultsResponse && searchResultsResponse._source.queryID === hashCode && false ) {
                      logger.info("Retrieved query results for query ID "+hashCode+" from query cache");
                      var resData = {};
                      resData.queryJSON = JSON.parse(searchResultsResponse._source.queryJSON);
@@ -28,23 +28,22 @@ var searchRouter = function(app, rConfig) {
                      logger.info("Query with ID "+hashCode+" not in cache, executing query");
                      var apiQuery = queryBuilder.addCountsToAutoCompleteOptions(q);
                      var finalAPIQuery = queryBuilder.buildSearchQuery(apiQuery, true);
+                     finalQuery.wonderQuery = preparedQuery.apiQuery;
                      new elasticSearch().aggregateDeaths(finalAPIQuery).then(function (sideFilterResults) {
+                         console.log('finalQuery', finalQuery);
+                         console.log('wonder query', preparedQuery.apiQuery);
                          new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
-                             //grab age adjusted death rates
-                             new wonder('D76').invokeWONDER(preparedQuery.apiQuery).then(function(wonderResponse) {
-                                 searchUtils.mergeAgeAdjustedRates(response.data.nested.table, wonderResponse);
-                                 searchUtils.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
-                                 var insertQuery = queryBuilder.buildInsertQueryResultsQuery(JSON.stringify(q), JSON.stringify(response), "Mortality", hashCode, JSON.stringify(sideFilterResults));
-                                 new elasticSearch().insertQueryData(insertQuery).then(function(anotherResponse){
-                                     logger.info("Qeury with "+hashCode+" added to query cache");
-                                     var resData = {};
-                                     resData.queryJSON = q;
-                                     resData.resultData = response.data;
-                                     resData.sideFilterResults = sideFilterResults;
-                                     res.send( new result('OK', resData, response.pagination, "success") );
-                                 }, function(anotherResponse){
-                                     res.send( new result('error', anotherResponse, "failed"));
-                                 });
+                             searchUtils.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
+                             var insertQuery = queryBuilder.buildInsertQueryResultsQuery(JSON.stringify(q), JSON.stringify(response), "Mortality", hashCode, JSON.stringify(sideFilterResults));
+                             new elasticSearch().insertQueryData(insertQuery).then(function(anotherResponse){
+                                 logger.info("Qeury with "+hashCode+" added to query cache");
+                                 var resData = {};
+                                 resData.queryJSON = q;
+                                 resData.resultData = response.data;
+                                 resData.sideFilterResults = sideFilterResults;
+                                 res.send( new result('OK', resData, response.pagination, "success") );
+                             }, function(anotherResponse){
+                                 res.send( new result('error', anotherResponse, "failed"));
                              });
                          }, function(response){
                              res.send( new result('error', response, "failed"));

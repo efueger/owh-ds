@@ -2,6 +2,7 @@ var elasticsearch = require('elasticsearch');
 var searchUtils = require('../api/utils');
 var elasticQueryBuilder = require('../api/elasticQueryBuilder');
 const util = require('util');
+var wonder = require("../api/wonder");
 var Q = require('q');
 var logger = require('../config/logging')
 var config = require('../config/config')
@@ -141,9 +142,13 @@ ElasticClient.prototype.aggregateDeaths = function(query){
             this.executeMortilyQueries(query[0]),
             this.aggregateCensusDataForMortalityQuery(query[1])
         ];
+        if(query.wonderQuery) {
+            promises.push(new wonder('D76').invokeWONDER(query.wonderQuery))
+        }
         Q.all(promises).then( function (resp) {
             var data = searchUtils.populateDataWithMappings(resp[0], 'deaths');
             self.mergeWithCensusData(data, resp[1]);
+            searchUtils.mergeAgeAdjustedRates(data.data.nested.table, resp[2]);
             deferred.resolve(data);
         }, function (err) {
             logger.error(err.message);
