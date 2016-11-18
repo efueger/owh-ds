@@ -91,6 +91,12 @@ Scenario: Help Message above the quick visualization pane
   When the user chooses the option 'Death Rates'
   Then the following message should be displayed stating that population data is being retrieved from Census "Population details from NCHS Bridge Race Estimates is used to calculate Death Rates (per 100,000)"
 
+Scenario: Years are supposed to be in descending order
+  Given user is on search page
+  When user sees side filter
+  Then user clicks on "+ 12 more" more link for "Year" filter
+  Then years should be in descending order
+
 #Scenario: Suppressed
 #  When counts fall below the determined "cut-off" value and the conditions for suppression are met
 #  Then the value should be suppressed
