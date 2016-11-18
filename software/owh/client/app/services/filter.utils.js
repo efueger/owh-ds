@@ -153,7 +153,7 @@
                     autoCompleteOptions: angular.copy(censusRaceOptions), value:[]},
                 {key: 'ethnicity', title: 'label.filter.hispanicOrigin', queryKey:"hispanic_origin",primary: false, defaultGroup:'row', groupBy: false,
                     autoCompleteOptions: angular.copy(censusHispanicOriginOptions), value:[]},
-                {key: 'current_year', title: 'label.filter.yearly.estimate', queryKey:"current_year", primary: false, value: ['2000'], defaultGroup:'row', groupBy: false,
+                {key: 'current_year', title: 'label.filter.yearly.estimate', queryKey:"current_year", primary: false, value: ['2014'], defaultGroup:'row', groupBy: false,
                     autoCompleteOptions: angular.copy(censusYearsOptions) },
                 {key: 'sex', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
                     autoCompleteOptions: angular.copy(censusGenderOptions)}
