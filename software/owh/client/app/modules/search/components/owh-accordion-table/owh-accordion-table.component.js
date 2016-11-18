@@ -17,7 +17,7 @@
         oatc.categoryFilter = null;
 
         var questionDefaults = {
-            "Tobbacco Use": [/^Currently Used E/, /^Currently Used C/], // SP
+            "Tobacco Use": [/^Currently Used E/, /^Currently Used C/], // SP
             "Unintentional Injuries and Violence": [/^Seriously/, /^Rode with/],
             "Alcohol and Other Drug Use": [/^Currently D/, /^Currently U/],
             "Sexual Behaviors": [/^Were/, /^Did/],

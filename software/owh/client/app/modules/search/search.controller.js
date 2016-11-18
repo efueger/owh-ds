@@ -63,6 +63,7 @@
         //show certain filters for different table views
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race'],
+            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters']
         };
         sc.showFbDialog = showFbDialog;
         sc.queryID = $stateParams.queryID;
@@ -147,9 +148,9 @@
             var totalCount = selectedFilter.count;
             var calculatePercentage = selectedFilter.calculatePercentage;
             var calculateRowTotal = selectedFilter.calculateRowTotal;
-            var secondaryCountKey = 'pop';
+            var secondaryCountKeys = ['pop', 'ageAdjustedRate', 'standardPop'];
 
-            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKey);
+            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKeys);
         }
 
         function getFilename(selectedFilter) {

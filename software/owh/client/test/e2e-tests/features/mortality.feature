@@ -105,17 +105,27 @@ Scenario: Years are supposed to be in descending order
 #  When the user looks at a suppressed value in the data table
 #  Then the word suppressed must be displayed in it's place
 
-#Scenario: Side filter total suppression
-#  Given user is on search page
-#  When user shows more year filters
-#  When user filters by year 2013
-#  When user expands ethnicity filter
-#  When user shows more ethnicity filter
-#  When user filters by ethnicity Spaniard
-#  Then user should only see total for white race in side filter
+Scenario: Age Adjusted Death Rates
+  Given user is on search page
+  When the user chooses the option 'Age Adjusted Death Rates'
+  Then the age adjusted rates are shown for each row
 
-#Scenario: Ethnicity order
-#  Given user is on search page
-#  When user expands ethnicity filter
-#  When user shows more ethnicity filter
-#  Then ethnicity filters should be in given order
+Scenario: Age filter for age adjusted rates
+  Given user is on search page
+  When the user chooses the option 'Age Adjusted Death Rates'
+  Then the age filter should be hidden
+
+Scenario: Side filter total suppression
+  Given user is on search page
+  When user shows more year filters
+  When user filters by year 2013
+  When user expands ethnicity filter
+  When user shows more ethnicity filter
+  When user filters by ethnicity Spaniard
+  Then user should only see total for white race in side filter
+
+Scenario: Ethnicity order
+  Given user is on search page
+  When user expands ethnicity filter
+  When user shows more ethnicity filter
+  Then ethnicity filters should be in given order

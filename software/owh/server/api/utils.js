@@ -158,7 +158,7 @@ var applySuppressionRules = function(key, value) {
 //matches suppressed table totals with corresponding side filter total and replace if necessary
 var suppressSideFilterTotals = function(sideFilter, data) {
     for(var key in data) {
-        if(key !== 'deaths' && key !== 'name') {
+        if(key !== 'deaths' && key !== 'name' && key !== 'ageAdjustedRate') {
             for(var i = 0; i < data[key].length; i++) {
                 if(data[key][i].deaths === 'suppressed') {
                     for(var j = 0; j < sideFilter[key].length; j++) {
@@ -264,6 +264,37 @@ var getYRBSCount = function(jsonObject) {
     return '';
 };
 
+//merge age adjust death rates into mortality response
+var mergeAgeAdjustedRates = function(mort, rates) {
+    var keyMap = {
+        'Black': 'Black or African American',
+        'American Indian': 'American Indian or Alaska Native',
+    };
+
+    for(var key in mort) {
+        if(key !== 'deaths' && key !== 'name' && key !== 'pop' && key !== 'ageAdjustedRate' && key !== 'standardPop') {
+            for(var i = 0; i < mort[key].length; i++) {
+                var age = rates[mort[key][i].name];
+                if(!age) {
+                    age = rates[keyMap[mort[key][i].name]];
+                }
+                //if key still doesn't exist, exit without merging
+                if(!age) {
+                    return;
+                }
+                if(age['Total']) {
+                    mort[key][i]['ageAdjustedRate'] = age['Total'].ageAdjustedRate;
+                    mort[key][i]['standardPop'] = age['Total'].standardPop;
+                    mergeAgeAdjustedRates(mort[key][i], age);
+                } else {
+                    mort[key][i]['ageAdjustedRate'] = age.ageAdjustedRate;
+                    mort[key][i]['standardPop'] = age.standardPop;
+                }
+            }
+        }
+    }
+};
+
 
 /**
  * Finds and returns the first object in array of objects by using the key and value
@@ -284,4 +315,5 @@ function numberWithCommas(number) {
 };
 module.exports.populateDataWithMappings = populateDataWithMappings;
 module.exports.populateYRBSData = populateYRBSData;
+module.exports.mergeAgeAdjustedRates = mergeAgeAdjustedRates;
 module.exports.suppressSideFilterTotals = suppressSideFilterTotals;
