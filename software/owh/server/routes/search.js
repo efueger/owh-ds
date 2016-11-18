@@ -30,8 +30,6 @@ var searchRouter = function(app, rConfig) {
                      var finalAPIQuery = queryBuilder.buildSearchQuery(apiQuery, true);
                      finalQuery.wonderQuery = preparedQuery.apiQuery;
                      new elasticSearch().aggregateDeaths(finalAPIQuery).then(function (sideFilterResults) {
-                         console.log('finalQuery', finalQuery);
-                         console.log('wonder query', preparedQuery.apiQuery);
                          new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
                              searchUtils.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
                              var insertQuery = queryBuilder.buildInsertQueryResultsQuery(JSON.stringify(q), JSON.stringify(response), "Mortality", hashCode, JSON.stringify(sideFilterResults));
