@@ -71,7 +71,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the percentages are shown for each row are displayed by default$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[1]).to.equal('98,841 (45.5%)');
+            expect(value[1]).to.equal('16,104,129 (50.6%)');
         });
     });
 
@@ -81,7 +81,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^data table is updated and the number of deaths and percentages are updated too$/, function () {
         mortalityPage.getTableRowData(0).then(function (value) {
-            expect(value[1]).to.equal('8,696 (4.0%)');
+            expect(value[1]).to.equal('570,547 (1.8%)');
         });
     });
 
@@ -92,7 +92,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^the percentages get re\-calculated based on all the information displayed in a given row$/, function () {
         browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('986 (14.3%)');
+            expect(value[2]).to.equal('34,048 (11.1%)');
         });
     });
 
@@ -106,7 +106,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^percentages are displayed in the same column\/cell in parenthesis$/, function () {
         browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('986 (14.3%)');
+            expect(value[2]).to.equal('34,048 (11.1%)');
         });
     });
 
@@ -160,7 +160,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^when that option is toggled, the percentages are either displayed\/hidden$/, function () {
         mortalityPage.hidePecentageButton.click();
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('986');
+            expect(value[2]).to.equal('34,048');
         });
     });
 
@@ -181,7 +181,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the Rates and Percentages should have a one decimal precision$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('986 (14.3%)');
+            expect(value[2]).to.equal('34,048 (11.1%)');
         });
     });
 
