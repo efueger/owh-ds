@@ -55,18 +55,17 @@
         };
 
         sc.optionsGroup = {
-            "hispanicOrigin": {
-                "hispanic": {
+            "hispanicOrigin": [
+                {
                     "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard'],
-                    "title": "Hispanic"
+                    "title": "Hispanic",
+                    "key": "Hispanic"
                 },
-                "nonHispanic": {
-                    "options": ['Non-Hispanic'],
-                    "title": 'Non-Hispanic'
-                },
-                "unknown": ['Unknown']
-            },
-            "race": ['0', '1', '2', '3', '4']
+                'Non-Hispanic',
+                'Unknown'
+            ],
+            "race": ['Other (Puerto Rico only)', 'White', 'Black', 'American Indian', 'Asian or Pacific Islander'],
+            "year": ['2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
         };
         //show certain filters for different table views
         sc.availableFilters = {
@@ -144,10 +143,10 @@
             var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
             //make sure row/column headers are in proper order
             angular.forEach(headers.rowHeaders, function(header) {
-                searchFactory.sortFilterOptions(header, sc.optionsSort);
+                searchFactory.sortFilterOptions(header, sc.optionsGroup);
             });
             angular.forEach(headers.columnHeaders, function(header) {
-                searchFactory.sortFilterOptions(header, sc.optionsSort);
+                searchFactory.sortFilterOptions(header, sc.optionsGroup);
             });
             var countKey = selectedFilter.key;
             var countLabel = selectedFilter.countLabel;
@@ -224,7 +223,7 @@
                 sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
                 //make sure side filters are in proper order
                 angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
-                    searchFactory.sortFilterOptions(filter.filters, sc.optionsSort);
+                    searchFactory.sortFilterOptions(filter.filters, sc.optionsGroup);
                 });
                 sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
