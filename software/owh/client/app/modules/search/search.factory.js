@@ -24,7 +24,9 @@
         return service;
 
         function sortAutoCompleteOptions(filter, sort) {
-
+            if(sort[filter.key]) {
+                // filter.autoCompleteOptions
+            }
         }
 
         function sortFilterOptions(filter, sort) {
