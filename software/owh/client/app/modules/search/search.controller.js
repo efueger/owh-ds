@@ -56,8 +56,9 @@
         };
 
         sc.optionsSort = {
-            "hispanicOrigin": ['100-199', '220', '221-230', '270-274', '275-279', '250-259', '210-219', '260-269', '231-249', '200-209', '280-299', '996-999'],
-            "race": ['0', '1', '2', '3', '4']
+            "hispanicOrigin": ['Non-Hispanic', 'Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic', 'Unknown'],
+            "race": ['Other (Puerto Rico only)', 'White', 'Black', 'American Indian', 'Asian or Pacific Islander'],
+            "year": ['2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
         };
         //show certain filters for different table views
         sc.availableFilters = {
