@@ -16,7 +16,7 @@ var searchRouter = function(app, rConfig) {
             var hashCode = req.body.qID;
             var searchQueryResultsQuery = queryBuilder.buildSearchQueryResultsQuery(hashCode);
             new elasticSearch().getQueryResults(searchQueryResultsQuery).then(function (searchResultsResponse) {
-                 if(searchResultsResponse && searchResultsResponse._source.queryID === hashCode && false ) {
+                 if(searchResultsResponse && searchResultsResponse._source.queryID === hashCode ) {
                      logger.info("Retrieved query results for query ID "+hashCode+" from query cache");
                      var resData = {};
                      resData.queryJSON = JSON.parse(searchResultsResponse._source.queryJSON);
