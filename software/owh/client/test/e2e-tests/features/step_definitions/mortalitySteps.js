@@ -239,6 +239,16 @@ var mortalityStepDefinitionsWrapper = function () {
          expect(mortalityPage.deathRateDisclaimer.getText()).to.eventually.equal(arg1);
     });
 
+    this.When(/^the user chooses the option 'Age Adjusted Death Rates'$/, function () {
+        mortalityPage.ageRatesOption.click();
+    });
+
+    this.Then(/^the age adjusted rates are shown for each row$/, function () {
+        mortalityPage.getTableRowData(0).then(function(value){
+            expect(value[1]).to.equal('Rate\n662.5\nDeaths\n16,104,129\nPopulation\n1,943,803,096');
+        });
+    });
+
     this.When(/^user filters by year (\d+)$/, function (arg1) {
         mortalityPage.getOptions('Year').then(function(elements) {
             elements[2014 - arg1 + 1].click();
@@ -246,7 +256,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.When(/^user filters by ethnicity Spaniard$/, function () {
-        mortalityPage.ethnicityOption2.click();
+        mortalityPage.ethnicitySpaniardOption.click();
     });
 
     this.Then(/^user should only see total for white race in side filter$/, function () {
@@ -284,6 +294,10 @@ var mortalityStepDefinitionsWrapper = function () {
             expect(elements[11].getText()).to.eventually.contains('Other Hispanic');
             expect(elements[12].getText()).to.eventually.contains('Unknown');
         });
+    });
+
+    this.Then(/^the age filter should be hidden$/, function () {
+        expect(mortalityPage.selectSideFilter('Age Groups', 'Row').isDisplayed()).to.eventually.equal(false);
     });
 
     this.Then(/^years should be in descending order$/, function () {
