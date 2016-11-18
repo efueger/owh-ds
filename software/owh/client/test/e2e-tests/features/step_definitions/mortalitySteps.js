@@ -312,5 +312,29 @@ var mortalityStepDefinitionsWrapper = function () {
         var yearFilter = element(by.cssContainingText('a', filterType)).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul'));
         yearFilter.element(by.cssContainingText('a', linkText)).click();
     });
+
+    this.Then(/^race options should be in proper order$/, function () {
+        mortalityPage.getOptions('Race').then(function(elements) {
+            expect(elements[0].getText()).to.eventually.contains('All');
+            expect(elements[1].getText()).to.eventually.contains('White');
+            expect(elements[2].getText()).to.eventually.contains('Black');
+            expect(elements[3].getText()).to.eventually.contains('American Indian');
+            expect(elements[4].getText()).to.eventually.contains('Asian or Pacific Islander');
+            expect(elements[5].getText()).to.eventually.contains('Other (Puerto Rico only');
+        });
+    });
+
+    this.Then(/^user expands autopsy filter$/, function () {
+        mortalityPage.autopsyOptionsLink.click();
+    });
+
+    this.Then(/^autopsy options should be in proper order$/, function () {
+        mortalityPage.getOptions('Autopsy').then(function(elements) {
+            expect(elements[0].getText()).to.eventually.contains('All');
+            expect(elements[1].getText()).to.eventually.contains('Yes');
+            expect(elements[2].getText()).to.eventually.contains('No');
+            expect(elements[3].getText()).to.eventually.contains('Unknown');
+        });
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;

@@ -97,6 +97,20 @@ Scenario: Years are supposed to be in descending order
   Then user clicks on "+ 12 more" more link for "Year" filter
   Then years should be in descending order
 
+Scenario: Race options should be in proper order
+  Given user is on search page
+  When user sees side filter
+  Then user expands race options
+  Then user clicks on "+ 2 more" more link for "Race" filter
+  Then race options should be in proper order
+
+Scenario: Autopsy options should be in proper order
+  Given user is on search page
+  When user sees side filter
+  Then user expands autopsy filter
+  Then autopsy options should be in proper order
+
+
 #Scenario: Suppressed
 #  When counts fall below the determined "cut-off" value and the conditions for suppression are met
 #  Then the value should be suppressed
