@@ -231,7 +231,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the Percentages should have a one decimal precision$/, function () {
           mortalityPage.getTableRowData(1).then(function(text) {
-              expect(text[1]).to.equal('338,606 (47.6%)');
+              expect(text[1]).to.equal('2,150,095 (49.1%)');
           });
     });
 
