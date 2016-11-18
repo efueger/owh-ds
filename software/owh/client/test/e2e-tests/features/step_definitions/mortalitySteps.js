@@ -256,7 +256,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.When(/^user filters by ethnicity Spaniard$/, function () {
-        mortalityPage.ethnicityOption2.click();
+        mortalityPage.ethnicitySpaniardOption.click();
     });
 
     this.Then(/^user should only see total for white race in side filter$/, function () {
