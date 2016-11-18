@@ -1096,3 +1096,7 @@ body {
     max-height: 0;
     overflow: hidden;
 }
+
+.fixed_table {
+    table-layout: fixed;
+}
