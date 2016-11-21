@@ -40,7 +40,7 @@ var generateCensusAggregationQuery = function( aggQuery, groupByKeyStart ) {
     return query;
 };
 
-var prepareAggregationQuery = function(aggregations) {
+var prepareAggregationQuery = function(aggregations, countQueryKey) {
     var elasticQuery = {};
     elasticQuery.aggregations = {};
     //build array for
@@ -51,7 +51,7 @@ var prepareAggregationQuery = function(aggregations) {
     }
     if (aggregations['nested']) {
         if (aggregations['nested']['table'] && aggregations['nested']['table'].length > 0) {
-            elasticQuery.aggregations = merge(elasticQuery.aggregations, generateNestedAggQuery(aggregations['nested']['table'], 'group_table_'));
+            elasticQuery.aggregations = merge(elasticQuery.aggregations, generateNestedAggQuery(aggregations['nested']['table'], 'group_table_', countQueryKey));
         }
         if (aggregations['nested']['charts']) {
             for(var index in aggregations['nested']['charts']) {
@@ -64,28 +64,60 @@ var prepareAggregationQuery = function(aggregations) {
             }
         }
     }
+    console.log(JSON.stringify(elasticQuery));
     return elasticQuery;
 };
 
-var generateNestedAggQuery = function(aggregations, groupByKeyStart) {
-    var aggQuery = generateAggregationQuery(aggregations[0], groupByKeyStart);
+var generateNestedAggQuery = function(aggregations, groupByKeyStart, countQueryKey) {
+    var aggQuery = generateAggregationQuery(aggregations[0], groupByKeyStart, countQueryKey);
     if(aggregations.length > 1) {
-        aggQuery[Object.keys(aggQuery)[0]].aggregations = generateNestedAggQuery(aggregations.slice(1), groupByKeyStart);
+        aggQuery[Object.keys(aggQuery)[0]].aggregations = generateNestedAggQuery(aggregations.slice(1), groupByKeyStart, countQueryKey);
     }
     return aggQuery;
 };
 
-var generateAggregationQuery = function( aggQuery, groupByKeyStart ) {
+var generateAggregationQuery = function( aggQuery, groupByKeyStart, countQueryKey ) {
     groupByKeyStart = groupByKeyStart ? groupByKeyStart : '';
     var query = {};
-    query[ groupByKeyStart + aggQuery.key] = {
+
+    //for bridge race sex data
+    if(countQueryKey == 'pop') {
+        query[ groupByKeyStart + aggQuery.key] = getTermQuery(aggQuery);
+        query[ groupByKeyStart + aggQuery.key].aggregations=getPopulationSumQuery();
+        merge(query, getPopulationSumQuery());
+    } else {//for yrbs and mortality
+        query[ groupByKeyStart + aggQuery.key] = getTermQuery(aggQuery);
+    }
+    return query;
+};
+
+/**
+ * Preapare term query
+ * @param aggQuery
+ * @returns {{terms: {field: *, size: *}}}
+ */
+function getTermQuery(aggQuery) {
+    return {
         "terms": {
             "field": aggQuery.queryKey,
             "size": aggQuery.size
         }
-    };
-    return query;
-};
+    }
+}
+
+/**
+ * prepare population sum query
+ * @returns {{group_count_pop: {sum: {field: string}}}}
+ */
+function getPopulationSumQuery() {
+    return {
+        "group_count_pop": {
+            "sum": {
+                "field": "pop"
+            }
+        }
+    }
+}
 
 /**
  *
@@ -131,7 +163,7 @@ var buildSearchQuery = function(params, isAggregation) {
     var censusQuery = undefined;
     if ( isAggregation ){
         elasticQuery.size = 0;
-        elasticQuery = merge(elasticQuery, prepareAggregationQuery(params.aggregations));
+        elasticQuery = merge(elasticQuery, prepareAggregationQuery(params.aggregations, params.countQueryKey));
         if(params.aggregations['nested'] && params.aggregations['nested']['table']){
             censusQuery = prepareCensusAggregationQuery(params.aggregations);
         }
@@ -368,6 +400,7 @@ function getValuesByKeyExcludingKeyAndValue(data, key, excludeKey, excludeValue)
 function buildAPIQuery(primaryFilter) {
    var apiQuery = {
         searchFor: primaryFilter.key,
+        countQueryKey: primaryFilter.countQueryKey,
         query: {},
         aggregations: {
             simple: [],

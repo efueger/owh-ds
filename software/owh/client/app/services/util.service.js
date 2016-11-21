@@ -329,13 +329,15 @@
          });
          return tableData;
          }*/
-        function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKey) {
+        function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage,
+                                       calculateRowTotal, secondaryCountKey) {
             var tableData = {
                 headers: prepareMixedTableHeaders(headers, countLabel),
                 data: [],
                 calculatePercentage: calculatePercentage
             };
-            tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
+            tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey,
+                totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
             return tableData;
         }
 
@@ -568,6 +570,7 @@
             var tableData = [];
             if(columnHeaders && columnHeaders.length > 0) {
                 var eachColumnHeader = columnHeaders[0];
+
                 var eachHeaderData = data[eachColumnHeader.key];
                 var eachOptionLength = 0;
                 angular.forEach(getSelectedAutoCompleteOptions(eachColumnHeader), function(eachOption, optionIndex) {

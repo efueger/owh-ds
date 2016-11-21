@@ -6,9 +6,9 @@
         .module('owh.search')
         .service('searchFactory', searchFactory);
 
-    searchFactory.$inject = ["utilService", "SearchService", "$q", "$translate", "chartUtilService", '$rootScope', '$timeout', 'ModalService', '$state'];
+    searchFactory.$inject = ["utilService", "SearchService", "$q", "$translate", "chartUtilService", '$rootScope', '$timeout', 'ModalService', '$state', 'filterUtils'];
 
-    function searchFactory( utilService, SearchService, $q, $translate, chartUtilService, $rootScope, $timeout, ModalService, $state){
+    function searchFactory( utilService, SearchService, $q, $translate, chartUtilService, $rootScope, $timeout, ModalService, $state, filterUtils){
         var service = {
             getAllFilters : getAllFilters,
             queryMortalityAPI: queryMortalityAPI,
@@ -176,7 +176,7 @@
         };
 
         function removeSearchResults(ac){
-            if(ac){    
+            if(ac){
                 for (var i =0; i < ac.length; i++ ){
                     delete ac[i].deaths;
                     delete ac[i].count;
@@ -416,6 +416,7 @@
         function buildAPIQuery(primaryFilter) {
             var apiQuery = {
                 searchFor: primaryFilter.key,
+                countQueryKey: primaryFilter.countQueryKey,
                 query: {},
                 aggregations: {
                     simple: [],
@@ -588,6 +589,37 @@
                 ucd10Filter.autoCompleteOptions = $rootScope.conditionsListICD10;
                 deferred.resolve({});
             });
+            return deferred.promise;
+        }
+
+        function queryCensusAPI( primaryFilter ) {
+
+            var deferred = $q.defer();
+            var apiQuery = buildAPIQuery(primaryFilter);
+            var headers = apiQuery.headers;
+
+            SearchService.searchResults(primaryFilter).then(function(response) {
+                deferred.resolve({
+                    data : response.data.nested.table,
+                    headers : headers,
+                    totalCount: response.pagination.total
+                });
+            });
+            return deferred.promise;
+        }
+
+        /**
+         * Search census bridge race population estmation
+         */
+        function searchCensusInfo(primaryFilter) {
+            var deferred = $q.defer();
+
+            queryCensusAPI(primaryFilter).then(function(response){
+                primaryFilter.data = response.data;
+                primaryFilter.headers = response.headers;
+                deferred.resolve({});
+            });
+
             return deferred.promise;
         }
 
@@ -891,6 +923,8 @@
                     autoCompleteOptions: utilService.findAllByKeyAndValue(filters.allMortalityFilters, 'key', 'mcd-chapter-10')}
             ];
 
+            filters.censusFilters = filterUtils.getBridgeDataFilters();
+
             filters.search = [
                 {
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
@@ -967,6 +1001,37 @@
                         {
                             filterGroup: false, collapse: true, allowGrouping: false,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'question')
+                        }
+                    ]
+                },
+                {
+                    key: 'bridge_race_sex', title: 'label.census.bridge.race.pop.estimate', primary: true, value:[], header:"Bridge Race POP Estimate",
+                    allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true,
+                    countLabel: 'Total', countQueryKey: 'pop',
+                    sideFilters:[
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: false, dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'current_year')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'sex'), dontShowCounts: true
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: false, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'age'), dontShowCounts: true
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'race'), dontShowCounts: true
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'ethnicity'), dontShowCounts: true
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'state'), dontShowCounts: true
                         }
                     ]
                 }

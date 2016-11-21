@@ -186,6 +186,28 @@ ElasticClient.prototype.aggregateMentalHealth = function(query, headers, aggrega
     return deferred.promise;
 };
 
+/**
+ * This method is used to get the bridge race data(census) based on passed in query
+ */
+ElasticClient.prototype.aggregateCensusData = function(query){
+    //get tge elasic search client for census index
+    var client = this.getClient(census_index);
+    var deferred = Q.defer();
+    //execute the search query
+    client.search({
+        index:census_type,
+        body:query,
+        request_cache:true
+    }).then(function (resp) {
+        //parse the search results
+        deferred.resolve(searchUtils.populateDataWithMappings(resp, 'bridge_race_sex', 'pop'))
+    }, function (err) {
+        logger.error(err.message);
+        deferred.reject(err);
+    });
+    return deferred.promise;
+};
+
 ElasticClient.prototype.getQueryResults = function(query){
     var client = this.getClient(_queryIndex);
     var deferred = Q.defer();
