@@ -12,10 +12,10 @@ describe('filterUtils', function(){
     describe('test getBridgeDataFilters', function() {
         it('when I call getBridgeDataFilters, I should get bridge race filters', function () {
             var bridgeRaceFilters = filterUtils.getBridgeDataFilters();
-            expect(bridgeRaceFilters[0].key).toEqual('state');
-            expect(bridgeRaceFilters[1].key).toEqual('age');
-            expect(bridgeRaceFilters[2].key).toEqual('race');
-            expect(bridgeRaceFilters[3].key).toEqual('ethnicity');
+            expect(bridgeRaceFilters[0].key).toEqual('current_year');
+            expect(bridgeRaceFilters[1].key).toEqual('sex');
+            expect(bridgeRaceFilters[2].key).toEqual('age');
+            expect(bridgeRaceFilters[3].key).toEqual('race');
         });
     });
 });
