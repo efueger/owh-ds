@@ -1026,7 +1026,7 @@
                             filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'ethnicity'), dontShowCounts: true
                         },
                         {
-                            filterGroup: false, collapse: false, allowGrouping: true, dontShowCounts: true,
+                            filterGroup: false, collapse: false, allowGrouping: false, dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'current_year')
                         },
                         {
