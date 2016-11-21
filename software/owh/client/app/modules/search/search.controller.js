@@ -57,7 +57,7 @@
         sc.optionsGroup = {
             "hispanicOrigin": [
                 {
-                    "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard'],
+                    "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic'],
                     "title": "Hispanic",
                     "key": "Hispanic"
                 },
@@ -143,10 +143,10 @@
             var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
             //make sure row/column headers are in proper order
             angular.forEach(headers.rowHeaders, function(header) {
-                searchFactory.sortFilterOptions(header, sc.optionsGroup);
+                searchFactory.sortAutoCompleteOptions(header, sc.optionsGroup);
             });
             angular.forEach(headers.columnHeaders, function(header) {
-                searchFactory.sortFilterOptions(header, sc.optionsGroup);
+                searchFactory.sortAutoCompleteOptions(header, sc.optionsGroup);
             });
             var countKey = selectedFilter.key;
             var countLabel = selectedFilter.countLabel;
@@ -223,7 +223,7 @@
                 sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
                 //make sure side filters are in proper order
                 angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
-                    searchFactory.sortFilterOptions(filter.filters, sc.optionsGroup);
+                    searchFactory.sortAutoCompleteOptions(filter.filters, sc.optionsGroup);
                 });
                 sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {

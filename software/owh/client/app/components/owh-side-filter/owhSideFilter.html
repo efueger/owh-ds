@@ -114,7 +114,6 @@
                             <span>All</span>
                         </label>
                     </li>
-                    {{group}}
                     <li ng-repeat="option in group.autoCompleteOptions" ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' "
                         class="group-option" ng-show="$index < 3 || sideFilter.showAll">
                         <input id="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" type="checkbox"

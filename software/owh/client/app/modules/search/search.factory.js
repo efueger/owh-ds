@@ -19,22 +19,36 @@
             updateFilterValues: updateFilterValues,
             generateHashCode: generateHashCode,
             buildAPIQuery: buildAPIQuery,
-            sortFilterOptions: sortFilterOptions
+            sortAutoCompleteOptions: sortAutoCompleteOptions
         };
         return service;
 
         function sortAutoCompleteOptions(filter, sort) {
             if(sort[filter.key]) {
-                // filter.autoCompleteOptions
+                filter.autoCompleteOptions.sort(function(a, b) {
+                    var aIndex = getAutoCompleteOptionIndex(a, sort[filter.key]);
+                    var bIndex = getAutoCompleteOptionIndex(b, sort[filter.key]);
+                    return aIndex - bIndex;
+                });
             }
         }
 
-        function sortFilterOptions(filter, sort) {
-            if(sort[filter.key]) {
-                filter.autoCompleteOptions.sort(function(a, b) {
-                    return sort[filter.key].indexOf(a.key) - sort[filter.key].indexOf(b.key);
-                });
+        function getAutoCompleteOptionIndex(option, sort) {
+            var index = 0;
+            for(var i = 0; i < sort.length; i++) {
+                if(typeof sort[i] === 'string') {
+                    if(sort[i] == option.key) {
+                        return index;
+                    }
+                } else {
+                    if(sort[i].options.indexOf(option.key) >= 0) {
+                        return index + sort[i].options.indexOf(option.key) + 1;
+                    }
+                    index+= sort[i].options.length;
+                }
+                index++;
             }
+            return -1;
         }
 
         //Search for YRBS data
