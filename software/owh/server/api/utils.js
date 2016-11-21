@@ -158,7 +158,7 @@ var applySuppressionRules = function(key, value) {
 //matches suppressed table totals with corresponding side filter total and replace if necessary
 var suppressSideFilterTotals = function(sideFilter, data) {
     for(var key in data) {
-        if(key !== 'deaths' && key !== 'name' && key !== 'ageAdjustedRate') {
+        if(key !== 'deaths' && key !== 'name' && key !== 'ageAdjustedRate' && key !== 'standardPop' && key !== 'pop') {
             for(var i = 0; i < data[key].length; i++) {
                 if(data[key][i].deaths === 'suppressed') {
                     for(var j = 0; j < sideFilter[key].length; j++) {
