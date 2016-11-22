@@ -133,10 +133,11 @@ Scenario: Side filter total suppression
   Given user is on search page
   When user shows more year filters
   When user filters by year 2013
+  Then user expands race options
   When user expands ethnicity filter
   When user shows more ethnicity filter
   When user filters by ethnicity Spaniard
-  Then user should only see total for white race in side filter
+  And user should only see total for white race in side filter
 
 Scenario: Ethnicity order
   Given user is on search page
