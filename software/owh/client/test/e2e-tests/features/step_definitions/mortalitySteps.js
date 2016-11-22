@@ -186,7 +186,6 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.When(/^user expands race options$/, function () {
-        browser.sleep(30000);
         mortalityPage.raceOptionsLink.click();
     });
 
