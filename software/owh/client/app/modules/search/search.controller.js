@@ -21,10 +21,12 @@
         sc.showFbDialog = showFbDialog;
         sc.changeViewFilter = changeViewFilter;
         sc.getMixedTable = getMixedTable;
+        sc.skipRefresh = false;
 
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
         var mortalityFilter = null;
+
         sc.sideMenu = {visible: true};
         //For intial search call
         if($stateParams.selectedFilters == null) {
@@ -49,21 +51,24 @@
         ];
         sc.sort = {
             "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
-            "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question']
+            "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question'],
+            "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'age', 'race', 'ethnicity', 'state']
+        };
+
+        sc.optionsSort = {
+            "hispanicOrigin": ['Non-Hispanic', 'Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic', 'Unknown'],
+            "race": ['Other (Puerto Rico only)', 'White', 'Black', 'American Indian', 'Asian or Pacific Islander'],
+            "year": ['2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
         };
         //show certain filters for different table views
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race'],
+            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters']
         };
         sc.showFbDialog = showFbDialog;
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
         sc.changeViewFilter = changeViewFilter;
-
-       /* populateFilterCounts(mortalityFilter).then(function() {
-           search(sc.filters.selectedPrimaryFilter, sc.filters, false);
-        });*/
-        //TODO: we will need to change the order of a few things
         //Intial call queryId will be empty
         if(sc.queryID === "") {
             searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
@@ -71,18 +76,13 @@
                 $state.go('search', {queryID: sc.queryID});
             });
         }
-        /*TODO: Commented populateFilterCounts because, instead multiple backend
-          requests to searchResutls, combine it to one request and in backend making
-          two elasticsearch request
-        */
-        //populateFilterCounts(mortalityFilter, null, sc.queryID).then(function() {
-            if(sc.queryID) {
-                search(sc.filters.selectedPrimaryFilter, sc.filters, false);
-            }
-        //});
+        if (sc.queryID){
+            search(false);
+        }
+
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
-                primaryFilterChanged(sc.filters.selectedPrimaryFilter);
+                search(true);
             }
         }, true);
 
@@ -90,32 +90,24 @@
             sc.tableView = selectedFilter.key;
         }
 
-        function search(selectedFilter, allFilters, isFilterChanged) {
+        function search(isFilterChanged) {
             //TODO: would be better if there was a way to filter using query but also get all possible values back from api
-            if(isFilterChanged) {
-               // sc.sideFilterQuery = true;
-                searchFactory.generateHashCode(selectedFilter).then(function(hash){
+            if (isFilterChanged && !$rootScope.requestProcessing) {
+                // sc.sideFilterQuery = true;
+                searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function (hash) {
                     sc.queryID = hash;
-                    $state.go('search', {queryID: sc.queryID, allFilters: allFilters, selectedFilters: selectedFilter, tableView: sc.tableView});
+                    $state.go('search', {
+                        queryID: sc.queryID,
+                        allFilters: sc.filters,
+                        selectedFilters: sc.filters.selectedPrimaryFilter,
+                        tableView: sc.tableView
+                    });
                 });
-
             }
             else {
-                /*TODO: Commented populateFilterCounts because, instead multiple backend
-                 requests to searchResutls, combine it to one request and in backend making
-                 two elasticsearch request
-                 */
-              //   populateFilterCounts(mortalityFilter, selectedFilter, sc.queryID).then(function() {
-                    console.log('query hash detected');
-                    primaryFilterChanged(selectedFilter, sc.queryID);
-               // });
+                primaryFilterChanged(sc.filters.selectedPrimaryFilter, sc.queryID);
             }
         }
-
-        //@TODO we don't need this method.
-        /*function populateFilterCounts(filter, query, queryID) {
-            return searchFactory.addCountsToAutoCompleteOptions(filter, query, queryID);
-        }*/
 
         function downloadCSV() {
             var data = sc.getMixedTable(sc.filters.selectedPrimaryFilter);
@@ -144,14 +136,21 @@
         function getMixedTable(selectedFilter){
             var file = selectedFilter.data ? selectedFilter.data : {};
             var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
+            //make sure row/column headers are in proper order
+            angular.forEach(headers.rowHeaders, function(header) {
+                searchFactory.sortFilterOptions(header, sc.optionsSort);
+            });
+            angular.forEach(headers.columnHeaders, function(header) {
+                searchFactory.sortFilterOptions(header, sc.optionsSort);
+            });
             var countKey = selectedFilter.key;
             var countLabel = selectedFilter.countLabel;
             var totalCount = selectedFilter.count;
             var calculatePercentage = selectedFilter.calculatePercentage;
             var calculateRowTotal = selectedFilter.calculateRowTotal;
-            var secondaryCountKey = 'pop';
+            var secondaryCountKeys = ['pop', 'ageAdjustedRate', 'standardPop'];
 
-            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKey);
+            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKeys);
         }
 
         function getFilename(selectedFilter) {
@@ -216,6 +215,10 @@
                 searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
                 //update table headers based on cached query
                 sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
+                //make sure side filters are in proper order
+                angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
+                    searchFactory.sortFilterOptions(filter.filters, sc.optionsSort);
+                });
                 sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
@@ -224,6 +227,7 @@
                     sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                     sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
                 }
+                sc.filters.selectedPrimaryFilter.initiated = true;
             });
         }
 

@@ -1,18 +1,23 @@
 var result = require('../models/result');
 var elasticSearch = require('../models/elasticSearch');
 var queryBuilder = require('../api/elasticQueryBuilder');
-const util = require('util');
+var wonder = require("../api/wonder");
+var searchUtils = require('../api/utils');
+var logger = require('../config/logging')
 
 var searchRouter = function(app, rConfig) {
     app.post('/search', function(req, res) {
         var q = req.body.q;
+        logger.debug("Incoming RAW query: ", JSON.stringify(q) );
         var preparedQuery = queryBuilder.buildAPIQuery(q);
+        logger.debug("Incoming query: ", JSON.stringify(preparedQuery) );
         if ( preparedQuery.apiQuery.searchFor === "deaths" ) {
             var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
             var hashCode = req.body.qID;
             var searchQueryResultsQuery = queryBuilder.buildSearchQueryResultsQuery(hashCode);
             new elasticSearch().getQueryResults(searchQueryResultsQuery).then(function (searchResultsResponse) {
                  if(searchResultsResponse && searchResultsResponse._source.queryID === hashCode ) {
+                     logger.info("Retrieved query results for query ID "+hashCode+" from query cache");
                      var resData = {};
                      resData.queryJSON = JSON.parse(searchResultsResponse._source.queryJSON);
                      resData.resultData = JSON.parse(searchResultsResponse._source.resultJSON).data;
@@ -20,15 +25,19 @@ var searchRouter = function(app, rConfig) {
                      res.send( new result('OK', resData, JSON.parse(searchResultsResponse._source.resultJSON).pagination, "success") );
                  }
                  else {
+                     logger.info("Query with ID "+hashCode+" not in cache, executing query");
                      var apiQuery = queryBuilder.addCountsToAutoCompleteOptions(q);
                      var finalAPIQuery = queryBuilder.buildSearchQuery(apiQuery, true);
+                     finalQuery.wonderQuery = preparedQuery.apiQuery;
                      new elasticSearch().aggregateDeaths(finalAPIQuery).then(function (sideFilterResults) {
                          new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
+                             searchUtils.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
                              var insertQuery = queryBuilder.buildInsertQueryResultsQuery(JSON.stringify(q), JSON.stringify(response), "Mortality", hashCode, JSON.stringify(sideFilterResults));
                              new elasticSearch().insertQueryData(insertQuery).then(function(anotherResponse){
+                                 logger.info("Qeury with "+hashCode+" added to query cache");
                                  var resData = {};
                                  resData.queryJSON = q;
-                                 resData.resultData = response.data; //AggregateD
+                                 resData.resultData = response.data;
                                  resData.sideFilterResults = sideFilterResults;
                                  res.send( new result('OK', resData, response.pagination, "success") );
                              }, function(anotherResponse){
@@ -38,20 +47,29 @@ var searchRouter = function(app, rConfig) {
                              res.send( new result('error', response, "failed"));
                          });
                      });
-
                  }
             });
 
         } else if ( preparedQuery.apiQuery.searchFor === "mental_health" ) {
-            q['pagination'] = {from: 0, size: 10000};
-            preparedQuery.apiQuery['pagination'] = {from: 0, size: 10000};
-            var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, false);
+            var yrbsPreparedQuery = queryBuilder.buildQueryForYRBS(q);
+            yrbsPreparedQuery['pagination'] = {from: 0, size: 10000};
+            yrbsPreparedQuery.apiQuery['pagination'] = {from: 0, size: 10000};
+            var finalQuery = queryBuilder.buildSearchQuery(yrbsPreparedQuery.apiQuery, false);
             /*finalQuery.sort = [
                 { "percent" : {"order" : "desc"}},
                 "_score"
             ];*/
-            new elasticSearch().aggregateMentalHealth(finalQuery[0], preparedQuery.apiQuery.dataKeys, preparedQuery.apiQuery.aggregations.nested.table).then(function(response){
+            new elasticSearch().aggregateMentalHealth(finalQuery[0], yrbsPreparedQuery.apiQuery.dataKeys, yrbsPreparedQuery.apiQuery.aggregations.nested.table).then(function(response){
                 res.send( new result('OK', response, response.pagination, "success") );
+            }, function(response){
+                res.send( new result('error', response, "failed"));
+            });
+        } else if ( preparedQuery.apiQuery.searchFor === "bridge_race_sex" ) {
+            preparedQuery = queryBuilder.buildAPIQuery(q);
+            var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
+
+            new elasticSearch().aggregateCensusData(finalQuery[0]).then(function(response){
+                res.send( new result('OK', response.data, response.pagination, "success") );
             }, function(response){
                 res.send( new result('error', response, "failed"));
             });

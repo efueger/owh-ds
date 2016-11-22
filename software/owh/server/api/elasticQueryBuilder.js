@@ -2,7 +2,7 @@ const util = require('util');
 var merge = require('merge');
 
 var prepareCensusAggregationQuery = function(aggregations) {
-    var censusQuery = {};
+    var censusQuery = { size: 0};
     censusQuery.aggregations = {};
     if (aggregations['nested']) {
         if (aggregations['nested']['table'] && aggregations['nested']['table'].length > 0) {
@@ -40,8 +40,7 @@ var generateCensusAggregationQuery = function( aggQuery, groupByKeyStart ) {
     return query;
 };
 
-var prepareAggregationQuery = function(aggregations) {
-    console.log(aggregations);
+var prepareAggregationQuery = function(aggregations, countQueryKey) {
     var elasticQuery = {};
     elasticQuery.aggregations = {};
     //build array for
@@ -52,7 +51,7 @@ var prepareAggregationQuery = function(aggregations) {
     }
     if (aggregations['nested']) {
         if (aggregations['nested']['table'] && aggregations['nested']['table'].length > 0) {
-            elasticQuery.aggregations = merge(elasticQuery.aggregations, generateNestedAggQuery(aggregations['nested']['table'], 'group_table_'));
+            elasticQuery.aggregations = merge(elasticQuery.aggregations, generateNestedAggQuery(aggregations['nested']['table'], 'group_table_', countQueryKey));
         }
         if (aggregations['nested']['charts']) {
             for(var index in aggregations['nested']['charts']) {
@@ -69,25 +68,56 @@ var prepareAggregationQuery = function(aggregations) {
     return elasticQuery;
 };
 
-var generateNestedAggQuery = function(aggregations, groupByKeyStart) {
-    var aggQuery = generateAggregationQuery(aggregations[0], groupByKeyStart);
+var generateNestedAggQuery = function(aggregations, groupByKeyStart, countQueryKey) {
+    var aggQuery = generateAggregationQuery(aggregations[0], groupByKeyStart, countQueryKey);
     if(aggregations.length > 1) {
-        aggQuery[Object.keys(aggQuery)[0]].aggregations = generateNestedAggQuery(aggregations.slice(1), groupByKeyStart);
+        aggQuery[Object.keys(aggQuery)[0]].aggregations = generateNestedAggQuery(aggregations.slice(1), groupByKeyStart, countQueryKey);
     }
     return aggQuery;
 };
 
-var generateAggregationQuery = function( aggQuery, groupByKeyStart ) {
+var generateAggregationQuery = function( aggQuery, groupByKeyStart, countQueryKey ) {
     groupByKeyStart = groupByKeyStart ? groupByKeyStart : '';
     var query = {};
-    query[ groupByKeyStart + aggQuery.key] = {
+
+    //for bridge race sex data
+    if(countQueryKey == 'pop') {
+        query[ groupByKeyStart + aggQuery.key] = getTermQuery(aggQuery);
+        query[ groupByKeyStart + aggQuery.key].aggregations=getPopulationSumQuery();
+        merge(query, getPopulationSumQuery());
+    } else {//for yrbs and mortality
+        query[ groupByKeyStart + aggQuery.key] = getTermQuery(aggQuery);
+    }
+    return query;
+};
+
+/**
+ * Preapare term query
+ * @param aggQuery
+ * @returns {{terms: {field: *, size: *}}}
+ */
+function getTermQuery(aggQuery) {
+    return {
         "terms": {
             "field": aggQuery.queryKey,
             "size": aggQuery.size
         }
-    };
-    return query;
-};
+    }
+}
+
+/**
+ * prepare population sum query
+ * @returns {{group_count_pop: {sum: {field: string}}}}
+ */
+function getPopulationSumQuery() {
+    return {
+        "group_count_pop": {
+            "sum": {
+                "field": "pop"
+            }
+        }
+    }
+}
 
 /**
  *
@@ -110,11 +140,11 @@ var buildInsertQueryResultsQuery = function (query, results, dataset, hashcode, 
 };
 
 
-var buildSearchQueryResultsQuery = function(hascode) {
+var buildSearchQueryResultsQuery = function(hashcode) {
     var searchQuery = {
         "query": {
-            "match": {
-                "queryID": hascode
+            "term": {
+                "queryID": hashcode
             }
         }
     }
@@ -133,7 +163,7 @@ var buildSearchQuery = function(params, isAggregation) {
     var censusQuery = undefined;
     if ( isAggregation ){
         elasticQuery.size = 0;
-        elasticQuery = merge(elasticQuery, prepareAggregationQuery(params.aggregations));
+        elasticQuery = merge(elasticQuery, prepareAggregationQuery(params.aggregations, params.countQueryKey));
         if(params.aggregations['nested'] && params.aggregations['nested']['table']){
             censusQuery = prepareCensusAggregationQuery(params.aggregations);
         }
@@ -270,9 +300,107 @@ var isEmptyObject = function(obj) {
     return !Object.keys(obj).length;
 };
 
+function buildQueryForYRBS(primaryFilter, dontAddYearAgg) {
+    var result = buildAPIQuery(primaryFilter);
+    var apiQuery = result.apiQuery;
+    var headers = result.headers;
+    var resultFilter = headers.columnHeaders.length > 0 ? headers.columnHeaders[0] : headers.rowHeaders[0];
+    var resultAggregation = findByKeyAndValue(apiQuery.aggregations.nested.table, 'key', resultFilter.key);
+    resultAggregation.isPrimary = true;
+    apiQuery.dataKeys = findAllNotContainsKeyAndValue(resultFilter.autoCompleteOptions, 'isAllOption', true);
+    headers.columnHeaders.concat(headers.rowHeaders).forEach(function(eachFilter) {
+        var allValues = getValuesByKeyIncludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
+        if(eachFilter.key === resultFilter.key) {
+            if(apiQuery.query[eachFilter.queryKey]) {
+                apiQuery.query[eachFilter.queryKey].value = allValues;
+            }
+        } else if(eachFilter.key !== resultFilter.key && eachFilter.key !== 'question') {
+            if(!apiQuery.query[eachFilter.queryKey] || allValues.indexOf(apiQuery.query[eachFilter.queryKey].value) >= 0) {
+                apiQuery.query[eachFilter.queryKey] = getFilterQuery(eachFilter);
+                apiQuery.query[eachFilter.queryKey].value = getValuesByKeyExcludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
+            }
+        }
+    });
+    apiQuery.query.primary_filter = getFilterQuery({key: 'primary_filter', queryKey: 'primary_filter', value: resultFilter.queryKey, primary: false});
+    var yearFilter = findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
+    if(yearFilter.value.length != 1 && !dontAddYearAgg) {
+        headers.columnHeaders.push(yearFilter);
+        apiQuery.aggregations.nested.table.push(getGroupQuery(yearFilter));
+    }
+    result.resultFilter = resultFilter;
+    return result;
+}
+
+/**
+ * Finds and returns the first object in array of objects by using the key and value
+ * @param a
+ * @param key
+ * @param value
+ * @returns {*}
+ */
+function findByKeyAndValue(a, key, value) {
+    for (var i = 0; i < a.length; i++) {
+        if ( a[i][key] && a[i][key] === value ) {return a[i];}
+    }
+    return null;
+}
+
+/**
+ * Finds and returns all objects in array of objects that not contains the key and value
+ * @param a
+ * @param key
+ * @param value
+ * @returns {Array}
+ */
+function findAllNotContainsKeyAndValue(a, key, value) {
+    var result = [];
+    for (var i = 0; i < a.length; i++) {
+        if (a[i][key] !== value) {
+            result.push(a[i]);
+        }
+    }
+    return result;
+}
+
+/**
+ * get the array with key
+ * @param data
+ * @param key
+ * @param includeKey
+ * @param includeValue
+ * @returns {Array}
+ */
+function getValuesByKeyIncludingKeyAndValue(data, key, includeKey, includeValue) {
+    var values = [];
+    for (var i = 0; i < data.length; i++) {
+        if(data[i][includeKey] === includeValue) {
+            values.push(data[i][key]);
+        }
+    }
+    return values;
+}
+
+/**
+ * get the array with key
+ * @param data
+ * @param key
+ * @returns {Array}
+ */
+function getValuesByKeyExcludingKeyAndValue(data, key, excludeKey, excludeValue) {
+    var values = [];
+    for (var i = 0; i < data.length; i++) {
+        if(data[i][excludeKey] != excludeValue) {
+            values.push(data[i][key]);
+        }
+    }
+    return values;
+}
+
+
 function buildAPIQuery(primaryFilter) {
    var apiQuery = {
         searchFor: primaryFilter.key,
+        countQueryKey: primaryFilter.countQueryKey,
         query: {},
         aggregations: {
             simple: [],
@@ -455,4 +583,5 @@ module.exports.isEmptyObject = isEmptyObject;
 module.exports.buildInsertQueryResultsQuery = buildInsertQueryResultsQuery;
 module.exports.buildSearchQueryResultsQuery = buildSearchQueryResultsQuery;
 module.exports.buildAPIQuery = buildAPIQuery;
+module.exports.buildQueryForYRBS = buildQueryForYRBS;
 module.exports.addCountsToAutoCompleteOptions = addCountsToAutoCompleteOptions;

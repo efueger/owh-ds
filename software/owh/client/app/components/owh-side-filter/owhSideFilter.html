@@ -40,7 +40,7 @@
 
                     <!--Age group filter -->
                     <li ng-if="group.filterType === 'slider'">
-                        <input type="text" ng-model="group.sliderValue" id="{{group.key}}_slider" slider options="group.sliderOptions"/>
+                        <input type="text" ng-model="group.sliderValue" id="{{group.key}}_slider" slider ng-init="group.sliderOptions.search = sfc.onFilter" options="group.sliderOptions"/>
                     </li>
 
                     <!--Radio button filters (UCD & MCD)-->
@@ -114,7 +114,7 @@
                             <span>All</span>
                         </label>
                     </li>
-                    <li ng-repeat="option in group.autoCompleteOptions | orderBy:'+key'" ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' "
+                    <li ng-repeat="option in group.autoCompleteOptions" ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' "
                         class="group-option" ng-show="$index < 3 || sideFilter.showAll">
                         <input id="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" type="checkbox"
                                checklist-model="group.value" checklist-value="option.key" ng-click="sfc.onFilter()">
