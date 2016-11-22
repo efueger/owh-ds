@@ -186,7 +186,6 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.When(/^user expands race options$/, function () {
-        browser.sleep(30000);
         mortalityPage.raceOptionsLink.click();
     });
 
@@ -261,9 +260,9 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^user should only see total for white race in side filter$/, function () {
         mortalityPage.getSideFilterTotals().then(function(elements) {
-            expect(elements[18].getInnerHtml()).to.eventually.equal('611');
+            expect(elements[17].getInnerHtml()).to.eventually.equal('611');
+            expect(elements[18].getInnerHtml()).to.eventually.equal('');
             expect(elements[19].getInnerHtml()).to.eventually.equal('');
-            expect(elements[20].getInnerHtml()).to.eventually.equal('');
         });
     });
 
@@ -325,6 +324,30 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^user clicks on "([^"]*)" more link for "([^"]*)" filter$/, function (linkText, filterType) {
         var yearFilter = element(by.cssContainingText('a', filterType)).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul'));
         yearFilter.element(by.cssContainingText('a', linkText)).click();
+    });
+
+    this.Then(/^race options should be in proper order$/, function () {
+        mortalityPage.getOptions('Race').then(function(elements) {
+            expect(elements[0].getText()).to.eventually.contains('All');
+            expect(elements[1].getText()).to.eventually.contains('White');
+            expect(elements[2].getText()).to.eventually.contains('Black');
+            expect(elements[3].getText()).to.eventually.contains('American Indian');
+            expect(elements[4].getText()).to.eventually.contains('Asian or Pacific Islander');
+            expect(elements[5].getText()).to.eventually.contains('Other (Puerto Rico only');
+        });
+    });
+
+    this.Then(/^user expands autopsy filter$/, function () {
+        mortalityPage.autopsyOptionsLink.click();
+    });
+
+    this.Then(/^autopsy options should be in proper order$/, function () {
+        mortalityPage.getOptions('Autopsy').then(function(elements) {
+            expect(elements[0].getText()).to.eventually.contains('All');
+            expect(elements[1].getText()).to.eventually.contains('Yes');
+            expect(elements[2].getText()).to.eventually.contains('No');
+            expect(elements[3].getText()).to.eventually.contains('Unknown');
+        });
     });
 };
 module.exports = mortalityStepDefinitionsWrapper;
