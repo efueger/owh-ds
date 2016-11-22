@@ -349,5 +349,9 @@ var mortalityStepDefinitionsWrapper = function () {
             expect(elements[3].getText()).to.eventually.contains('Unknown');
         });
     });
+
+    this.Then(/^filter "([^"]*)" should be displayed$/, function (arg1) {
+        expect(element(by.tagName('owh-side-filter')).getText()).to.eventually.contains(arg1);
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;
