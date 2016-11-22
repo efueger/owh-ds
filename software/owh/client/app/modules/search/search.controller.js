@@ -51,7 +51,8 @@
         ];
         sc.sort = {
             "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
-            "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question']
+            "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question'],
+            "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'age', 'race', 'ethnicity', 'state']
         };
 
         sc.optionsSort = {
@@ -203,7 +204,6 @@
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
-
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
                 //populate side filters based on cached query filters
                 if(response.queryJSON) {
