@@ -71,7 +71,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the percentages are shown for each row are displayed by default$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[1]).to.equal('16,104,129 (50.6%)');
+            expect(value[1]).to.equal('98,841 (45.5%)');
         });
     });
 
@@ -81,7 +81,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^data table is updated and the number of deaths and percentages are updated too$/, function () {
         mortalityPage.getTableRowData(0).then(function (value) {
-            expect(value[1]).to.equal('570,547 (1.8%)');
+            expect(value[1]).to.equal('8,696 (4.0%)');
         });
     });
 
@@ -92,7 +92,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^the percentages get re\-calculated based on all the information displayed in a given row$/, function () {
         browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('34,048 (11.1%)');
+            expect(value[2]).to.equal('986 (14.3%)');
         });
     });
 
@@ -106,7 +106,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^percentages are displayed in the same column\/cell in parenthesis$/, function () {
         browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('34,048 (11.1%)');
+            expect(value[2]).to.equal('986 (14.3%)');
         });
     });
 
@@ -160,7 +160,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^when that option is toggled, the percentages are either displayed\/hidden$/, function () {
         mortalityPage.hidePecentageButton.click();
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('34,048');
+            expect(value[2]).to.equal('986');
         });
     });
 
@@ -181,7 +181,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the Rates and Percentages should have a one decimal precision$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('34,048 (11.1%)');
+            expect(value[2]).to.equal('986 (14.3%)');
         });
     });
 
@@ -230,7 +230,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the Percentages should have a one decimal precision$/, function () {
           mortalityPage.getTableRowData(1).then(function(text) {
-              expect(text[1]).to.equal('2,150,095 (49.1%)');
+              expect(text[1]).to.equal('338,606 (47.6%)');
           });
     });
 
@@ -244,7 +244,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the age adjusted rates are shown for each row$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[1]).to.equal('Rate\n662.5\nDeaths\n16,104,129\nPopulation\n1,943,803,096');
+            expect(value[1]).to.equal('Rate\n562.5\nDeaths\n98,841\nPopulation\n29,970,935');
         });
     });
 
@@ -260,9 +260,11 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^user should only see total for white race in side filter$/, function () {
         mortalityPage.getSideFilterTotals().then(function(elements) {
-            expect(elements[17].getInnerHtml()).to.eventually.equal('611');
+            expect(elements[17].getInnerHtml()).to.eventually.equal('');
             expect(elements[18].getInnerHtml()).to.eventually.equal('');
             expect(elements[19].getInnerHtml()).to.eventually.equal('');
+            expect(elements[20].getInnerHtml()).to.eventually.equal('611');
+
         });
     });
 
@@ -329,10 +331,10 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^race options should be in proper order$/, function () {
         mortalityPage.getOptions('Race').then(function(elements) {
             expect(elements[0].getText()).to.eventually.contains('All');
-            expect(elements[1].getText()).to.eventually.contains('White');
-            expect(elements[2].getText()).to.eventually.contains('Black');
-            expect(elements[3].getText()).to.eventually.contains('American Indian');
-            expect(elements[4].getText()).to.eventually.contains('Asian or Pacific Islander');
+            expect(elements[1].getText()).to.eventually.contains('American Indian');
+            expect(elements[2].getText()).to.eventually.contains('Asian or Pacific Islander');
+            expect(elements[3].getText()).to.eventually.contains('Black');
+            expect(elements[4].getText()).to.eventually.contains('White');
             expect(elements[5].getText()).to.eventually.contains('Other (Puerto Rico only');
         });
     });
