@@ -260,9 +260,11 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^user should only see total for white race in side filter$/, function () {
         mortalityPage.getSideFilterTotals().then(function(elements) {
+            expect(elements[17].getInnerHtml()).to.eventually.equal('');
+            expect(elements[18].getInnerHtml()).to.eventually.equal('');
+            expect(elements[19].getInnerHtml()).to.eventually.equal('');
             expect(elements[20].getInnerHtml()).to.eventually.equal('611');
-            expect(elements[21].getInnerHtml()).to.eventually.equal('');
-            expect(elements[22].getInnerHtml()).to.eventually.equal('');
+
         });
     });
 
