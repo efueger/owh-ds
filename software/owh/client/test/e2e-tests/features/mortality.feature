@@ -148,5 +148,5 @@ Scenario: Ethnicity order
 Scenario: Filer 'Multiple Causes of Deaths' should be displayed
   Given user is on search page
   When user sees side filter
-  Then filter "Multiple Causes of Deaths" should be displayed
+  Then filter "Multiple Causes of Death" should be displayed
 
