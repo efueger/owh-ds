@@ -146,3 +146,9 @@ Scenario: Ethnicity order
   When user expands ethnicity filter
   When user shows more ethnicity filter
   Then ethnicity filters should be in given order
+
+Scenario: Filer 'Multiple Causes of Deaths' should be displayed
+  Given user is on search page
+  When user sees side filter
+  Then filter "Multiple Causes of Death" should be displayed
+
