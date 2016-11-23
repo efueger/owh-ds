@@ -39,6 +39,7 @@
                 <span>&lt;&lt; Hide Filters</span>
             </a>
             <div class="sort-by side-filter-padding">
+                <!--{{sc.filters.selectedPrimaryFilter.sideFilters[4]}}-->
                 <owh-side-filter filters="sc.filters"
                     on-filter="sc.search(sc.filters.selectedPrimaryFilter, sc.filters, true)"
                     sort="sc.sort[sc.filters.selectedPrimaryFilter.title]"
@@ -119,10 +120,10 @@
                             <img src="images/xls.png"/>
                         </a>
                     </div>
-                    <div ng-repeat="filter in sc.optionsGroup">
-                        <span ng-if="filter | isArray">True {{filter}}</span>
-                        <span ng-if="!(filter | isArray)">False {{filter}}</span>
-                    </div>
+                    <!--<div ng-repeat="filter in sc.optionsGroup">-->
+                        <!--<span ng-if="filter | isArray">True {{filter}}</span>-->
+                        <!--<span ng-if="!(filter | isArray)">False {{filter}}</span>-->
+                    <!--</div>-->
                     <owh-table table-data="sc.tableData"
                                ng-if="sc.filters.selectedPrimaryFilter.headers && sc.filters.selectedPrimaryFilter.key === 'deaths'"
                                table-view="{{sc.tableView}}"></owh-table>
