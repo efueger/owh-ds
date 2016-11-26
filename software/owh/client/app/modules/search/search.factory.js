@@ -1005,12 +1005,12 @@
                     ]
                 },
                 {
-                    key: 'bridge_race_sex', title: 'label.census.bridge.race.pop.estimate', primary: true, value:[], header:"Bridge Race POP Estimate",
+                    key: 'bridge_race', title: 'label.census.bridge.race.pop.estimate', primary: true, value:[], header:"Bridged-Race Population Estimates",
                     allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true,
                     countLabel: 'Total', countQueryKey: 'pop',
                     sideFilters:[
                         {
-                            filterGroup: false, collapse: false, allowGrouping: false, dontShowCounts: true,
+                            filterGroup: false, collapse: false, allowGrouping: true, dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'current_year')
                         },
                         {
@@ -1018,8 +1018,8 @@
                             filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'sex'), dontShowCounts: true
                         },
                         {
-                            filterGroup: false, collapse: true, allowGrouping: false, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'age'), dontShowCounts: true
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'agegroup'), dontShowCounts: true
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,

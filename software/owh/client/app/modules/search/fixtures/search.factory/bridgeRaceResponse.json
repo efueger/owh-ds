@@ -5,57 +5,57 @@
         "race": [
         {
           "name": "American Indian",
-          "bridge_race_sex": 2993321,
+          "bridge_race": 2993321,
           "sex": [
             {
               "name": "Female",
-              "bridge_race_sex": 1500265
+              "bridge_race": 1500265
             },
             {
               "name": "Male",
-              "bridge_race_sex": 1493056
+              "bridge_race": 1493056
             }
           ]
         },
         {
           "name": "Asian or Pacific Islander",
-          "bridge_race_sex": 11893416,
+          "bridge_race": 11893416,
           "sex": [
             {
               "name": "Female",
-              "bridge_race_sex": 6115633
+              "bridge_race": 6115633
             },
             {
               "name": "Male",
-              "bridge_race_sex": 5777783
+              "bridge_race": 5777783
             }
           ]
         },
         {
           "name": "Black",
-          "bridge_race_sex": 36728709,
+          "bridge_race": 36728709,
           "sex": [
             {
               "name": "Female",
-              "bridge_race_sex": 19252974
+              "bridge_race": 19252974
             },
             {
               "name": "Male",
-              "bridge_race_sex": 17475735
+              "bridge_race": 17475735
             }
           ]
         },
         {
           "name": "White",
-          "bridge_race_sex": 230546965,
+          "bridge_race": 230546965,
           "sex": [
             {
               "name": "Female",
-              "bridge_race_sex": 116850132
+              "bridge_race": 116850132
             },
             {
               "name": "Male",
-              "bridge_race_sex": 113696833
+              "bridge_race": 113696833
             }
           ]
         }

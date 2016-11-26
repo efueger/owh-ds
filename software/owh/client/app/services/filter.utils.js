@@ -5,12 +5,12 @@
         .module('owh.services').
         service('filterUtils', filterUtils);
 
-    filterUtils.$inject = [];
+    filterUtils.$inject = ['utilService', '$timeout'];
 
     /**
      * This utility service is used to prepare the OWH search filters.
      */
-    function filterUtils() {
+    function filterUtils(utilService, $timeout) {
         return {
             getBridgeDataFilters: getBridgeDataFilters
         };
@@ -109,39 +109,70 @@
             ];
 
             var censusAgeOptions = [
-                {key:'1',title:'01 years'},
-                {key:'2',title:'02 years'},
-                {key:'3',title:'03 years'},
-                {key:'4',title:'04 years'},
-                {key:'5',title:'05 years'},
-                {key:'6',title:'06 years'},
-                {key:'7',title:'07 years'},
-                {key:'8',title:'08 years'},
-                {key:'9',title:'09 years'},
-                {key:'10',title:'10 years'},
-                {key:'11',title:'11 years'},
-                {key:'12',title:'12 years'},
-                {key:'13',title:'13 years'},
-                {key:'14',title:'14 years'},
-                {key:'15',title:'15 years'},
-                {key:'16',title:'16 years'},
-                {key:'17',title:'17 years'},
-                {key:'18',title:'18 years'},
-                {key:'19',title:'19 years'},
-                {key:'20',title:'20 years'},
-                {key:'21',title:'21 years'},
-                {key:'22',title:'22 years'},
-                {key:'23',title:'23 years'},
-                {key:'24',title:'24 years'},
-                {key:'25',title:'25 years'},
-                {key:'26',title:'26 years'},
-                {key:'27',title:'27 years'},
-                {key:'28',title:'28 years'},
-                {key:'29',title:'29 years'},
-                {key:'30',title:'30 years'},
-                {key:'31',title:'31 years'},
-                {key:'32',title:'32 years'}
+                {key:'0-4 years', title:'0 - 4 years', min: 1, max: 4},
+                {key:'5-9 years', title:'5 - 9 years', min: 5, max: 9},
+                {key:'10-14 years', title:'10 - 14 years', min: 10, max: 14},
+                {key:'15-19 years', title:'15 - 19 years', min: 15, max: 19},
+                {key:'20-24 years', title:'20 - 24 years', min: 20, max: 24},
+                {key:'25-29 years', title:'25 - 29 years', min: 25, max: 28},
+                {key:'30-34 years', title:'30 - 34 years', min: 30, max: 34},
+                {key:'35-39 years', title:'35 - 39 years', min: 35, max: 39},
+                {key:'40-44 years', title:'40 - 44 years', min: 40, max: 44},
+                {key:'45-49 years', title:'45 - 49 years', min: 45, max: 49},
+                {key:'50-54 years', title:'50 - 54 years', min: 50, max: 54},
+                {key:'55-59 years', title:'55 - 59 years', min: 55, max: 59},
+                {key:'60-64 years', title:'60 - 64 years', min: 60, max: 64},
+                {key:'65-69 years', title:'65 - 69 years', min: 65, max: 69},
+                {key:'70-74 years', title:'70 - 74 years', min: 70, max: 74},
+                {key:'75-79 years', title:'75 - 79 years', min: 75, max: 79},
+                {key:'80-84 years',title:'80 - 84 years', min: 80, max: 84},
+                {key:'85-105 years',title:'85+ years', min: 85, max: 105},
+                {key:'Age not stated',title:'Age not stated', min: -5, max: 0}
             ];
+
+            var ageSliderOptions =  {
+                from: -5,
+                to: 85,
+                step: 5,
+                threshold: 0,
+                scale: ['Not stated', 0, '', 10, '', 20, '', 30, '', 40, '', 50, '', 60, '', 70, '', 80, '>85'],
+                modelLabels: {'-5': 'Not stated', 85: '>85'},
+                css: {
+                    background: {'background-color': '#ccc'},
+                    before: {'background-color': '#ccc'},
+                    default: {'background-color': 'white'},
+                    after: {'background-color': '#ccc'},
+                    pointer: {'background-color': '#914fb5'},
+                    range: {"background-color": "#914fb5"}
+                },
+                callback: function(value, release) {
+                    var self = this;
+                    var values = value.split(';');
+                    var minValue = Number(values[0]);
+                    var maxValue = Number(values[1]);
+                    var ageGroupFilter = utilService.findByKeyAndValue(bridgeDataFilters, 'key', 'agegroup');
+
+                    var prevValue = angular.copy(ageGroupFilter.value);
+                    ageGroupFilter.value = [];
+                    // set the values list only if the slider selection is different from the default
+                    if(! (minValue == -5  && maxValue == 85)) {
+                        angular.forEach(ageGroupFilter.autoCompleteOptions, function(eachOption) {
+                            if((eachOption.min <= minValue && eachOption.max >= minValue)
+                                || (eachOption.min >= minValue && eachOption.max <= maxValue)
+                                || (eachOption.min <= maxValue && eachOption.max >= maxValue)) {
+                                ageGroupFilter.value.push(eachOption.key);
+                            }
+                        });
+                    }
+
+                    if(!ageGroupFilter.timer && !angular.equals(prevValue, ageGroupFilter.value)) {
+                        ageGroupFilter.timer = $timeout(function() {
+                            ageGroupFilter.timer=undefined;
+                            self.search();
+                        }, 2000);
+                    }
+                }
+            };
 
             //prepare filter definitions
             var bridgeDataFilters = [
@@ -149,8 +180,11 @@
                     autoCompleteOptions: angular.copy(censusYearsOptions) },
                 {key: 'sex', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
                     autoCompleteOptions: angular.copy(censusGenderOptions)},
-                {key: 'age', title: 'label.filter.age', queryKey:"age",primary: false, value:[], defaultGroup:'row', groupBy: false,
-                    autoCompleteOptions: angular.copy(censusAgeOptions)},
+
+                {key: 'agegroup', title: 'label.filter.agegroup', queryKey:"age_5_interval", primary: false, value:[],
+                    groupBy: false, filterType: 'slider', autoCompleteOptions: angular.copy(censusAgeOptions),
+                    sliderOptions: ageSliderOptions, sliderValue: '-5;105', timer: undefined, defaultGroup:"row"},
+
                 {key: 'race', title: 'label.filter.race', queryKey:"race",primary: false, defaultGroup:'column', groupBy: 'row',
                     autoCompleteOptions: angular.copy(censusRaceOptions), value:[]},
                 {key: 'ethnicity', title: 'label.filter.hispanicOrigin', queryKey:"hispanic_origin",primary: false, defaultGroup:'row', groupBy: false,
