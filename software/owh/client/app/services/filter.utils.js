@@ -138,12 +138,9 @@
                 scale: ['Not stated', 0, '', 10, '', 20, '', 30, '', 40, '', 50, '', 60, '', 70, '', 80, '>85'],
                 modelLabels: {'-5': 'Not stated', 85: '>85'},
                 css: {
-                    background: {'background-color': '#ccc'},
-                    before: {'background-color': '#ccc'},
-                    default: {'background-color': 'white'},
-                    after: {'background-color': '#ccc'},
-                    pointer: {'background-color': '#914fb5'},
-                    range: {"background-color": "#914fb5"}
+                    background: {'background-color': '#ccc'}, before: {'background-color': '#ccc'},
+                    default: {'background-color': 'white'}, after: {'background-color': '#ccc'},
+                    pointer: {'background-color': '#914fb5'}, range: {"background-color": "#914fb5"}
                 },
                 callback: function(value, release) {
                     var self = this;
