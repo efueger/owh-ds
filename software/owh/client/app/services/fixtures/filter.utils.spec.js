@@ -1,12 +1,13 @@
 'use strict';
 
 describe('filterUtils', function(){
-    var filterUtils;
+    var filterUtils, utilService;
 
     beforeEach(module('owh'));
 
     beforeEach(inject(function ($injector) {
         filterUtils = $injector.get('filterUtils');
+        utilService = $injector.get('utilService');
     }));
 
     describe('test getBridgeDataFilters', function() {
@@ -21,10 +22,10 @@ describe('filterUtils', function(){
         it('should provide me correct slider intervals', function () {
 
             var bridgeRaceFilters = filterUtils.getBridgeDataFilters();
-            filterUtils.ageSliderOptions.callback('5;19');
+            bridgeRaceFilters[2].sliderOptions.callback('5;19');
 
-            var agegroupFilter = utils.findByKeyAndValue(bridgeRaceFilters, 'key', 'agegroup');
-            expect(agegroupFilter.value).toEqual([ '5-9 years', '10-14 years', '15-19 years', 'Age not stated' ]);
+            var ageGroupFilter = utilService.findByKeyAndValue(bridgeRaceFilters, 'key', 'agegroup');
+            expect(ageGroupFilter.value).toEqual(['5-9 years', '10-14 years', '15-19 years']);
         });
     });
 });
