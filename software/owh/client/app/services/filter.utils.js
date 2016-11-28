@@ -114,7 +114,7 @@
                 {key:'10-14 years', title:'10 - 14 years', min: 10, max: 14},
                 {key:'15-19 years', title:'15 - 19 years', min: 15, max: 19},
                 {key:'20-24 years', title:'20 - 24 years', min: 20, max: 24},
-                {key:'25-29 years', title:'25 - 29 years', min: 25, max: 28},
+                {key:'25-29 years', title:'25 - 29 years', min: 25, max: 29},
                 {key:'30-34 years', title:'30 - 34 years', min: 30, max: 34},
                 {key:'35-39 years', title:'35 - 39 years', min: 35, max: 39},
                 {key:'40-44 years', title:'40 - 44 years', min: 40, max: 44},
