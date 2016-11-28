@@ -200,7 +200,7 @@ ElasticClient.prototype.aggregateCensusData = function(query){
         request_cache:true
     }).then(function (resp) {
         //parse the search results
-        deferred.resolve(searchUtils.populateDataWithMappings(resp, 'bridge_race_sex', 'pop'))
+        deferred.resolve(searchUtils.populateDataWithMappings(resp, 'bridge_race', 'pop'))
     }, function (err) {
         logger.error(err.message);
         deferred.reject(err);

@@ -379,7 +379,7 @@ describe('search factory ', function(){
         });
 
         it('getAllFilters', function () {
-            expect(primaryFilter.key).toEqual('bridge_race_sex');
+            expect(primaryFilter.key).toEqual('bridge_race');
         });
 
         it('searchCensusInfo', function () {
