@@ -312,10 +312,14 @@
             //@TODO we are bulding api query at server side, but still using this method to build headers
             var apiQuery = buildAPIQuery(primaryFilter);
             var headers = apiQuery.headers;
+            // var result = prepareChartAggregations(headers.rowHeaders.concat(headers.columnHeaders));
+            // headers.chartHeaders = result.chartHeaders;
             //var query = apiQuery.apiQuery;
             //Passing completed primaryFilters to backend and building query at server side
             SearchService.searchResults(createBackendSearchRequest(primaryFilter), queryID).then(function(response) {
                 //resolve data for controller
+                //need to build headers with primary filter returned from backend in order for charts to build properly
+                headers = buildAPIQuery(response.data.queryJSON).headers;
                 deferred.resolve({
                     data : response.data.resultData.nested.table,
                     dataPrepared : false,
