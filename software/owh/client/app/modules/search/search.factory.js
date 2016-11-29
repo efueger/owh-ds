@@ -310,11 +310,6 @@
         function queryMortalityAPI( primaryFilter, queryID) {
             var deferred = $q.defer();
             //@TODO we are bulding api query at server side, but still using this method to build headers
-            var apiQuery = buildAPIQuery(primaryFilter);
-            var headers = apiQuery.headers;
-            // var result = prepareChartAggregations(headers.rowHeaders.concat(headers.columnHeaders));
-            // headers.chartHeaders = result.chartHeaders;
-            //var query = apiQuery.apiQuery;
             //Passing completed primaryFilters to backend and building query at server side
             SearchService.searchResults(createBackendSearchRequest(primaryFilter), queryID).then(function(response) {
                 //resolve data for controller
