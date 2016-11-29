@@ -51,19 +51,19 @@
                 Population details from NCHS Bridge Race Estimates is used to calculate Death Rates (per 100,000)
             </p>
         <!--Charts-->
-            <div class="usa-grid-full margin-top-30">
+            <!--<div class="usa-grid-full margin-top-30">
                 <div class="usa-width-one-whole" ng-repeat="startChartData in sc.filters.selectedPrimaryFilter.chartData" ng-init="parentIndex = $index">
                     <div ng-repeat="chartData in startChartData"
                          ng-class="!chartData.isMap || sc.selectedMapSize==='small'?'usa-width-one-third graph-box':'usa-width-one-whole margin-bottom-20'">
-                        <!--Map-->
+                        &lt;!&ndash;Map&ndash;&gt;
                         <div id="chart_us_map" ng-if="chartData.isMap && sc.filters.selectedPrimaryFilter.showMap && sc.filters.selectedPrimaryFilter.maps">
                             <leaflet  lf-center="chartData.usa" markers="chartData.markers" events="chartData.events" geojson="chartData.geojson"
                                       legend="chartData.legend" controls="chartData.controls" defaults="chartData.defaults"
                                       height="{{sc.selectedMapSize==='small'?'277px':'300px'}}" width="{{sc.selectedMapSize==='small'?'300px':'100%'}}"></leaflet>
                         </div>
-                        <!--Map-->
+                        &lt;!&ndash;Map&ndash;&gt;
 
-                        <!--Graphs-->
+                        &lt;!&ndash;Graphs&ndash;&gt;
                         <div ng-if="!chartData.isMap">
                             <div class="text-center margin-top-5" >
                                 <span ng-bind="chartData.title | translate" class="graph-title"></span>
@@ -77,10 +77,12 @@
                             </div>
                             <nvd3 id="chart_{{parentIndex}}_{{$index}}" options='chartData.options' data='chartData.data'></nvd3>
                         </div>
-                        <!--Graphs-->
+                        &lt;!&ndash;Graphs&ndash;&gt;
                     </div>
                 </div>
-            </div>
+            </div>-->
+            <owh-graph graph-data="sc.filters.selectedPrimaryFilter.chartData" show-map="sc.filters.selectedPrimaryFilter.showMap"
+                        maps="sc.filters.selectedPrimaryFilter.maps" selected-map-size="{{sc.selectedMapSize}}"></owh-graph>
             <!--Charts-->
 
             <!--More visualization-->

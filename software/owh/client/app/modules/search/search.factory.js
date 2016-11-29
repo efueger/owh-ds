@@ -275,7 +275,6 @@
             var apiQuery = buildAPIQuery(primaryFilter);
             var query = apiQuery.apiQuery;
             SearchService.generateHashCode(query).then(function(response) {
-                console.log(" search factory generatehashcode ", response.data);
                 deferred.resolve(response.data);
             });
             return deferred.promise;
