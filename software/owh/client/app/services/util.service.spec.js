@@ -217,9 +217,18 @@ describe('utilService', function(){
 
     it('test utils prepareMixedTableData for numbers and percentages', function () {
         //Implementation pending
-        var result = utils.prepareMixedTableData(tableData.headers, tableData.data, tableData.countKey, tableData.totalCount, tableData.countLabel, tableData.calculatePercentage, tableData.calculateRowTotal);
+        var result = utils.prepareMixedTableData(tableData.headers, tableData.data, tableData.countKey,
+            tableData.totalCount, tableData.countLabel, tableData.calculatePercentage, tableData.calculateRowTotal);
         expect(result).not.toBe(null);
         expect(JSON.stringify(result)).toEqual(JSON.stringify(tableData.expectedResult));
+    });
+
+    it('should not calculate percentages for suppressed counts', function () {
+        var result = utils.prepareMixedTableData(tableData.headers, tableData.data,
+            'deaths', tableData.totalCount, tableData.countLabel, true, tableData.calculateRowTotal);
+        var row = result.data[0];
+        expect(row[1].percentage).toEqual(undefined);
+        expect(row[2].percentage).toEqual(undefined);
     });
 
     it('test utils concatenateByKey', function () {
