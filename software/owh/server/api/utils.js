@@ -20,8 +20,8 @@ var populateDataWithMappings = function(resp, countKey, countQueryKey) {
         Object.keys(data).forEach(function (key) {
             var dataKey = '';
             if (key.indexOf('group_table_') > -1) {
-                dataKey = key.split("_")[2];
-                result.data.nested.table[dataKey] = populateAggregatedData(data[key].buckets, countKey, 2, undefined, countQueryKey);
+                dataKey = key.split("group_table_")[1];
+                result.data.nested.table[dataKey] = populateAggregatedData(data[key].buckets, countKey, 1, undefined, countQueryKey, 'group_table_');
             }
             if (key.indexOf('group_chart_') > -1) {
                 var keySplits = key.split("_");
@@ -52,7 +52,7 @@ var populateDataWithMappings = function(resp, countKey, countQueryKey) {
     return result;
 };
 
-var populateAggregatedData = function(buckets, countKey, splitIndex, map, countQueryKey) {
+var populateAggregatedData = function(buckets, countKey, splitIndex, map, countQueryKey, groupKey) {
     var result = [];
     for(var index in buckets) {
         // console.log(buckets[index]);
@@ -72,8 +72,14 @@ var populateAggregatedData = function(buckets, countKey, splitIndex, map, countQ
 
                 }
             }
-            if( innerObjKey ){
-                aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex, map, countQueryKey);
+            if( innerObjKey ) {
+                //if you want to split group key by particular word
+                if (groupKey) {
+                    aggregation[innerObjKey.split(groupKey)[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets,
+                        countKey, splitIndex, map, countQueryKey, groupKey);
+                } else {//by default split group key by underscore and retrieve key based on index
+                    aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex, map, countQueryKey);
+                }
                 //check if total should be suppressed
                 if(countKey === 'deaths' && isMortalityTotalSuppressed(buckets[index][innerObjKey].buckets)) {
                     aggregation[countKey] = 'suppressed';

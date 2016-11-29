@@ -30,6 +30,7 @@ Scenario: Side filter collapse
 Scenario: Side filter options retain order
   Given user is on search page
   When user expands race options
+  Then user clicks on "+ 2 more" more link for "Race" filter
   When user selects second race option
   Then race options retain their initial ordering
 
@@ -132,15 +133,22 @@ Scenario: Age filter for age adjusted rates
 Scenario: Side filter total suppression
   Given user is on search page
   When user shows more year filters
-  When user filters by year 2013
+  And user filters by year 2013
   Then user expands race options
+  And user clicks on "+ 2 more" more link for "Race" filter
   When user expands ethnicity filter
-  When user shows more ethnicity filter
-  When user filters by ethnicity Spaniard
-  And user should only see total for white race in side filter
+  And user shows more ethnicity filter
+  And user filters by ethnicity Spaniard
+  Then user should only see total for white race in side filter
 
 Scenario: Ethnicity order
   Given user is on search page
   When user expands ethnicity filter
   When user shows more ethnicity filter
   Then ethnicity filters should be in given order
+
+Scenario: Filer 'Multiple Causes of Deaths' should be displayed
+  Given user is on search page
+  When user sees side filter
+  Then filter "Multiple Causes of Death" should be displayed
+
