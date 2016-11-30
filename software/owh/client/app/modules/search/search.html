@@ -55,15 +55,15 @@
                 <div class="usa-width-one-whole" ng-repeat="startChartData in sc.filters.selectedPrimaryFilter.chartData" ng-init="parentIndex = $index">
                     <div ng-repeat="chartData in startChartData"
                          ng-class="!chartData.isMap || sc.selectedMapSize==='small'?'usa-width-one-third graph-box':'usa-width-one-whole margin-bottom-20'">
-                        <!--Map-->
+                        <!-- Map -->
                         <div id="chart_us_map" ng-if="chartData.isMap && sc.filters.selectedPrimaryFilter.showMap && sc.filters.selectedPrimaryFilter.maps">
                             <leaflet  lf-center="chartData.usa" markers="chartData.markers" events="chartData.events" geojson="chartData.geojson"
                                       legend="chartData.legend" controls="chartData.controls" defaults="chartData.defaults"
                                       height="{{sc.selectedMapSize==='small'?'277px':'300px'}}" width="{{sc.selectedMapSize==='small'?'300px':'100%'}}"></leaflet>
                         </div>
-                        <!--Map-->
+                        <!-- Map -->
 
-                        <!--Graphs-->
+                        <!-- Graphs -->
                         <div ng-if="!chartData.isMap">
                             <div class="text-center margin-top-5" >
                                 <span ng-bind="chartData.title | translate" class="graph-title"></span>
@@ -77,7 +77,7 @@
                             </div>
                             <nvd3 id="chart_{{parentIndex}}_{{$index}}" options='chartData.options' data='chartData.data'></nvd3>
                         </div>
-                        <!--Graphs-->
+                        <!-- Graphs -->
                     </div>
                 </div>
             </div>
