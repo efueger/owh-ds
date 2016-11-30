@@ -1,3 +1,9 @@
+########################################################################################
+### Use Thomas Lumley's 'survey' package, as enhanced for us by Prof. T.L. himself.
+### The package is described in his book 
+###     Complex Surveys: A Guide to Analysis Using R (Wiley, 2010)
+########################################################################################
+
 library("survey")
 
 ########################################################################################
@@ -38,16 +44,19 @@ get.df.for.state.and.year = function(state, year.we.want, rda.path) {
         df = sadc.2015.state.n.z.df
     }
     if (class(df) != 'data.frame') return("ERROR: Internal error: Missing/bad dataframe!")
+
     df = subset(df, df$sitecode == state)
     if (nrow(df)==0)  {
         return(paste0("ERROR: No data for state ",state,"!"))
     }
     #print(dim(df)) 
+
     df = subset(df, df$year == year.we.want)
     if (nrow(df)==0)  {
         return(paste0("ERROR: No data for state ",state," and year ",year.we.want,"!"))
     }
     #print(dim(df))
+
     return(df)
 }
     
@@ -107,8 +116,11 @@ yrbssCalculate =
     confint = "xlogit"  # logit, mean, beta, likelihood
   )
   {
+    ### If no cached df passed in, call function to read from file.
     if (is.null(df)) df = get.df.for.state.and.year(state, year, rda.path)
     if (class(df) != 'data.frame') return(df)
+
+    ### Whether cached or read, double-check state and year.
     df = verify.df(df,state,year)
     if (class(df) != 'data.frame') return(df)  # it's an error message
 
@@ -128,15 +140,26 @@ yrbssCalculate =
     #cat(sum(mask), "passed filters.\n")
     
     
-    ### The group_by variables specify the dimensions of the final table.
+    ### The group_by variables specify the dimensions of the final contingency table.
     ### Get a list of possible values for each variable, then create a "grid" of
-    ### all possible combinations of values.
+    ### all possible combinations of values.  For each variable, we also add a -1 value,
+    ### which represents "don't care" and lets us fill in the margins of the table.
+    ### For example, if there are three group_by variables, each with 5 possible values, 
+    ### the "grid" has 3 columns and (5+1)^3=216 rows, and the contingency table has 216 cells.
+    
+    ### First, create a list of vectors.  In the case of the aforementioned example, there
+    ### will be three vectors in the list, each with 6 elements.
     all_by_vals = lapply(group_by, function(s) c(sort(unique(df[[s]])),-1))
     names(all_by_vals) = group_by
+
+    ### expand.grid will turn the list into a 216 x 3 dataframe.
     grid = expand.grid(all_by_vals)
     #print(grid)
     
-    ### Create a row of column headings.
+    ### Now we begin to build up the result, cell by cell. 
+    ### We are building up a csv string, not a dataframe.
+    ### Each cell is represented by a string terminated by '\n'.
+    ### First we create a row of column headings.
     kol.names =  c(unlist(group_by),
                      t(outer(names(positives),
                             c(".count", ".pct", ".se", ".ci.lo", ".ci.hi"),
@@ -147,15 +170,17 @@ yrbssCalculate =
     #print(result)        
     assigned = 0  # For grins, keep track of total number assigned to grid.
     
-    ### for each cell in grid (i.e., each combination of group-by values)
+    ### For each cell in grid (i.e., each combination of group-by values), do ...
     for (i in 1:nrow(grid)) {
         new.row = unlist(grid[i,])
         #print(new.row)
         ### Refine the mask to include only rows for this cell.
+        ### mask tells us which rows pass the filter. 
+        ### fine.mask will tell us which rows also contain the positive responses.
         fine.mask = mask
         #print(table(fine.mask, useNA="always"))
         for (s in group_by) {
-            if (grid[i,s] == -1) next
+            if (grid[i,s] == -1) next  ## -1 marks the 'total' case
             fine.mask = fine.mask & (!is.na(df[[s]]) & (df[[s]] == grid[i,s]))
             #print(table(fine.mask, useNA="always"))
         }
