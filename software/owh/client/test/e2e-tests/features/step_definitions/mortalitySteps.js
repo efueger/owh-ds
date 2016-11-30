@@ -312,5 +312,69 @@ var mortalityStepDefinitionsWrapper = function () {
         var yearFilter = element(by.cssContainingText('a', filterType)).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul'));
         yearFilter.element(by.cssContainingText('a', linkText)).click();
     });
+
+    this.Then(/^user should see two subcategories\- Hispanic and NonHispanic$/, function () {
+        mortalityPage.getOptions('Ethnicity').then(function(elements) {
+            expect(elements[1].getText()).to.eventually.contains('Hispanic');
+            expect(elements[12].getText()).to.eventually.contains('Non-Hispanic');
+        });
+    });
+
+    this.When(/^user expands hispanic option group$/, function () {
+        mortalityPage.getGroupOptions('Ethnicity').then(function(elements) {
+            elements[0].element(by.tagName('i')).click();
+        });
+    });
+
+    this.When(/^user checks entire Hispanic group$/, function () {
+        mortalityPage.ethnicityHispanicOption.click();
+    });
+
+    this.Then(/^all Hispanic child options should be checked$/, function () {
+        mortalityPage.getOptions('Ethnicity').then(function(elements) {
+            for(var i = 2; i < 11; i++) {
+                expect(elements[i].element(by.tagName('input')).isSelected()).to.eventually.equal(true);
+            }
+        });
+
+    });
+
+    this.Then(/^user should see all the of the Hispanic Origin options grouped\(Central American,Cuban,Dominican,Latin American, Mexican, Puerto Rican, South American,Spaniard, Other Hispanic, Unknown\) under one Category\- Hispanic$/, function () {
+        mortalityPage.getOptions('Ethnicity').then(function(elements) {
+            expect(elements[2].getText()).to.eventually.contains('Central American');
+            expect(elements[3].getText()).to.eventually.contains('Central and South American');
+            expect(elements[4].getText()).to.eventually.contains('Cuban');
+            expect(elements[5].getText()).to.eventually.contains('Dominican');
+            expect(elements[6].getText()).to.eventually.contains('Latin American');
+            expect(elements[7].getText()).to.eventually.contains('Mexican');
+            expect(elements[8].getText()).to.eventually.contains('Other Hispanic');
+            expect(elements[9].getText()).to.eventually.contains('Puerto Rican');
+            expect(elements[10].getText()).to.eventually.contains('South American');
+            expect(elements[11].getText()).to.eventually.contains('Spaniard');
+        });
+    });
+
+    this.When(/^user checks some options under hispanic group$/, function () {
+        mortalityPage.getOptionByFilterAndKey('hispanicOrigin', 'Cuban').click();
+        mortalityPage.getOptionByFilterAndKey('hispanicOrigin', 'Latin American').click();
+        mortalityPage.getOptionByFilterAndKey('hispanicOrigin', 'Puerto Rican').click();
+    });
+
+    this.When(/^user groups ethnicity by row$/, function () {
+        mortalityPage.selectSideFilter('Ethnicity', 'Row').click();
+    });
+
+    this.Then(/^data should be filtered by the checked hispanic options$/, function () {
+        mortalityPage.getTableRowData(0).then(function(text) {
+            expect(text[1]).to.equal('Cuban');
+        });
+        mortalityPage.getTableRowData(1).then(function(text) {
+            expect(text[0]).to.equal('Latin American');
+        });
+        mortalityPage.getTableRowData(2).then(function(text) {
+            expect(text[0]).to.equal('Puerto Rican');
+        });
+    });
+
 };
 module.exports = mortalityStepDefinitionsWrapper;

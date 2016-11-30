@@ -97,6 +97,31 @@ Scenario: Years are supposed to be in descending order
   Then user clicks on "+ 12 more" more link for "Year" filter
   Then years should be in descending order
 
+Scenario: Ethnicity Filter
+  Given user is on search page
+  When user expands ethnicity filter
+  Then user should see two subcategories- Hispanic and NonHispanic
+
+Scenario: Check box
+  Given user is on search page
+  When user expands ethnicity filter
+  When user checks entire Hispanic group
+  Then all Hispanic child options should be checked
+
+Scenario: Ethnicity Hispanic Group
+  Given user is on search page
+  When user expands ethnicity filter
+  When user expands hispanic option group
+  Then user should see all the of the Hispanic Origin options grouped(Central American,Cuban,Dominican,Latin American, Mexican, Puerto Rican, South American,Spaniard, Other Hispanic, Unknown) under one Category- Hispanic
+
+Scenario: Check box- Hispanic Sub Categories
+  Given user is on search page
+  When user groups ethnicity by row
+  When user expands ethnicity filter
+  When user expands hispanic option group
+  When user checks some options under hispanic group
+  Then data should be filtered by the checked hispanic options
+
 #Scenario: Suppressed
 #  When counts fall below the determined "cut-off" value and the conditions for suppression are met
 #  Then the value should be suppressed

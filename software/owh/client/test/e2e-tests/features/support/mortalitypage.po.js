@@ -19,6 +19,7 @@ var MortalitySearchPage = function() {
     msp.mainSearch = element(by.tagName('owh-search'));
     msp.deathRateDisclaimer = element(by.id('death-rate-disclaimer'));
     msp.ethnicityOption2 = element(by.id('deaths_hispanicOrigin_200-209')).element(by.xpath('..'));
+    msp.ethnicityHispanicOption = element(by.id('deaths_hispanicOrigin_Hispanic')).element(by.xpath('..'));
     msp.showMoreYears = element(by.cssContainingText('a', '+ 12 more'));
     msp.showMoreEthnicity = element(by.cssContainingText('a', '+ 9 more'));
     msp.expandEthnicity = element(by.cssContainingText('a', 'Ethnicity'));
@@ -90,9 +91,17 @@ var MortalitySearchPage = function() {
         return element(by.cssContainingText('a', filterType)).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.tagName('li'));
     };
 
+    msp.getGroupOptions = function(filterType) {
+        return element(by.cssContainingText('a', filterType)).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.className('owh-side-menu__group-option'));
+    };
+
     msp.getSideFilterTotals = function() {
         return element(by.tagName('owh-side-filter')).all(by.className('count-value'));
     };
+
+    msp.getOptionByFilterAndKey = function(filter, key) {
+        return element(by.id('deaths_' + filter + '_' + key)).element(by.xpath('..'));
+    }
 
 };
 
