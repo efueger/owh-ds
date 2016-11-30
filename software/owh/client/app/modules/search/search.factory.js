@@ -275,7 +275,6 @@
             var apiQuery = buildAPIQuery(primaryFilter);
             var query = apiQuery.apiQuery;
             SearchService.generateHashCode(query).then(function(response) {
-                console.log(" search factory generatehashcode ", response.data);
                 deferred.resolve(response.data);
             });
             return deferred.promise;
@@ -317,6 +316,10 @@
             //Passing completed primaryFilters to backend and building query at server side
             SearchService.searchResults(createBackendSearchRequest(primaryFilter), queryID).then(function(response) {
                 //resolve data for controller
+                //need to build headers with primary filter returned from backend in order for charts to build properly
+                if(response.data.queryJSON) {
+                    headers = buildAPIQuery(response.data.queryJSON).headers;
+                }
                 deferred.resolve({
                     data : response.data.resultData.nested.table,
                     dataPrepared : false,

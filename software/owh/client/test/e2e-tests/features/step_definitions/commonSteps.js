@@ -35,5 +35,33 @@ var commonStepDefinitionsWrapper = function () {
         browser.navigate().forward();
         expect(browser.getCurrentUrl()).not.to.eventually.equal(previousUrl)
     });
+
+
+    this.Then(/^most recent filter action "([^"]*)" type "([^"]*)" is removed and I am taken back by one step$/, function (filter, type) {
+        var autopsyColumn = element(by.cssContainingText('a', filter)).element(By.xpath('following-sibling::owh-toggle-switch')).element(by.cssContainingText('a', type));
+        expect(autopsyColumn.getAttribute('class')).not.to.eventually.contains('selected');
+    });
+
+    this.Then(/^the results page should have (\d+) graphs and table has columns "([^"]*)", "([^"]*)", "([^"]*)" for filter "([^"]*)"$/, function (chartCount, column1, column2, column3, filterType) {
+        element.all(by.repeater('chartData in startChartData')).count().then(function (size) {
+            expect(size).to.equal(parseInt(chartCount));
+        });
+
+        element(by.tagName("owh-table")).all(by.tagName("th")).then(function (columns) {
+            if(filterType == 'Race') {
+                expect(columns[0].getText()).to.eventually.equals(column1);
+                expect(columns[1].getText()).to.eventually.equals(column2);
+                expect(columns[2].getText()).to.eventually.equals(column3);
+            }
+            else {
+                expect(columns[4].getText()).to.eventually.equals(column1);
+                expect(columns[5].getText()).to.eventually.equals(column2);
+                expect(columns[6].getText()).to.eventually.equals(column3);
+            }
+        });
+
+
+
+    });
 };
 module.exports = commonStepDefinitionsWrapper;
