@@ -21,7 +21,7 @@ var BridgeRaceStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^I see "([^"]*)" as first option in sidebar filters$/, function (arg1) {
-        browser.sleep(30000);
+        browser.sleep(5000);
         element.all(by.css('.side-filters')).all(by.css('.accordion')).then(function (items) {
             expect(items[0].getText()).to.eventually.contains(arg1);
         });
