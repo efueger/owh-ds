@@ -114,7 +114,6 @@
                             <span>All</span>
                         </label>
                     </li>
-
                     <!--group options-->
                     <li ng-repeat="option in group.autoCompleteOptions"
                         ng-init="$outerIndex = $index"
@@ -122,7 +121,7 @@
                         class="group-option" ng-show="$index < 3 || sideFilter.showAll">
                         <div ng-if="!option.group">
                             <input id="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" type="checkbox"
-                                   checklist-model="group.value" checklist-value="option.key" ng-click="sfc.onFilter(); sfc.clicked()">
+                                   checklist-model="group.value" checklist-value="option.key" ng-click="sfc.onFilter()">
                             <label for="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" class="custom-label"
                                    ng-init="title = option.title == 'Nursing home/long term care' ? 'Nursing home/long term <br>care' : option.title">
                                 <span class="count-label" translate="{{title}}"></span>
@@ -132,7 +131,7 @@
 
                         <div ng-if="option.group" ng-init="option.collapse = true" class="owh-side-menu__group-option">
                             <input id="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" type="checkbox"
-                                   checklist-model="group.value" checklist-value="option.key" ng-click="sfc.onFilter(); sfc.clicked()">
+                                   checklist-model="group.value" checklist-value="option.key" ng-click="sfc.filterGroup(option, group)">
                             <label for="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" class="custom-label"
                                    ng-init="title = option.title == 'Nursing home/long term care' ? 'Nursing home/long term <br>care' : option.title">
                                 <a href="javascript:void(0)" ng-click="option.collapse = !option.collapse" class="custom-link ">
@@ -143,7 +142,7 @@
                                 <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts" ng-bind="sfc.getOptionCount(option) | number"></span>
                             </label>
 
-                            <ul class="owh-side-menu__sub-category-options" ng-hide="option.collapse">
+                            <ul class="owh-side-menu__sub-category-options" ng-hide="option.collapse" ng-init="option.collapse = !sfc.isSubOptionSelected(group, option)">
                                 <li ng-repeat="subOption in option.options"
                                     ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' "
                                     class="group-option">

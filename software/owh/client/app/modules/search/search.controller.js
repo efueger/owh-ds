@@ -222,11 +222,9 @@
                 //update table headers based on cached query
                 sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
                 //make sure side filters are in proper order
-                if(!sc.filters.selectedPrimaryFilter.initiated) {
-                    angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
-                        searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup);
-                    });
-                }
+                angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
+                    searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup);
+                });
 
                 sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {

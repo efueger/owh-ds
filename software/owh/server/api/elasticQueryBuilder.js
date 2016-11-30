@@ -474,7 +474,16 @@ function isValueNotEmpty(value) {
 }
 
 function getAutoCompleteOptionsLength(filter) {
-    return filter.autoCompleteOptions ? filter.autoCompleteOptions.length : 0;
+    var length = filter.autoCompleteOptions ? filter.autoCompleteOptions.length : 0;
+    if(filter.autoCompleteOptions) {
+        filter.autoCompleteOptions.forEach(function(option) {
+            if(option.options) {
+                length--;
+                length += option.options.length;
+            }
+        });
+    }
+    return length;
 }
 
 function prepareChartAggregations(headers) {

@@ -32,60 +32,55 @@
                 //find corresponding key in sort object
                 for(var i = 0; i < sort[filter.key].length; i++) {
                     angular.forEach(filter.autoCompleteOptions, function(option) {
-                        console.log('grouping option', option);
                         //if type string, then just a regular option
-                            if(typeof sort[filter.key][i] === 'string') {
-                                //not group option
-                                if(sort[filter.key][i] === option.key) {
-                                    // console.log('adding option', option);
+                        if(typeof sort[filter.key][i] === 'string') {
+                            //not group option
+                            if(sort[filter.key][i] === option.key) {
+                                filterLength++;
+                                groupedOptions.push(option);
+                            }
+                        } else {
+                            //else, group option
+                            //check if group option contains the filter option
+                            //is same parent group option
+                            if(sort[filter.key][i].key === option.key) {
+                                groupedOptions.push(option);
+                            }
+                            //otherwise is child of group option
+                            else if(sort[filter.key][i].options.indexOf(option.key) >= 0) {
+                                var parentOption = {
+                                    key: sort[filter.key][i].key,
+                                    title: sort[filter.key][i].title,
+                                    group: true,
+                                    options: []
+                                };
+                                //if empty, add option
+                                if(groupedOptions.length === 0) {
                                     filterLength++;
-                                    groupedOptions.push(option);
+                                    groupedOptions.push(parentOption);
                                 }
-                            } else {
-                                //else, group option
-                                //check if group option contains the filter option
-                                //is same parent group option
-                                if(sort[filter.key][i].key === option.key) {
-                                    groupedOptions.push(option);
-                                }
-                                //otherwise is child of group option
-                                else if(sort[filter.key][i].options.indexOf(option.key) >= 0) {
-                                    var parentOption = {
-                                        key: sort[filter.key][i].key,
-                                        title: sort[filter.key][i].title,
-                                        group: true,
-                                        options: []
-                                    };
-                                    //if empty, add option
-                                    if(groupedOptions.length === 0) {
+                                //go through already grouped options and find parent option
+                                for(var j = 0; j < groupedOptions.length; j++) {
+                                    var groupedOption = groupedOptions[j];
+                                    if(groupedOption.key === sort[filter.key][i].key) {
+                                        filterLength++;
+                                        groupedOption.options.push(option);
+                                        break;
+                                    }
+                                    //parent not found, add new group option for parent
+                                    if(j === groupedOptions.length - 1) {
                                         filterLength++;
                                         groupedOptions.push(parentOption);
                                     }
-                                    //go through already grouped options and find parent option
-                                    for(var j = 0; j < groupedOptions.length; j++) {
-                                        var groupedOption = groupedOptions[j];
-                                        if(groupedOption.key === sort[filter.key][i].key) {
-                                            filterLength++;
-                                            groupedOption.options.push(option);
-                                            break;
-                                        }
-                                        //parent not found, add new group option for parent
-                                        if(j === groupedOptions.length - 1) {
-                                            // console.log('adding parent option');
-                                            filterLength++;
-                                            groupedOptions.push(parentOption);
-                                        }
-                                    }
                                 }
                             }
-                        });
-                    // }
+                        }
+                    });
                 }
                 filter.autoCompleteOptions = groupedOptions;
                 filter.filterLength = filterLength;
             }
 
-            // console.log('grouped', filter.autoCompleteOptions);
         }
 
         function sortAutoCompleteOptions(filter, sort) {
@@ -119,36 +114,6 @@
                 filter.autoCompleteOptions = sortedOptions;
                 filter.filterLength = filterLength;
             }
-
-            // console.log('grouped', filter.autoCompleteOptions);
-        }
-
-        // function sortAutoCompleteOptions(filter, sort) {
-        //     if(sort[filter.key]) {
-        //         filter.autoCompleteOptions.sort(function(a, b) {
-        //             var aIndex = getAutoCompleteOptionIndex(a, sort[filter.key]);
-        //             var bIndex = getAutoCompleteOptionIndex(b, sort[filter.key]);
-        //             return aIndex - bIndex;
-        //         });
-        //     }
-        // }
-
-        function getAutoCompleteOptionIndex(option, sort) {
-            var index = 0;
-            for(var i = 0; i < sort.length; i++) {
-                if(typeof sort[i] === 'string') {
-                    if(sort[i] == option.key) {
-                        return index;
-                    }
-                } else {
-                    if(sort[i].options.indexOf(option.key) >= 0) {
-                        return index + sort[i].options.indexOf(option.key) + 1;
-                    }
-                    index+= sort[i].options.length;
-                }
-                index++;
-            }
-            return -1;
         }
 
         //Search for YRBS data
@@ -369,7 +334,6 @@
                             });
                             filter.autoCompleteOptions = autoCompleteOptions;
                         }
-                        console.log('factory autocomplete', angular.copy(filter.autoCompleteOptions));
                         //sort on primary filter key.. so that it will rendered in desc order in side filter
                         //filter.sortedAutoCompleteOptions = utilService.sortByKey(angular.copy(filter.autoCompleteOptions), 'count', false);
                     }
@@ -396,7 +360,6 @@
             var apiQuery = buildAPIQuery(primaryFilter);
             var query = apiQuery.apiQuery;
             SearchService.generateHashCode(query).then(function(response) {
-                console.log(" search factory generatehashcode ", response.data);
                 deferred.resolve(response.data);
             });
             return deferred.promise;
@@ -618,7 +581,17 @@
         }
 
         function getAutoCompleteOptionsLength(filter) {
-            return filter.autoCompleteOptions ? filter.autoCompleteOptions.length : 0;
+            //take into account group options length
+            var length = filter.autoCompleteOptions ? filter.autoCompleteOptions.length : 0;
+            if(filter.autoCompleteOptions) {
+                angular.forEach(filter.autoCompleteOptions, function(option) {
+                    if(option.options) {
+                        length--;
+                        length += option.options.length;
+                    }
+                });
+            }
+            return length;
         }
 
         function buildQueryForYRBS(primaryFilter, dontAddYearAgg) {
