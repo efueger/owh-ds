@@ -389,20 +389,6 @@
                 "deaths": 50390
               }
             ]
-          },
-          {
-            "name": "2",
-            "deaths": "suppressed",
-            "gender": [
-              {
-                "name": "Male",
-                "deaths": 10
-              },
-              {
-                "name": "Female",
-                "deaths": "suppressed"
-              }
-            ]
           }
         ]
       }
@@ -451,39 +437,10 @@
         {
           "title": "Yes",
           "isCount": false,
-          "rowspan": 3,
+          "rowspan": 2,
           "colspan": 1,
           "key": "Y"
         },
-        {
-          "title": "Black",
-          "isCount": false,
-          "rowspan": 1,
-          "colspan": 1,
-          "key": "2"
-        },
-        {
-          "title": "suppressed",
-          "isCount": true,
-          "rowspan": 1,
-          "colspan": 1
-        },
-        {
-          "title": 10,
-          "isCount": true,
-          "rowspan": 1,
-          "colspan": 1
-        },
-        {
-          "title": "suppressed",
-          "percentage": null,
-          "isCount": true,
-          "rowspan": 1,
-          "colspan": 1,
-          "isBold": true
-        }
-      ],
-      [
         {
           "title": "White",
           "isCount": false,
@@ -532,6 +489,6 @@
         }
       ]
     ],
-    "calculatePercentage": true
+    "calculatePercentage":true
   }
 }

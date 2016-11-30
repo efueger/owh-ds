@@ -224,8 +224,9 @@ describe('utilService', function(){
     });
 
     it('should not calculate percentages for suppressed counts', function () {
+        var tableData = __fixtures__['app/services/fixtures/util.service/mortalitySuppressedCountTable'];
         var result = utils.prepareMixedTableData(tableData.headers, tableData.data,
-            'deaths', tableData.totalCount, tableData.countLabel, true, tableData.calculateRowTotal);
+            'deaths', "suppressed", tableData.countLabel, true, tableData.calculateRowTotal);
         var row = result.data[0];
         expect(row[1].percentage).toEqual(undefined);
         expect(row[2].percentage).toEqual(undefined);
