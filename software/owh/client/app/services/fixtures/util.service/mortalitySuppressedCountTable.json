@@ -72,20 +72,6 @@
             "deaths": "suppressed"
           }
         ]
-      },
-      {
-        "name": "White",
-        "deaths": 26878,
-        "gender": [
-          {
-            "name": "Female",
-            "deaths": 13583
-          },
-          {
-            "name": "Male",
-            "deaths": 13295
-          }
-        ]
       }
     ]
   },
