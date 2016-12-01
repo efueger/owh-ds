@@ -572,7 +572,16 @@
         }
 
         function buildFilterQuery(filter) {
-            if( utilService.isValueNotEmpty(filter.value) && filter.value.length !== getAutoCompleteOptionsLength(filter)) {
+            //need to calculate value length for group options, as the parent option can count as extra value
+            var valueLength = filter.value.length;
+            angular.forEach(filter.autoCompleteOptions, function(option) {
+                if(option.options) {
+                    if(filter.value.indexOf(option.key) >= 0) {
+                        valueLength--;
+                    }
+                }
+            });
+            if( utilService.isValueNotEmpty(filter.value) && valueLength !== getAutoCompleteOptionsLength(filter)) {
                 return getFilterQuery(filter);
             }
             return false;
