@@ -196,7 +196,7 @@ describe('search factory ', function(){
 
         var ethnicityFilter = {
             key: 'hispanicOrigin',
-            autoCompleteOptions: [{key: 'Unknown'}, {key: 'Non-Hispanic'}, {key: 'Dominican'}, {key: 'Cuban'}, {key: 'Mexican'}]
+            autoCompleteOptions: [{key: 'Unknown'}, {key: 'Non-Hispanic'}, {key: 'Dominican'}, {key: 'Other Hispanic'}, {key: 'Cuban'}, {key: 'Mexican'}]
         };
 
         var genderFilter = {
@@ -206,6 +206,8 @@ describe('search factory ', function(){
 
         searchFactory.groupAutoCompleteOptions(ethnicityFilter, group);
         expect(ethnicityFilter.autoCompleteOptions.length).toEqual(3);
+
+        expect(ethnicityFilter.autoCompleteOptions[1].options[3].key).toEqual('Other Hispanic');
 
         searchFactory.groupAutoCompleteOptions(genderFilter, group);
         expect(genderFilter.autoCompleteOptions.length).toEqual(2);
