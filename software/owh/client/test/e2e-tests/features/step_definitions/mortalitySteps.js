@@ -30,7 +30,7 @@ var mortalityStepDefinitionsWrapper = function () {
         expect(labelArray[1].getText()).to.eventually.equal('Deaths');
     });
 
-    this.Given(/^user is on search page$/, function () {
+    this.Given(/^I am on search page$/, function () {
         browser.get('/search/');
     });
 
@@ -43,7 +43,7 @@ var mortalityStepDefinitionsWrapper = function () {
         expect(mortalityPage.hideFiltersBtn.isDisplayed()).to.eventually.equal(true);
     });
 
-    this.When(/^user clicks hide filter button$/, function () {
+    this.When(/^I click hide filter button$/, function () {
         mortalityPage.hideFiltersBtn.click();
     });
 
@@ -51,11 +51,11 @@ var mortalityStepDefinitionsWrapper = function () {
         expect(mortalityPage.sideMenu.getAttribute('class')).to.eventually.include('ng-hide');
     });
 
-    this.Then(/^user sees button to show filters$/, function () {
+    this.Then(/^I see button to show filters$/, function () {
         expect(mortalityPage.showFiltersBtn.isDisplayed()).to.eventually.equal(true);
     });
 
-    this.When(/^user clicks show filters button$/, function () {
+    this.When(/^I click show filters button$/, function () {
         mortalityPage.showFiltersBtn.click();
     });
 
