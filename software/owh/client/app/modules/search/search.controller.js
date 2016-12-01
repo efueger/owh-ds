@@ -196,10 +196,8 @@
                         }
                     });
                 });
-                console.log(category.questions);
                 categories.push(category);
             });
-
             return categories;
         }
 
