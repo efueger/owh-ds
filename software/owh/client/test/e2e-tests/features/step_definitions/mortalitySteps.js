@@ -316,7 +316,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^user should see two subcategories\- Hispanic and NonHispanic$/, function () {
         mortalityPage.getOptions('Ethnicity').then(function(elements) {
             expect(elements[1].getText()).to.eventually.contains('Hispanic');
-            expect(elements[12].getText()).to.eventually.contains('Non-Hispanic');
+            expect(elements[13].getText()).to.eventually.contains('Non-Hispanic');
         });
     });
 
@@ -341,16 +341,17 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^user should see all the of the Hispanic Origin options grouped\(Central American,Cuban,Dominican,Latin American, Mexican, Puerto Rican, South American,Spaniard, Other Hispanic, Unknown\) under one Category\- Hispanic$/, function () {
         mortalityPage.getOptions('Ethnicity').then(function(elements) {
-            expect(elements[2].getText()).to.eventually.contains('Central American');
-            expect(elements[3].getText()).to.eventually.contains('Central and South American');
+            expect(elements[2].getText()).to.eventually.contains('Central and South American');
+            expect(elements[3].getText()).to.eventually.contains('Central American');
             expect(elements[4].getText()).to.eventually.contains('Cuban');
             expect(elements[5].getText()).to.eventually.contains('Dominican');
             expect(elements[6].getText()).to.eventually.contains('Latin American');
             expect(elements[7].getText()).to.eventually.contains('Mexican');
-            expect(elements[8].getText()).to.eventually.contains('Other Hispanic');
-            expect(elements[9].getText()).to.eventually.contains('Puerto Rican');
-            expect(elements[10].getText()).to.eventually.contains('South American');
-            expect(elements[11].getText()).to.eventually.contains('Spaniard');
+            expect(elements[8].getText()).to.eventually.contains('Puerto Rican');
+            expect(elements[9].getText()).to.eventually.contains('South American');
+            expect(elements[10].getText()).to.eventually.contains('Spaniard');
+            expect(elements[11].getText()).to.eventually.contains('Other Hispanic');
+            expect(elements[12].getText()).to.eventually.contains('Unknown');
         });
     });
 
