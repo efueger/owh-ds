@@ -508,7 +508,7 @@
             }
             var cell = {
                 title: title,
-                percentage: (calculatePercentage && totalCount !== undefined && !isNaN(totalCount)) ? (Number(data[countKey]) / totalCount) * 100 : undefined,
+                percentage: (calculatePercentage && !isNaN(totalCount)) ? (Number(data[countKey]) / totalCount) * 100 : undefined,
                 isCount: true,
                 rowspan: 1,
                 colspan: 1
