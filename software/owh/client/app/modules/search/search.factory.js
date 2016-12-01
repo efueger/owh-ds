@@ -77,6 +77,14 @@
                         }
                     });
                 }
+                //sort each group
+                angular.forEach(groupedOptions, function(groupedOption, index) {
+                    if(groupedOption.options) {
+                        groupedOption.options.sort(function(a, b) {
+                            return sort[filter.key][index].options.indexOf(a.key) - sort[filter.key][index].options.indexOf(b.key);
+                        });
+                    }
+                });
                 filter.autoCompleteOptions = groupedOptions;
                 filter.filterLength = filterLength;
             }
