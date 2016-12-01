@@ -162,15 +162,9 @@ Scenario: Side filter total suppression
   Then user expands race options
   And user clicks on "+ 2 more" more link for "Race" filter
   When user expands ethnicity filter
-  And user shows more ethnicity filter
+  When user expands hispanic option group
   And user filters by ethnicity Spaniard
   Then user should only see total for white race in side filter
-
-Scenario: Ethnicity order
-  Given user is on search page
-  When user expands ethnicity filter
-  When user shows more ethnicity filter
-  Then ethnicity filters should be in given order
 
 Scenario: Filer 'Multiple Causes of Deaths' should be displayed
   Given user is on search page
