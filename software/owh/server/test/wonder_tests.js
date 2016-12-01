@@ -4,7 +4,7 @@ var expect = require("expect.js");
 
 describe("WONDER API", function () {
     var w;
-    this.timeout(5000);
+    this.timeout(10000);
     beforeEach( function () {
         w = new wonder('D76');
     });
@@ -33,7 +33,7 @@ describe("WONDER API", function () {
                     Male: { ageAdjustedRate: '853.4', standardPop :124142641 },
                     Total: { ageAdjustedRate: '725.4', standardPop :250630467 } },
                 Total: { ageAdjustedRate: '724.6', standardPop :318857056} });
-                expect(duration).to.be.lessThan(2000);
+                expect(duration).to.be.lessThan(5000);
         }, function(err){
             console.log(err);
             expect(err).to.be.undefined();
@@ -98,7 +98,7 @@ describe("WONDER API", function () {
                         Total: { ageAdjustedRate: '856.3',standardPop:247701921 } },
                     Total: { ageAdjustedRate: '728.2',standardPop: 499974965} },
                 Total: { ageAdjustedRate: '728.2',standardPop: 634985895} });
-            expect(duration).to.be.lessThan(3000);
+            expect(duration).to.be.lessThan(5000);
         }, function(err){
             console.log(err);
             expect(err).to.be.undefined();
@@ -153,7 +153,7 @@ describe("WONDER API", function () {
             var duration = new Date() - startTime;
             console.log("invoke wonder API bigger query (group by 5) duration: "+duration);
             expect(resp).to.be.empty();
-            expect(duration).to.be.lessThan(2000);
+            expect(duration).to.be.lessThan(5000);
         }, function(err){
             console.log(err);
             expect(err).to.be.undefined();
