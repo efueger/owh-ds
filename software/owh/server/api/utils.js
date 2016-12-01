@@ -1,7 +1,7 @@
 var Aggregation = require('../models/aggregation');
 var merge = require('merge');
 
-var populateDataWithMappings = function(resp, countKey) {
+var populateDataWithMappings = function(resp, countKey, countQueryKey) {
     var result = {
         data: {
             simple: {},
@@ -20,8 +20,8 @@ var populateDataWithMappings = function(resp, countKey) {
         Object.keys(data).forEach(function (key) {
             var dataKey = '';
             if (key.indexOf('group_table_') > -1) {
-                dataKey = key.split("_")[2];
-                result.data.nested.table[dataKey] = populateAggregatedData(data[key].buckets, countKey, 2);
+                dataKey = key.split("group_table_")[1];
+                result.data.nested.table[dataKey] = populateAggregatedData(data[key].buckets, countKey, 1, undefined, countQueryKey, 'group_table_');
             }
             if (key.indexOf('group_chart_') > -1) {
                 var keySplits = key.split("_");
@@ -52,13 +52,14 @@ var populateDataWithMappings = function(resp, countKey) {
     return result;
 };
 
-var populateAggregatedData = function(buckets, countKey, splitIndex, map) {
+var populateAggregatedData = function(buckets, countKey, splitIndex, map, countQueryKey, groupKey) {
     var result = [];
     for(var index in buckets) {
         // console.log(buckets[index]);
         //ignoring key -9 for blank data.
         if (buckets[index].key!=='-9') {
-            var aggregation = new Aggregation(buckets[index], countKey);
+            var aggregation = new Aggregation(buckets[index], countKey, countQueryKey);
+
             aggregation[countKey] = applySuppressionRules(countKey, aggregation[countKey]);
             var innerObjKey = isValueHasGroupData(buckets[index]);
             // take from pop.value instead of doc_count for census data
@@ -71,8 +72,14 @@ var populateAggregatedData = function(buckets, countKey, splitIndex, map) {
 
                 }
             }
-            if( innerObjKey ){
-                aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex, map);
+            if( innerObjKey ) {
+                //if you want to split group key by particular word
+                if (groupKey) {
+                    aggregation[innerObjKey.split(groupKey)[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets,
+                        countKey, splitIndex, map, countQueryKey, groupKey);
+                } else {//by default split group key by underscore and retrieve key based on index
+                    aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex, map, countQueryKey);
+                }
                 //check if total should be suppressed
                 if(countKey === 'deaths' && isMortalityTotalSuppressed(buckets[index][innerObjKey].buckets)) {
                     aggregation[countKey] = 'suppressed';
@@ -157,7 +164,7 @@ var applySuppressionRules = function(key, value) {
 //matches suppressed table totals with corresponding side filter total and replace if necessary
 var suppressSideFilterTotals = function(sideFilter, data) {
     for(var key in data) {
-        if(key !== 'deaths' && key !== 'name') {
+        if(key !== 'deaths' && key !== 'name' && key !== 'ageAdjustedRate' && key !== 'standardPop' && key !== 'pop') {
             for(var i = 0; i < data[key].length; i++) {
                 if(data[key][i].deaths === 'suppressed') {
                     for(var j = 0; j < sideFilter[key].length; j++) {
@@ -263,6 +270,37 @@ var getYRBSCount = function(jsonObject) {
     return '';
 };
 
+//merge age adjust death rates into mortality response
+var mergeAgeAdjustedRates = function(mort, rates) {
+    var keyMap = {
+        'Black': 'Black or African American',
+        'American Indian': 'American Indian or Alaska Native',
+    };
+
+    for(var key in mort) {
+        if(key !== 'deaths' && key !== 'name' && key !== 'pop' && key !== 'ageAdjustedRate' && key !== 'standardPop') {
+            for(var i = 0; i < mort[key].length; i++) {
+                var age = rates[mort[key][i].name];
+                if(!age) {
+                    age = rates[keyMap[mort[key][i].name]];
+                }
+                //if key still doesn't exist, exit without merging
+                if(!age) {
+                    return;
+                }
+                if(age['Total']) {
+                    mort[key][i]['ageAdjustedRate'] = age['Total'].ageAdjustedRate;
+                    mort[key][i]['standardPop'] = age['Total'].standardPop;
+                    mergeAgeAdjustedRates(mort[key][i], age);
+                } else {
+                    mort[key][i]['ageAdjustedRate'] = age.ageAdjustedRate;
+                    mort[key][i]['standardPop'] = age.standardPop;
+                }
+            }
+        }
+    }
+};
+
 
 /**
  * Finds and returns the first object in array of objects by using the key and value
@@ -283,4 +321,5 @@ function numberWithCommas(number) {
 };
 module.exports.populateDataWithMappings = populateDataWithMappings;
 module.exports.populateYRBSData = populateYRBSData;
+module.exports.mergeAgeAdjustedRates = mergeAgeAdjustedRates;
 module.exports.suppressSideFilterTotals = suppressSideFilterTotals;

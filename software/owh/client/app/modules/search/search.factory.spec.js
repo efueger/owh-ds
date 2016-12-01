@@ -5,14 +5,14 @@ describe('search factory ', function(){
     var searchFactory, utils, $rootScope, $scope, controllerProvider, searchService, deferred, $q,
         primaryFilter, $httpBackend, $templateCache, filters, countsMortalityAutoCompletes,
         searchResponse, groupGenderResponse, genderGroupHeaders, fourGroupsResponse,
-        ModalService, givenModalDefaults, elementVisible, thenFunction, closeDeferred, uploadImageDeferred, $timeout;
+        ModalService, givenModalDefaults, elementVisible, thenFunction, closeDeferred, uploadImageDeferred, $timeout, filterUtils;
     module.sharedInjector();
 
     beforeAll(module('owh'));
 
     beforeAll(module('app/partials/expandedGraphModal.html'));
 
-    beforeAll(inject(function ($injector, _$rootScope_, $controller, _$q_, _$templateCache_, _SearchService_, _ModalService_, _$timeout_) {
+    beforeAll(inject(function ($injector, _$rootScope_, $controller, _$q_, _$templateCache_, _SearchService_, _ModalService_, _$timeout_, _filterUtils_) {
         controllerProvider = $controller;
         $rootScope  = _$rootScope_;
         $scope = $rootScope.$new();
@@ -22,6 +22,7 @@ describe('search factory ', function(){
         $httpBackend = $injector.get('$httpBackend');
         searchService = _SearchService_;
         ModalService = _ModalService_;
+        filterUtils = _filterUtils_
         $timeout = _$timeout_;
 
         $q = _$q_;
@@ -474,4 +475,31 @@ describe('search factory ', function(){
         });
 
     });
+    
+    describe('test with bridge race data', function () {
+        var response;
+        beforeAll(function() {
+            //get the filters
+            primaryFilter = filters.search[2];
+            filters.selectedPrimaryFilter = primaryFilter;
+            //prepare mock response
+            response = __fixtures__['app/modules/search/fixtures/search.factory/bridgeRaceResponse'];
+        });
+        beforeEach(function() {
+            deferred = $q.defer();
+        });
+
+        it('getAllFilters', function () {
+            expect(primaryFilter.key).toEqual('bridge_race');
+        });
+
+        it('searchCensusInfo', function () {
+            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
+            primaryFilter.searchResults(primaryFilter).then(function() {
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(response.data.nested.table));
+            });
+            deferred.resolve(response);
+            $scope.$apply();
+        });
+    })
 });

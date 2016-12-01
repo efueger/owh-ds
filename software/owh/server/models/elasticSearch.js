@@ -2,6 +2,7 @@ var elasticsearch = require('elasticsearch');
 var searchUtils = require('../api/utils');
 var elasticQueryBuilder = require('../api/elasticQueryBuilder');
 const util = require('util');
+var wonder = require("../api/wonder");
 var Q = require('q');
 var logger = require('../config/logging')
 var config = require('../config/config')
@@ -141,9 +142,13 @@ ElasticClient.prototype.aggregateDeaths = function(query){
             this.executeMortilyQueries(query[0]),
             this.aggregateCensusDataForMortalityQuery(query[1])
         ];
+        if(query.wonderQuery) {
+            promises.push(new wonder('D76').invokeWONDER(query.wonderQuery))
+        }
         Q.all(promises).then( function (resp) {
             var data = searchUtils.populateDataWithMappings(resp[0], 'deaths');
             self.mergeWithCensusData(data, resp[1]);
+            searchUtils.mergeAgeAdjustedRates(data.data.nested.table, resp[2]);
             deferred.resolve(data);
         }, function (err) {
             logger.error(err.message);
@@ -174,6 +179,28 @@ ElasticClient.prototype.aggregateMentalHealth = function(query, headers, aggrega
         request_cache:true
     }).then(function (resp) {
         deferred.resolve(searchUtils.populateYRBSData(resp.hits.hits, headers, aggregations))
+    }, function (err) {
+        logger.error(err.message);
+        deferred.reject(err);
+    });
+    return deferred.promise;
+};
+
+/**
+ * This method is used to get the bridge race data(census) based on passed in query
+ */
+ElasticClient.prototype.aggregateCensusData = function(query){
+    //get tge elasic search client for census index
+    var client = this.getClient(census_index);
+    var deferred = Q.defer();
+    //execute the search query
+    client.search({
+        index:census_type,
+        body:query,
+        request_cache:true
+    }).then(function (resp) {
+        //parse the search results
+        deferred.resolve(searchUtils.populateDataWithMappings(resp, 'bridge_race', 'pop'))
     }, function (err) {
         logger.error(err.message);
         deferred.reject(err);

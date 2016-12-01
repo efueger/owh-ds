@@ -52,6 +52,7 @@
   "label.filter.group.birthCharacteristics": "Birth Characteristics",
   "label.autocomplete.placeholder": "Click here to type",
   "label.filter.agegroup": "Age Groups",
+  "label.filter.age": "Age",
   "label.filter.autopsy": "Autopsy",
   "label.filter.pod": "Place of Death",
   "label.filter.leading.causes.death": "UCD - 15 Leading Causes of Death",
@@ -68,7 +69,7 @@
   "label.filter.mcd.icd.chapter": "MCD - ICD Chapter",
   "select.label.filter.mcd.icd.chapter": "Select MCD - ICD Chapter",
   "label.filter.mcd.icd.sub.chapter": "MCD - ICD Sub-Chapter",
-  "label.filter.mcd": "Multiple Cause of Death",
+  "label.filter.mcd": "Multiple Causes of Death",
   "label.filter.mcd.cause.list":"MCD - ICD-10 113 Cause List",
   "label.filter.mcd.cause.list.infant":"MCD - ICD-10 130 Cause List (Infants)",
   "label.filter.mcd.drug":"MCD - Drug/Alcohol Induced Causes",
@@ -77,7 +78,8 @@
   "label.filter.group.year.month":"Year and Month",
   "label.filter.group.weekday.autopsy.pod":"Weekday, Autopsy, Place of Death",
   "label.filter.group.ucd":"Underlying Cause of Death",
-  "label.filter.group.mcd":"Multiple Cause of death",
+  "label.filter.group.mcd":"Multiple Causes of death",
+  "label.filter.yearly.estimate":"Yearly July 1st Estimates",
   "label.result.header":"Deaths: {{years}} (years)",
   "label.tree.selected":"Selected {{entityName}}(s)",
   "label.tree.search":"Search {{entityName}}",
@@ -134,5 +136,6 @@
   "label.mortality.search.table.show.percentage.button":"Show",
   "label.mortality.search.table.showing.percentage.button":"Showing Percentages",
   "label.mortality.search.table.hide.percentage.button":"Hide",
-  "label.mortality.search.table.hidden.percentage.button":"Percentages Hidden"
+  "label.mortality.search.table.hidden.percentage.button":"Percentages Hidden",
+  "label.census.bridge.race.pop.estimate": "Bridged-Race Population Estimates"
 }

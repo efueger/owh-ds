@@ -30,6 +30,7 @@ Scenario: Side filter collapse
 Scenario: Side filter options retain order
   Given user is on search page
   When user expands race options
+  Then user clicks on "+ 2 more" more link for "Race" filter
   When user selects second race option
   Then race options retain their initial ordering
 
@@ -122,6 +123,20 @@ Scenario: Check box- Hispanic Sub Categories
   When user checks some options under hispanic group
   Then data should be filtered by the checked hispanic options
 
+Scenario: Race options should be in proper order
+  Given user is on search page
+  When user sees side filter
+  Then user expands race options
+  Then user clicks on "+ 2 more" more link for "Race" filter
+  Then race options should be in proper order
+
+Scenario: Autopsy options should be in proper order
+  Given user is on search page
+  When user sees side filter
+  Then user expands autopsy filter
+  Then autopsy options should be in proper order
+
+
 #Scenario: Suppressed
 #  When counts fall below the determined "cut-off" value and the conditions for suppression are met
 #  Then the value should be suppressed
@@ -130,17 +145,35 @@ Scenario: Check box- Hispanic Sub Categories
 #  When the user looks at a suppressed value in the data table
 #  Then the word suppressed must be displayed in it's place
 
-#Scenario: Side filter total suppression
-#  Given user is on search page
-#  When user shows more year filters
-#  When user filters by year 2013
-#  When user expands ethnicity filter
-#  When user shows more ethnicity filter
-#  When user filters by ethnicity Spaniard
-#  Then user should only see total for white race in side filter
+Scenario: Age Adjusted Death Rates
+  Given user is on search page
+  When the user chooses the option 'Age Adjusted Death Rates'
+  Then the age adjusted rates are shown for each row
 
-#Scenario: Ethnicity order
-#  Given user is on search page
-#  When user expands ethnicity filter
-#  When user shows more ethnicity filter
-#  Then ethnicity filters should be in given order
+Scenario: Age filter for age adjusted rates
+  Given user is on search page
+  When the user chooses the option 'Age Adjusted Death Rates'
+  Then the age filter should be hidden
+
+Scenario: Side filter total suppression
+  Given user is on search page
+  When user shows more year filters
+  And user filters by year 2013
+  Then user expands race options
+  And user clicks on "+ 2 more" more link for "Race" filter
+  When user expands ethnicity filter
+  And user shows more ethnicity filter
+  And user filters by ethnicity Spaniard
+  Then user should only see total for white race in side filter
+
+Scenario: Ethnicity order
+  Given user is on search page
+  When user expands ethnicity filter
+  When user shows more ethnicity filter
+  Then ethnicity filters should be in given order
+
+Scenario: Filer 'Multiple Causes of Deaths' should be displayed
+  Given user is on search page
+  When user sees side filter
+  Then filter "Multiple Causes of Death" should be displayed
+

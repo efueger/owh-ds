@@ -1,6 +1,7 @@
 var result = require('../models/result');
 var elasticSearch = require('../models/elasticSearch');
 var queryBuilder = require('../api/elasticQueryBuilder');
+var wonder = require("../api/wonder");
 var searchUtils = require('../api/utils');
 var logger = require('../config/logging')
 
@@ -27,6 +28,7 @@ var searchRouter = function(app, rConfig) {
                      logger.info("Query with ID "+hashCode+" not in cache, executing query");
                      var apiQuery = queryBuilder.addCountsToAutoCompleteOptions(q);
                      var finalAPIQuery = queryBuilder.buildSearchQuery(apiQuery, true);
+                     finalQuery.wonderQuery = preparedQuery.apiQuery;
                      new elasticSearch().aggregateDeaths(finalAPIQuery).then(function (sideFilterResults) {
                          new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
                              searchUtils.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
@@ -45,7 +47,6 @@ var searchRouter = function(app, rConfig) {
                              res.send( new result('error', response, "failed"));
                          });
                      });
-
                  }
             });
 
@@ -60,6 +61,15 @@ var searchRouter = function(app, rConfig) {
             ];*/
             new elasticSearch().aggregateMentalHealth(finalQuery[0], yrbsPreparedQuery.apiQuery.dataKeys, yrbsPreparedQuery.apiQuery.aggregations.nested.table).then(function(response){
                 res.send( new result('OK', response, response.pagination, "success") );
+            }, function(response){
+                res.send( new result('error', response, "failed"));
+            });
+        } else if ( preparedQuery.apiQuery.searchFor === "bridge_race" ) {
+            preparedQuery = queryBuilder.buildAPIQuery(q);
+            var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
+
+            new elasticSearch().aggregateCensusData(finalQuery[0]).then(function(response){
+                res.send( new result('OK', response.data, response.pagination, "success") );
             }, function(response){
                 res.send( new result('error', response, "failed"));
             });

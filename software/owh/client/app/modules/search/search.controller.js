@@ -51,7 +51,8 @@
         ];
         sc.sort = {
             "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
-            "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question']
+            "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question'],
+            "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'agegroup', 'race', 'ethnicity', 'state']
         };
 
         sc.optionsGroup = {
@@ -64,12 +65,13 @@
                 'Non-Hispanic'
                 // 'Unknown'
             ],
-            "race": ['Other (Puerto Rico only)', 'White', 'Black', 'American Indian', 'Asian or Pacific Islander'],
+            "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
             "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
         };
         //show certain filters for different table views
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race'],
+            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters']
         };
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
@@ -153,9 +155,9 @@
             var totalCount = selectedFilter.count;
             var calculatePercentage = selectedFilter.calculatePercentage;
             var calculateRowTotal = selectedFilter.calculateRowTotal;
-            var secondaryCountKey = 'pop';
+            var secondaryCountKeys = ['pop', 'ageAdjustedRate', 'standardPop'];
 
-            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKey);
+            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKeys);
         }
 
         function getFilename(selectedFilter) {
@@ -209,7 +211,6 @@
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
-
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
                 //populate side filters based on cached query filters
                 if(response.queryJSON) {

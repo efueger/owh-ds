@@ -96,6 +96,24 @@ describe("Build elastic search queries", function(){
         done()
     });
 
+    it("Build search query with nested aggregations and count results by pop", function(done){
+            var params = {countQueryKey:'pop', aggregations:{ simple:[{ key:"year", queryKey:"current_year",  size:10}],
+                nested:{
+                    table : [{ key:"gender", queryKey:"sex", size:10}, { key:"race", queryKey:"race", size:10},
+                        {"key":"year","queryKey":"current_year","size":10}]
+                }
+            }
+            };
+            var result = elasticQueryBuilder.buildSearchQuery(params, true);
+            var query =result[0];
+            should(query.aggregations).have.properties('year', 'group_table_gender');
+            should(query.aggregations).have.properties('year', 'group_count_pop');
+            should(query.aggregations.group_table_gender.aggregations).have.properties('group_table_race');
+            should(query.aggregations.group_table_gender.aggregations.group_table_race.aggregations).have.properties('group_table_year');
+
+            done()
+        });
+
     it("Build search query with query", function(done){
         var params = {
             "query":{
@@ -234,6 +252,34 @@ describe("Utils", function(){
         var result = searchUtils.populateYRBSData(response, headers, aggregations)
         should(result).have.properties('table');
         done()
+    });
+
+    it('Merge age adjusted death rates', function(done) {
+        var wonderResponse = { 'American Indian or Alaska Native':
+            { Female: { ageAdjustedRate: '562.5' },
+                Male: { ageAdjustedRate: '760.8' },
+                Total: { ageAdjustedRate: '652.8' } },
+                'Asian or Pacific Islander':
+                { Female: { ageAdjustedRate: '371.3' },
+                    Male: { ageAdjustedRate: '530.0' },
+                    Total: { ageAdjustedRate: '439.3' } },
+                'Black or African American':
+                { Female: { ageAdjustedRate: '814.8' },
+                    Male: { ageAdjustedRate: '1,205.6' },
+                    Total: { ageAdjustedRate: '976.7' } },
+                White:
+                { Female: { ageAdjustedRate: '662.5' },
+                    Male: { ageAdjustedRate: '927.0' },
+                    Total: { ageAdjustedRate: '780.1' } },
+                Total: { ageAdjustedRate: '789.7' }
+            };
+
+        var mortalityResponse = {"race":[{"name":"American Indian","deaths":217457,"gender":[{"name":"Female","deaths":98841,"pop":28544528},{"name":"Male","deaths":118616,"pop":28645741}],"pop":57190269},{"name":"Asian or Pacific Islander","deaths":710612,"gender":[{"name":"Female","deaths":338606,"pop":121309960},{"name":"Male","deaths":372006,"pop":112325576}],"pop":233635536},{"name":"Black","deaths":4381340,"gender":[{"name":"Female","deaths":2150095,"pop":317237591},{"name":"Male","deaths":2231245,"pop":289840863}],"pop":607078454},{"name":"White","deaths":31820569,"gender":[{"name":"Female","deaths":16104129,"pop":1828192603},{"name":"Male","deaths":15716440,"pop":1787480522}],"pop":3615673125}]};
+        var result = {"race":[{"name":"American Indian","deaths":217457,"gender":[{"name":"Female","deaths":98841,"pop":28544528,"ageAdjustedRate":"562.5"},{"name":"Male","deaths":118616,"pop":28645741,"ageAdjustedRate":"760.8"}],"pop":57190269,"ageAdjustedRate":"652.8"},{"name":"Asian or Pacific Islander","deaths":710612,"gender":[{"name":"Female","deaths":338606,"pop":121309960,"ageAdjustedRate":"371.3"},{"name":"Male","deaths":372006,"pop":112325576,"ageAdjustedRate":"530.0"}],"pop":233635536,"ageAdjustedRate":"439.3"},{"name":"Black","deaths":4381340,"gender":[{"name":"Female","deaths":2150095,"pop":317237591,"ageAdjustedRate":"814.8"},{"name":"Male","deaths":2231245,"pop":289840863,"ageAdjustedRate":"1,205.6"}],"pop":607078454,"ageAdjustedRate":"976.7"},{"name":"White","deaths":31820569,"gender":[{"name":"Female","deaths":16104129,"pop":1828192603,"ageAdjustedRate":"662.5"},{"name":"Male","deaths":15716440,"pop":1787480522,"ageAdjustedRate":"927.0"}],"pop":3615673125,"ageAdjustedRate":"780.1"}]};
+        searchUtils.mergeAgeAdjustedRates(mortalityResponse, wonderResponse);
+        should(JSON.stringify(mortalityResponse)).equal(JSON.stringify(result));
+        done();
+
     });
 });
 
