@@ -4,7 +4,7 @@ var expect = require("expect.js");
 
 describe("WONDER API", function () {
     var w;
-    this.timeout(12000);
+    this.timeout(15000);
     beforeEach( function () {
         w = new wonder('D76');
     });
