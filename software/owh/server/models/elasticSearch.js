@@ -29,11 +29,11 @@ ElasticClient.prototype.getClient = function(database) {
     });*/
 
      var configuration = {};
-     configuration.apiVersion = '1.5';
-    /* configuration.log = [{
-     type: 'stdio',
-     levels: ['info', 'debug', 'error', 'warning']
-     }];*/
+     configuration.apiVersion = '5.0';
+     // configuration.log = [{
+     // type: 'stdio',
+     // levels: ['info', 'debug', 'error', 'warning']
+     // }];
     if(database) {
         configuration.host = _host + '/' + database;
     }
@@ -139,6 +139,7 @@ ElasticClient.prototype.aggregateDeaths = function(query){
         logger.debug("Mortality ES Query: "+ JSON.stringify( query[0]));
         logger.debug("Census ES Query: "+ JSON.stringify( query[1]));
         var promises = [
+            //this.executeESQuery(mortality_index, mortality_type,query[0]),
             this.executeMortilyQueries(query[0]),
             this.aggregateCensusDataForMortalityQuery(query[1])
         ];
@@ -235,7 +236,7 @@ ElasticClient.prototype.getQueryResults = function(query){
 ElasticClient.prototype.insertQueryData = function (query) {
     var client = this.getClient();
     var deferred = Q.defer();
-    client.create({
+    client.index({
         index: _queryIndex,
         type: _queryType,
         body: query
