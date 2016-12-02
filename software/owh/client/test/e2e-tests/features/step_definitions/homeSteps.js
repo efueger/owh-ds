@@ -28,7 +28,7 @@ var homeStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^I should get search page with default filter type "([^"]*)"$/, function (arg1) {
-        browser.sleep(60000);
+        browser.sleep(30000);
         expect(mortalityPage.getSelectedFilterType()).to.eventually.equal(arg1);
     });
 
