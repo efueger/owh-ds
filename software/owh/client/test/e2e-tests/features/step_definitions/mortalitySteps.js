@@ -418,5 +418,22 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^filter "([^"]*)" should be displayed$/, function (arg1) {
         expect(element(by.tagName('owh-side-filter')).getText()).to.eventually.contains(arg1);
     });
+
+    this.When(/^I choose the option "([^"]*)"$/, function (arg1) {
+        mortalityPage.creduDeathRatesOption.click();
+    });
+
+
+    this.Then(/^Rates, Deaths and Population values look as a single data element in the column$/, function () {
+        expect(element(by.id('crudeRateDiv')).getAttribute('class')).to.eventually.include('usa-width-one-third');
+    });
+
+    this.When(/^I select "([^"]*)" type for "([^"]*)" filter$/, function (type, filter) {
+        mortalityPage.selectSideFilter(filter, type).click();
+    });
+
+    this.Then(/^Rates, Deaths and Population shouldn't be overlap$/, function () {
+        expect(element(by.id('crudeRateDiv')).getAttribute('class')).to.eventually.include('usa-width-one-half');
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;
