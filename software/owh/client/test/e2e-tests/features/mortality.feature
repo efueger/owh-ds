@@ -18,17 +18,17 @@ Scenario: Axis labels
   Then labels are displayed on both the axes for expanded visualization
 
 Scenario: Side filter collapse
-  Given user is on search page
+  Given I am on search page
   Then user sees side filter
   Then there is button to hide filter
-  When user clicks hide filter button
+  When I click hide filter button
   Then side menu slides away
-  Then user sees button to show filters
-  When user clicks show filters button
+  Then I see button to show filters
+  When I click show filters button
   Then side menu slides back into view
 
 Scenario: Side filter options retain order
-  Given user is on search page
+  Given I am on search page
   When user expands race options
   Then user clicks on "+ 2 more" more link for "Race" filter
   When user selects second race option
@@ -44,16 +44,16 @@ Scenario: Display show/hide percentage button only on mortality page
   And show/hide percentages button shouldn't display
 
 Scenario: Death Rates
-  Given user is on search page
+  Given I am on search page
   When the user chooses the option 'Death Rates'
   Then the rates are shown for each row (with the Total population, from Bridge Race Estimates, as the denominator) - and not the total number of deaths shown in the table
 
 Scenario: Dropdown Location
-  Given user is on search page
+  Given I am on search page
   Then dropdown is in the main search bar
 
 Scenario: Decimal Precision
-  Given user is on search page
+  Given I am on search page
   Then the Percentages should have a one decimal precision
 
 Scenario: Percentages in data table
@@ -83,30 +83,55 @@ Scenario: Decimal Precision
   Then the Rates and Percentages should have a one decimal precision
 
 Scenario: Quick visualizations
-  Given user is on search page
+  Given I am on search page
   When I see the quick visualizations
   Then they're displayed same as before and nothing changes
 
 Scenario: Help Message above the quick visualization pane
-  Given user is on search page
+  Given I am on search page
   When the user chooses the option 'Death Rates'
   Then the following message should be displayed stating that population data is being retrieved from Census "Population details from NCHS Bridge Race Estimates is used to calculate Death Rates (per 100,000)"
 
 Scenario: Years are supposed to be in descending order
-  Given user is on search page
+  Given I am on search page
   When user sees side filter
   Then user clicks on "+ 12 more" more link for "Year" filter
   Then years should be in descending order
 
+Scenario: Ethnicity Filter
+  Given I am on search page
+  When user expands ethnicity filter
+  Then user should see two subcategories- Hispanic and NonHispanic
+
+Scenario: Check box
+  Given I am on search page
+  When user expands ethnicity filter
+  When user checks entire Hispanic group
+  Then all Hispanic child options should be checked
+
+Scenario: Ethnicity Hispanic Group
+  Given I am on search page
+  When user expands ethnicity filter
+  When user expands hispanic option group
+  Then user should see all the of the Hispanic Origin options grouped(Central American,Cuban,Dominican,Latin American, Mexican, Puerto Rican, South American,Spaniard, Other Hispanic, Unknown) under one Category- Hispanic
+
+Scenario: Check box- Hispanic Sub Categories
+  Given I am on search page
+  When user groups ethnicity by row
+  When user expands ethnicity filter
+  When user expands hispanic option group
+  When user checks some options under hispanic group
+  Then data should be filtered by the checked hispanic options
+
 Scenario: Race options should be in proper order
-  Given user is on search page
+  Given I am on search page
   When user sees side filter
   Then user expands race options
   Then user clicks on "+ 2 more" more link for "Race" filter
   Then race options should be in proper order
 
 Scenario: Autopsy options should be in proper order
-  Given user is on search page
+  Given I am on search page
   When user sees side filter
   Then user expands autopsy filter
   Then autopsy options should be in proper order
@@ -121,34 +146,34 @@ Scenario: Autopsy options should be in proper order
 #  Then the word suppressed must be displayed in it's place
 
 Scenario: Age Adjusted Death Rates
-  Given user is on search page
+  Given I am on search page
   When the user chooses the option 'Age Adjusted Death Rates'
   Then the age adjusted rates are shown for each row
 
 Scenario: Age filter for age adjusted rates
-  Given user is on search page
+  Given I am on search page
   When the user chooses the option 'Age Adjusted Death Rates'
   Then the age filter should be hidden
 
 Scenario: Side filter total suppression
-  Given user is on search page
+  Given I am on search page
   When user shows more year filters
   And user filters by year 2013
   Then user expands race options
   And user clicks on "+ 2 more" more link for "Race" filter
   When user expands ethnicity filter
-  And user shows more ethnicity filter
+  When user expands hispanic option group
   And user filters by ethnicity Spaniard
   Then user should only see total for white race in side filter
 
 Scenario: Ethnicity order
-  Given user is on search page
+  Given I am on search page
   When user expands ethnicity filter
   When user shows more ethnicity filter
   Then ethnicity filters should be in given order
 
 Scenario: Filer 'Multiple Causes of Deaths' should be displayed
-  Given user is on search page
+  Given I am on search page
   When user sees side filter
   Then filter "Multiple Causes of Death" should be displayed
 

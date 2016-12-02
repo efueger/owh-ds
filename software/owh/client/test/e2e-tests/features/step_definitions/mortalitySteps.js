@@ -30,7 +30,7 @@ var mortalityStepDefinitionsWrapper = function () {
         expect(labelArray[1].getText()).to.eventually.equal('Deaths');
     });
 
-    this.Given(/^user is on search page$/, function () {
+    this.Given(/^I am on search page$/, function () {
         browser.get('/search/');
     });
 
@@ -43,7 +43,7 @@ var mortalityStepDefinitionsWrapper = function () {
         expect(mortalityPage.hideFiltersBtn.isDisplayed()).to.eventually.equal(true);
     });
 
-    this.When(/^user clicks hide filter button$/, function () {
+    this.When(/^I click hide filter button$/, function () {
         mortalityPage.hideFiltersBtn.click();
     });
 
@@ -51,11 +51,11 @@ var mortalityStepDefinitionsWrapper = function () {
         expect(mortalityPage.sideMenu.getAttribute('class')).to.eventually.include('ng-hide');
     });
 
-    this.Then(/^user sees button to show filters$/, function () {
+    this.Then(/^I see button to show filters$/, function () {
         expect(mortalityPage.showFiltersBtn.isDisplayed()).to.eventually.equal(true);
     });
 
-    this.When(/^user clicks show filters button$/, function () {
+    this.When(/^I click show filters button$/, function () {
         mortalityPage.showFiltersBtn.click();
     });
 
@@ -71,7 +71,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the percentages are shown for each row are displayed by default$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[1]).to.equal('98,841 (45.5%)');
+            expect(value[1]).to.equal('98,769 (45.5%)');
         });
     });
 
@@ -81,7 +81,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^data table is updated and the number of deaths and percentages are updated too$/, function () {
         mortalityPage.getTableRowData(0).then(function (value) {
-            expect(value[1]).to.equal('8,696 (4.0%)');
+            expect(value[1]).to.equal('8,677 (4.0%)');
         });
     });
 
@@ -92,7 +92,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^the percentages get re\-calculated based on all the information displayed in a given row$/, function () {
         browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('986 (14.3%)');
+            expect(value[2]).to.equal('985 (14.3%)');
         });
     });
 
@@ -106,7 +106,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^percentages are displayed in the same column\/cell in parenthesis$/, function () {
         browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('986 (14.3%)');
+            expect(value[2]).to.equal('985 (14.3%)');
         });
     });
 
@@ -160,7 +160,7 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^when that option is toggled, the percentages are either displayed\/hidden$/, function () {
         mortalityPage.hidePecentageButton.click();
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('986');
+            expect(value[2]).to.equal('985');
         });
     });
 
@@ -181,7 +181,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the Rates and Percentages should have a one decimal precision$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('986 (14.3%)');
+            expect(value[2]).to.equal('985 (14.3%)');
         });
     });
 
@@ -230,7 +230,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the Percentages should have a one decimal precision$/, function () {
           mortalityPage.getTableRowData(1).then(function(text) {
-              expect(text[1]).to.equal('338,606 (47.6%)');
+              expect(text[1]).to.equal('336,172 (47.8%)');
           });
     });
 
@@ -244,7 +244,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the age adjusted rates are shown for each row$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[1]).to.equal('Rate\n562.5\nDeaths\n98,841\nPopulation\n29,970,935');
+            expect(value[1]).to.equal('Rate\n562.5\nDeaths\n98,769\nPopulation\n29,970,935');
         });
     });
 
@@ -263,8 +263,7 @@ var mortalityStepDefinitionsWrapper = function () {
             expect(elements[17].getInnerHtml()).to.eventually.equal('');
             expect(elements[18].getInnerHtml()).to.eventually.equal('');
             expect(elements[19].getInnerHtml()).to.eventually.equal('');
-            expect(elements[20].getInnerHtml()).to.eventually.equal('611');
-
+            expect(elements[20].getInnerHtml()).to.eventually.equal('608');
         });
     });
 
@@ -326,6 +325,70 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^user clicks on "([^"]*)" more link for "([^"]*)" filter$/, function (linkText, filterType) {
         var yearFilter = element(by.cssContainingText('a', filterType)).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul'));
         yearFilter.element(by.cssContainingText('a', linkText)).click();
+    });
+
+    this.Then(/^user should see two subcategories\- Hispanic and NonHispanic$/, function () {
+        mortalityPage.getOptions('Ethnicity').then(function(elements) {
+            expect(elements[1].getText()).to.eventually.contains('Hispanic');
+            expect(elements[13].getText()).to.eventually.contains('Non-Hispanic');
+        });
+    });
+
+    this.When(/^user expands hispanic option group$/, function () {
+        mortalityPage.getGroupOptions('Ethnicity').then(function(elements) {
+            elements[0].element(by.tagName('i')).click();
+        });
+    });
+
+    this.When(/^user checks entire Hispanic group$/, function () {
+        mortalityPage.ethnicityHispanicOption.click();
+    });
+
+    this.Then(/^all Hispanic child options should be checked$/, function () {
+        mortalityPage.getOptions('Ethnicity').then(function(elements) {
+            for(var i = 2; i < 11; i++) {
+                expect(elements[i].element(by.tagName('input')).isSelected()).to.eventually.equal(true);
+            }
+        });
+
+    });
+
+    this.Then(/^user should see all the of the Hispanic Origin options grouped\(Central American,Cuban,Dominican,Latin American, Mexican, Puerto Rican, South American,Spaniard, Other Hispanic, Unknown\) under one Category\- Hispanic$/, function () {
+        mortalityPage.getOptions('Ethnicity').then(function(elements) {
+            expect(elements[2].getText()).to.eventually.contains('Central and South American');
+            expect(elements[3].getText()).to.eventually.contains('Central American');
+            expect(elements[4].getText()).to.eventually.contains('Cuban');
+            expect(elements[5].getText()).to.eventually.contains('Dominican');
+            expect(elements[6].getText()).to.eventually.contains('Latin American');
+            expect(elements[7].getText()).to.eventually.contains('Mexican');
+            expect(elements[8].getText()).to.eventually.contains('Puerto Rican');
+            expect(elements[9].getText()).to.eventually.contains('South American');
+            expect(elements[10].getText()).to.eventually.contains('Spaniard');
+            expect(elements[11].getText()).to.eventually.contains('Other Hispanic');
+            expect(elements[12].getText()).to.eventually.contains('Unknown');
+        });
+    });
+
+    this.When(/^user checks some options under hispanic group$/, function () {
+        mortalityPage.getOptionByFilterAndKey('hispanicOrigin', 'Cuban').click();
+        mortalityPage.getOptionByFilterAndKey('hispanicOrigin', 'Latin American').click();
+        mortalityPage.getOptionByFilterAndKey('hispanicOrigin', 'Puerto Rican').click();
+    });
+
+    this.When(/^user groups ethnicity by row$/, function () {
+        mortalityPage.selectSideFilter('Ethnicity', 'Row').click();
+    });
+
+    this.Then(/^data should be filtered by the checked hispanic options$/, function () {
+        mortalityPage.getTableRowData(0).then(function(text) {
+            expect(text[1]).to.equal('Cuban');
+        });
+        mortalityPage.getTableRowData(1).then(function(text) {
+            expect(text[0]).to.equal('Latin American');
+        });
+        mortalityPage.getTableRowData(2).then(function(text) {
+            expect(text[0]).to.equal('Puerto Rican');
+        });
     });
 
     this.Then(/^race options should be in proper order$/, function () {

@@ -55,20 +55,27 @@
             "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'agegroup', 'race', 'ethnicity', 'state']
         };
 
-        sc.optionsSort = {
-            "hispanicOrigin": ['Non-Hispanic', 'Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic', 'Unknown'],
+        sc.optionsGroup = {
+            "hispanicOrigin": [
+                {
+                    "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic', 'Unknown'],
+                    "title": "Hispanic",
+                    "key": "Hispanic"
+                },
+                'Non-Hispanic'
+                // 'Unknown'
+            ],
             "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
-            "year": ['2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
+            "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
         };
         //show certain filters for different table views
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race'],
             'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters']
         };
-        sc.showFbDialog = showFbDialog;
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
-        sc.changeViewFilter = changeViewFilter;
+
         //Intial call queryId will be empty
         if(sc.queryID === "") {
             searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
@@ -138,10 +145,10 @@
             var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
             //make sure row/column headers are in proper order
             angular.forEach(headers.rowHeaders, function(header) {
-                searchFactory.sortFilterOptions(header, sc.optionsSort);
+                searchFactory.sortAutoCompleteOptions(header, sc.optionsGroup);
             });
             angular.forEach(headers.columnHeaders, function(header) {
-                searchFactory.sortFilterOptions(header, sc.optionsSort);
+                searchFactory.sortAutoCompleteOptions(header, sc.optionsGroup);
             });
             var countKey = selectedFilter.key;
             var countLabel = selectedFilter.countLabel;
@@ -217,8 +224,9 @@
                 sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
                 //make sure side filters are in proper order
                 angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
-                    searchFactory.sortFilterOptions(filter.filters, sc.optionsSort);
+                    searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup);
                 });
+
                 sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
                 if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
                     updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);

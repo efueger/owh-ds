@@ -19,15 +19,108 @@
             updateFilterValues: updateFilterValues,
             generateHashCode: generateHashCode,
             buildAPIQuery: buildAPIQuery,
-            sortFilterOptions: sortFilterOptions
+            sortAutoCompleteOptions: sortAutoCompleteOptions,
+            groupAutoCompleteOptions: groupAutoCompleteOptions
         };
         return service;
 
-        function sortFilterOptions(filter, sort) {
+        function groupAutoCompleteOptions(filter, sort) {
+            var groupedOptions = [];
+            var filterLength = 0;
+            //build groupOptions object from autoCompleteOptions
             if(sort[filter.key]) {
-                filter.autoCompleteOptions.sort(function(a, b) {
-                    return sort[filter.key].indexOf(a.key) - sort[filter.key].indexOf(b.key);
+                //find corresponding key in sort object
+                for(var i = 0; i < sort[filter.key].length; i++) {
+                    angular.forEach(filter.autoCompleteOptions, function(option) {
+                        //if type string, then just a regular option
+                        if(typeof sort[filter.key][i] === 'string') {
+                            //not group option
+                            if(sort[filter.key][i] === option.key) {
+                                filterLength++;
+                                groupedOptions.push(option);
+                            }
+                        } else {
+                            //else, group option
+                            //check if group option contains the filter option
+                            //is same parent group option
+                            if(sort[filter.key][i].key === option.key) {
+                                groupedOptions.push(option);
+                            }
+                            //otherwise is child of group option
+                            else if(sort[filter.key][i].options.indexOf(option.key) >= 0) {
+                                var parentOption = {
+                                    key: sort[filter.key][i].key,
+                                    title: sort[filter.key][i].title,
+                                    group: true,
+                                    options: []
+                                };
+                                //if empty, add option
+                                if(groupedOptions.length === 0) {
+                                    filterLength++;
+                                    groupedOptions.push(parentOption);
+                                }
+                                //go through already grouped options and find parent option
+                                for(var j = 0; j < groupedOptions.length; j++) {
+                                    var groupedOption = groupedOptions[j];
+                                    if(groupedOption.key === sort[filter.key][i].key) {
+                                        filterLength++;
+                                        groupedOption.options.push(option);
+                                        break;
+                                    }
+                                    //parent not found, add new group option for parent
+                                    if(j === groupedOptions.length - 1) {
+                                        filterLength++;
+                                        groupedOptions.push(parentOption);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                //sort each group
+                angular.forEach(groupedOptions, function(groupedOption, index) {
+                    if(groupedOption.options) {
+                        groupedOption.options.sort(function(a, b) {
+                            return sort[filter.key][index].options.indexOf(a.key) - sort[filter.key][index].options.indexOf(b.key);
+                        });
+                    }
                 });
+                filter.autoCompleteOptions = groupedOptions;
+                filter.filterLength = filterLength;
+            }
+
+        }
+
+        function sortAutoCompleteOptions(filter, sort) {
+            var sortedOptions = [];
+            var filterLength = 0;
+            //build sortedOptions object from autoCompleteOptions
+            if(sort[filter.key]) {
+                //find corresponding key in sort object
+                for(var i = 0; i < sort[filter.key].length; i++) {
+                    angular.forEach(filter.autoCompleteOptions, function(option) {
+                        //if type string, then just a regular option
+                        if(typeof sort[filter.key][i] === 'string') {
+                            //not group option
+                            if(sort[filter.key][i] === option.key) {
+                                filterLength++;
+                                sortedOptions.push(option);
+                            }
+                        } else {
+                            //else, group option
+                            //is same parent group option
+                            if(sort[filter.key][i].key === option.key) {
+                                angular.forEach(option.options, function(subOption) {
+                                    if(sort[filter.key][i].options.indexOf(subOption.key) >= 0) {
+                                        sortedOptions.push(subOption);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+                filter.autoCompleteOptions = sortedOptions;
+                filter.filterLength = filterLength;
             }
         }
 
@@ -484,7 +577,16 @@
         }
 
         function buildFilterQuery(filter) {
-            if( utilService.isValueNotEmpty(filter.value) && filter.value.length !== getAutoCompleteOptionsLength(filter)) {
+            //need to calculate value length for group options, as the parent option can count as extra value
+            var valueLength = filter.value.length;
+            angular.forEach(filter.autoCompleteOptions, function(option) {
+                if(option.options) {
+                    if(filter.value.indexOf(option.key) >= 0) {
+                        valueLength--;
+                    }
+                }
+            });
+            if( utilService.isValueNotEmpty(filter.value) && valueLength !== getAutoCompleteOptionsLength(filter)) {
                 return getFilterQuery(filter);
             }
             return false;
@@ -501,7 +603,17 @@
         }
 
         function getAutoCompleteOptionsLength(filter) {
-            return filter.autoCompleteOptions ? filter.autoCompleteOptions.length : 0;
+            //take into account group options length
+            var length = filter.autoCompleteOptions ? filter.autoCompleteOptions.length : 0;
+            if(filter.autoCompleteOptions) {
+                angular.forEach(filter.autoCompleteOptions, function(option) {
+                    if(option.options) {
+                        length--;
+                        length += option.options.length;
+                    }
+                });
+            }
+            return length;
         }
 
         function buildQueryForYRBS(primaryFilter, dontAddYearAgg) {
