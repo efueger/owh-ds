@@ -173,19 +173,19 @@ var buildSearchQuery = function(params, isAggregation) {
         elasticQuery.size = params.pagination.size;
     }
     elasticQuery.query = {};
-    elasticQuery.query.filtered = {};
+    elasticQuery.query.bool = {};
     //build top level bool queries
     var primaryQuery = buildTopLevelBoolQuery(groupByPrimary(userQuery, true), true);
     var filterQuery = buildTopLevelBoolQuery(groupByPrimary(userQuery, false), false);
     //check if primary query is empty
-    elasticQuery.query.filtered.query = primaryQuery;
-    elasticQuery.query.filtered.filter = filterQuery;
+    elasticQuery.query.bool.must = primaryQuery;
+    elasticQuery.query.bool.filter = filterQuery;
     if(censusQuery) {
         censusQuery.query = {};
-        censusQuery.query.filtered = {};
+        censusQuery.query.bool = {};
 
-        censusQuery.query.filtered.query = primaryQuery;
-        censusQuery.query.filtered.filter = filterQuery;
+        censusQuery.query.bool.must = primaryQuery;
+        censusQuery.query.bool.filter = filterQuery;
     }
     return [elasticQuery, censusQuery];
 };
@@ -577,6 +577,8 @@ function addCountsToAutoCompleteOptions(primaryFilter) {
     //}
     return apiQuery;
 }
+
+
 module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;
