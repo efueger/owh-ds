@@ -7,6 +7,8 @@ default:
     port : 6311
     user : ''
     password : ''
+  yrbs:
+    url: ''
   logging:
     level: 'debug'
 # Dev configuration
