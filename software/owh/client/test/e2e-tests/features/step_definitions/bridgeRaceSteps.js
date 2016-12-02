@@ -60,6 +60,65 @@ var BridgeRaceStepDefinitionsWrapper = function () {
             expect(elements[2].isDisplayed()).to.eventually.equal(false);
         });
     });
+
+    this.Then(/^data element and values are plotted on both the axes$/, function (callback) {
+
+    });
+
+    this.Then(/^the Chart heading appears on the top eg\. Race and Age Group$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback(null, 'pending');
+    });
+
+    this.Then(/^an axis labels is displayed on the graph$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback(null, 'pending');
+    });
+
+    this.Then(/^he should see an Expand button on the top right corner$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback(null, 'pending');
+    });
+
+    this.Then(/^he should see an Share button on the top right corner$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback(null, 'pending');
+    });
+
+    this.Then(/^the graph must be expanded$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback(null, 'pending');
+    });
+
+    this.Then(/^the expand button must be changed to collapse button$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback(null, 'pending');
+    });
+
+    this.Then(/^he should see the legend on the top right corner$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback(null, 'pending');
+    });
+
+    this.When(/^user clicks on the expand button$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback(null, 'pending');
+    });
+
+    this.Then(/^the graph must be collapsed$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback(null, 'pending');
+    });
+
+    this.Then(/^the collapse button must be changed to expand button$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback(null, 'pending');
+    });
+
+    this.Then(/^he should see the legend on the top right corner$/, function (callback) {
+        // Write code here that turns the phrase above into concrete actions
+        callback(null, 'pending');
+    });
 };
 
 module.exports = BridgeRaceStepDefinitionsWrapper;

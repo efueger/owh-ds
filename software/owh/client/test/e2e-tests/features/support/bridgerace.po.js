@@ -7,6 +7,7 @@ var BridgeRaceSearchPage = function() {
     brs.showFiltersBtn = element(by.className('owh-side-menu__handle--collapsed'));
     brs.owhTable = element(by.tagName('owh-table'));
     brs.sexOptionsLink = element(by.partialLinkText('Sex'));
+    brs.expandVisualizationLink = element(by.css('a[name=expand_graph]'));
 
     brs.getSelectedFilterOptions = function() {
         return element(by.css('.ui-select-match')).all(by.css('.ui-select-match-item')).getText();

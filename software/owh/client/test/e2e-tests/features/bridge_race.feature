@@ -2,6 +2,7 @@ Feature: Bridge race filters
   As a user
   I want to see the data table upon selection of Bridged-Race filters
   So that I can see the results of the filter options
+  and I can quickly visualize and analyze the data
 
   Background: Access Bridged-Race Population estimates page
     When I am at home page
@@ -34,3 +35,21 @@ Feature: Bridge race filters
     Then I see male and female sub filters
     When I click on sex filter
     Then I see sex filter options disappeared
+
+  Scenario: View axis labels for chart
+    When user sees a visualization
+    Then data element and values are plotted on both the axes
+    And the Chart heading appears on the top eg. Race and Age Group
+    And an axis labels is displayed on the graph
+    And he should see an Expand button on the top right corner
+    And he should see an Share button on the top right corner
+
+  Scenario: Expand/collapse chart
+    When user clicks on the expand button
+    Then the graph must be expanded
+    And  the expand button must be changed to collapse button
+    And  he should see the legend on the top right corner
+    When user clicks on the expand button
+    Then the graph must be collapsed
+    And  the collapse button must be changed to expand button
+    And  he should see the legend on the top right corner

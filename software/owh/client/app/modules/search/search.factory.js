@@ -715,10 +715,11 @@
 
             SearchService.searchResults(primaryFilter).then(function(response) {
                 deferred.resolve({
-                    data : response.data.nested.table,
-                    headers : headers,
+                    data : response.data.resultData.nested.table,
+                    headers : response.data.headers,
+                    chartData: prepareChartData(response.data.headers, response.data.resultData.nested, primaryFilter),
                     totalCount: response.pagination.total
-                });
+                })
             });
             return deferred.promise;
         }
@@ -732,6 +733,7 @@
             queryCensusAPI(primaryFilter).then(function(response){
                 primaryFilter.data = response.data;
                 primaryFilter.headers = response.headers;
+                primaryFilter.chartData = response.chartData;
                 deferred.resolve({});
             });
 
@@ -1044,7 +1046,7 @@
                 {
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
                     allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, showMap:true,
-                    countLabel: 'Number of Deaths', mapData:{},
+                    chartAxisLabel:'Deaths', countLabel: 'Number of Deaths', mapData:{},
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
@@ -1122,7 +1124,7 @@
                 {
                     key: 'bridge_race', title: 'label.census.bridge.race.pop.estimate', primary: true, value:[], header:"Bridged-Race Population Estimates",
                     allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true,
-                    countLabel: 'Total', countQueryKey: 'pop',
+                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop',
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, dontShowCounts: true,
