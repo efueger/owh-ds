@@ -8,12 +8,12 @@ var yrbsStepDefinitionsWrapper = function () {
 
     var yrbsPage = require('../support/yrbspage.po')
 
-    this.Given(/^user select YRBS as primary filter$/, function () {
+    this.Given(/^I select YRBS as primary filter$/, function () {
         browser.sleep(300);
         yrbsPage.yrbsOption.click();
     });
 
-    this.When(/^the user clicks on the down arrow at the corner of each category bar$/, function () {
+    this.When(/^I click on the down arrow at the corner of each category bar$/, function () {
         yrbsPage.getExpandLinks().then(function(elements) {
             elements[0].click();
         })
@@ -25,7 +25,7 @@ var yrbsStepDefinitionsWrapper = function () {
         });
     });
 
-    this.When(/^the user clicks on Show \# More under the questions in any category$/, function () {
+    this.When(/^I click on Show \# More under the questions in any category$/, function () {
         browser.sleep(30000);
         yrbsPage.getShowMoreLinks().then(function(elements){
             elements[1].click();
@@ -42,7 +42,7 @@ var yrbsStepDefinitionsWrapper = function () {
         expect(yrbsPage.getShowMoreLinks().get(1).getText()).to.eventually.equal('Show Less');
     });
 
-    this.When(/^the user clicks on 'Show Less'$/, function () {
+    this.When(/^I click on 'Show Less'$/, function () {
         yrbsPage.getShowMoreLinks().then(function(elements){
             browser.sleep(300);
             elements[1].click();
@@ -61,7 +61,7 @@ var yrbsStepDefinitionsWrapper = function () {
         });
     });
 
-    this.When(/^the user hovers the mouse over a category name$/, function () {
+    this.When(/^I hover the mouse over a category name$/, function () {
         yrbsPage.getExpandLinks().then(function(elements) {
             browser.actions().mouseMove(elements[0]).perform();
         });
@@ -74,7 +74,7 @@ var yrbsStepDefinitionsWrapper = function () {
         });
     });
 
-    this.When(/^the user clicks on 'Show only this Category'$/, function () {
+    this.When(/^I click on 'Show only this Category'$/, function () {
         yrbsPage.getShowOnlyLinks().then(function(elements) {
             elements[0].click();
         });
@@ -187,6 +187,28 @@ var yrbsStepDefinitionsWrapper = function () {
         var raceFilter = yrbsPage.selectSideFilter(filterName);
         var raceParentElement = raceFilter.element(by.xpath('..')).element(by.xpath('..')).element(by.xpath('..'));
         raceParentElement.element(by.xpath('.//*[.="'+option+'"]')).click();
+    });
+
+    this.Then(/^I see question categories in this order "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)"$/, function (questionCat1, questionCat2, questionCat3, questionCat4, questionCat5, questionCat6, questionCat7, questionCat8) {
+        browser.sleep(1000);
+        element(by.id('question')).all(by.tagName('li')).then(function(elements){
+            expect(elements[0].getText()).to.eventually.equals(questionCat1);
+            expect(elements[1].getText()).to.eventually.equals(questionCat2);
+            expect(elements[2].getText()).to.eventually.equals(questionCat3);
+            expect(elements[3].getText()).to.eventually.equals(questionCat4);
+            expect(elements[4].getText()).to.eventually.equals(questionCat5);
+            expect(elements[5].getText()).to.eventually.equals(questionCat6);
+            expect(elements[6].getText()).to.eventually.equals(questionCat7);
+            expect(elements[7].getText()).to.eventually.equals(questionCat8);
+        });
+    });
+
+    this.When(/^I select "([^"]*)" button$/, function (arg1) {
+         element(by.cssContainingText('button', arg1)).click();
+    });
+
+    this.Given(/^I expand "([^"]*)" filter section$/, function (arg1) {
+        element(by.partialLinkText(arg1)).click();
     });
 };
 module.exports = yrbsStepDefinitionsWrapper;
