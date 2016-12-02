@@ -15,7 +15,8 @@ exports.config = {
       'features/step_definitions/homeSteps.js',
       'features/step_definitions/mortalitySteps.js',
       'features/step_definitions/yrbsSteps.js',
-      'features/step_definitions/commonSteps.js'
+      'features/step_definitions/commonSteps.js',
+      'features/step_definitions/bridgeRaceSteps.js'
     ]
   },
 
