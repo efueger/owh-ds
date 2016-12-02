@@ -19,10 +19,10 @@ Feature: Bridge race filters
   Scenario: Side filter collapse
     Then user sees side filter
     Then there is button to hide filter
-    When user clicks hide filter button
+    When I click hide filter button
     Then side menu slides away
-    Then user sees button to show filters
-    When user clicks show filters button
+    Then I see button to show filters
+    When I click show filters button
     Then side menu slides back into view
 
   Scenario: Toggle row/column switch switches
