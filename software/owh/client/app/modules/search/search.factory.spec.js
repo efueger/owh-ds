@@ -496,7 +496,7 @@ describe('search factory ', function(){
         it('searchCensusInfo', function () {
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(response.data.nested.table));
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(response.data.resultData.nested.table));
             });
             deferred.resolve(response);
             $scope.$apply();

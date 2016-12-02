@@ -54,7 +54,7 @@ describe('chart utils', function(){
         data2 = __fixtures__['app/services/fixtures/owh.chart.utils/data2'];
 
         pieChartData = __fixtures__['app/services/fixtures/owh.chart.utils/pieChartData'];
-        primaryFilter = {"key":"deaths"};
+        primaryFilter = {"key":"deaths", "chartAxisLabel":"Deaths"};
 
         horizontalStackExpectedResult1 = __fixtures__['app/services/fixtures/owh.chart.utils/horizontalStackExpectedResult1'];
         horizontalStackExpectedResult2 = __fixtures__['app/services/fixtures/owh.chart.utils/horizontalStackExpectedResult2'];
