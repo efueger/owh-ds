@@ -98,6 +98,31 @@ Scenario: Years are supposed to be in descending order
   Then user clicks on "+ 12 more" more link for "Year" filter
   Then years should be in descending order
 
+Scenario: Ethnicity Filter
+  Given I am on search page
+  When user expands ethnicity filter
+  Then user should see two subcategories- Hispanic and NonHispanic
+
+Scenario: Check box
+  Given I am on search page
+  When user expands ethnicity filter
+  When user checks entire Hispanic group
+  Then all Hispanic child options should be checked
+
+Scenario: Ethnicity Hispanic Group
+  Given I am on search page
+  When user expands ethnicity filter
+  When user expands hispanic option group
+  Then user should see all the of the Hispanic Origin options grouped(Central American,Cuban,Dominican,Latin American, Mexican, Puerto Rican, South American,Spaniard, Other Hispanic, Unknown) under one Category- Hispanic
+
+Scenario: Check box- Hispanic Sub Categories
+  Given I am on search page
+  When user groups ethnicity by row
+  When user expands ethnicity filter
+  When user expands hispanic option group
+  When user checks some options under hispanic group
+  Then data should be filtered by the checked hispanic options
+
 Scenario: Race options should be in proper order
   Given I am on search page
   When user sees side filter
@@ -137,7 +162,7 @@ Scenario: Side filter total suppression
   Then user expands race options
   And user clicks on "+ 2 more" more link for "Race" filter
   When user expands ethnicity filter
-  And user shows more ethnicity filter
+  When user expands hispanic option group
   And user filters by ethnicity Spaniard
   Then user should only see total for white race in side filter
 

@@ -213,6 +213,28 @@ describe('OWH Side filter component: ', function() {
         expect(optionCount).toEqual(0);
     });
 
+    it('getOptionCount should return correct total for given group option', function() {
+        var bindings = {};
+        var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
+
+        ctrl.filters = {selectedPrimaryFilter: {key: 'deaths'}};
+
+        var option = {
+            options: [
+                {
+                    deaths: 24
+                },
+                {
+                    deaths: 402
+                }
+            ]
+        };
+
+        var optionCount = ctrl.getOptionCount(option);
+
+        expect(optionCount).toEqual(426);
+    });
+
     it('updateGroupValue should properly update the value array with the selected options', function() {
         var bindings = {onFilter: function(){}};
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
@@ -258,5 +280,73 @@ describe('OWH Side filter component: ', function() {
         var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
         var filter = {filters: {key: 'year'}};
         expect(ctrl.isVisible(filter)).toEqual(true);
+    });
+
+    it('filterGroup should properly toggle group keys in value array', function() {
+        var bindings = {filters: [], onFilter: angular.noop};
+        var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
+        var option = {
+            key: 'hispanic',
+            options: [
+                {
+                    key: 'Cuban'
+                },
+                {
+                    key: 'Dominican'
+                }
+            ]
+        };
+
+        var group = {
+            value: []
+        };
+
+        group.value.push('hispanic');
+        ctrl.filterGroup(option, group);
+
+        expect(group.value).toContain('Cuban');
+        expect(group.value).toContain('Dominican');
+
+        group.value.splice(0, 1);
+        ctrl.filterGroup(option, group);
+
+        expect(group.value.length).toEqual(0);
+
+        group.value.push('hispanic');
+        group.value.push('Cuban');
+        ctrl.filterGroup(option, group);
+
+        expect(group.value).toContain('Cuban');
+        expect(group.value).toContain('Dominican');
+    });
+
+    it('isSubOptionSelected should check if group child option is included in value', function() {
+        var bindings = {filters: []};
+        var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
+
+        var option = {
+            options: [
+                {
+                    key: 'Cuban'
+                },
+                {
+                    key: 'Dominican'
+                }
+            ]
+        };
+
+        var group = {
+            value: []
+        };
+
+        expect(ctrl.isSubOptionSelected(group, option)).toBeFalsy();
+
+        group.value.push('Cuban');
+
+        expect(ctrl.isSubOptionSelected(group, option)).toBeTruthy();
+
+        group.value = ['Non-Hispanic'];
+
+        expect(ctrl.isSubOptionSelected(group, option)).toBeFalsy();
     });
 });

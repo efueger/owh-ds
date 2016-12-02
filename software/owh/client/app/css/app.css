@@ -1000,6 +1000,24 @@ body {
     left: -100%;
 }
 
+.owh-side-menu__group-option i {
+    font-size: 16px!important;
+    vertical-align: -1px!important;
+    margin-left: 0!important;
+    color: #999;
+    width: 20px;
+}
+
+.owh-side-menu__group-option a.custom-link {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.owh-side-menu__sub-category-options {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 /* To increase visualization(charts) axis label size*/
 .nv-axislabel {
     font-size: 13px !important;
