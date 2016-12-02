@@ -78,6 +78,12 @@ class MortalityIndexer (ETL):
                 record  = mortalityParser.parseNextLine()
                 if not record:
                     break;
+
+                if(record['residence'] == '4'):
+                    logger.info ("Skipping foreign resident")
+                    continue;
+
+                del record['residence']
                 recordCount += 1
                 self._process_conditions(record,'entity_axis_condn_count', 'EAC')
                 self._process_conditions(record,'record_axis_condn_count', 'RAC')
