@@ -177,3 +177,10 @@ Scenario: Filer 'Multiple Causes of Deaths' should be displayed
   When user sees side filter
   Then filter "Multiple Causes of Death" should be displayed
 
+Scenario: Rates, Deaths and Population values closer to each other
+  Given I am on search page
+  When I choose the option "Crude Death Rates"
+  Then Rates, Deaths and Population values look as a single data element in the column
+  When I select "Column" type for "Race" filter
+  Then Rates, Deaths and Population shouldn't be overlap
+
