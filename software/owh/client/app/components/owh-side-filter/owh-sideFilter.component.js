@@ -26,6 +26,42 @@
         sfc.updateGroupValue = updateGroupValue;
         sfc.getFilterOrder = getFilterOrder;
         sfc.isVisible = isVisible;
+        sfc.isSubOptionSelected = isSubOptionSelected;
+        sfc.filterGroup = filterGroup;
+
+        function filterGroup(option, group) {
+            //check if group option is added
+            if(group.value.indexOf(option.key) >= 0) {
+                //clear group options, and then add subOptions to value
+                clearGroupOptions(option, group);
+                angular.forEach(option.options, function(subOption) {
+                    group.value.push(subOption.key);
+                });
+            } else {
+                //else, clear group options
+                clearGroupOptions(option, group);
+            }
+            sfc.onFilter();
+        }
+
+        function clearGroupOptions(option, group) {
+            angular.forEach(option.options, function(subOption) {
+                if(group.value.indexOf(subOption.key) >= 0) {
+                    group.value.splice(group.value.indexOf(subOption.key), 1);
+                }
+            });
+        }
+
+        function isSubOptionSelected(group, option) {
+            for(var i = 0; i < group.value.length; i++) {
+                for(var j = 0; j < option.options.length; j++) {
+                    if(group.value[i] === option.options[j].key) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         function getOptionCountPercentage(option) {
             var countKey = sfc.filters.selectedPrimaryFilter.key;
@@ -35,7 +71,17 @@
 
         function getOptionCount(option) {
             var countKey = sfc.filters.selectedPrimaryFilter.key;
-            return option && option[countKey] ? option[countKey] : 0
+            //check if group option
+            if(option.options) {
+                var count = 0;
+                angular.forEach(option.options, function(subOption) {
+                    count+= (subOption[countKey] ? subOption[countKey] : 0);
+                });
+                return count;
+            } else {
+                return option && option[countKey] ? option[countKey] : 0
+            }
+
         }
 
         function showModal(selectedFilter, allFilters) {
