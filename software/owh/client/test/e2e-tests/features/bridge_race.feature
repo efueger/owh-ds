@@ -36,20 +36,18 @@ Feature: Bridge race filters
     When I click on sex filter
     Then I see sex filter options disappeared
 
-  Scenario: View axis labels for chart
-    When user sees a visualization
-    Then data element and values are plotted on both the axes
-    And the Chart heading appears on the top eg. Race and Age Group
-    And an axis labels is displayed on the graph
-    And he should see an Expand button on the top right corner
-    And he should see an Share button on the top right corner
+  Scenario: View axis labels & data elements for chart
+    When I see a visualization
+    Then I see data element and values are plotted on both the axes
+    And I see chart heading appears on the top
+    And I see an axis labels are displayed on the graph
+    And I see an Expand button on the top right corner
+    And I see an share button on the top right corner
 
   Scenario: Expand/collapse chart
-    When user clicks on the expand button
-    Then the graph must be expanded
-    And  the expand button must be changed to collapse button
-    And  he should see the legend on the top right corner
-    When user clicks on the expand button
-    Then the graph must be collapsed
-    And  the collapse button must be changed to expand button
-    And  he should see the legend on the top right corner
+    When I clicks on the expand button
+    Then I see expanded graph in modal dialog
+    And  I see expand button is changed to collapse button
+    When I click on collapse button
+    Then I see graph is collapsed
+    And I see an Expand button on the top right corner

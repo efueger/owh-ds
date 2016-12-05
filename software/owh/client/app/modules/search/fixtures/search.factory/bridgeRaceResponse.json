@@ -113,7 +113,101 @@
           }
         ],
         "maps": {}
-      }
+      },
+      "chartData":[
+        [
+          {
+            "data": [
+              {
+                "key": "Female",
+                "values": [
+                  {
+                    "x": "White",
+                    "y": 1828192603
+                  },
+                  {
+                    "x": "Black or African American",
+                    "y": 317237591
+                  },
+                  {
+                    "x": "American Indian",
+                    "y": 28544528
+                  },
+                  {
+                    "x": "Asian or Pacific Islander",
+                    "y": 121309960
+                  }
+                ]
+              },
+              {
+                "key": "Male",
+                "values": [
+                  {
+                    "x": "White",
+                    "y": 1787480522
+                  },
+                  {
+                    "x": "Black or African American",
+                    "y": 289840863
+                  },
+                  {
+                    "x": "American Indian",
+                    "y": 28645741
+                  },
+                  {
+                    "x": "Asian or Pacific Islander",
+                    "y": 112325576
+                  }
+                ]
+              }
+            ],
+            "title": "label.title.sex.race",
+            "options": {
+              "chart": {
+                "type": "multiBarChart",
+                "height": 250,
+                "width": 350,
+                "margin": {
+                  "top": 5,
+                  "right": 5,
+                  "bottom": 45,
+                  "left": 45
+                },
+                "showMaxMin": false,
+                "showLegend": false,
+                "showControls": false,
+                "showValues": false,
+                "showXAxis": true,
+                "showYAxis": true,
+                "reduceXTicks": false,
+                "legend": {
+                  "width": 200,
+                  "expanded": true
+                },
+                "staggerLabels": true,
+                "rotateLabels": 70,
+                "clipEdge": true,
+                "duration": 500,
+                "stacked": false,
+                "xAxis": {
+                  "axisLabelDistance": -20,
+                  "axisLabel": "label.filter.race",
+                  "margin": {
+                    "top": 60
+                  }
+                },
+                "yAxis": {
+                  "axisLabelDistance": -20,
+                  "axisLabel": "Population"
+                },
+                "useInteractiveGuideline": false,
+                "interactive": false,
+                "tooltip": {}
+              }
+            }
+          }
+        ]
+      ]
     },
     "headers": {
       "rowHeaders": [
