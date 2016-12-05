@@ -111,7 +111,6 @@ describe("Build elastic search queries", function(){
         should(query.aggregations.group_table_gender.aggregations).have.properties('group_table_race');
         should(query.aggregations.group_chart_0_gender.aggregations).have.properties('group_chart_0_race');
         should(query.aggregations.group_table_gender.aggregations.group_table_race.aggregations).have.properties('group_table_year');
-        should(query.aggregations.group_table_gender.aggregations.group_table_race.aggregations).have.properties('group_table_year');
 
         done()
     });

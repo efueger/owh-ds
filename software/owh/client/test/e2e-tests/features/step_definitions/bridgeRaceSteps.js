@@ -123,16 +123,6 @@ var BridgeRaceStepDefinitionsWrapper = function () {
             expect(value).to.equal(true);
         });
     });
-
-    /*this.Then(/^the collapse button must be changed to expand button$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback(null, 'pending');
-    });
-
-    this.Then(/^he should see the legend on the top right corner$/, function (callback) {
-        // Write code here that turns the phrase above into concrete actions
-        callback(null, 'pending');
-    });*/
 };
 
 module.exports = BridgeRaceStepDefinitionsWrapper;
