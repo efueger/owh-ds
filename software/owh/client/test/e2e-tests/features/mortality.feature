@@ -152,3 +152,9 @@ Scenario: Filer 'Multiple Causes of Deaths' should be displayed
   When user sees side filter
   Then filter "Multiple Causes of Death" should be displayed
 
+Scenario: Data should be right aligned
+  Given user is on search page
+  When I update criteria in filter options with column "Autopsy"
+  When I update criteria in filter option with row "Sex"
+  Then data should be right aligned in table
+
