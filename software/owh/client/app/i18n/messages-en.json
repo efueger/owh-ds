@@ -150,6 +150,7 @@
   "label.title.current_year.ethnicity":"Yearly July 1st Estimates and Ethnicity",
   "label.title.current_year.agegroup":"Yearly July 1st Estimates and Age Group",
   "label.title.current_year.state":"Yearly July 1st Estimates and State",
+  "label.title.current_year.sex":"Yearly July 1st Estimates and Sex",
   "label.graph.ethnicity":"Ethnicity",
   "label.graph.sex":"Sex",
   "label.graph.current_year":"Yearly July 1st Estimates",

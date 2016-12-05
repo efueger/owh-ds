@@ -564,6 +564,7 @@ var chartMappings = {
     "ethnicity&state": "horizontalStack",
     "ethnicity&region": "verticalBar",
     "agegroup&region": "verticalBar",
+    "current_year&sex":"horizontalBar",
     "current_year&race":"horizontalBar",
     "current_year&ethnicity":"horizontalBar",
     "current_year&agegroup":"horizontalBar",
