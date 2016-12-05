@@ -53,9 +53,18 @@ function buildYRBSQueries(apiQuery){
     });
     var v = 'v='+aggrsKeys.join(',');
 
-    // Currnly hardcode, this needs to be built based on the questions selected by user
-    for (var i = 8; i<99; i++){
-        queries.push('q=qn'+i+'&'+v);
+    if('query' in apiQuery && 'question.path' in apiQuery.query){
+    var selectedQs =apiQuery.query['question.path'].value;
+        if (selectedQs.length > 0){
+            for (var i = 0; i<selectedQs.length; i++){
+                queries.push('q='+selectedQs[i]+'&'+v);
+            }
+        }
+    } else {
+        // Currenly hardcoding all questions list, this needs to come from the question service
+        for (var i = 8; i < 99; i++) {
+            queries.push('q=qn' + i + '&' + v);
+        }
     }
     return queries;
 }
@@ -82,7 +91,7 @@ function processYRBSReponses(response){
  * @returns {{name: (Array|string|string|string|string|COLORS_ON.question|*), mental_health}}
  */
 function processQuestionResponse (response){
-    var q = {"name" :response.question,
+    var q = {"name" :response.q,
         "mental_health": resultCellDataString(response.results[0])}; // the questions level total is the first record
 
     for (var i = 1; i< response.results.length; i ++){

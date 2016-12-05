@@ -464,7 +464,10 @@
                 var eachHeader = rowHeaders[0];
                 var eachHeaderData = data[eachHeader.key];
                 angular.forEach(eachHeader.autoCompleteOptions, function(matchedOption, index) {
-                    var eachData = findByKeyAndValue(eachHeaderData, 'name', matchedOption.key);
+
+                    var key = (countKey === 'mental_health')?matchedOption.qkey:matchedOption.key;
+                    var eachData = findByKeyAndValue(eachHeaderData, 'name', key);
+
                     if(!eachData) {
                         return;
                     }
@@ -478,6 +481,7 @@
                         rowspan: childTableData.length,
                         colspan: 1,
                         key: matchedOption.key,
+                        qkey: matchedOption.qkey,
                         iconClass: eachHeader.iconClass,
                         onIconClick: eachHeader.onIconClick
                     };
@@ -571,7 +575,8 @@
             if(columnHeaders && columnHeaders.length > 0) {
                 var eachColumnHeader = columnHeaders[0];
 
-                var eachHeaderData = data[eachColumnHeader.key];
+
+                var eachHeaderData = data[eachColumnHeader.key]?data[eachColumnHeader.key]:data[eachColumnHeader.queryKey];
                 var eachOptionLength = 0;
                 angular.forEach(getSelectedAutoCompleteOptions(eachColumnHeader), function(eachOption, optionIndex) {
                     var matchedData = findByKeyAndValue(eachHeaderData, 'name', eachOption.key);

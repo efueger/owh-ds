@@ -191,7 +191,7 @@
                 var category = {title: questionCategory.text, questions: [], hide: true};
                 angular.forEach(questionCategory.children, function(categoryChild) {
                     angular.forEach(data, function(row) {
-                        if(row[0].key === categoryChild.id) {
+                        if(row[0].qkey === categoryChild.qkey) {
                           category.questions.push(row);
                         }
                     });
