@@ -1,6 +1,11 @@
 language: node_js
 node_js:
   - '4.4'
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+      
 services:
   - docker
 
