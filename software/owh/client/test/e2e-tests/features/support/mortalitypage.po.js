@@ -17,9 +17,11 @@ var MortalitySearchPage = function() {
     msp.interestedInSelectBox = element(by.id('interestedIn'));
     msp.deathRatesOption = element(by.cssContainingText('option', 'Crude Death Rates'));
     msp.ageRatesOption = element(by.cssContainingText('option', 'Age Adjusted Death Rates'));
+    msp.creduDeathRatesOption = element(by.cssContainingText('option', 'Crude Death Rates'));
     msp.tableViewDropdown = element(by.model('ots.selectedShowFilter'));
     msp.mainSearch = element(by.tagName('owh-search'));
     msp.deathRateDisclaimer = element(by.id('death-rate-disclaimer'));
+    msp.ethnicityHispanicOption = element(by.id('deaths_hispanicOrigin_Hispanic')).element(by.xpath('..'));
     msp.ethnicitySpaniardOption = element(by.id('deaths_hispanicOrigin_Spaniard')).element(by.xpath('..'));
     msp.showMoreYears = element(by.cssContainingText('a', '+ 12 more'));
     msp.showMoreEthnicity = element(by.cssContainingText('a', '+ 9 more'));
@@ -96,9 +98,17 @@ var MortalitySearchPage = function() {
         return element(by.cssContainingText('a', filterType)).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.tagName('li'));
     };
 
+    msp.getGroupOptions = function(filterType) {
+        return element(by.cssContainingText('a', filterType)).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.className('owh-side-menu__group-option'));
+    };
+
     msp.getSideFilterTotals = function() {
         return element(by.tagName('owh-side-filter')).all(by.className('count-value'));
     };
+
+    msp.getOptionByFilterAndKey = function(filter, key) {
+        return element(by.id('deaths_' + filter + '_' + key)).element(by.xpath('..'));
+    }
 
 };
 

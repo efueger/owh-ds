@@ -508,7 +508,7 @@
             }
             var cell = {
                 title: title,
-                percentage: (calculatePercentage && totalCount !== undefined) ? (Number(data[countKey]) / totalCount) * 100 : undefined,
+                percentage: (calculatePercentage && !isNaN(totalCount)) ? (Number(data[countKey]) / totalCount) * 100 : undefined,
                 isCount: true,
                 rowspan: 1,
                 colspan: 1
@@ -568,6 +568,10 @@
          */
         function prepareMixedTableColumnData(columnHeaders, data, countKey, totalCount, calculatePercentage, secondaryCountKeys) {
             var tableData = [];
+            var percentage ;
+            if(calculatePercentage) {
+                percentage = 0 ;
+            }
             if(columnHeaders && columnHeaders.length > 0) {
                 var eachColumnHeader = columnHeaders[0];
 
@@ -589,7 +593,7 @@
                         if(eachOptionLength <= 0) {
                             eachOptionLength = getOptionDataLength(columnHeaders.slice(1));
                         }
-                        tableData = tableData.concat(getArrayWithDefaultValue(eachOptionLength, {title: '0',percentage: 0,isCount: calculatePercentage}));
+                        tableData = tableData.concat(getArrayWithDefaultValue(eachOptionLength, {title: 0, percentage: percentage , isCount: true}));
                     }
                 });
             }

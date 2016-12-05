@@ -99,7 +99,7 @@
   "label.title.gender.placeofdeath":"Sex and Place of Death",
   "label.title.race.hispanicOrigin":"Race and Ethnicity",
   "label.yrbs.filter.sex": "Sex",
-  "label.yrbs.filter.race": "Race",
+  "label.yrbs.filter.race": "Race/Ethnicity",
   "label.official.us.gov": "An official website of the United States Government. This site is work in progress and may contain inaccuracies. If you don't find what you need, visit {{qhdos}} or {{cdc}}",
   "label.site.prototype": "This site is a prototype.",
   "label.learn.more": "Learn more.",
@@ -137,5 +137,6 @@
   "label.mortality.search.table.showing.percentage.button":"Showing Percentages",
   "label.mortality.search.table.hide.percentage.button":"Hide",
   "label.mortality.search.table.hidden.percentage.button":"Percentages Hidden",
-  "label.census.bridge.race.pop.estimate": "Bridged-Race Population Estimates"
+  "label.census.bridge.race.pop.estimate": "Bridged-Race Population Estimates",
+  "label.crude.death.rates.statement": "Population details from NCHS Bridge Race Estimates is used to calculate Death Rates (per 100,000)"
 }
