@@ -80,6 +80,7 @@ construct.mask.from.filter = function(df, filter) {
 ### in.  It is used when yrbssCaculate is called with a cached dataframe.
 #########################################################################################
 verify.df = function(df, state, year.we.want) {
+    if (state=="99") return(df)   # artificial test case df
     states = unique(df$sitecode)
     if ((length(states) > 1) || states != state) {
         return(paste0("ERROR: df contains data for states other than ", state))
@@ -108,12 +109,12 @@ yrbssCalculate =
     positives = list(q8 = c(2, 4), q9 = c(1, 2)),
     # Filters (e.g. demographic) to be applied to respondents:
     filter = list(q1 = c(4, 5, 6), # age 15-18
-                  q2 = a(1),   # female
-                  q5 = a(3)),  # black
-    group_by = list("sex","grade"),
+                  q2 = c(1),   # female
+                  q5 = c(3)),  # black
     # List of variables that responses should be grouped by.
-    # style of confidence interval; argumment to svyciprop.
-    confint = "xlogit"  # logit, mean, beta, likelihood
+    group.by = list("sex","grade"),
+    out.format = "string"   # "matrix" for test cases
+
   )
   {
     ### If no cached df passed in, call function to read from file.
@@ -127,9 +128,10 @@ yrbssCalculate =
 
     ### Create the "design" object for the weighted study design.
     design = svydesign(ids=~PSU, strata=~stratum, weights=~weight, data=df, nest=TRUE)
+    deg.free = degf(design)
 
     ### Are all the column names mentioned in the arguments real?
-    all.col.names = c(names(filter), names(positives), unlist(group_by))
+    all.col.names = c(names(filter), names(positives), unlist(group.by))
     bad.col.names = all.col.names[!(all.col.names %in% colnames(df))]
     if (length(bad.col.names)>0) {
         return(paste0("ERROR: Bad column names: ", paste(bad.col.names,collapse=' '), '\n'))
@@ -140,27 +142,27 @@ yrbssCalculate =
     #cat(sum(mask), "passed filters.\n")
     
     
-    ### The group_by variables specify the dimensions of the final contingency table.
+    ### The group.by variables specify the dimensions of the final contingency table.
     ### Get a list of possible values for each variable, then create a "grid" of
     ### all possible combinations of values.  For each variable, we also add a -1 value,
     ### which represents "don't care" and lets us fill in the margins of the table.
-    ### For example, if there are three group_by variables, each with 5 possible values, 
+    ### For example, if there are three group.by variables, each with 5 possible values, 
     ### the "grid" has 3 columns and (5+1)^3=216 rows, and the contingency table has 216 cells.
     
     ### First, create a list of vectors.  In the case of the aforementioned example, there
     ### will be three vectors in the list, each with 6 elements.
-    all_by_vals = lapply(group_by, function(s) c(sort(unique(df[[s]])),-1))
-    names(all_by_vals) = group_by
+    all.by.vals = lapply(group.by, function(s) c(sort(unique(df[[s]])),-1))
+    names(all.by.vals) = group.by
 
     ### expand.grid will turn the list into a 216 x 3 dataframe.
-    grid = expand.grid(all_by_vals)
+    grid = expand.grid(all.by.vals)
     #print(grid)
     
     ### Now we begin to build up the result, cell by cell. 
     ### We are building up a csv string, not a dataframe.
     ### Each cell is represented by a string terminated by '\n'.
     ### First we create a row of column headings.
-    kol.names =  c(unlist(group_by),
+    kol.names =  c(unlist(group.by),
                      t(outer(names(positives),
                             c(".count", ".pct", ".se", ".ci.lo", ".ci.hi"),
                             paste0)))
@@ -179,7 +181,7 @@ yrbssCalculate =
         ### fine.mask will tell us which rows also contain the positive responses.
         fine.mask = mask
         #print(table(fine.mask, useNA="always"))
-        for (s in group_by) {
+        for (s in group.by) {
             if (grid[i,s] == -1) next  ## -1 marks the 'total' case
             fine.mask = fine.mask & (!is.na(df[[s]]) & (df[[s]] == grid[i,s]))
             #print(table(fine.mask, useNA="always"))
@@ -209,6 +211,8 @@ yrbssCalculate =
             ss = subset(design,fine.mask)
             r.code = paste0("svyciprop(~(",resp.name,"%in%",cc(positives[[resp.name]]),"),",
                         "ss, method='xlogit', na.rm=TRUE)")
+            r.code = paste0("svyciprop(~(",resp.name,"%in%",cc(positives[[resp.name]]),"),",
+                        "ss, method='xlogit', na.rm=TRUE, df=",deg.free,")")
             #print(r.code)
             new.row = c(new.row,count,round(100*tidyresult(eval(parse(text=r.code))),2))
 
@@ -222,7 +226,11 @@ yrbssCalculate =
     colnames(result) = kol.names
     #print(result) 
     #write.csv(result,"C:/Users/Rex/Desktop/foo.csv", row.names=FALSE)
-    return(result.string)
+    if (out.format == 'string') {
+        return(result.string)
+    } else {
+        return(result)  # matrix
+    }
   }
         
         
