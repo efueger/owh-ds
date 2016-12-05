@@ -120,4 +120,7 @@ Scenario: YRBS question categories in the given order
   When I select "Select Questions" button
   Then I see question categories in this order "Unintentional Injuries and Violence", "Tobacco Use", "Alcohol and Other Drug Use", "Sexual Behaviors", "Physical Activity", "Obesity, Overweight, and Weight Control", "Dietary Behaviors", "Other Health Topics"
 
-
+Scenario: Race/Ethnicity label
+  Given I am on search page
+  And I select YRBS as primary filter
+  Then race filter should be labeled Race/Ethnicity

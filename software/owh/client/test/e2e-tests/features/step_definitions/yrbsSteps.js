@@ -57,7 +57,7 @@ var yrbsStepDefinitionsWrapper = function () {
 
     this.Then(/^'Show Less' should be replaced with 'Show \# More'$/, function () {
         yrbsPage.getShowMoreLinks().then(function(elements) {
-            expect(elements[1].getText()).to.eventually.equal('Show 10 More');
+            expect(elements[1].getText()).to.eventually.equal('Show 14 More');
         });
     });
 
@@ -117,7 +117,7 @@ var yrbsStepDefinitionsWrapper = function () {
 
 
     this.Then(/^I should be able to select more than one\. The radio buttons must be changed to checkboxes$/, function () {
-        var raceFilter = yrbsPage.selectSideFilter("Race");
+        var raceFilter = yrbsPage.selectSideFilter("Race/Ethnicity");
         var raceParentElement = raceFilter.element(by.xpath('..')).element(by.xpath('..')).element(by.xpath('..'));
         raceFilter.getAttribute('class').then(function(className){
             if(className =="fa fa-chevron-right") {
@@ -136,7 +136,7 @@ var yrbsStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the default filter pre\-selected should be Race$/, function () {
-        var raceFilter = element(by.className('side-filters')).element(by.xpath('.//*[.="Race"]'));
+        var raceFilter = element(by.className('side-filters')).element(by.xpath('.//*[.="Race/Ethnicity"]'));
         var raceParentLabel = raceFilter.element(by.xpath('..')).element(by.xpath('..'));
         var columnButton = raceParentLabel.element(by.tagName('owh-toggle-switch')).element(by.tagName('a'));
         expect(columnButton.getAttribute('class')).to.eventually.contains("selected");
@@ -209,6 +209,12 @@ var yrbsStepDefinitionsWrapper = function () {
 
     this.Given(/^I expand "([^"]*)" filter section$/, function (arg1) {
         element(by.partialLinkText(arg1)).click();
+    });
+
+    this.Then(/^race filter should be labeled Race\/Ethnicity$/, function () {
+        element(by.tagName('owh-side-filter')).all(by.className('accordion')).then(function(elements) {
+            expect(elements[2].element(by.tagName('a')).getText()).to.eventually.equal('Race/Ethnicity');
+        });
     });
 };
 module.exports = yrbsStepDefinitionsWrapper;
