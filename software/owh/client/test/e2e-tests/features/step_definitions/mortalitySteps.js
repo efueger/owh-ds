@@ -79,6 +79,10 @@ var mortalityStepDefinitionsWrapper = function () {
         mortalityPage.selectSideFilter(arg1, 'Column').click();
     });
 
+    this.When(/^I update criteria in filter option with row "([^"]*)"$/, function (arg1) {
+        mortalityPage.selectSideFilter(arg1, 'Row').click();
+    });
+
     this.Then(/^data table is updated and the number of deaths and percentages are updated too$/, function () {
         mortalityPage.getTableRowData(0).then(function (value) {
             expect(value[1]).to.equal('8,677 (4.0%)');
@@ -414,6 +418,21 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^filter "([^"]*)" should be displayed$/, function (arg1) {
         expect(element(by.tagName('owh-side-filter')).getText()).to.eventually.contains(arg1);
+    });
+
+    this.Then(/^data should be right aligned in table$/, function () {
+        mortalityPage.getTableRowDataCells(0).then(function (elements) {
+            expect(elements[0].getCssValue('text-align')).to.eventually.equal('start');
+            expect(elements[1].getCssValue('text-align')).to.eventually.equal('start');
+            expect(elements[2].getCssValue('text-align')).to.eventually.equal('right');
+            expect(elements[3].getCssValue('text-align')).to.eventually.equal('right');
+        });
+        mortalityPage.getTableRowDataCells(1).then(function (elements) {
+            expect(elements[0].getCssValue('text-align')).to.eventually.equal('start');
+            expect(elements[1].getCssValue('text-align')).to.eventually.equal('right');
+            expect(elements[2].getCssValue('text-align')).to.eventually.equal('right');
+            expect(elements[3].getCssValue('text-align')).to.eventually.equal('right');
+        });
     });
 
     this.When(/^I choose the option "([^"]*)"$/, function (arg1) {
