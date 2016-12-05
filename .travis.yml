@@ -1,7 +1,3 @@
-language: java
-jdk:
-  - oraclejdk8
-
 language: node_js
 node_js:
   - '4.4'
@@ -53,6 +49,10 @@ before_script:
   - ./node_modules/protractor/bin/webdriver-manager update
   - sleep 1 #give server time to start
 
+language: java
+jdk:
+  - oraclejdk8
+  
 script:
   - npm run-script test-single-run
   - ls
