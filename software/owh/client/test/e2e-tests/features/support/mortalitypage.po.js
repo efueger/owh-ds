@@ -24,7 +24,6 @@ var MortalitySearchPage = function() {
     msp.ethnicityHispanicOption = element(by.id('deaths_hispanicOrigin_Hispanic')).element(by.xpath('..'));
     msp.ethnicitySpaniardOption = element(by.id('deaths_hispanicOrigin_Spaniard')).element(by.xpath('..'));
     msp.showMoreYears = element(by.cssContainingText('a', '+ 12 more'));
-    msp.showMoreEthnicity = element(by.cssContainingText('a', '+ 9 more'));
     msp.expandEthnicity = element(by.cssContainingText('a', 'Ethnicity'));
 
     msp.getSelectedFilterType = function() {
