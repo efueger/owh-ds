@@ -50,7 +50,7 @@
                     "chart": {
                         "type": "multiBarHorizontalChart",
                         "height": 250,
-                        "width": 350,
+                        "width": 300,
                         "margin": {
                             "top": 5,
                             "right": 5,
@@ -147,7 +147,7 @@
                     "chart": {
                         "type": "multiBarChart",
                         "height": 250,
-                        "width": 350,
+                        "width": 300,
                         "margin": {
                             "top": 5,
                             "right": 5,
