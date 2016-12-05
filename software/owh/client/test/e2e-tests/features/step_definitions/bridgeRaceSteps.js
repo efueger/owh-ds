@@ -60,6 +60,69 @@ var BridgeRaceStepDefinitionsWrapper = function () {
             expect(elements[2].isDisplayed()).to.eventually.equal(false);
         });
     });
+
+    this.When(/^I see a visualization$/, function () {
+        browser.sleep(5000);
+        bridgeRacePage.isVisualizationDisplayed().then(function(value) {
+            expect(value).to.equal(true);
+        });
+    });
+
+    this.Then(/^I see data element and values are plotted on both the axes$/, function () {
+        bridgeRacePage.isVisualizationDisplayed().then(function(value) {
+            expect(value).to.equal(true);
+        });
+    });
+
+    this.Then(/^I see chart heading appears on the top$/, function () {
+        bridgeRacePage.getGraphTitle().then(function(value) {
+            expect(value[0].getText()).to.eventually.contains('Sex and Race');
+        });
+    });
+
+    this.Then(/^I see an axis labels are displayed on the graph$/, function () {
+        var labelArr = bridgeRacePage.getAxisLabelsForAGraph(0);
+        expect(labelArr[0].getText()).to.eventually.equal('Race');
+        expect(labelArr[1].getText()).to.eventually.equal('Population');
+    });
+
+    this.Then(/^I see an Expand button on the top right corner$/, function () {
+        bridgeRacePage.isExpandBtnDisplayed().then(function(value) {
+            expect(value).to.equal(true);
+        });
+    });
+
+    this.Then(/^I see an share button on the top right corner$/, function () {
+        bridgeRacePage.isFBShareBtnDisplayed().then(function(value) {
+            expect(value).to.equal(true);
+        });
+    });
+
+    this.Then(/^I clicks on the expand button$/, function () {
+        bridgeRacePage.expandGraph();
+    });
+
+    this.Then(/^I see expanded graph in modal dialog$/, function () {
+        bridgeRacePage.isGraphModalDisplayed().then(function(value) {
+            expect(value).to.equal(true);
+        });
+    });
+
+    this.Then(/^I see expand button is changed to collapse button$/, function () {
+        bridgeRacePage.isCollapseBtnDisplayed().then(function(value) {
+            expect(value).to.equal(true);
+        });
+    });
+
+    this.When(/^I click on collapse button$/, function () {
+        bridgeRacePage.collapseGraph();
+    });
+
+    this.Then(/^I see graph is collapsed$/, function () {
+        bridgeRacePage.isCollapseBtnDisplayed().then(function(value) {
+            expect(value).to.equal(true);
+        });
+    });
 };
 
 module.exports = BridgeRaceStepDefinitionsWrapper;
