@@ -57,6 +57,5 @@
             /*fb share*/
         }
         function onFailed(error) { console.log(error); }
-        //$rootScope.fbAppId = 11600523216727;
     }
 }());
