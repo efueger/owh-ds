@@ -41,7 +41,7 @@
       },
       'getFBAppID' : {
         method : 'GET',
-        url: '/fb/getFBAppID'
+        url: '/getFBAppID'
       }
     }
   }

@@ -5,7 +5,6 @@ var logger = require('../config/logging');
 var config = require('../config/config');
 var appURL = config.fb.appURL;
 
-
 var imageRouter = function(app, rConfig) {
     app.post('/fb/upload', function(req, res) {
         var rawData = req.body.q.data;
@@ -31,11 +30,8 @@ var imageRouter = function(app, rConfig) {
         res.end(img, 'binary');
     });
 
-    app.get('/fb/getFBAppID', function(req, res) {
+    app.get('/getFBAppID', function(req, res) {
         var fbAppID = config.fb.appID;
-        console.log("****************************************************");
-        console.log("inside fb server call");
-        console.log("****************************************************");
         res.send( new result('OK', {fbAppID: fbAppID }, [], "success") );
     });
 };
