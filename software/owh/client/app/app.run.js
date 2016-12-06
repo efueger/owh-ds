@@ -3,9 +3,9 @@
     angular
         .module('owh')
         .run(appRun);
-    appRun.$inject = ['$templateCache', '$rootScope', '$http', '$state', '$stateParams'];
+    appRun.$inject = ['$templateCache', '$rootScope', '$http', '$state', '$stateParams', "API"];
 
-    function appRun( $templateCache, $rootScope, $http, $state, $stateParams ) {
+    function appRun( $templateCache, $rootScope, $http, $state, $stateParams, API ) {
         $templateCache.put("bootstrap/select-multiple.tpl.html","<div class=\"ui-select-container ui-select-multiple ui-select-bootstrap dropdown form-control\" ng-class=\"{open: $select.open}\"><div><div class=\"ui-select-match\"></div><input type=\"search\" autocomplete=\"off\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"false\" class=\"ui-select-search input-xs\" placeholder=\"{{$select.placeholder}}\" ng-disabled=\"$select.disabled\" ng-hide=\"$select.disabled\" ng-click=\"$select.activate()\" ng-model=\"$select.search\" role=\"combobox\" aria-label=\"{{ $select.baseTitle }}\" ondrop=\"return false;\"></div><div class=\"ui-select-choices\"></div></div>");
         $templateCache.put("bootstrap/choices.tpl.html","<ul class=\"ui-select-choices ui-select-choices-content ui-select-dropdown dropdown-menu\" role=\"listbox\" ng-show=\"$select.open && $select.items.length > 0\"><li class=\"ui-select-choices-group\" id=\"ui-select-choices-{{ $select.generatedId }}\"><div class=\"divider\" ng-show=\"$select.isGrouped && $index > 0\"></div><div ng-show=\"$select.isGrouped\" class=\"ui-select-choices-group-label dropdown-header\" ng-bind=\"$group.name | translate\"></div><div ng-attr-id=\"ui-select-choices-row-{{ $select.generatedId }}-{{$index}}\" class=\"ui-select-choices-row\" ng-class=\"{active: $select.isActive(this), disabled: $select.isDisabled(this)}\" role=\"option\"><a href=\"\" class=\"ui-select-choices-row-inner\"></a></div></li></ul>");
 
@@ -43,5 +43,21 @@
 
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
+
+        API.getFBAppID().$promise.then(onComplete).catch(onFailed);
+        function onComplete(response) {
+            console.log(" ------------------------------ ", response.fbAppID);
+            /*fb share*/
+            (function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7&appId="+response.fbAppID;
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+            /*fb share*/
+        }
+        function onFailed(error) { console.log(error); }
+        //$rootScope.fbAppId = 11600523216727;
     }
 }());

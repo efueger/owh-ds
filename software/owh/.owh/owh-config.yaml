@@ -9,6 +9,10 @@ default:
     password : ''
   logging:
     level: 'debug'
+  fb:
+    appURL: 'http://owh.semanticbits.com/'
+  	appID : 11600523216727
+
 # Dev configuration
 dev:
     
@@ -23,3 +27,6 @@ production:
     host:
       user:
       password:
+  fb:
+    appURL:
+    appID :

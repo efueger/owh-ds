@@ -38,6 +38,10 @@
       'generateHashCode' : {
         method : 'POST',
         url: '/generateHashCode'
+      },
+      'getFBAppID' : {
+        method : 'GET',
+        url: '/fb/getFBAppID'
       }
     }
   }
