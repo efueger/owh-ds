@@ -30,6 +30,6 @@ exports.config = {
   //jasmineNodeOpts: {defaultTimeoutInterval: 60000}
   plugins: [{
     package: 'protractor-console',
-    logLevels: ['severe', 'info']
+    logLevels: ['severe', 'debug']
   }],
 };
