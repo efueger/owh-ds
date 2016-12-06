@@ -209,8 +209,8 @@ yrbssCalculate =
             #cat("Raw proportion", proportion, "\n")
             
             ss = subset(design,fine.mask)
-            r.code = paste0("svyciprop(~(",resp.name,"%in%",cc(positives[[resp.name]]),"),",
-                        "ss, method='xlogit', na.rm=TRUE)")
+            #r.code = paste0("svyciprop(~(",resp.name,"%in%",cc(positives[[resp.name]]),"),",
+            #            "ss, method='xlogit', na.rm=TRUE)")
             r.code = paste0("svyciprop(~(",resp.name,"%in%",cc(positives[[resp.name]]),"),",
                         "ss, method='xlogit', na.rm=TRUE, df=",deg.free,")")
             #print(r.code)
