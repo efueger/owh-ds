@@ -65,11 +65,11 @@ var searchRouter = function(app, rConfig) {
                 res.send( new result('error', response, "failed"));
             });
         } else if ( preparedQuery.apiQuery.searchFor === "bridge_race" ) {
-            preparedQuery = queryBuilder.buildAPIQuery(q);
             var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
 
             new elasticSearch().aggregateCensusData(finalQuery[0]).then(function(response){
-                res.send( new result('OK', response.data, response.pagination, "success") );
+                var responseData = {resultData:response.data, headers:preparedQuery.headers};
+                res.send( new result('OK', responseData, response.pagination, "success") );
             }, function(response){
                 res.send( new result('error', response, "failed"));
             });
