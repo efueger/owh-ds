@@ -275,17 +275,13 @@ var mortalityStepDefinitionsWrapper = function () {
         mortalityPage.showMoreYears.click();
     });
 
-    this.When(/^user shows more ethnicity filter$/, function () {
-        mortalityPage.showMoreEthnicity.click();
-    });
-
     this.When(/^user expands ethnicity filter$/, function () {
         mortalityPage.expandEthnicity.click();
     });
 
     this.Then(/^ethnicity filters should be in given order$/, function () {
         mortalityPage.getOptions('Ethnicity').then(function(elements) {
-            expect(elements[1].getText()).to.eventually.contains('Non-Hispanic');
+            expect(elements[1].getText()).to.eventually.contains('Hispanic');
             expect(elements[2].getText()).to.eventually.contains('Central and South American');
             expect(elements[3].getText()).to.eventually.contains('Central American');
             expect(elements[4].getText()).to.eventually.contains('Cuban');
@@ -297,6 +293,7 @@ var mortalityStepDefinitionsWrapper = function () {
             expect(elements[10].getText()).to.eventually.contains('Spaniard');
             expect(elements[11].getText()).to.eventually.contains('Other Hispanic');
             expect(elements[12].getText()).to.eventually.contains('Unknown');
+            expect(elements[13].getText()).to.eventually.contains('Non-Hispanic');
         });
     });
 

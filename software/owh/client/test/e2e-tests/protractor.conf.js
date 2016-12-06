@@ -28,4 +28,8 @@ exports.config = {
   },
   baseUrl: 'http://localhost:9900/',
   //jasmineNodeOpts: {defaultTimeoutInterval: 60000}
+  plugins: [{
+    package: 'protractor-console',
+    logLevels: ['severe', 'info']
+  }],
 };
