@@ -18,14 +18,17 @@ function yrbs() {
  * @returns {*}
  */
 yrbs.prototype.invokeYRBSService = function(apiQuery){
-    var yrbsquery = buildYRBSQueries(apiQuery);
+    var self = this;
+    var yrbsquery = this.buildYRBSQueries(apiQuery);
     var deferred = Q.defer();
     var queryPromises = [];
     for (var q in yrbsquery){
         queryPromises.push(invokeYRBS(config.yrbs.url+ '?'+yrbsquery[q]));
     }
     Q.all(queryPromises).then(function(resp){
-        deferred.resolve(processYRBSReponses(resp));
+        deferred.resolve(self.processYRBSReponses(resp));
+    }, function (error) {
+        deferred.reject(error);
     });
 
     return deferred.promise;
@@ -36,7 +39,7 @@ yrbs.prototype.invokeYRBSService = function(apiQuery){
  * YRBS service takes only one question at a time, so this method builds one query per each question selected
  * and return an array of query string for YRBS service call
  */
-function buildYRBSQueries(apiQuery){
+yrbs.prototype.buildYRBSQueries = function (apiQuery){
     var queries = [];
 
     var aggrsKeys  = [];
@@ -51,21 +54,19 @@ function buildYRBSQueries(apiQuery){
     aggrsKeys.sort(function (a,b) {
         return a < b ? -1 : a > b ? 1 : 0;
     });
-    var v = 'v='+aggrsKeys.join(',');
 
-    if('query' in apiQuery && 'question.path' in apiQuery.query){
-    var selectedQs =apiQuery.query['question.path'].value;
-        if (selectedQs.length > 0){
-            for (var i = 0; i<selectedQs.length; i++){
-                queries.push('q='+selectedQs[i]+'&'+v);
-            }
-        }
-    } else {
-        // Currenly hardcoding all questions list, this needs to come from the question service
-        for (var i = 8; i < 99; i++) {
-            queries.push('q=qn' + i + '&' + v);
+    var v = null;
+    if (aggrsKeys.length > 0) {
+       v = 'v=' + aggrsKeys.join(',');
+    }
+
+    if('query' in apiQuery && 'question.path' in apiQuery.query) {
+        var selectedQs = apiQuery.query['question.path'].value;
+        for (var i = 0; i < selectedQs.length; i++) {
+            queries.push('q=' + selectedQs[i] + (v? ('&' + v):''));
         }
     }
+
     return queries;
 }
 
@@ -75,12 +76,14 @@ function buildYRBSQueries(apiQuery){
  * @param response
  * @returns {{table: {question: Array}, maxQuestion: string}}
  */
-function processYRBSReponses(response){
+yrbs.prototype.processYRBSReponses = function(response){
     var questions = []
     for (r in response){
-        questions.push(processQuestionResponse(response[r]));
+        if (response[r]) {
+            questions.push(this.processQuestionResponse(response[r]));
+        }
     }
-    var finalResp = {'table': {'question':questions}, "maxQuestion":"test"};
+    var finalResp = {'table': {'question':questions}};
     logger.info("YRBS Response: "+ JSON.stringify(finalResp));
     return finalResp;
 };
@@ -90,7 +93,7 @@ function processYRBSReponses(response){
  * @param response
  * @returns {{name: (Array|string|string|string|string|COLORS_ON.question|*), mental_health}}
  */
-function processQuestionResponse (response){
+yrbs.prototype.processQuestionResponse = function(response){
     var q = {"name" :response.q,
         "mental_health": resultCellDataString(response.results[0])}; // the questions level total is the first record
 
@@ -130,16 +133,26 @@ function getResultCell (currentcell, cellkey, cellvalue){
 }
 
 /**
- * Generate the string for display in the result table cells
+ * Generate the string for display in the result table cells, values are converted to % with 1 digit precision
  * @param yrbsresponse
  * @returns {string}
  */
 function resultCellDataString (yrbsresponse){
-    return yrbsresponse.mean +"<br><br/><nobr>("+yrbsresponse.ci_l+"-"+yrbsresponse.ci_u+")</nobr><br/>"+yrbsresponse.count;
+    var prec = 1;
+    return toRoundedPercentage(yrbsresponse.mean, prec) +"<br><br/><nobr>("+toRoundedPercentage(yrbsresponse.ci_l, prec) +"-"+toRoundedPercentage(yrbsresponse.ci_u, prec) +")</nobr><br/>"+yrbsresponse.count;
 };
 
+function toRoundedPercentage(num, prec){
+    if (!isNaN(num)){
+        return (num * 100).toFixed(prec);
+    }else {
+        return num;
+    }
+
+}
 /**
- * Invoke the YRBS service with a single query and get response
+ * Invoke the YRBS service with a single query and get response.
+ * Return null if there is an error invoking YRBS or parsing the YRBS response
  * @param query in for q=q8&v=q2,q3,raceeth
  * @returns raw response from YRBS service
  */
@@ -150,11 +163,12 @@ function invokeYRBS (query){
             try{
                 deferred.resolve(JSON.parse(body));
             }catch(e){
-                logger.error("Error response from YRBS API: "+body);
-                deferred.reject("Error response from YRBS API, unable to parse");
+                logger.error("Error response from YRBS API for query "+query+": "+body);
+                deferred.resolve(null);
             }
         }else {
-            deferred.reject(error);
+            logger.error("Error invoking YRBS service for query "+query+": "+error);
+            deferred.resolve(null);
         }
     });
     return deferred.promise;
