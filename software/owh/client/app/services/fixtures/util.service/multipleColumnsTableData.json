@@ -558,14 +558,12 @@
           "colspan": 1
         },
         {
-          "title": "0",
-          "percentage": 0,
-          "isCount": false
+          "title": 0,
+          "isCount": true
         },
         {
-          "title": "0",
-          "percentage": 0,
-          "isCount": false
+          "title": 0,
+          "isCount": true
         },
         {
           "title": 314748,

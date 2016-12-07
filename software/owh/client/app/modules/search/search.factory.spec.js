@@ -112,7 +112,7 @@ describe('search factory ', function(){
         expect(primaryFilter.value[0].value[initialLength]).toEqual('2013');
     });
 
-    it('sortFilterOptions should sort autocomplete options based on given sort array', function(){
+    it('sortAutoCompleteOptions should sort autocomplete options based on given sort array', function(){
         var sort = {
             'race': ['1', '2'],
             'gender': ['M', 'F']
@@ -128,11 +128,122 @@ describe('search factory ', function(){
             autoCompleteOptions: [{key: 'F'}, {key: 'M'}]
         };
 
-        searchFactory.sortFilterOptions(raceFilter, sort);
-        searchFactory.sortFilterOptions(genderFilter, sort);
+        searchFactory.sortAutoCompleteOptions(raceFilter, sort);
+        searchFactory.sortAutoCompleteOptions(genderFilter, sort);
 
         expect(raceFilter.autoCompleteOptions[0].key).toEqual('1');
         expect(genderFilter.autoCompleteOptions[0].key).toEqual('M');
+    });
+
+    it('sortAutoCompleteOptions should sort pre-grouped autocomplete options based on given sort array', function(){
+        var sort = {
+            "hispanicOrigin": [
+                {
+                    "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic'],
+                    "title": "Hispanic",
+                    "key": "Hispanic"
+                },
+                'Non-Hispanic',
+                'Unknown'
+            ],
+            "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
+        };
+
+        var ethnicityFilter = {
+            key: 'hispanicOrigin',
+            autoCompleteOptions: [
+                {key: 'Unknown'},
+                {key: 'Non-Hispanic'},
+                {
+                    key: 'Hispanic',
+                    options: [
+                        {key: 'Cuban'},
+                        {key: 'Dominican'}
+                    ]
+                }
+            ]
+        };
+
+        var raceFilter = {
+            key: 'race',
+            autoCompleteOptions: [
+                {key: 'White'},
+                {key: 'Black'}
+            ]
+        };
+
+        searchFactory.sortAutoCompleteOptions(ethnicityFilter, sort);
+
+        expect(ethnicityFilter.autoCompleteOptions[0].key).toEqual('Cuban');
+        expect(ethnicityFilter.autoCompleteOptions[2].key).toEqual('Non-Hispanic');
+
+        searchFactory.sortAutoCompleteOptions(raceFilter, sort);
+
+        expect(raceFilter.autoCompleteOptions[0].key).toEqual('White');
+    });
+
+    it('groupAutoCompleteOptions should properly group options based on given grouping array', function() {
+        var group = {
+            "hispanicOrigin": [
+                'Non-Hispanic',
+                {
+                    "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic'],
+                    "title": "Hispanic",
+                    "key": "Hispanic"
+                },
+                'Unknown'
+            ]
+        };
+
+        var ethnicityFilter = {
+            key: 'hispanicOrigin',
+            autoCompleteOptions: [{key: 'Unknown'}, {key: 'Non-Hispanic'}, {key: 'Dominican'}, {key: 'Other Hispanic'}, {key: 'Cuban'}, {key: 'Mexican'}]
+        };
+
+        var genderFilter = {
+            key: 'gender',
+            autoCompleteOptions: [{key: 'F'}, {key: 'M'}]
+        };
+
+        searchFactory.groupAutoCompleteOptions(ethnicityFilter, group);
+        expect(ethnicityFilter.autoCompleteOptions.length).toEqual(3);
+
+        expect(ethnicityFilter.autoCompleteOptions[1].options[3].key).toEqual('Other Hispanic');
+
+        searchFactory.groupAutoCompleteOptions(genderFilter, group);
+        expect(genderFilter.autoCompleteOptions.length).toEqual(2);
+    });
+
+    it('groupAutoCompleteOptions should properly group pre-grouped options based on given grouping array', function() {
+        var group = {
+            "hispanicOrigin": [
+                {
+                    "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic'],
+                    "title": "Hispanic",
+                    "key": "Hispanic"
+                },
+                'Non-Hispanic',
+                'Unknown'
+            ]
+        };
+
+        var ethnicityFilter = {
+            key: 'hispanicOrigin',
+            autoCompleteOptions: [
+                {key: 'Unknown'},
+                {key: 'Non-Hispanic'},
+                {
+                    key: 'Hispanic',
+                    options: [
+                        {key: 'Cuban'},
+                        {key: 'Dominican'}
+                    ]
+                }
+            ]
+        };
+
+        searchFactory.groupAutoCompleteOptions(ethnicityFilter, group);
+        expect(ethnicityFilter.autoCompleteOptions.length).toEqual(3);
     });
 
     describe('test with mortality data', function () {
@@ -385,7 +496,8 @@ describe('search factory ', function(){
         it('searchCensusInfo', function () {
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(response.data.nested.table));
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(response.data.resultData.nested.table));
+                expect(JSON.stringify(primaryFilter.chartData)).toEqual(JSON.stringify(response.data.resultData.chartData));
             });
             deferred.resolve(response);
             $scope.$apply();

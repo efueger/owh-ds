@@ -12,6 +12,7 @@ cache:
   - software/owh/client/node_modules
   - bower_components
   - software/owh/client/bower_components
+
 addons:
   code_climate:
     repo_token: aa4bb84528f703e93a68f03079e9870898d452659e9498bbba8fb043c66e3083
@@ -51,6 +52,10 @@ before_script:
   - ./node_modules/protractor/bin/webdriver-manager update
   - sleep 1 #give server time to start
 
+language: java
+jdk:
+  - oraclejdk8
+  
 script:
   - npm run-script test-single-run
   - ls

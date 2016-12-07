@@ -17,6 +17,7 @@
     OWHTableCellController.$inject = ['$scope', 'utilService', '$rootScope'];
     function OWHTableCellController($scope, $rootScope) {
         var otcc = this;
+        otcc.isNumber = angular.isNumber;
         
         otcc.getRateVisibility = function(deaths, pop) {
             if(deaths === 'suppressed' || pop === 'suppressed') {

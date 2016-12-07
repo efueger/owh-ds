@@ -4,7 +4,7 @@ var expect = require("expect.js");
 
 describe("WONDER API", function () {
     var w;
-    this.timeout(5000);
+    this.timeout(18000);
     beforeEach( function () {
         w = new wonder('D76');
     });
@@ -33,7 +33,7 @@ describe("WONDER API", function () {
                     Male: { ageAdjustedRate: '853.4', standardPop :124142641 },
                     Total: { ageAdjustedRate: '725.4', standardPop :250630467 } },
                 Total: { ageAdjustedRate: '724.6', standardPop :318857056} });
-                expect(duration).to.be.lessThan(2000);
+                expect(duration).to.be.lessThan(8000);
         }, function(err){
             console.log(err);
             expect(err).to.be.undefined();
@@ -98,7 +98,7 @@ describe("WONDER API", function () {
                         Total: { ageAdjustedRate: '856.3',standardPop:247701921 } },
                     Total: { ageAdjustedRate: '728.2',standardPop: 499974965} },
                 Total: { ageAdjustedRate: '728.2',standardPop: 634985895} });
-            expect(duration).to.be.lessThan(3000);
+            expect(duration).to.be.lessThan(8000);
         }, function(err){
             console.log(err);
             expect(err).to.be.undefined();
@@ -118,7 +118,7 @@ describe("WONDER API", function () {
             var duration = new Date() - startTime;
             console.log("invoke wonder API bigger query (group by 5) duration: "+duration);
             expect(resp).to.not.be.empty();
-            expect(duration).to.be.lessThan(5000);
+            expect(duration).to.be.lessThan(8000);
         }, function(err){
             console.log(err);
             expect(err).to.be.undefined();
@@ -138,7 +138,7 @@ describe("WONDER API", function () {
             var duration = new Date() - startTime;
             console.log("invoke wonder API with year aggregation: "+duration);
             expect(resp).to.not.be.empty();
-            expect(duration).to.be.lessThan(5000);
+            expect(duration).to.be.lessThan(8000);
         }, function(err){
             console.log(err);
             expect(err).to.be.undefined();
@@ -153,7 +153,37 @@ describe("WONDER API", function () {
             var duration = new Date() - startTime;
             console.log("invoke wonder API bigger query (group by 5) duration: "+duration);
             expect(resp).to.be.empty();
-            expect(duration).to.be.lessThan(2000);
+            expect(duration).to.be.lessThan(8000);
+        }, function(err){
+            console.log(err);
+            expect(err).to.be.undefined();
+        });
+    })
+
+    it("invoke wonder API with filter option selected", function (){
+        query = {"searchFor":"deaths","query":{"sex":{"key":"gender","queryKey":"sex","value":["Female"],"primary":false}},
+            "aggregations":{"simple":[],"nested":{"table":[{"key":"race","queryKey":"race","size":100000},{"key":"gender","queryKey":"sex","size":100000}],"charts":[[{"key":"gender","queryKey":"sex","size":100000},{"key":"race","queryKey":"race","size":100000}]],"maps":[[{"key":"states","queryKey":"state","size":100000},{"key":"sex","queryKey":"sex","size":100000}]]}}};
+        var startTime = new Date();
+        return w.invokeWONDER(query).then(function (resp) {
+            var duration = new Date() - startTime;
+            console.log("invoke wonder API with filter option duration: "+duration);
+            expect(resp).to.not.be.empty();
+            expect(duration).to.be.lessThan(8000);
+        }, function(err){
+            console.log(err);
+            expect(err).to.be.undefined();
+        });
+    })
+
+    it("invoke wonder API with unmapped filter options selected", function (){
+        query = {"searchFor":"deaths","query":{"race":{"key":"race","queryKey":"race","value":["White","Other (Puerto Rico only)"],"primary":false}},
+            "aggregations":{"simple":[],"nested":{"table":[{"key":"race","queryKey":"race","size":100000},{"key":"gender","queryKey":"sex","size":100000}],"charts":[[{"key":"gender","queryKey":"sex","size":100000},{"key":"race","queryKey":"race","size":100000}]],"maps":[[{"key":"states","queryKey":"state","size":100000},{"key":"sex","queryKey":"sex","size":100000}]]}}}
+        var startTime = new Date();
+        return w.invokeWONDER(query).then(function (resp) {
+            var duration = new Date() - startTime;
+            console.log("invoke wonder API with unmapped filter option duration: "+duration);
+            expect(resp).to.not.be.empty();
+            expect(duration).to.be.lessThan(8000);
         }, function(err){
             console.log(err);
             expect(err).to.be.undefined();

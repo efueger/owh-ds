@@ -1,7 +1,8 @@
 var rserve = require("../routes/rserve");
 var expect = require("expect.js");
 
-describe("Rserve", function () {
+// Disable rserve tests as the rserve feautre is no more used
+xdescribe("Rserve", function () {
     var r;
 
     beforeEach( function () {

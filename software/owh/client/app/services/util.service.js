@@ -332,14 +332,14 @@
          return tableData;
          }*/
         function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage,
-                                       calculateRowTotal, secondaryCountKey) {
+                                       calculateRowTotal, secondaryCountKeys) {
             var tableData = {
                 headers: prepareMixedTableHeaders(headers, countLabel),
                 data: [],
                 calculatePercentage: calculatePercentage
             };
             tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey,
-                totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
+                totalCount, calculatePercentage, calculateRowTotal, secondaryCountKeys);
             return tableData;
         }
 
@@ -514,7 +514,7 @@
             }
             var cell = {
                 title: title,
-                percentage: (calculatePercentage && totalCount !== undefined) ? (Number(data[countKey]) / totalCount) * 100 : undefined,
+                percentage: (calculatePercentage && !isNaN(totalCount)) ? (Number(data[countKey]) / totalCount) * 100 : undefined,
                 isCount: true,
                 rowspan: 1,
                 colspan: 1
@@ -574,6 +574,10 @@
          */
         function prepareMixedTableColumnData(columnHeaders, data, countKey, totalCount, calculatePercentage, secondaryCountKeys) {
             var tableData = [];
+            var percentage ;
+            if(calculatePercentage) {
+                percentage = 0 ;
+            }
             if(columnHeaders && columnHeaders.length > 0) {
                 var eachColumnHeader = columnHeaders[0];
 
@@ -584,7 +588,7 @@
                     var matchedData = findByKeyAndValue(eachHeaderData, 'name', eachOption.key);
                     if(matchedData) {
                         if (columnHeaders.length > 1) {
-                            var childTableData = prepareMixedTableColumnData(columnHeaders.slice(1), matchedData, countKey, totalCount, calculatePercentage);
+                            var childTableData = prepareMixedTableColumnData(columnHeaders.slice(1), matchedData, countKey, totalCount, calculatePercentage, secondaryCountKeys);
                             eachOptionLength = childTableData.length;
                             tableData = tableData.concat(childTableData);
                         } else {
@@ -596,7 +600,7 @@
                         if(eachOptionLength <= 0) {
                             eachOptionLength = getOptionDataLength(columnHeaders.slice(1));
                         }
-                        tableData = tableData.concat(getArrayWithDefaultValue(eachOptionLength, {title: '0',percentage: 0,isCount: calculatePercentage}));
+                        tableData = tableData.concat(getArrayWithDefaultValue(eachOptionLength, {title: 0, percentage: percentage , isCount: true}));
                     }
                 });
             }
