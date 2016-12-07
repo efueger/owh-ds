@@ -785,3 +785,21 @@ label.common-label {
 	.usa-width-one-half.footer-sign-up {margin-bottom: 20px;}
 	.home-child-header {padding: 5%;}
 }
+
+/*Media queries*/
+
+/*css for iPad starts*/
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (-webkit-min-device-pixel-ratio: 1) {
+	.graph-box {
+		width: 45% !important;
+        margin-right: 0px !important;
+        margin-left: 29px;
+	}
+	.nv-axislabel, .graph-title {
+		font-size: 12px;
+	}
+}
+/*css for iPad ends*/
