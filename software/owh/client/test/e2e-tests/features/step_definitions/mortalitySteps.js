@@ -451,5 +451,38 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^Rates, Deaths and Population shouldn't be overlap$/, function () {
         expect(element(by.id('crudeRateDiv')).getAttribute('class')).to.eventually.include('usa-width-one-half');
     });
+
+    this.When(/^I select the "([^"]*)" link in application$/, function (bookmarkbtn) {
+        mortalityPage.bookmarkButton.click();
+    });
+
+    this.Then(/^browser's bookmarking window should be displayed to save the link to Browser$/, function () {
+        //Verify browser book mark window appears
+        return false
+    });
+
+    this.When(/^I hovers on the bookmark link$/, function () {
+        browser.actions().mouseMove(mortalityPage.bookmarkButton).perform();
+    });
+
+    this.Then(/^the link gets a background box so that I feel it like a button\/action$/, function () {
+        //Verify bookmarkbutton css
+        expect(mortalityPage.bookmarkButton.getAttribute('class')).to.eventually.include('someclass');
+    });
+
+    this.When(/^I selects a saved bookmark$/, function () {
+        //Need to find out a way to select saved bookmark
+    });
+
+    this.Then(/^all the search parameters should be autopopulated and search results should be displayed$/, function () {
+        mortalityPage.isVisualizationDisplayed().then(function(value) {
+            expect(value).to.equal(true);
+        });
+        var labelArray = mortalityPage.getAxisLabelsForMinimizedVisualization();
+        expect(labelArray[0].getText()).to.eventually.equal('Race');
+        expect(labelArray[1].getText()).to.eventually.equal('Deaths');
+        //Verify autocompleted filters and table data also.
+
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;

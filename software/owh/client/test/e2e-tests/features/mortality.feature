@@ -190,3 +190,14 @@ Scenario: Data should be right aligned
 #  When I select "Column" type for "Race" filter
 #  Then Rates, Deaths and Population shouldn't be overlap
 
+Scenario: Bookmark link
+  When I select the "Bookmark" link in application
+  Then browser's bookmarking window should be displayed to save the link to Browser
+
+Scenario: Bookmark link UI
+  When I hovers on the bookmark link
+  Then the link gets a background box so that I feel it like a button/action
+
+Scenario: Launching the bookmark
+  When I selects a saved bookmark
+  Then all the search parameters should be autopopulated and search results should be displayed
