@@ -100,7 +100,7 @@
                 for(var i = 0; i < sort[filter.key].length; i++) {
                     angular.forEach(filter.autoCompleteOptions, function(option) {
                         //if type string, then just a regular option
-                        if(typeof sort[filter.key][i] === 'string') {
+                        if(typeof sort[filter.key][i] === 'string' && !option.options) {
                             //not group option
                             if(sort[filter.key][i] === option.key) {
                                 filterLength++;
@@ -109,12 +109,16 @@
                         } else {
                             //else, group option
                             //is same parent group option
-                            if(sort[filter.key][i].key === option.key) {
-                                angular.forEach(option.options, function(subOption) {
-                                    if(sort[filter.key][i].options.indexOf(subOption.key) >= 0) {
+                            if(option.options) {
+                                angular.forEach(option.options, function (subOption) {
+                                    if (sort[filter.key][i].options && sort[filter.key][i].options.indexOf(subOption.key) >= 0) {
                                         sortedOptions.push(subOption);
                                     }
                                 });
+                            } else {
+                                if (sort[filter.key][i].options && sort[filter.key][i].options.indexOf(option.key) >= 0) {
+                                    sortedOptions.push(option);
+                                }
                             }
                         }
                     });
