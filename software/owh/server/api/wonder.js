@@ -8,14 +8,36 @@ var q = require('q');
 const WONDER_API_URL = "https://wonder.cdc.gov/controller/datarequest/";
 
 var wonderParamCodeMap = {
-    'race': 'D76.V8',
-    'gender': 'D76.V7',
+    'race': {
+        "key": 'D76.V8',
+        "values": {
+            "White": '2106-3',
+            "Black": '2054-5',
+            "American Indian": '1002-5',
+            "Asian or Pacific Islander": 'A-PI',
+            "Other (Puerto Rico only)": false
+        }
+    },
+    'gender': {
+        "key": 'D76.V7',
+        "values": {
+            "Female": 'F',
+            "Male": 'M',
+        }
+    },
     'hispanicOrigin':'D76.V17',
     'year':'D76.V1',
     'year-group':'D76.V1-level1',
     'agegroup':'D76.V51',
     'weekday':'D76.V24',
-    'autopsy':'D76.V20',
+    'autopsy': {
+        "key": 'D76.V20',
+        "values": {
+            'Yes': 'Y',
+            'No': 'N',
+            'Unknown': 'U'
+        }
+    },
     'placeofdeath':'D76.V21',
     'month':'D76.V1-level2',
     'ucd-filters':'D76.V2',
@@ -64,8 +86,8 @@ function wonder(dbID) {
  */
 wonder.prototype.invokeWONDER = function (query){
     var req = createWONDERRquest(query);
-    //console.log(inspect(req, {depth : null, colors : true} ));
     //var groupattrs = getGroupAttributes(query);
+    //console.log(inspect(req, {depth : null, colors : true} ));
     var defer = q.defer();
     request.post({url:WONDER_API_URL+this.dbID, form:{request_xml:req} },function (error, response, body) {
         result = {};
@@ -164,6 +186,9 @@ function addGroupParams(wreq, groups){
             if(!gParam ){
                 gParam = wonderParamCodeMap[groups[i-1].key];
             }
+            if(typeof gParam === 'object') {
+                gParam = gParam['key'];
+            }
             addParamToWONDERReq(wreq,'B_'+i, gParam);
         }
     }
@@ -178,8 +203,25 @@ function addFilterParams (wreq, query){
 
     if(query){
         for (var k in query){
-            p = wonderParamCodeMap[query[k].key]
-            v = query[k].value
+
+            p = wonderParamCodeMap[query[k].key];
+            v = query[k].value;
+            //make sure values are replaced by proper keys
+            if(typeof p === 'object') {
+                if (Array.isArray(v)) {
+                    for (var i = 0; i < v.length; i++) {
+                        if (p.values[v[i]] !== undefined) {
+                            v[i] = p.values[v[i]];
+                        }
+                    }
+                } else {
+                    if (p[v] !== undefined) {
+                        v = p[v];
+                    }
+                }
+                p = p['key'];
+            }
+
             addParamToWONDERReq(wreq,'F_'+p, v);
         }
     }
@@ -202,6 +244,8 @@ function addOptionParams(wreq){
     addParamToWONDERReq(wreq,'O_V27_fmode', 'freg');
     addParamToWONDERReq(wreq,'O_V2_fmode', 'freg');
     addParamToWONDERReq(wreq,'O_V9_fmode', 'freg');
+    addParamToWONDERReq(wreq,'O_V7_fmode', 'freg');
+    addParamToWONDERReq(wreq,'O_V8_fmode', 'freg');
     addParamToWONDERReq(wreq,'O_aar', 'aar_std');
     addParamToWONDERReq(wreq,'O_aar_pop', '0000');
     addParamToWONDERReq(wreq,'O_age', 'D76.V5'); // Age adjusted rate by 10 year interval
@@ -221,10 +265,14 @@ function addParamToWONDERReq(request, paramname, paramvalue) {
     param.ele('name', paramname);
     if(Array.isArray(paramvalue)) {
         for (var i = 0; i<paramvalue.length; i++){
-            param.ele('value', paramvalue[i]);
+            if(paramvalue[i]) {
+                param.ele('value', paramvalue[i]);
+            }
         }
-    }else{
-        param.ele('value', paramvalue);
+    } else {
+        if(paramvalue) {
+            param.ele('value', paramvalue);
+        }
     }
 };
 
