@@ -10,8 +10,8 @@ default:
   logging:
     level: 'debug'
   fb:
-    appID : 11600523216727
-    appURL: 'http://owh.semanticbits.com/'
+    appID :
+    appURL: 
 
 # Dev configuration
 dev:
