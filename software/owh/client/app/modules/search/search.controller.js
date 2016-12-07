@@ -71,7 +71,7 @@
         //show certain filters for different table views
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race'],
-            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters']
+            'age-adjusted_death_rates': ['year', 'gender', 'race']
         };
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;

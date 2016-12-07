@@ -25,8 +25,8 @@
                 </div>
                 <div ng-if="otcc.tableView === 'age-adjusted_death_rates'">
                     <label ng-if="otcc.rowIndex === 0" class="owh-table__label">Population</label>
-                    <span ng-if="otcc.cell.standardPop">{{ otcc.cell.standardPop | number }}</span>
-                    <span ng-if="!otcc.cell.standardPop">Not Available</span>
+                    <span ng-if="otcc.cell.standardPop && otcc.isNumber(otcc.cell.standardPop)">{{ otcc.cell.standardPop | number }}</span>
+                    <span ng-if="!otcc.cell.standardPop || otcc.cell.standardPop === 'Not Applicable'">Not Available</span>
                 </div>
             </div>
         </div>
