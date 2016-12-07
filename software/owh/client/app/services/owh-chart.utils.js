@@ -50,7 +50,7 @@
                     "chart": {
                         "type": "multiBarHorizontalChart",
                         "height": 250,
-                        "width": 350,
+                        "width": 300,
                         "margin": {
                             "top": 5,
                             "right": 5,
@@ -75,7 +75,7 @@
                             "showMaxMin": false
                         },
                         "yAxis": {
-                            "axisLabel": "Deaths",
+                            "axisLabel": primaryFilter.chartAxisLabel,
                             tickFormat:function () {
                                 return null;
                             }
@@ -147,7 +147,7 @@
                     "chart": {
                         "type": "multiBarChart",
                         "height": 250,
-                        "width": 350,
+                        "width": 300,
                         "margin": {
                             "top": 5,
                             "right": 5,
@@ -185,7 +185,7 @@
                         },
                         "yAxis": {
                             "axisLabelDistance": -20,
-                            "axisLabel": "Deaths",
+                            "axisLabel": primaryFilter.chartAxisLabel,
                             tickFormat:function () {
                                return null;
                             }

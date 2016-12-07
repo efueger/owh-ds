@@ -79,6 +79,10 @@ var mortalityStepDefinitionsWrapper = function () {
         mortalityPage.selectSideFilter(arg1, 'Column').click();
     });
 
+    this.When(/^I update criteria in filter option with row "([^"]*)"$/, function (arg1) {
+        mortalityPage.selectSideFilter(arg1, 'Row').click();
+    });
+
     this.Then(/^data table is updated and the number of deaths and percentages are updated too$/, function () {
         mortalityPage.getTableRowData(0).then(function (value) {
             expect(value[1]).to.equal('8,677 (4.0%)');
@@ -271,17 +275,13 @@ var mortalityStepDefinitionsWrapper = function () {
         mortalityPage.showMoreYears.click();
     });
 
-    this.When(/^user shows more ethnicity filter$/, function () {
-        mortalityPage.showMoreEthnicity.click();
-    });
-
     this.When(/^user expands ethnicity filter$/, function () {
         mortalityPage.expandEthnicity.click();
     });
 
     this.Then(/^ethnicity filters should be in given order$/, function () {
         mortalityPage.getOptions('Ethnicity').then(function(elements) {
-            expect(elements[1].getText()).to.eventually.contains('Non-Hispanic');
+            expect(elements[1].getText()).to.eventually.contains('Hispanic');
             expect(elements[2].getText()).to.eventually.contains('Central and South American');
             expect(elements[3].getText()).to.eventually.contains('Central American');
             expect(elements[4].getText()).to.eventually.contains('Cuban');
@@ -293,6 +293,7 @@ var mortalityStepDefinitionsWrapper = function () {
             expect(elements[10].getText()).to.eventually.contains('Spaniard');
             expect(elements[11].getText()).to.eventually.contains('Other Hispanic');
             expect(elements[12].getText()).to.eventually.contains('Unknown');
+            expect(elements[13].getText()).to.eventually.contains('Non-Hispanic');
         });
     });
 
@@ -417,6 +418,38 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^filter "([^"]*)" should be displayed$/, function (arg1) {
         expect(element(by.tagName('owh-side-filter')).getText()).to.eventually.contains(arg1);
+    });
+
+    this.Then(/^data should be right aligned in table$/, function () {
+        mortalityPage.getTableRowDataCells(0).then(function (elements) {
+            expect(elements[0].getCssValue('text-align')).to.eventually.equal('start');
+            expect(elements[1].getCssValue('text-align')).to.eventually.equal('start');
+            expect(elements[2].getCssValue('text-align')).to.eventually.equal('right');
+            expect(elements[3].getCssValue('text-align')).to.eventually.equal('right');
+        });
+        mortalityPage.getTableRowDataCells(1).then(function (elements) {
+            expect(elements[0].getCssValue('text-align')).to.eventually.equal('start');
+            expect(elements[1].getCssValue('text-align')).to.eventually.equal('right');
+            expect(elements[2].getCssValue('text-align')).to.eventually.equal('right');
+            expect(elements[3].getCssValue('text-align')).to.eventually.equal('right');
+        });
+    });
+
+    this.When(/^I choose the option "([^"]*)"$/, function (arg1) {
+        mortalityPage.creduDeathRatesOption.click();
+    });
+
+
+    this.Then(/^Rates, Deaths and Population values look as a single data element in the column$/, function () {
+        expect(element(by.id('crudeRateDiv')).getAttribute('class')).to.eventually.include('usa-width-one-third');
+    });
+
+    this.When(/^I select "([^"]*)" type for "([^"]*)" filter$/, function (type, filter) {
+        mortalityPage.selectSideFilter(filter, type).click();
+    });
+
+    this.Then(/^Rates, Deaths and Population shouldn't be overlap$/, function () {
+        expect(element(by.id('crudeRateDiv')).getAttribute('class')).to.eventually.include('usa-width-one-half');
     });
 };
 module.exports = mortalityStepDefinitionsWrapper;

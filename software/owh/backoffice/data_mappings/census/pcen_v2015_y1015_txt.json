@@ -160,7 +160,7 @@
         "start":14,
         "stop":21,
         "index_value":"2010",
-        "field":"April 1, 2010 base population estimate",
+        "field":"July 1, 2010 base population estimate",
         "mappings":{  
 
         }
@@ -199,6 +199,14 @@
         "field":"July 1, 2014 postcensal resident population estimate",
         "mappings":{  
 
+        }
+      },
+      {
+        "start":62,
+        "stop":69,
+        "index_value":"2015",
+        "field":"July 1, 2015 postcensal resident population estimate",
+        "mappings":{
         }
       }
     ]

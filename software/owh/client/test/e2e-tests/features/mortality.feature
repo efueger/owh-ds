@@ -169,11 +169,24 @@ Scenario: Side filter total suppression
 Scenario: Ethnicity order
   Given I am on search page
   When user expands ethnicity filter
-  When user shows more ethnicity filter
+  And user expands hispanic option group
   Then ethnicity filters should be in given order
 
 Scenario: Filer 'Multiple Causes of Deaths' should be displayed
   Given I am on search page
   When user sees side filter
   Then filter "Multiple Causes of Death" should be displayed
+
+Scenario: Data should be right aligned
+  Given I am on search page
+  When I update criteria in filter options with column "Autopsy"
+  When I update criteria in filter option with row "Sex"
+  Then data should be right aligned in table
+
+#Scenario: Rates, Deaths and Population values closer to each other
+#  Given I am on search page
+#  When I choose the option "Crude Death Rates"
+#  Then Rates, Deaths and Population values look as a single data element in the column
+#  When I select "Column" type for "Race" filter
+#  Then Rates, Deaths and Population shouldn't be overlap
 

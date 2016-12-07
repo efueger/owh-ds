@@ -20,15 +20,17 @@ var populateDataWithMappings = function(resp, countKey, countQueryKey) {
         Object.keys(data).forEach(function (key) {
             var dataKey = '';
             if (key.indexOf('group_table_') > -1) {
-                dataKey = key.split("group_table_")[1];
-                result.data.nested.table[dataKey] = populateAggregatedData(data[key].buckets, countKey, 1, undefined, countQueryKey, 'group_table_');
+                var groupKeyRegex = /group_table_/;
+                dataKey = key.split(groupKeyRegex)[1];
+                result.data.nested.table[dataKey] = populateAggregatedData(data[key].buckets, countKey, 1, undefined, countQueryKey, groupKeyRegex);
             }
             if (key.indexOf('group_chart_') > -1) {
                 var keySplits = key.split("_");
-                dataKey = keySplits[3];
+                var groupKeyRegex = /group_chart_\d_/;
+                dataKey = key.split(groupKeyRegex)[1];
                 var dataIndex = Number(keySplits[2]);
                 var aggData = {};
-                aggData[dataKey] = populateAggregatedData(data[key].buckets, countKey, 3);
+                aggData[dataKey] = populateAggregatedData(data[key].buckets, countKey, 3, undefined, countQueryKey, groupKeyRegex);
                 result.data.nested.charts[dataIndex] = aggData;
             }
             if (key.indexOf('group_maps_') > -1) {
@@ -52,7 +54,7 @@ var populateDataWithMappings = function(resp, countKey, countQueryKey) {
     return result;
 };
 
-var populateAggregatedData = function(buckets, countKey, splitIndex, map, countQueryKey, groupKey) {
+var populateAggregatedData = function(buckets, countKey, splitIndex, map, countQueryKey, regex) {
     var result = [];
     for(var index in buckets) {
         // console.log(buckets[index]);
@@ -73,10 +75,10 @@ var populateAggregatedData = function(buckets, countKey, splitIndex, map, countQ
                 }
             }
             if( innerObjKey ) {
-                //if you want to split group key by particular word
-                if (groupKey) {
-                    aggregation[innerObjKey.split(groupKey)[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets,
-                        countKey, splitIndex, map, countQueryKey, groupKey);
+                //if you want to split group key by regex
+                if (regex && (regex.test('group_table_') || regex.test('group_chart_'))) {
+                    aggregation[innerObjKey.split(regex)[1]] =  populateAggregatedData(buckets[index][innerObjKey].buckets,
+                        countKey, splitIndex, map, countQueryKey, regex);
                 } else {//by default split group key by underscore and retrieve key based on index
                     aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex, map, countQueryKey);
                 }

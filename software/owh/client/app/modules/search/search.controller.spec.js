@@ -89,7 +89,7 @@ describe("Search controller: ", function () {
             getAllFilters:function () {
                 return {search:[{
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
-                    allFilters: allFilters, searchResults: searchResultFn, showMap:true,
+                    allFilters: allFilters, searchResults: searchResultFn, showMap:true, chartAxisLabel:'Deaths',
                     countLabel: 'Number of Deaths', mapData:{}, searchCount:30032, maps: maps,
                     sideFilters:[
                         {

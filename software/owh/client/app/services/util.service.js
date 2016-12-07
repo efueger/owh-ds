@@ -330,14 +330,14 @@
          return tableData;
          }*/
         function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage,
-                                       calculateRowTotal, secondaryCountKey) {
+                                       calculateRowTotal, secondaryCountKeys) {
             var tableData = {
                 headers: prepareMixedTableHeaders(headers, countLabel),
                 data: [],
                 calculatePercentage: calculatePercentage
             };
             tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey,
-                totalCount, calculatePercentage, calculateRowTotal, secondaryCountKey);
+                totalCount, calculatePercentage, calculateRowTotal, secondaryCountKeys);
             return tableData;
         }
 
@@ -581,7 +581,7 @@
                     var matchedData = findByKeyAndValue(eachHeaderData, 'name', eachOption.key);
                     if(matchedData) {
                         if (columnHeaders.length > 1) {
-                            var childTableData = prepareMixedTableColumnData(columnHeaders.slice(1), matchedData, countKey, totalCount, calculatePercentage);
+                            var childTableData = prepareMixedTableColumnData(columnHeaders.slice(1), matchedData, countKey, totalCount, calculatePercentage, secondaryCountKeys);
                             eachOptionLength = childTableData.length;
                             tableData = tableData.concat(childTableData);
                         } else {

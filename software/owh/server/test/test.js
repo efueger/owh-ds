@@ -97,22 +97,23 @@ describe("Build elastic search queries", function(){
     });
 
     it("Build search query with nested aggregations and count results by pop", function(done){
-            var params = {countQueryKey:'pop', aggregations:{ simple:[{ key:"year", queryKey:"current_year",  size:10}],
-                nested:{
-                    table : [{ key:"gender", queryKey:"sex", size:10}, { key:"race", queryKey:"race", size:10},
-                        {"key":"year","queryKey":"current_year","size":10}]
-                }
+        var params = {countQueryKey:'pop', aggregations:{ simple:[{ key:"year", queryKey:"current_year",  size:10}],
+            nested:{
+                table : [{ key:"gender", queryKey:"sex", size:10}, { key:"race", queryKey:"race", size:10},
+                    {"key":"year","queryKey":"current_year","size":10}],
+                charts: [[{ key:"gender",  queryKey:"sex",  size:10}, { key:"race",  queryKey:"race",  size:10}]],
             }
-            };
-            var result = elasticQueryBuilder.buildSearchQuery(params, true);
-            var query =result[0];
-            should(query.aggregations).have.properties('year', 'group_table_gender');
-            should(query.aggregations).have.properties('year', 'group_count_pop');
-            should(query.aggregations.group_table_gender.aggregations).have.properties('group_table_race');
-            should(query.aggregations.group_table_gender.aggregations.group_table_race.aggregations).have.properties('group_table_year');
+        }
+        };
+        var result = elasticQueryBuilder.buildSearchQuery(params, true);
+        var query =result[0];
+        should(query.aggregations).have.properties('year', 'group_table_gender', 'group_count_pop', 'group_chart_0_gender');
+        should(query.aggregations.group_table_gender.aggregations).have.properties('group_table_race');
+        should(query.aggregations.group_chart_0_gender.aggregations).have.properties('group_chart_0_race');
+        should(query.aggregations.group_table_gender.aggregations.group_table_race.aggregations).have.properties('group_table_year');
 
-            done()
-        });
+        done()
+    });
 
     it("Build search query with query", function(done){
         var params = {

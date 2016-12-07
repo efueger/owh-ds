@@ -160,4 +160,34 @@ describe("WONDER API", function () {
         });
     })
 
+    it("invoke wonder API with filter option selected", function (){
+        query = {"searchFor":"deaths","query":{"sex":{"key":"gender","queryKey":"sex","value":["Female"],"primary":false}},
+            "aggregations":{"simple":[],"nested":{"table":[{"key":"race","queryKey":"race","size":100000},{"key":"gender","queryKey":"sex","size":100000}],"charts":[[{"key":"gender","queryKey":"sex","size":100000},{"key":"race","queryKey":"race","size":100000}]],"maps":[[{"key":"states","queryKey":"state","size":100000},{"key":"sex","queryKey":"sex","size":100000}]]}}};
+        var startTime = new Date();
+        return w.invokeWONDER(query).then(function (resp) {
+            var duration = new Date() - startTime;
+            console.log("invoke wonder API with filter option duration: "+duration);
+            expect(resp).to.not.be.empty();
+            expect(duration).to.be.lessThan(8000);
+        }, function(err){
+            console.log(err);
+            expect(err).to.be.undefined();
+        });
+    })
+
+    it("invoke wonder API with unmapped filter options selected", function (){
+        query = {"searchFor":"deaths","query":{"race":{"key":"race","queryKey":"race","value":["White","Other (Puerto Rico only)"],"primary":false}},
+            "aggregations":{"simple":[],"nested":{"table":[{"key":"race","queryKey":"race","size":100000},{"key":"gender","queryKey":"sex","size":100000}],"charts":[[{"key":"gender","queryKey":"sex","size":100000},{"key":"race","queryKey":"race","size":100000}]],"maps":[[{"key":"states","queryKey":"state","size":100000},{"key":"sex","queryKey":"sex","size":100000}]]}}}
+        var startTime = new Date();
+        return w.invokeWONDER(query).then(function (resp) {
+            var duration = new Date() - startTime;
+            console.log("invoke wonder API with unmapped filter option duration: "+duration);
+            expect(resp).to.not.be.empty();
+            expect(duration).to.be.lessThan(8000);
+        }, function(err){
+            console.log(err);
+            expect(err).to.be.undefined();
+        });
+    })
+
 })
