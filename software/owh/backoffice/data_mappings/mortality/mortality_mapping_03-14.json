@@ -1,5 +1,12 @@
 [
   {
+    "type":"simple",
+    "column":"residence",
+    "start": 20,
+    "stop": 20,
+    "field": "Residence Status"
+  },
+  {
     "type":"map",
     "column": "month_of_death",
     "start": 65,

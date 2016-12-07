@@ -55,7 +55,7 @@ var prepareAggregationQuery = function(aggregations, countQueryKey) {
         }
         if (aggregations['nested']['charts']) {
             for(var index in aggregations['nested']['charts']) {
-                elasticQuery.aggregations = merge(elasticQuery.aggregations, generateNestedAggQuery(aggregations['nested']['charts'][index], 'group_chart_' + index + '_'));
+                elasticQuery.aggregations = merge(elasticQuery.aggregations, generateNestedAggQuery(aggregations['nested']['charts'][index], 'group_chart_' + index + '_', countQueryKey));
             }
         }
         if (aggregations['nested']['maps']) {
@@ -442,7 +442,7 @@ function buildAPIQuery(primaryFilter) {
         }
     });
     apiQuery.aggregations.nested.table = rowAggregations.concat(columnAggregations);
-    var result = prepareChartAggregations(headers.rowHeaders.concat(headers.columnHeaders));
+    var result = prepareChartAggregations(headers.rowHeaders.concat(headers.columnHeaders), apiQuery.searchFor);
     headers.chartHeaders = result.chartHeaders;
     apiQuery.aggregations.nested.charts = result.chartAggregations;
     apiQuery.aggregations.nested.maps = prepareMapAggregations();
@@ -507,18 +507,28 @@ function isValueNotEmpty(value) {
 }
 
 function getAutoCompleteOptionsLength(filter) {
-    return filter.autoCompleteOptions ? filter.autoCompleteOptions.length : 0;
+    //get length when options are nested
+    var length = filter.autoCompleteOptions ? filter.autoCompleteOptions.length : 0;
+    if(filter.autoCompleteOptions) {
+        filter.autoCompleteOptions.forEach(function(option) {
+            if(option.options) {
+                length--;
+                length += option.options.length;
+            }
+        });
+    }
+    return length;
 }
 
-function prepareChartAggregations(headers) {
+function prepareChartAggregations(headers, countKey) {
     var chartHeaders = [];
     var chartAggregations = [];
     headers.forEach( function(eachPrimaryHeader) {
-        var primaryGroupQuery = getGroupQuery(eachPrimaryHeader);
+        var primaryGroupQuery = getGroupQuery(eachPrimaryHeader, countKey);
         headers.forEach( function(eachSecondaryHeader) {
             var chartType = chartMappings[eachPrimaryHeader.key + '&' + eachSecondaryHeader.key];
             if(chartType) {
-                var secondaryGroupQuery = getGroupQuery(eachSecondaryHeader);
+                var secondaryGroupQuery = getGroupQuery(eachSecondaryHeader, countKey);
                 chartHeaders.push({headers: [eachPrimaryHeader, eachSecondaryHeader], chartType: chartType});
                 chartAggregations.push([primaryGroupQuery, secondaryGroupQuery]);
             }
@@ -540,7 +550,26 @@ var chartMappings = {
     "race&autopsy": "verticalStack",
     "gender&autopsy": "verticalBar",
     "agegroup&autopsy": "horizontalBar",
-    "gender&placeofdeath": "verticalStack"
+    "gender&placeofdeath": "verticalStack",
+    "sex&race": "verticalBar",
+    "sex&ethnicity": "verticalBar",
+    "sex&agegroup": "horizontalStack",
+    "sex&state": "verticalBar",
+    "sex&region": "verticalBar",
+    "race&ethnicity": "horizontalBar",
+    "race&agegroup": "horizontalBar",
+    "race&state": "horizontalStack",
+    "race&region": "verticalBar",
+    "ethnicity&agegroup": "horizontalBar",
+    "ethnicity&state": "horizontalStack",
+    "ethnicity&region": "verticalBar",
+    "agegroup&region": "verticalBar",
+    "current_year&sex":"horizontalBar",
+    "current_year&race":"horizontalBar",
+    "current_year&ethnicity":"horizontalBar",
+    "current_year&agegroup":"horizontalBar",
+    "current_year&state":"horizontalBar",
+    "current_year&region":"verticalBar"
 };
 
 function prepareMapAggregations() {
