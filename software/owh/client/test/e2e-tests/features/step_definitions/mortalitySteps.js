@@ -298,7 +298,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the age filter should be hidden$/, function () {
-        expect(mortalityPage.selectSideFilter('Age Groups', 'Row').isDisplayed()).to.eventually.equal(false);
+        expect(mortalityPage.selectSideFilter('Age Groups', 'Row').isPresent()).to.eventually.equal(false);
     });
 
     this.Then(/^years should be in descending order$/, function () {
@@ -450,6 +450,12 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^Rates, Deaths and Population shouldn't be overlap$/, function () {
         expect(element(by.id('crudeRateDiv')).getAttribute('class')).to.eventually.include('usa-width-one-half');
+    });
+
+    this.Then(/^table should not include age groups$/, function () {
+        mortalityPage.getTableRowDataCells(0).then(function (elements) {
+            expect(elements.length).to.equal(4);
+        });
     });
 };
 module.exports = mortalityStepDefinitionsWrapper;
