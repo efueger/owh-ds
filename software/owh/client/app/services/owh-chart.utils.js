@@ -249,12 +249,6 @@
         }
 
         function lineChart(data, filter, primaryFilter) {
-            console.log("Chart data");
-            console.log(JSON.stringify(data));
-            console.log("Filter");
-            console.log(JSON.stringify(filter));
-            console.log("Primary Filter");
-            console.log(filter.key);
             var chartData = {
                 data: [],
                 title: "label.graph."+filter.key,
