@@ -11,6 +11,7 @@ var yrbsStepDefinitionsWrapper = function () {
     this.Given(/^I select YRBS as primary filter$/, function () {
         browser.sleep(300);
         yrbsPage.yrbsOption.click();
+        browser.sleep(60000);
     });
 
     this.When(/^I click on the down arrow at the corner of each category bar$/, function () {
@@ -57,7 +58,7 @@ var yrbsStepDefinitionsWrapper = function () {
 
     this.Then(/^'Show Less' should be replaced with 'Show \# More'$/, function () {
         yrbsPage.getShowMoreLinks().then(function(elements) {
-            expect(elements[1].getText()).to.eventually.equal('Show 14 More');
+            expect(elements[1].getText()).to.eventually.equal('Show 11 More');
         });
     });
 
@@ -75,6 +76,12 @@ var yrbsStepDefinitionsWrapper = function () {
     });
 
     this.When(/^I click on 'Show only this Category'$/, function () {
+        yrbsPage.getShowOnlyLinks().then(function(elements) {
+            elements[0].click();
+        });
+    });
+
+    this.When(/^I click on 'Show all Categories'$/, function () {
         yrbsPage.getShowOnlyLinks().then(function(elements) {
             elements[0].click();
         });
@@ -126,6 +133,7 @@ var yrbsStepDefinitionsWrapper = function () {
             }
             raceParentElement.element(by.xpath('.//*[.="Asian"]')).click();
         });
+        browser.sleep(40000);
         raceFilter.getAttribute('class').then(function(className){
             if(className =="fa fa-chevron-right") {
                 //Exapnd filter
@@ -133,6 +141,7 @@ var yrbsStepDefinitionsWrapper = function () {
             }
             raceParentElement.element(by.xpath('.//*[.="American Indian or Alaska Native"]')).click();
         });
+        browser.sleep(40000);
     });
 
     this.Then(/^the default filter pre\-selected should be Race$/, function () {
@@ -160,12 +169,12 @@ var yrbsStepDefinitionsWrapper = function () {
         expect(allFilters.get(0).getText()).to.eventually.contains("Year");
         expect(allFilters.get(1).getText()).to.eventually.contains("All");
         expect(allFilters.get(2).getText()).to.eventually.contains("2015");
-        expect(allFilters.get(3).getText()).to.eventually.contains("2013");
-        expect(allFilters.get(4).getText()).to.eventually.contains("2011");
-        expect(allFilters.get(7).getText()).to.eventually.contains("Sex");
-        expect(allFilters.get(11).getText()).to.eventually.contains("Race");
-        expect(allFilters.get(21).getText()).to.eventually.contains("Grade");
-        expect(allFilters.get(28).getText()).to.eventually.contains("Question");
+        //expect(allFilters.get(3).getText()).to.eventually.contains("2013");
+        //expect(allFilters.get(4).getText()).to.eventually.contains("2011");
+        expect(allFilters.get(3).getText()).to.eventually.contains("Sex");
+        expect(allFilters.get(7).getText()).to.eventually.contains("Race");
+        expect(allFilters.get(17).getText()).to.eventually.contains("Grade");
+        expect(allFilters.get(24).getText()).to.eventually.contains("Question");
     });
 
     this.Then(/^the data must be right justified in the table$/, function () {

@@ -23,358 +23,6 @@
 
         $rootScope.questions = [
             {
-                "text":"Alcohol and Other Drug Use",
-                "children":[
-                    {
-                        "text":"Currently Drank Alcohol(at least one drink of alcohol on at least 1 day during the 30 days before the survey)",
-                        "id":"qn43",
-                        "old_id":"Current alcohol use"
-                    },
-                    {
-                        "text":"Currently Used Marijuana(one or more times during the 30 days before the survey)",
-                        "id":"qn49",
-                        "old_id":"Current marijuana use"
-                    },
-                    {
-                        "text":"Drank Alcohol Before Age 13 Years(for the first time other than a few sips)",
-                        "id":"qn42",
-                        "old_id":"Initiation of alcohol use"
-                    },
-                    {
-                        "text":"Drank Five Or More Drinks Of Alcohol In A Row(within a couple of hours on at least 1 day during the 30 days before the survey)",
-                        "id":"qn44",
-                        "old_id":"5 or more drinks in a row"
-                    },
-                    {
-                        "text":"Ever Drank Alcohol(at least one drink of alcohol on at least 1 day during their life)",
-                        "id":"qn41",
-                        "old_id":"Ever alcohol use"
-                    },
-                    {
-                        "text":"Ever Injected Any Illegal Drug(used a needle to inject any illegal drug into their body one or more times during their life)",
-                        "id":"qn58",
-                        "old_id":"Illegal injected drug use"
-                    },
-                    {
-                        "text":"Ever Took Prescription Drugs Without A Doctor's Prescription(such as Oxycontin, Percocet, Vicodin, codeine, Adderall, Ritalin, or Xanax, one or more times during their life)",
-                        "id":"qn57",
-                        "old_id":"Ever prescription drug use"
-                    },
-                    {
-                        "text":"Ever Took Steroids Without A Doctor's Prescription(pills or shots, one or more times during their life)",
-                        "id":"qn56",
-                        "old_id":"Ever steroid use"
-                    },
-                    {
-                        "text":"Ever Used Cocaine(any form of cocaine, such as powder, crack, or freebase, one or more times during their life)",
-                        "id":"qn50",
-                        "old_id":"Ever cocaine use"
-                    },
-                    {
-                        "text":"Ever Used Ecstasy(also called 'MDMA,' one or more times during their life)",
-                        "id":"qn54",
-                        "old_id":"Ever ecstasy use"
-                    },
-                    {
-                        "text":"Ever Used Hallucinogenic Drugs(such as LSD, acid, PCP, angel dust, mescaline, or mushrooms, one or more times during their life)",
-                        "id":"qn39",
-                        "old_id":"Ever hallucinogenic drug use"
-                    },
-                    {
-                        "text":"Ever Used Heroin(also called 'smack,' 'junk,' or 'China white,' one or more times during their life)",
-                        "id":"qn52",
-                        "old_id":"Ever heroin use"
-                    },
-                    {
-                        "text":"Ever Used Inhalants(sniffed glue, breathed the contents of aerosol spray cans, or inhaled any paints or sprays to get high, one or more times during their life)",
-                        "id":"qn51",
-                        "old_id":"Ever inhalant use"
-                    },
-                    {
-                        "text":"Ever Used Marijuana(one or more times during their life)",
-                        "id":"qn47",
-                        "old_id":"Ever marijuana use"
-                    },
-                    {
-                        "text":"Ever Used Methamphetamines(also called 'speed,' 'crystal,' 'crank,' or 'ice,' one or more times during their life)",
-                        "id":"qn53",
-                        "old_id":"Ever methamphetamine use"
-                    },
-                    {
-                        "text":"Ever Used Synthetic Marijuana(also called 'K2', 'Spice', 'fake weed', 'King Kong', 'Yucatan Fire', 'Skunk', or 'Moon Rocks', one or more times during their life)",
-                        "id":"qn55",
-                        "old_id":"Ever synthetic marijuana use"
-                    },
-                    {
-                        "text":"Reported That The Largest Number Of Drinks They Had In A Row Was 10 Or More(within a couple of hours during the 30 days before the survey)",
-                        "id":"qn45",
-                        "old_id":"Largest number of drinks"
-                    },
-                    {
-                        "text":"Tried Marijuana Before Age 13 Years(for the first time)",
-                        "id":"qn48",
-                        "old_id":"Initiation of marijuana use"
-                    },
-                    {
-                        "text":"Usually Obtained The Alcohol They Drank By Someone Giving It To Them(during the 30 days before the survey, among students who currently drank alcohol)",
-                        "id":"qn46",
-                        "old_id":"Source of alcohol"
-                    },
-                    {
-                        "text":"Usually Used Marijuana By Smoking It(in a joint, bong, pipe, or blunt during the 30 days before the survey)",
-                        "id":"qn90",
-                        "old_id":"How marijuana used"
-                    },
-                    {
-                        "text":"Were Offered, Sold, Or Given An Illegal Drug On School Property(during the 12 months before the survey)",
-                        "id":"qn59",
-                        "old_id":"Illegal drugs at school"
-                    }
-                ],
-                "old_id":"Alcohol and Other Drug Use"
-            },
-            {
-                "text":"Dietary Behaviors",
-                "children":[
-                    {
-                        "text":"Did Not Drink Milk(during the 7 days before the survey)",
-                        "id":"qn78",
-                        "old_id":"No milk drinking"
-                    },
-                    {
-                        "text":"Did Not Eat Breakfast(during the 7 days before the survey)",
-                        "id":"qn79",
-                        "old_id":"Breakfast eating"
-                    },
-                    {
-                        "text":"Did Not Eat Fruit Or Drink 100% Fruit Juices(during the 7 days before the survey)",
-                        "id":"qnfr0",
-                        "old_id":"No fruit consumption"
-                    },
-                    {
-                        "text":"Did Not Eat Vegetables(green salad, potatoes (excluding French fries, fried potatoes, or potato chips), carrots, or other vegetables, during the 7 days before the survey)",
-                        "id":"qnveg0",
-                        "old_id":"No vegetable eating"
-                    },
-                    {
-                        "text":"Drank A Can, Bottle, Or Glass Of A Sports Drink One Or More Times Per Day(not counting low calorie sports drinks during the 7 days before the survey)",
-                        "id":"qnspdrk1",
-                        "old_id":"Sports drinks >= 1 times"
-                    },
-                    {
-                        "text":"Drank A Can, Bottle, Or Glass Of A Sports Drink Three Or More Times Per Day(not counting low calorie sports drinks during the 7 days before the survey)",
-                        "id":"qnspdrk3",
-                        "old_id":"Sports drinks >= 3 times"
-                    },
-                    {
-                        "text":"Drank A Can, Bottle, Or Glass Of A Sports Drink Two Or More Times Per Day(not counting low calorie sports drinks during the 7 days before the survey)",
-                        "id":"qnspdrk3",
-                        "old_id":"Sports drinks >= 2 times"
-                    }
-                ],
-                "old_id":"Dietary Behaviors"
-            },
-            {
-                "text":"Obesity, Overweight, and Weight Control",
-                "children":[
-                    {
-                        "text":"Described Themselves As Slightly Or Very Overweight",
-                        "id":"qn69",
-                        "old_id":"Perception of weight"
-                    },
-                    {
-                        "text":"Were Overweight(>= 85th percentile but <95th percentile for body mass index, based on sex- and age-specific reference data from the 2000 CDC growth charts)",
-                        "id":"qnowt",
-                        "old_id":"Overweight"
-                    }
-                ],
-                "old_id":"Obesity, Overweight, and Weight Control"
-            },
-            {
-                "text":"Other Health Topics",
-                "children":[
-                    {
-                        "text":"Avoid Foods Because Eating The Food Could Cause An Allergic Reaction(such as skin rashes, swelling, itching, vomiting, coughing, or trouble breathing)",
-                        "id":"qn94",
-                        "old_id":"Food allergies"
-                    },
-                    {
-                        "text":"Did Not See A Dentist(for a check-up, exam, teeth cleaning, or other dental work during the 12 months before the survey)",
-                        "id":"q86",
-                        "old_id":"Oral health care"
-                    },
-                    {
-                        "text":"Had A Sunburn(one or more times during the 12 months before the survey, counting even a small part of the skin turning red or hurting for 12 hours or more after being outside in the sun or after using a sunlamp or other indoor tanning device)",
-                        "id":"qn97",
-                        "old_id":"Sunburn"
-                    },
-                    {
-                        "text":"Had Ever Been Told By A Doctor Or Nurse That They Had Asthma",
-                        "id":"qn87",
-                        "old_id":"Asthma"
-                    },
-                    {
-                        "text":"Used An Indoor Tanning Device(such as a sunlamp, sunbed, or tanning booth (not counting getting a spray-on tan) one or more times during the 12 months before the survey)",
-                        "id":"qn96",
-                        "old_id":"Indoor tanning device use"
-                    }
-                ],
-                "old_id":"Other Health Topics"
-            },
-            {
-                "text":"Physical Activity",
-                "children":[
-                    {
-                        "text":"Did Not Participate In At Least 60 Minutes Of Physical Activity On At Least 1 Day(doing any kind of physical activity that increased their heart rate and made them breathe hard some of the time during the 7 days before the survey)",
-                        "id":"qnpa0day",
-                        "old_id":"Physical activity"
-                    },
-                    {
-                        "text":"Did Not Play On At Least One Sports Team(run by their school or community groups during the 12 months before the survey)",
-                        "id":"q84",
-                        "old_id":"Sports team participation"
-                    },
-                    {
-                        "text":"Played Video Or Computer Games Or Used A Computer 3 Or More Hours Per Day(for something that was not school work on an average school day)",
-                        "id":"qn82",
-                        "old_id":"Computer use"
-                    },
-                    {
-                        "text":"Watched 3 Or More Hours Per Day Of Television(on an average school day)",
-                        "id":"qn81",
-                        "old_id":"Television watching"
-                    }
-                ],
-                "old_id":"Physical Activity"
-            },
-            {
-                "text":"Sexual Behaviors",
-                "children":[
-                    {
-                        "text":"Did Not Use A Condom(during last sexual intercourse, among students who were currently sexually active)",
-                        "id":"q65",
-                        "old_id":"Condom use"
-                    },
-                    {
-                        "text":"Did Not Use Birth Control Pills(before last sexual intercourse to prevent pregnancy, among students who were currently sexually active)",
-                        "id":"q66",
-                        "old_id":"Birth control pill use"
-                    },
-                    {
-                        "text":"Drank Alcohol Or Used Drugs(before last sexual intercourse, among students who were currently sexually active)",
-                        "id":"qn64",
-                        "old_id":"Alcohol/drugs and sex"
-                    },
-                    {
-                        "text":"Ever Had Sexual Intercourse",
-                        "id":"qn60",
-                        "old_id":"Ever sexual intercourse"
-                    },
-                    {
-                        "text":"Had Sexual Intercourse Before Age 13 Years(for the first time)",
-                        "id":"qn61",
-                        "old_id":"Sex before 13 years"
-                    },
-                    {
-                        "text":"Had Sexual Intercourse With Four Or More Persons(during their life)",
-                        "id":"qn62",
-                        "old_id":"Multiple sex partners"
-                    },
-                    {
-                        "text":"Were Currently Sexually Active(had sexual intercourse with at least one person during the 3 months before the survey)",
-                        "id":"qn63",
-                        "old_id":"Current sexual activity"
-                    },
-                    {
-                        "text":"Were Never Tested For HIV(not counting tests done when donating blood)",
-                        "id":"qn85",
-                        "old_id":"HIV testing"
-                    }
-                ],
-                "old_id":"Sexual Behaviors"
-            },
-            {
-                "text":"Tobacco Use",
-                "children":[
-                    {
-                        "text":"Currently Smoked Cigarettes Daily(on all 30 days during the 30 days before the survey)",
-                        "id":"qndaycig",
-                        "old_id":"Current daily cigarette use"
-                    },
-                    {
-                        "text":"Currently Smoked Cigarettes Frequently(on 20 or more days during the 30 days before the survey)",
-                        "id":"qnfrcig",
-                        "old_id":"Frequent cigarette use"
-                    },
-                    {
-                        "text":"Currently Smoked Cigarettes Or Cigars(on at least 1 day during the 30 days before the survey)",
-                        "id":"qntob2",
-                        "old_id":"Current cigarette or cigar use"
-                    },
-                    {
-                        "text":"Currently Smoked Cigarettes(on at least 1 day during the 30 days before the survey)",
-                        "id":"qn33",
-                        "old_id":"Current cigarette use"
-                    },
-                    {
-                        "text":"Currently Smoked Cigars(cigars, cigarillos, or little cigars on at least 1 day during the 30 days before the survey)",
-                        "id":"qn38",
-                        "old_id":"Current cigar use"
-                    },
-                    {
-                        "text":"Currently Used Cigarettes, Cigars, Or Smokeless Tobacco(on at least 1 day during the 30 days before the survey)",
-                        "id":"qntob3",
-                        "old_id":"Current cigarette, cigar, or smokeless tobacco use"
-                    },
-                    {
-                        "text":"Currently Used Electronic Vapor Products(including e-cigarettes, e-cigars, e-pipes, vape pipes, vaping pens, e-hookahs, and hookah pens on at least 1 day during the 30 days before the survey)",
-                        "id":"qn40",
-                        "old_id":"Current electronic vapor product use"
-                    },
-                    {
-                        "text":"Currently Used Smokeless Tobacco(chewing tobacco, snuff, or dip on at least 1 day during the 30 days before the survey)",
-                        "id":"qn37",
-                        "old_id":"Current smokeless tobacco use"
-                    },
-                    {
-                        "text":"Currently Used Tobacco(current cigarette, smokeless tobacco, cigar, or electronic vapor products use on at least 1 day during the 30 days before the survey)",
-                        "id":"qntob4",
-                        "old_id":"Current tobacco use"
-                    },
-                    {
-                        "text":"Did Not Try To Quit Smoking Cigarettes(during the 12 months before the survey, among students who currently smoked cigarettes)",
-                        "id":"q36",
-                        "old_id":"Smoking cessation"
-                    },
-                    {
-                        "text":"Ever Tried Cigarette Smoking(even one or two puffs)",
-                        "id":"qn31",
-                        "old_id":"Ever cigarette use"
-                    },
-                    {
-                        "text":"Smoked A Whole Cigarette Before Age 13 Years(for the first time)",
-                        "id":"qn32",
-                        "old_id":"Initiation of cigarette use"
-                    },
-                    {
-                        "text":"Smoked More Than 10 Cigarettes Per Day(on the days they smoked during the 30 days before the survey, among students who currently smoked cigarettes)",
-                        "id":"qn34",
-                        "old_id":"Smoked >10 cigarettes"
-                    },
-                    {
-                        "text":"Usually Obtained Their Own Cigarettes By Buying On The Internet(during the 30 days before the survey, among students who currently smoked cigarettes and who were aged <18 years)",
-                        "id":"qncigint",
-                        "old_id":"Cigarettes from Internet"
-                    },
-                    {
-                        "text":"Usually Obtained Their Own Cigarettes By Buying Them In A Store Or Gas Station(during the 30 days before the survey, among students who currently smoked cigarettes and who were aged <18 years)",
-                        "id":"qn35",
-                        "old_id":"Cigarettes from store"
-                    }
-                ],
-                "old_id":"Tobacco use"
-            },
-            {
                 "text":"Unintentional Injuries and Violence",
                 "children":[
                     {
@@ -494,6 +142,359 @@
                     }
                 ],
                 "old_id":"Unintentional Injuries and Violence"
+            },
+
+            {
+                "text":"Tobacco Use",
+                "children":[
+                    {
+                        "text":"Currently Smoked Cigarettes Daily(on all 30 days during the 30 days before the survey)",
+                        "id":"qndaycig",
+                        "old_id":"Current daily cigarette use"
+                    },
+                    {
+                        "text":"Currently Smoked Cigarettes Frequently(on 20 or more days during the 30 days before the survey)",
+                        "id":"qnfrcig",
+                        "old_id":"Frequent cigarette use"
+                    },
+                    {
+                        "text":"Currently Smoked Cigarettes Or Cigars(on at least 1 day during the 30 days before the survey)",
+                        "id":"qntob2",
+                        "old_id":"Current cigarette or cigar use"
+                    },
+                    {
+                        "text":"Currently Smoked Cigarettes(on at least 1 day during the 30 days before the survey)",
+                        "id":"qn33",
+                        "old_id":"Current cigarette use"
+                    },
+                    {
+                        "text":"Currently Smoked Cigars(cigars, cigarillos, or little cigars on at least 1 day during the 30 days before the survey)",
+                        "id":"qn38",
+                        "old_id":"Current cigar use"
+                    },
+                    {
+                        "text":"Currently Used Cigarettes, Cigars, Or Smokeless Tobacco(on at least 1 day during the 30 days before the survey)",
+                        "id":"qntob3",
+                        "old_id":"Current cigarette, cigar, or smokeless tobacco use"
+                    },
+                    {
+                        "text":"Currently Used Electronic Vapor Products(including e-cigarettes, e-cigars, e-pipes, vape pipes, vaping pens, e-hookahs, and hookah pens on at least 1 day during the 30 days before the survey)",
+                        "id":"qn40",
+                        "old_id":"Current electronic vapor product use"
+                    },
+                    {
+                        "text":"Currently Used Smokeless Tobacco(chewing tobacco, snuff, or dip on at least 1 day during the 30 days before the survey)",
+                        "id":"qn37",
+                        "old_id":"Current smokeless tobacco use"
+                    },
+                    {
+                        "text":"Currently Used Tobacco(current cigarette, smokeless tobacco, cigar, or electronic vapor products use on at least 1 day during the 30 days before the survey)",
+                        "id":"qntob4",
+                        "old_id":"Current tobacco use"
+                    },
+                    {
+                        "text":"Did Not Try To Quit Smoking Cigarettes(during the 12 months before the survey, among students who currently smoked cigarettes)",
+                        "id":"q36",
+                        "old_id":"Smoking cessation"
+                    },
+                    {
+                        "text":"Ever Tried Cigarette Smoking(even one or two puffs)",
+                        "id":"qn31",
+                        "old_id":"Ever cigarette use"
+                    },
+                    {
+                        "text":"Smoked A Whole Cigarette Before Age 13 Years(for the first time)",
+                        "id":"qn32",
+                        "old_id":"Initiation of cigarette use"
+                    },
+                    {
+                        "text":"Smoked More Than 10 Cigarettes Per Day(on the days they smoked during the 30 days before the survey, among students who currently smoked cigarettes)",
+                        "id":"qn34",
+                        "old_id":"Smoked >10 cigarettes"
+                    },
+                    {
+                        "text":"Usually Obtained Their Own Cigarettes By Buying On The Internet(during the 30 days before the survey, among students who currently smoked cigarettes and who were aged <18 years)",
+                        "id":"qncigint",
+                        "old_id":"Cigarettes from Internet"
+                    },
+                    {
+                        "text":"Usually Obtained Their Own Cigarettes By Buying Them In A Store Or Gas Station(during the 30 days before the survey, among students who currently smoked cigarettes and who were aged <18 years)",
+                        "id":"qn35",
+                        "old_id":"Cigarettes from store"
+                    }
+                ],
+                "old_id":"Tobacco use"
+            },
+            {
+                "text":"Alcohol and Other Drug Use",
+                "children":[
+                    {
+                        "text":"Currently Drank Alcohol(at least one drink of alcohol on at least 1 day during the 30 days before the survey)",
+                        "id":"qn43",
+                        "old_id":"Current alcohol use"
+                    },
+                    {
+                        "text":"Currently Used Marijuana(one or more times during the 30 days before the survey)",
+                        "id":"qn49",
+                        "old_id":"Current marijuana use"
+                    },
+                    {
+                        "text":"Drank Alcohol Before Age 13 Years(for the first time other than a few sips)",
+                        "id":"qn42",
+                        "old_id":"Initiation of alcohol use"
+                    },
+                    {
+                        "text":"Drank Five Or More Drinks Of Alcohol In A Row(within a couple of hours on at least 1 day during the 30 days before the survey)",
+                        "id":"qn44",
+                        "old_id":"5 or more drinks in a row"
+                    },
+                    {
+                        "text":"Ever Drank Alcohol(at least one drink of alcohol on at least 1 day during their life)",
+                        "id":"qn41",
+                        "old_id":"Ever alcohol use"
+                    },
+                    {
+                        "text":"Ever Injected Any Illegal Drug(used a needle to inject any illegal drug into their body one or more times during their life)",
+                        "id":"qn58",
+                        "old_id":"Illegal injected drug use"
+                    },
+                    {
+                        "text":"Ever Took Prescription Drugs Without A Doctor's Prescription(such as Oxycontin, Percocet, Vicodin, codeine, Adderall, Ritalin, or Xanax, one or more times during their life)",
+                        "id":"qn57",
+                        "old_id":"Ever prescription drug use"
+                    },
+                    {
+                        "text":"Ever Took Steroids Without A Doctor's Prescription(pills or shots, one or more times during their life)",
+                        "id":"qn56",
+                        "old_id":"Ever steroid use"
+                    },
+                    {
+                        "text":"Ever Used Cocaine(any form of cocaine, such as powder, crack, or freebase, one or more times during their life)",
+                        "id":"qn50",
+                        "old_id":"Ever cocaine use"
+                    },
+                    {
+                        "text":"Ever Used Ecstasy(also called 'MDMA,' one or more times during their life)",
+                        "id":"qn54",
+                        "old_id":"Ever ecstasy use"
+                    },
+                    {
+                        "text":"Ever Used Hallucinogenic Drugs(such as LSD, acid, PCP, angel dust, mescaline, or mushrooms, one or more times during their life)",
+                        "id":"qn39",
+                        "old_id":"Ever hallucinogenic drug use"
+                    },
+                    {
+                        "text":"Ever Used Heroin(also called 'smack,' 'junk,' or 'China white,' one or more times during their life)",
+                        "id":"qn52",
+                        "old_id":"Ever heroin use"
+                    },
+                    {
+                        "text":"Ever Used Inhalants(sniffed glue, breathed the contents of aerosol spray cans, or inhaled any paints or sprays to get high, one or more times during their life)",
+                        "id":"qn51",
+                        "old_id":"Ever inhalant use"
+                    },
+                    {
+                        "text":"Ever Used Marijuana(one or more times during their life)",
+                        "id":"qn47",
+                        "old_id":"Ever marijuana use"
+                    },
+                    {
+                        "text":"Ever Used Methamphetamines(also called 'speed,' 'crystal,' 'crank,' or 'ice,' one or more times during their life)",
+                        "id":"qn53",
+                        "old_id":"Ever methamphetamine use"
+                    },
+                    {
+                        "text":"Ever Used Synthetic Marijuana(also called 'K2', 'Spice', 'fake weed', 'King Kong', 'Yucatan Fire', 'Skunk', or 'Moon Rocks', one or more times during their life)",
+                        "id":"qn55",
+                        "old_id":"Ever synthetic marijuana use"
+                    },
+                    {
+                        "text":"Reported That The Largest Number Of Drinks They Had In A Row Was 10 Or More(within a couple of hours during the 30 days before the survey)",
+                        "id":"qn45",
+                        "old_id":"Largest number of drinks"
+                    },
+                    {
+                        "text":"Tried Marijuana Before Age 13 Years(for the first time)",
+                        "id":"qn48",
+                        "old_id":"Initiation of marijuana use"
+                    },
+                    {
+                        "text":"Usually Obtained The Alcohol They Drank By Someone Giving It To Them(during the 30 days before the survey, among students who currently drank alcohol)",
+                        "id":"qn46",
+                        "old_id":"Source of alcohol"
+                    },
+                    {
+                        "text":"Usually Used Marijuana By Smoking It(in a joint, bong, pipe, or blunt during the 30 days before the survey)",
+                        "id":"qn90",
+                        "old_id":"How marijuana used"
+                    },
+                    {
+                        "text":"Were Offered, Sold, Or Given An Illegal Drug On School Property(during the 12 months before the survey)",
+                        "id":"qn59",
+                        "old_id":"Illegal drugs at school"
+                    }
+                ],
+                "old_id":"Alcohol and Other Drug Use"
+            },
+            {
+                "text":"Sexual Behaviors",
+                "children":[
+                    {
+                        "text":"Did Not Use A Condom(during last sexual intercourse, among students who were currently sexually active)",
+                        "id":"q65",
+                        "old_id":"Condom use"
+                    },
+                    {
+                        "text":"Did Not Use Birth Control Pills(before last sexual intercourse to prevent pregnancy, among students who were currently sexually active)",
+                        "id":"q66",
+                        "old_id":"Birth control pill use"
+                    },
+                    {
+                        "text":"Drank Alcohol Or Used Drugs(before last sexual intercourse, among students who were currently sexually active)",
+                        "id":"qn64",
+                        "old_id":"Alcohol/drugs and sex"
+                    },
+                    {
+                        "text":"Ever Had Sexual Intercourse",
+                        "id":"qn60",
+                        "old_id":"Ever sexual intercourse"
+                    },
+                    {
+                        "text":"Had Sexual Intercourse Before Age 13 Years(for the first time)",
+                        "id":"qn61",
+                        "old_id":"Sex before 13 years"
+                    },
+                    {
+                        "text":"Had Sexual Intercourse With Four Or More Persons(during their life)",
+                        "id":"qn62",
+                        "old_id":"Multiple sex partners"
+                    },
+                    {
+                        "text":"Were Currently Sexually Active(had sexual intercourse with at least one person during the 3 months before the survey)",
+                        "id":"qn63",
+                        "old_id":"Current sexual activity"
+                    },
+                    {
+                        "text":"Were Never Tested For HIV(not counting tests done when donating blood)",
+                        "id":"qn85",
+                        "old_id":"HIV testing"
+                    }
+                ],
+                "old_id":"Sexual Behaviors"
+            },
+            {
+                "text":"Physical Activity",
+                "children":[
+                    {
+                        "text":"Did Not Participate In At Least 60 Minutes Of Physical Activity On At Least 1 Day(doing any kind of physical activity that increased their heart rate and made them breathe hard some of the time during the 7 days before the survey)",
+                        "id":"qnpa0day",
+                        "old_id":"Physical activity"
+                    },
+                    {
+                        "text":"Did Not Play On At Least One Sports Team(run by their school or community groups during the 12 months before the survey)",
+                        "id":"q84",
+                        "old_id":"Sports team participation"
+                    },
+                    {
+                        "text":"Played Video Or Computer Games Or Used A Computer 3 Or More Hours Per Day(for something that was not school work on an average school day)",
+                        "id":"qn82",
+                        "old_id":"Computer use"
+                    },
+                    {
+                        "text":"Watched 3 Or More Hours Per Day Of Television(on an average school day)",
+                        "id":"qn81",
+                        "old_id":"Television watching"
+                    }
+                ],
+                "old_id":"Physical Activity"
+            },
+            {
+                "text":"Obesity, Overweight, and Weight Control",
+                "children":[
+                    {
+                        "text":"Described Themselves As Slightly Or Very Overweight",
+                        "id":"qn69",
+                        "old_id":"Perception of weight"
+                    },
+                    {
+                        "text":"Were Overweight(>= 85th percentile but <95th percentile for body mass index, based on sex- and age-specific reference data from the 2000 CDC growth charts)",
+                        "id":"qnowt",
+                        "old_id":"Overweight"
+                    }
+                ],
+                "old_id":"Obesity, Overweight, and Weight Control"
+            },
+            {
+                "text":"Dietary Behaviors",
+                "children":[
+                    {
+                        "text":"Did Not Drink Milk(during the 7 days before the survey)",
+                        "id":"qn78",
+                        "old_id":"No milk drinking"
+                    },
+                    {
+                        "text":"Did Not Eat Breakfast(during the 7 days before the survey)",
+                        "id":"qn79",
+                        "old_id":"Breakfast eating"
+                    },
+                    {
+                        "text":"Did Not Eat Fruit Or Drink 100% Fruit Juices(during the 7 days before the survey)",
+                        "id":"qnfr0",
+                        "old_id":"No fruit consumption"
+                    },
+                    {
+                        "text":"Did Not Eat Vegetables(green salad, potatoes (excluding French fries, fried potatoes, or potato chips), carrots, or other vegetables, during the 7 days before the survey)",
+                        "id":"qnveg0",
+                        "old_id":"No vegetable eating"
+                    },
+                    {
+                        "text":"Drank A Can, Bottle, Or Glass Of A Sports Drink One Or More Times Per Day(not counting low calorie sports drinks during the 7 days before the survey)",
+                        "id":"qnspdrk1",
+                        "old_id":"Sports drinks >= 1 times"
+                    },
+                    {
+                        "text":"Drank A Can, Bottle, Or Glass Of A Sports Drink Three Or More Times Per Day(not counting low calorie sports drinks during the 7 days before the survey)",
+                        "id":"qnspdrk3",
+                        "old_id":"Sports drinks >= 3 times"
+                    },
+                    {
+                        "text":"Drank A Can, Bottle, Or Glass Of A Sports Drink Two Or More Times Per Day(not counting low calorie sports drinks during the 7 days before the survey)",
+                        "id":"qnspdrk3",
+                        "old_id":"Sports drinks >= 2 times"
+                    }
+                ],
+                "old_id":"Dietary Behaviors"
+            },
+            {
+                "text":"Other Health Topics",
+                "children":[
+                    {
+                        "text":"Avoid Foods Because Eating The Food Could Cause An Allergic Reaction(such as skin rashes, swelling, itching, vomiting, coughing, or trouble breathing)",
+                        "id":"qn94",
+                        "old_id":"Food allergies"
+                    },
+                    {
+                        "text":"Did Not See A Dentist(for a check-up, exam, teeth cleaning, or other dental work during the 12 months before the survey)",
+                        "id":"q86",
+                        "old_id":"Oral health care"
+                    },
+                    {
+                        "text":"Had A Sunburn(one or more times during the 12 months before the survey, counting even a small part of the skin turning red or hurting for 12 hours or more after being outside in the sun or after using a sunlamp or other indoor tanning device)",
+                        "id":"qn97",
+                        "old_id":"Sunburn"
+                    },
+                    {
+                        "text":"Had Ever Been Told By A Doctor Or Nurse That They Had Asthma",
+                        "id":"qn87",
+                        "old_id":"Asthma"
+                    },
+                    {
+                        "text":"Used An Indoor Tanning Device(such as a sunlamp, sunbed, or tanning booth (not counting getting a spray-on tan) one or more times during the 12 months before the survey)",
+                        "id":"qn96",
+                        "old_id":"Indoor tanning device use"
+                    }
+                ],
+                "old_id":"Other Health Topics"
             }
         ];
 
@@ -1061,30 +1062,8 @@
         ];
 
         // select only questions with qkey set
-        $rootScope.questionsList = $rootScope.allquestionsList.filter(function (q){
-                 return (q.qkey !== '' );});
-        // var categories = [];
-        //     angular.forEach($rootScope.questions, function(questionCategory){
-        //         var category = {text: questionCategory.text, children: [], id:questionCategory.id };
-        //         // angular.forEach(questionCategory.children, function(categoryChild) {
-        //         //     angular.forEach(data, function(row) {
-        //         //         if(row[0].key === categoryChild.id) {
-        //         //           category.questions.push(row);
-        //         //         }
-        //         //     });
-        //         // });
-        //         angular.forEach(questionCategory.children, function(categoryChild) {
-        //                 angular.forEach($rootScope.questionsList, function (q) {
-        //                     if (categoryChild.id === q.key){
-        //                         var catchild = {text: categoryChild.text, qkey: q.qkey, id:categoryChild.id };
-        //                         category.children.push(catchild);
-        //                    }
-        //                 });
-        //             }
-        //         );
-        //         categories.push(category);
-        //     });
-        //     console.log("Question categories="+JSON.stringify(categories));
+        $rootScope.questionsList = $rootScope.allquestionsList.filter(function (q){return (q.qkey !== '' );});
+
         $rootScope.chartMappings = {
             "gender&race": "horizontalStack",
             "race&agegroup": "verticalStack",
