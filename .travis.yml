@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - '4.4'
+  
 services:
   - docker
 
@@ -43,6 +44,8 @@ install:
 before_script:
   - sleep 10
   - curl http://54.242.94.197/esdev  # To verify ElasticSearch running
+  - java -version
+  - echo $JAVA_HOME
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - npm start > /dev/null &

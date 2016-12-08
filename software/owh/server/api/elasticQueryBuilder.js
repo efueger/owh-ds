@@ -485,7 +485,16 @@ function getGroupQuery(filter/*, isPrimary*/) {
 }
 
 function buildFilterQuery(filter) {
-    if( isValueNotEmpty(filter.value) && filter.value.length !== getAutoCompleteOptionsLength(filter)) {
+    if(filter.key === 'question' && filter.value.length == 0){
+        filter.value = [];
+        filter.autoCompleteOptions.forEach( function(q) {
+            if(q.qkey.startsWith('qn')) {
+                filter.value.push(q.qkey);
+            }
+        });
+        return getFilterQuery(filter);
+    }
+    else if( isValueNotEmpty(filter.value) && filter.value.length !== getAutoCompleteOptionsLength(filter)) {
         return getFilterQuery(filter);
     }
     return false;
