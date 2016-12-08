@@ -249,7 +249,12 @@
         }
 
         function lineChart(data, filter, primaryFilter) {
-
+            console.log("Chart data");
+            console.log(JSON.stringify(data));
+            console.log("Filter");
+            console.log(JSON.stringify(filter));
+            console.log("Primary Filter");
+            console.log(filter.key);
             var chartData = {
                 data: [],
                 title: "label.graph."+filter.key,
@@ -261,7 +266,7 @@
                         "margin": {
                             "top": 5,
                             "right": 5,
-                            "bottom": 45,
+                            "bottom": 16,
                             "left": 50
                         },
                         showMaxMin: false,
@@ -415,7 +420,7 @@
                 var expandedChartData = angular.copy(eachChartData);
                 /*Update chartData options*/
                 expandedChartData.options.chart.height = 500;
-                expandedChartData.options.chart.width = 720;
+                expandedChartData.options.chart.width = 750;
                 expandedChartData.options.chart.showLegend = true;
                 expandedChartData.options.chart.showControls = true;
                 expandedChartData.options.chart.showValues = true;
@@ -476,8 +481,10 @@
                         expandedChartData.options.chart.legend.margin.top = 30;
                     }
                 } else if (eachChartData.options.chart.type === 'lineChart') {
-                    expandedChartData.options.chart.margin.left = 70;
-                    expandedChartData.options.chart.margin.bottom = 70;
+                    expandedChartData.options.chart.margin.left = 85;
+                    expandedChartData.options.chart.margin.bottom = 50;
+                    expandedChartData.options.chart.xAxis.axisLabelDistance = 5;
+                    expandedChartData.options.chart.yAxis.axisLabelDistance = 20;
                 }
                 allExpandedChartDatas.push(expandedChartData);
             });

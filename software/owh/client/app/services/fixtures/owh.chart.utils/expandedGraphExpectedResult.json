@@ -61,7 +61,7 @@
       "chart": {
         "type": "multiBarHorizontalChart",
         "height": 500,
-        "width": 720,
+        "width": 750,
         "margin": {
           "top": 20,
           "right": 40,
@@ -118,7 +118,7 @@
       "chart": {
         "type": "pieChart",
         "height": 500,
-        "width": 720,
+        "width": 750,
         "margin": {
           "top": 5,
           "right": 5,
