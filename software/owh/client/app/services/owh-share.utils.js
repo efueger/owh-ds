@@ -28,8 +28,8 @@
                 FB.ui({
                     method: 'feed',
                     name: 'OWH ' + section + ' '+ $filter('translate')(title),
-                    link: 'http://owh.semanticbits.com/',
-                    picture: 'http://owh.semanticbits.com/fb/'+response.imageId,
+                    link: response.appURL,
+                    picture: response.appURL+'fb/'+response.imageId,
                     caption: 'OWH Digital Services Visualization',
                     description: description,
                     message: 'OWH Mortality graph',

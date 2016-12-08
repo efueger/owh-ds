@@ -11,6 +11,10 @@ default:
     url: ''
   logging:
     level: 'debug'
+  fb:
+    appID :
+    appURL: 
+
 # Dev configuration
 dev:
     
@@ -25,3 +29,6 @@ production:
     host:
       user:
       password:
+  fb:
+    appID :
+    appURL:
