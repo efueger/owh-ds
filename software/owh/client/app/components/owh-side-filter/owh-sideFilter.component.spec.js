@@ -53,6 +53,7 @@ describe('OWH Side filter component: ', function() {
         $httpBackend.whenGET('app/components/owh-side-filter/owhSideFilter.html').respond( $templateCache.get('app/components/owh-side-filter/owhSideFilter.html'));
         $httpBackend.whenGET('app/components/owh-footer/footer.html').respond( $templateCache.get('app/components/owh-footer/footer.html'));
         $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
+        $httpBackend.whenGET('/getFBAppID').respond({data: { fbAppID: 1111111111111111}});
 
         function searchResultsFn() {
 
