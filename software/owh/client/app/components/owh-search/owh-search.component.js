@@ -15,12 +15,13 @@
             }
         });
 
-    OWHSearchController.$inject = ['utilService', 'searchFactory'];
+    OWHSearchController.$inject = ['utilService', 'searchFactory', '$window', '$location'];
 
-    function OWHSearchController(utilService, searchFactory) {
+    function OWHSearchController(utilService, searchFactory, $window, $location) {
         var ots = this;
         ots.groupByFiltersUpdated = groupByFiltersUpdated;
         ots.phaseTwoImpl = phaseTwoImpl;
+        ots.bookmarkCurrentUrl = bookmarkCurrentUrl;
         angular.forEach(ots.showFilters, function(filter) {
             if(filter.key === ots.tableView) {
                 ots.selectedShowFilter = filter;
@@ -50,6 +51,16 @@
                 searchFactory.showPhaseTwoModal('label.show.impl.next');
             }
         }
+
+        /*To bookmark current URL
+        * Calling this function from owhSearch.html
+        * */
+        function bookmarkCurrentUrl() {
+            var currentURL =  $location.absUrl();
+            var title = "Mortality";
+
+        }
+
     }
 
 }());
