@@ -83,10 +83,12 @@
          * @param value
          * @returns {*}
          */
-        function findByKeyAndValue(a, key, value) {
+        function findByKeyAndValue(a, key, value, print) {
             if(a){
                 for (var i = 0; i < a.length; i++) {
-                    if ( a[i][key] && a[i][key] === value ) {return a[i];}
+                    if ( a[i][key] && a[i][key].replace('–', '-') === value ) {
+                        return a[i];
+                    }
                 }
             }
             return null;
