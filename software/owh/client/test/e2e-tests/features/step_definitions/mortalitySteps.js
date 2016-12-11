@@ -452,5 +452,11 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^Rates, Deaths and Population shouldn't be overlap$/, function () {
         expect(element(by.id('crudeRateDiv')).getAttribute('class')).to.eventually.include('usa-width-one-half');
     });
+
+    this.Then(/^I should see total for Non\-Hispanic$/, function () {
+        mortalityPage.getSideFilterTotals().then(function(elements) {
+            expect(elements[34].getInnerHtml()).to.eventually.equal('34,926,053');
+        });
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;
