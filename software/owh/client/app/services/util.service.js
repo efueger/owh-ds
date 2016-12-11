@@ -83,7 +83,7 @@
          * @param value
          * @returns {*}
          */
-        function findByKeyAndValue(a, key, value, print) {
+        function findByKeyAndValue(a, key, value) {
             if(a){
                 for (var i = 0; i < a.length; i++) {
                     //use replace here because some characters are ending up slightly different, this fixes it for Non-Hispanic
