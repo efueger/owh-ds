@@ -28,6 +28,25 @@
         sfc.isVisible = isVisible;
         sfc.isSubOptionSelected = isSubOptionSelected;
         sfc.filterGroup = filterGroup;
+        sfc.isOptionDisabled = isOptionDisabled;
+
+        function isOptionDisabled(group, option) {
+            if(group.key === 'hispanicOrigin' && group.groupBy) {
+                //check if unknown is selected
+                if(group.value.indexOf('Unknown') >= 0) {
+                    //if unknown is selected then disable all other hispanic options
+                    if(option.key !== 'Unknown') {
+                        return true;
+                    }
+                } else {
+                    //else, if other option is selected disable unknown
+                    if(group.value.length > 0 && option.key === 'Unknown') {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         function filterGroup(option, group) {
             //check if group option is added
