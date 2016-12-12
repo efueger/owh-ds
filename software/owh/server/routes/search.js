@@ -39,6 +39,7 @@ var searchRouter = function(app, rConfig) {
                 }
             });
         } else {
+            logger.warn('Query ID not present, query failed');
             res.send(new result('Query ID not present', null, "failed"));
         }
     });
@@ -77,8 +78,12 @@ function search(q) {
     } else if (preparedQuery.apiQuery.searchFor === "bridge_race") {
         var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
         new elasticSearch().aggregateCensusData(finalQuery[0]).then(function (response) {
-            var responseData = {resultData: response.data, headers: preparedQuery.headers};
-            deferred.resolve(responseData);
+            var resData = {};
+            resData.queryJSON = q;
+            resData.resultData = response.data;
+            resData.resultData.headers = preparedQuery.headers;
+            resData.sideFilterResults = [];
+            deferred.resolve(resData);
         });
     }
     return  deferred.promise;

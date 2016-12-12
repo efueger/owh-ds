@@ -708,17 +708,17 @@
             return deferred.promise;
         }
 
-        function queryCensusAPI( primaryFilter ) {
+        function queryCensusAPI( primaryFilter, queryID ) {
 
             var deferred = $q.defer();
             var apiQuery = buildAPIQuery(primaryFilter);
             var headers = apiQuery.headers;
 
-            SearchService.searchResults(primaryFilter).then(function(response) {
+            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 deferred.resolve({
                     data : response.data.resultData.nested.table,
-                    headers : response.data.headers,
-                    chartData: prepareChartData(response.data.headers, response.data.resultData.nested, primaryFilter),
+                    headers : response.data.resultData.headers,
+                    chartData: prepareChartData(response.data.resultData.headers, response.data.resultData.nested, primaryFilter),
                     totalCount: response.pagination.total
                 })
             });
@@ -728,10 +728,10 @@
         /**
          * Search census bridge race population estmation
          */
-        function searchCensusInfo(primaryFilter) {
+        function searchCensusInfo(primaryFilter, queryID) {
             var deferred = $q.defer();
 
-            queryCensusAPI(primaryFilter).then(function(response){
+            queryCensusAPI(primaryFilter, queryID).then(function(response){
                 primaryFilter.data = response.data;
                 primaryFilter.headers = response.headers;
                 primaryFilter.chartData = response.chartData;
