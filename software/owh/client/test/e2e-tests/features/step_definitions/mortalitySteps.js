@@ -452,5 +452,18 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^Rates, Deaths and Population shouldn't be overlap$/, function () {
         expect(element(by.id('crudeRateDiv')).getAttribute('class')).to.eventually.include('usa-width-one-half');
     });
+
+    this.Then(/^Unknown is disabled\- grayed out$/, function () {
+        expect(mortalityPage.ethnicityUnknownOption.element(by.tagName('input')).isEnabled()).to.eventually.equal(false);
+    });
+
+    this.When(/^the user selects Unknown$/, function () {
+        mortalityPage.ethnicityUnknownOption.click();
+    });
+
+    this.Then(/^the rest of the options are disabled\- grayed out$/, function () {
+        expect(mortalityPage.ethnicityHispanicOption.element(by.tagName('input')).isEnabled()).to.eventually.equal(false);
+        expect(mortalityPage.ethnicityNonHispanicOption.element(by.tagName('input')).isEnabled()).to.eventually.equal(false);
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;
