@@ -27,7 +27,7 @@ var yrbsStepDefinitionsWrapper = function () {
     });
 
     this.When(/^I click on Show \# More under the questions in any category$/, function () {
-        browser.sleep(30000);
+        browser.sleep(2000);
         yrbsPage.getShowMoreLinks().then(function(elements){
             elements[1].click();
         });
@@ -133,7 +133,7 @@ var yrbsStepDefinitionsWrapper = function () {
             }
             raceParentElement.element(by.xpath('.//*[.="Asian"]')).click();
         });
-        browser.sleep(40000);
+        browser.sleep(60000);
         raceFilter.getAttribute('class').then(function(className){
             if(className =="fa fa-chevron-right") {
                 //Exapnd filter
@@ -141,7 +141,7 @@ var yrbsStepDefinitionsWrapper = function () {
             }
             raceParentElement.element(by.xpath('.//*[.="American Indian or Alaska Native"]')).click();
         });
-        browser.sleep(40000);
+        browser.sleep(60000);
     });
 
     this.Then(/^the default filter pre\-selected should be Race$/, function () {
