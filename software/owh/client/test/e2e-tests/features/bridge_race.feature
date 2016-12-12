@@ -52,3 +52,8 @@ Feature: Bridge race filters
     #TODO @Ashok fix this
     #Then I see graph is collapsed
     #And I see an Expand button on the top right corner
+
+  Scenario: Show line graph
+    When I remove default filters
+    And I select year filter
+    Then I should see line graph

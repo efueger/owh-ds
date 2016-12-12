@@ -450,7 +450,6 @@
                 } else {//for other single filters, show pie chart
                     chartData.push(chartUtilService.pieChart(pieData, header, primaryFilter));
                 }
-                //chartData.push(chartUtilService.pieChart(pieData,header,primaryFilter));
             }
 
             //prepare charts data to render three charts in a row
