@@ -5,72 +5,83 @@ var wonder = require("../api/wonder");
 var yrbs = require("../api/yrbs");
 var searchUtils = require('../api/utils');
 var logger = require('../config/logging')
+var qc = require('../api/queryCache');
+var Q = require('q');
+
+var queryCache = new qc();
 
 var searchRouter = function(app, rConfig) {
-    app.post('/search', function(req, res) {
+    app.post('/search', function (req, res) {
         var q = req.body.q;
-        logger.debug("Incoming RAW query: ", JSON.stringify(q) );
-        var preparedQuery = queryBuilder.buildAPIQuery(q);
-        logger.debug("Incoming query: ", JSON.stringify(preparedQuery) );
-        if ( preparedQuery.apiQuery.searchFor === "deaths" ) {
-            var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
-            var hashCode = req.body.qID;
-            var searchQueryResultsQuery = queryBuilder.buildSearchQueryResultsQuery(hashCode);
-            new elasticSearch().getQueryResults(searchQueryResultsQuery).then(function (searchResultsResponse) {
-                 if(searchResultsResponse && searchResultsResponse._source.queryID === hashCode ) {
-                     logger.info("Retrieved query results for query ID "+hashCode+" from query cache");
-                     var resData = {};
-                     resData.queryJSON = JSON.parse(searchResultsResponse._source.queryJSON);
-                     resData.resultData = JSON.parse(searchResultsResponse._source.resultJSON).data;
-                     resData.sideFilterResults = JSON.parse(searchResultsResponse._source.sideFilterResults);
-                     res.send( new result('OK', resData, JSON.parse(searchResultsResponse._source.resultJSON).pagination, "success") );
-                 }
-                 else {
-                     logger.info("Query with ID "+hashCode+" not in cache, executing query");
-                     var apiQuery = queryBuilder.addCountsToAutoCompleteOptions(q);
-                     var finalAPIQuery = queryBuilder.buildSearchQuery(apiQuery, true);
-                     finalQuery.wonderQuery = preparedQuery.apiQuery;
-                     new elasticSearch().aggregateDeaths(finalAPIQuery).then(function (sideFilterResults) {
-                         new elasticSearch().aggregateDeaths(finalQuery).then(function(response){
-                             searchUtils.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
-                             var insertQuery = queryBuilder.buildInsertQueryResultsQuery(JSON.stringify(q), JSON.stringify(response), "Mortality", hashCode, JSON.stringify(sideFilterResults));
-                             new elasticSearch().insertQueryData(insertQuery).then(function(anotherResponse){
-                                 logger.info("Qeury with "+hashCode+" added to query cache");
-                                 var resData = {};
-                                 resData.queryJSON = q;
-                                 resData.resultData = response.data;
-                                 resData.sideFilterResults = sideFilterResults;
-                                 res.send( new result('OK', resData, response.pagination, "success") );
-                             }, function(anotherResponse){
-                                 res.send( new result('error', anotherResponse, "failed"));
-                             });
-                         }, function(response){
-                             res.send( new result('error', response, "failed"));
-                         });
-                     });
-                 }
+        logger.debug("Incoming RAW query: ", JSON.stringify(q));
+        var queryId = req.body.qID;
+        if (queryId) {
+            queryCache.getCachedQuery(queryId).then(function (r) {
+                if(r) {
+                    logger.info("Retrieved query results for query ID " + queryId + " from query cache");
+                    var resData = {};
+                    resData.queryJSON = JSON.parse(r._source.queryJSON);
+                    resData.resultData = JSON.parse(r._source.resultJSON);
+                    resData.sideFilterResults = JSON.parse(r._source.sideFilterResults);
+                    res.send(new result('OK', resData, "success"));
+                }else{
+                    logger.info("Query with ID " + queryId + " not in cache, executing query");
+                    if (q) {
+                        search(q).then(function (resp) {
+                            queryCache.cacheQuery(queryId, q.key, resp);
+                            res.send(new result('OK', resp, "success"));
+                        }, function (err) {
+                            res.send(new result('Error executing query', err, "failed"));
+                        });
+                    } else {
+                        res.send(new result('No query data present in request, unable to run query', q , "failed"));
+                    }
+                }
             });
-
-        } else if ( preparedQuery.apiQuery.searchFor === "mental_health" ) {
-            var yrbsPreparedQuery = queryBuilder.buildQueryForYRBS(q);
-            yrbsPreparedQuery['pagination'] = {from: 0, size: 10000};
-            yrbsPreparedQuery.apiQuery['pagination'] = {from: 0, size: 10000};
-            new yrbs().invokeYRBSService(yrbsPreparedQuery.apiQuery).then(function(response){
-                res.send( new result('OK', response, response.pagination, "success") );
-            }, function(response){
-                res.send( new result('error', response, "failed"));
-            });
-        } else if ( preparedQuery.apiQuery.searchFor === "bridge_race" ) {
-            var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
-
-            new elasticSearch().aggregateCensusData(finalQuery[0]).then(function(response){
-                var responseData = {resultData:response.data, headers:preparedQuery.headers};
-                res.send( new result('OK', responseData, response.pagination, "success") );
-            }, function(response){
-                res.send( new result('error', response, "failed"));
-            });
+        } else {
+            res.send(new result('Query ID not present', null, "failed"));
         }
     });
+};
+
+
+function search(q) {
+    var deferred = Q.defer();
+    var preparedQuery = queryBuilder.buildAPIQuery(q);
+    logger.debug("Incoming query: ", JSON.stringify(preparedQuery));
+    if (preparedQuery.apiQuery.searchFor === "deaths") {
+        var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
+        var sideFilterQuery = queryBuilder.buildSearchQuery(queryBuilder.addCountsToAutoCompleteOptions(q), true);
+        finalQuery.wonderQuery = preparedQuery.apiQuery;
+        new elasticSearch().aggregateDeaths(sideFilterQuery).then(function (sideFilterResults) {
+            new elasticSearch().aggregateDeaths(finalQuery).then(function (response) {
+                searchUtils.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
+                var resData = {};
+                resData.queryJSON = q;
+                resData.resultData = response.data;
+                resData.sideFilterResults = sideFilterResults;
+                deferred.resolve(resData);
+            });
+        });
+    } else if (preparedQuery.apiQuery.searchFor === "mental_health") {
+        var yrbsPreparedQuery = queryBuilder.buildQueryForYRBS(q);
+        yrbsPreparedQuery['pagination'] = {from: 0, size: 10000};
+        yrbsPreparedQuery.apiQuery['pagination'] = {from: 0, size: 10000};
+        new yrbs().invokeYRBSService(yrbsPreparedQuery.apiQuery).then(function (response) {
+            var resData = {};
+            resData.queryJSON = q;
+            resData.resultData = response;
+            resData.sideFilterResults = [];
+            deferred.resolve(resData);
+        });
+    } else if (preparedQuery.apiQuery.searchFor === "bridge_race") {
+        var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
+        new elasticSearch().aggregateCensusData(finalQuery[0]).then(function (response) {
+            var responseData = {resultData: response.data, headers: preparedQuery.headers};
+            deferred.resolve(responseData);
+        });
+    }
+    return  deferred.promise;
 };
 
 module.exports = searchRouter;

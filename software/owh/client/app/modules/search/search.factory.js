@@ -125,9 +125,9 @@
         }
 
         //Search for YRBS data
-        function searchYRBSResults( primaryFilter ) {
+        function searchYRBSResults( primaryFilter, queryID ) {
             var deferred = $q.defer();
-            queryYRBSAPI(primaryFilter).then(function(response){
+            queryYRBSAPI(primaryFilter, queryID ).then(function(response){
                 primaryFilter.data = response.data.table;
                 //primaryFilter.chartData = response.chartData;
                 primaryFilter.headers = response.headers;
@@ -138,11 +138,11 @@
         }
 
         //Query YRBS API
-        function queryYRBSAPI( primaryFilter ) {
+        function queryYRBSAPI( primaryFilter, queryID ) {
             var deferred = $q.defer();
             var apiQuery = buildQueryForYRBS(primaryFilter);
             var headers = apiQuery.headers;
-            SearchService.searchResults(primaryFilter).then(function(response) {
+            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 /*var yearsFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
                 if(!yearsFilter.autoCompleteOptions[0][primaryFilter.key]) {
                     var total = 0;
@@ -199,8 +199,9 @@
                     questionsFilter.autoCompleteOptions = $rootScope.questionsList;
                 }*/
                 deferred.resolve({
-                    data: response.data,
-                    headers : headers
+                    data: response.data.resultData,
+                    headers : headers,
+                    queryJSON: response.data.queryJSON
                 });
             });
             return deferred.promise;
@@ -367,7 +368,7 @@
             var deferred = $q.defer();
             var apiQuery = buildAPIQuery(primaryFilter);
             var query = apiQuery.apiQuery;
-            SearchService.generateHashCode(query).then(function(response) {
+            SearchService.generateHashCode(apiQuery).then(function(response) {
                 deferred.resolve(response.data);
             });
             return deferred.promise;
