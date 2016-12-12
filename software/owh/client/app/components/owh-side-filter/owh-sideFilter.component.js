@@ -31,7 +31,7 @@
         sfc.isOptionDisabled = isOptionDisabled;
 
         function isOptionDisabled(group, option) {
-            if(group.key === 'hispanicOrigin' && group.groupBy) {
+            if(group.key === 'hispanicOrigin') {
                 //check if unknown is selected
                 if(group.value.indexOf('Unknown') >= 0) {
                     //if unknown is selected then disable all other hispanic options
