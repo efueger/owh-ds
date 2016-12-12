@@ -55,10 +55,33 @@
         /*To bookmark current URL
         * Calling this function from owhSearch.html
         * */
-        function bookmarkCurrentUrl() {
+        function bookmarkCurrentUrl($event) {
             var currentURL =  $location.absUrl();
             var title = "Mortality";
+            console.log(" navigator ", navigator);
+            if ('addToHomescreen' in $window && addToHomescreen.isCompatible) {
+                // Mobile browsers
+                addToHomescreen({ autostart: false, startDelay: 0 }).show(true);
+            } else if ($window.sidebar && $window.sidebar.addPanel) {
+                // Firefox <=22
+                $window.sidebar.addPanel(title, currentURL, '');
+            } else if (($window.sidebar && /Firefox/i.test(navigator.userAgent)) || ($window.opera && $window.print)) {
+                // Firefox 23+ and Opera <=14
+                $(this).attr({
+                    href: currentURL,
+                    title: title,
+                    rel: 'sidebar'
+                }).off($event);
+                return true;
+            } else if ($window.external && ('AddFavorite' in $window.external)) {
+                // IE Favorites
+                $window.external.AddFavorite(currentURL, title);
+            } else {
+                // Other browsers (mainly WebKit & Blink - Safari, Chrome, Opera 15+)
+                alert('Press ' + (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl') + '+D to bookmark this page.');
+            }
 
+            return false;
         }
 
     }
