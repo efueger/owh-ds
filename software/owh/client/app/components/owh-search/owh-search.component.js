@@ -15,13 +15,22 @@
             }
         });
 
-    OWHSearchController.$inject = ['utilService', 'searchFactory', '$window', '$location'];
+    OWHSearchController.$inject = ['utilService', 'searchFactory', '$window', '$location', '$scope'];
 
-    function OWHSearchController(utilService, searchFactory, $window, $location) {
+    function OWHSearchController(utilService, searchFactory, $window, $location, $scope) {
         var ots = this;
         ots.groupByFiltersUpdated = groupByFiltersUpdated;
         ots.phaseTwoImpl = phaseTwoImpl;
-        ots.bookmarkCurrentUrl = bookmarkCurrentUrl;
+        //Capture current location(href) to bookmark.
+        $scope.absURL = $location.absUrl();
+        //Show alert to press Ctrl+D other than Firefox browser
+        $scope.bookmarkAlert = function() {
+            alert('Press ' + (navigator.userAgent.indexOf('Mac') != -1 ? 'Cmd' : 'Ctrl') + '+D to bookmark this page.');
+        }
+        //To verify current browser is Firefox browser or not.
+        $scope.isFirefoxBrowser = function () {
+            return (($window.sidebar && navigator.userAgent.indexOf('Firefox') != -1));
+        }
         angular.forEach(ots.showFilters, function(filter) {
             if(filter.key === ots.tableView) {
                 ots.selectedShowFilter = filter;
@@ -50,38 +59,6 @@
                 ots.selectedShowFilter = ots.showFilters[0];
                 searchFactory.showPhaseTwoModal('label.show.impl.next');
             }
-        }
-
-        /*To bookmark current URL
-        * Calling this function from owhSearch.html
-        * */
-        function bookmarkCurrentUrl($event) {
-            var currentURL =  $location.absUrl();
-            var title = "Mortality";
-            console.log(" navigator ", navigator);
-            if ('addToHomescreen' in $window && addToHomescreen.isCompatible) {
-                // Mobile browsers
-                addToHomescreen({ autostart: false, startDelay: 0 }).show(true);
-            } else if ($window.sidebar && $window.sidebar.addPanel) {
-                // Firefox <=22
-                $window.sidebar.addPanel(title, currentURL, '');
-            } else if (($window.sidebar && /Firefox/i.test(navigator.userAgent)) || ($window.opera && $window.print)) {
-                // Firefox 23+ and Opera <=14
-                $(this).attr({
-                    href: currentURL,
-                    title: title,
-                    rel: 'sidebar'
-                }).off($event);
-                return true;
-            } else if ($window.external && ('AddFavorite' in $window.external)) {
-                // IE Favorites
-                $window.external.AddFavorite(currentURL, title);
-            } else {
-                // Other browsers (mainly WebKit & Blink - Safari, Chrome, Opera 15+)
-                alert('Press ' + (/Mac/i.test(navigator.userAgent) ? 'Cmd' : 'Ctrl') + '+D to bookmark this page.');
-            }
-
-            return false;
         }
 
     }

@@ -458,8 +458,9 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^browser's bookmarking window should be displayed to save the link to Browser$/, function () {
-        //Verify browser book mark window appears
-        return false
+        //verify 'New Bookmark' text appears on bookmark window
+        var alertDialog = browser.switchTo().alert();
+        expect(alertDialog.getText()).to.eventually.include('HIG Search');
     });
 
     this.When(/^I hovers on the bookmark link$/, function () {
@@ -468,7 +469,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the link gets a background box so that I feel it like a button\/action$/, function () {
         //Verify bookmarkbutton css
-        expect(mortalityPage.bookmarkButton.getAttribute('class')).to.eventually.include('someclass');
+        expect(mortalityPage.bookmarkButton.getAttribute('class')).to.eventually.include('bookmark-button');
     });
 
     this.When(/^I selects a saved bookmark$/, function () {

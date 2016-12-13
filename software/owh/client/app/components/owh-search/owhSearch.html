@@ -32,7 +32,11 @@
         </div>
         <div class="usa-width-one-sixth bookmark-div">
             <div class="button_wrapper">
-                <button class="usa-button-outline usa-button-active bookmark-button" ng-click="ots.bookmarkCurrentUrl($event);"><i class="fa fa-star-o"></i> Bookmark this Search</button>
+                <a class="usa-button-outline usa-button-active bookmark-button" href="http://owhdemo.semantibits.com" title="HIG Search" ng-if="isFirefoxBrowser();"
+                   rel="sidebar"> <span><i class="fa fa-star-o"></i> Bookmark this Search</span></a>
+                <a class="usa-button-outline usa-button-active bookmark-button" ng-if="!isFirefoxBrowser();"
+                   ng-click="bookmarkAlert();"><span><i class="fa fa-star-o"></i> Bookmark this Search</span></a>
+
             </div>
         </div>
 
