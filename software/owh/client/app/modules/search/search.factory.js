@@ -921,18 +921,18 @@
             };
 
             filters.yrbsGenderOptions =  [
-                { "key": "female", "title": "Female" },
-                { "key": "male", "title": "Male" }
+                { "key": "Female", "title": "Female" },
+                { "key": "Male", "title": "Male" }
             ];
 
             filters.yrbsRaceOptions =  [
-                { "key": "ai_an", "title": "American Indian or Alaska Native" },
-                { "key": "asian", "title": "Asian" },
-                { "key": "black_african_american", "title": "Black or African American" },
-                { "key": "hispanic", "title": "Hispanic or Latino" },
-                { "key": "nhopi", "title": "Native Hawaiian or Other Pacific Islander" },
-                { "key": "white", "title": "White" },
-                { "key": "multiple_race", "title": "Multiple Race" }
+                { "key": "Am Indian / Alaska Native", "title": "American Indian or Alaska Native" },
+                { "key": "Asian", "title": "Asian" },
+                { "key": "Black or African American", "title": "Black or African American" },
+                { "key": "Hispanic / Latino", "title": "Hispanic or Latino" },
+                { "key": "Native Hawaiian/other PI", "title": "Native Hawaiian or Other Pacific Islander" },
+                { "key": "White", "title": "White" },
+                { "key": "Multiple - Hispanic", "title": "Multiple Race" }
             ];
 
             filters.yrbsGradeOptions = [
@@ -943,10 +943,10 @@
             ];
 
             filters.yrbsYearsOptions = [
-                { "key": "2015", "title": "2015" },
-                { "key": "2013", "title": "2013" },
-                { "key": "2011", "title": "2011" },
-                { "key": "2009", "title": "2009" }
+                { "key": "2015", "title": "2015" }
+                // { "key": "2013", "title": "2013" },
+                // { "key": "2011", "title": "2011" },
+                // { "key": "2009", "title": "2009" }
             ];
 
             filters.yrbsAdditionalHeaders = [
@@ -957,11 +957,11 @@
             filters.yrbsFilters = [
                 {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: ['2015'], groupBy: false,
                    autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
-                { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: [], groupBy: false,
+                { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"q2", primary: false, value: [], groupBy: false,
                     autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
-                { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"grade", primary: false, value: [], groupBy: false,
+                { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"q3", primary: false, value: [], groupBy: false,
                      autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column" },
-                { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race", primary: false, value: [], groupBy: 'column',
+                { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"raceeth", primary: false, value: [], groupBy: 'column',
                    autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column" },
                 { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
                     filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
