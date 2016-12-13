@@ -21,12 +21,15 @@
         var ots = this;
         ots.groupByFiltersUpdated = groupByFiltersUpdated;
         ots.phaseTwoImpl = phaseTwoImpl;
-        //Capture current location(href) to bookmark.
-        $scope.absURL = $location.absUrl();
         //Show alert to press Ctrl+D other than Firefox browser
         $scope.bookmarkAlert = function() {
             alert('Press ' + (navigator.userAgent.indexOf('Mac') != -1 ? 'Cmd' : 'Ctrl') + '+D to bookmark this page.');
-        }
+        };
+        var bookmarkButton =angular.element("#bookmark-button");
+        //capture currne url and assign it to bookmark button href
+        $(bookmarkButton).attr({
+            href: $location.absUrl()
+        });
         //To verify current browser is Firefox browser or not.
         $scope.isFirefoxBrowser = function () {
             return (($window.sidebar && navigator.userAgent.indexOf('Firefox') != -1));
