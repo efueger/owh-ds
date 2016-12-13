@@ -94,6 +94,8 @@
         }, true);
 
         function changeViewFilter(selectedFilter) {
+            searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);
+            search(true);
             sc.tableView = selectedFilter.key;
         }
 
