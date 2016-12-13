@@ -458,5 +458,39 @@ var mortalityStepDefinitionsWrapper = function () {
             expect(elements.length).to.equal(4);
         });
     });
+
+    this.When(/^I select the "([^"]*)" link in application$/, function (bookmarkbtn) {
+        mortalityPage.bookmarkButton.click();
+    });
+
+    this.Then(/^browser's bookmarking window should be displayed to save the link to Browser$/, function () {
+        //verify 'New Bookmark' text appears on bookmark window
+        var alertDialog = browser.switchTo().alert();
+        expect(alertDialog.getText()).to.eventually.include('HIG Search');
+    });
+
+    this.When(/^I hovers on the bookmark link$/, function () {
+        browser.actions().mouseMove(mortalityPage.bookmarkButton).perform();
+    });
+
+    this.Then(/^the link gets a background box so that I feel it like a button\/action$/, function () {
+        //Verify bookmarkbutton css
+        expect(mortalityPage.bookmarkButton.getAttribute('class')).to.eventually.include('bookmark-button');
+    });
+
+    this.When(/^I selects a saved bookmark$/, function () {
+        //Need to find out a way to select saved bookmark
+    });
+
+    this.Then(/^all the search parameters should be autopopulated and search results should be displayed$/, function () {
+        mortalityPage.isVisualizationDisplayed().then(function(value) {
+            expect(value).to.equal(true);
+        });
+        var labelArray = mortalityPage.getAxisLabelsForMinimizedVisualization();
+        expect(labelArray[0].getText()).to.eventually.equal('Race');
+        expect(labelArray[1].getText()).to.eventually.equal('Deaths');
+        //Verify autocompleted filters and table data also.
+
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;

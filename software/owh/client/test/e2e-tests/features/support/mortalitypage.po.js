@@ -25,6 +25,7 @@ var MortalitySearchPage = function() {
     msp.ethnicitySpaniardOption = element(by.id('deaths_hispanicOrigin_Spaniard')).element(by.xpath('..'));
     msp.showMoreYears = element(by.cssContainingText('a', '+ 12 more'));
     msp.expandEthnicity = element(by.cssContainingText('a', 'Ethnicity'));
+    msp.bookmarkButton = element(by.cssContainingText('a', 'Bookmark this Search'));
 
     msp.getSelectedFilterType = function() {
        return msp.interestedInSelectBox.$('option:checked').getText();
