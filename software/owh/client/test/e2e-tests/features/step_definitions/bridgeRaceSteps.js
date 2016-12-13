@@ -120,7 +120,7 @@ var BridgeRaceStepDefinitionsWrapper = function () {
 
     this.Then(/^I see graph is collapsed$/, function () {
         bridgeRacePage.isCollapseBtnDisplayed().then(function(value) {
-            expect(value).to.equal(true);
+            expect(value).to.equal(false);
         });
     });
 };

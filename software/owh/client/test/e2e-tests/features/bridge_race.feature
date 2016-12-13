@@ -49,6 +49,5 @@ Feature: Bridge race filters
     Then I see expanded graph in modal dialog
     And  I see expand button is changed to collapse button
     When I click on collapse button
-    #TODO @Ashok fix this
-    #Then I see graph is collapsed
-    #And I see an Expand button on the top right corner
+    Then I see graph is collapsed
+    And I see an Expand button on the top right corner
