@@ -1,6 +1,6 @@
 {
   "status": "OK",
-  "data": {
+  "data":{"resultData": {
     "table": {
       "question": [
         {
@@ -3610,6 +3610,6 @@
       ]
     },
     "maxQuestion": "Safety concerns at school"
-  },
+  }},
   "messages": "success"
 }

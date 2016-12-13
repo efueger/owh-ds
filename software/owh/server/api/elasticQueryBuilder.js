@@ -120,38 +120,6 @@ function getPopulationSumQuery() {
 }
 
 /**
- *
- * @param query
- * @param results
- * @param dataset
- * @param hashcode
- * @returns {{}}
- */
-var buildInsertQueryResultsQuery = function (query, results, dataset, hashcode, sideFilterResults) {
-    var insertQuery = {};
-    insertQuery.queryJSON = query;
-    insertQuery.resultJSON = results;
-    insertQuery.dataset = dataset;  //Find a way to get dataset value
-    //@TODO current data with yyy-mm-dd format
-    insertQuery.lastupdated = "2016-10-25";
-    insertQuery.queryID = hashcode;
-    insertQuery.sideFilterResults = sideFilterResults;
-    return insertQuery;
-};
-
-
-var buildSearchQueryResultsQuery = function(hashcode) {
-    var searchQuery = {
-        "query": {
-            "term": {
-                "queryID": hashcode
-            }
-        }
-    }
-    return searchQuery;
-};
-
-/**
  * Builds a search query
  * @param params
  * @param isAggregation
@@ -618,8 +586,6 @@ function addCountsToAutoCompleteOptions(primaryFilter) {
 module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;
-module.exports.buildInsertQueryResultsQuery = buildInsertQueryResultsQuery;
-module.exports.buildSearchQueryResultsQuery = buildSearchQueryResultsQuery;
 module.exports.buildAPIQuery = buildAPIQuery;
 module.exports.buildQueryForYRBS = buildQueryForYRBS;
 module.exports.addCountsToAutoCompleteOptions = addCountsToAutoCompleteOptions;

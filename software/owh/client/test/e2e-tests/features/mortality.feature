@@ -190,6 +190,17 @@ Scenario: Data should be right aligned
 #  When I select "Column" type for "Race" filter
 #  Then Rates, Deaths and Population shouldn't be overlap
 
+Scenario: Only display percent for non-zero cells
+  Given I am on search page
+  When I update criteria in filter options with column "Ethnicity"
+  Then zero cells should not have percentage
+
+Scenario: Age group selection disabled for age rates
+  Given I am on search page
+  When I update criteria in filter option with row "Age Groups"
+  When the user chooses the option 'Age Adjusted Death Rates'
+  Then table should not include age groups
+
 Scenario: Bookmark link
   When I select the "Bookmark" link in application
   Then browser's bookmarking window should be displayed to save the link to Browser
