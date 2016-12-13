@@ -446,7 +446,7 @@ describe('search factory ', function(){
         it('searchYRBSResults', function () {
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(yrbsResponse.data.table));
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(yrbsResponse.data.resultData.table));
             });
             deferred.resolve(yrbsResponse);
             $scope.$apply();
