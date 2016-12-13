@@ -190,7 +190,7 @@ ElasticClient.prototype.aggregateCensusData = function(query){
     return deferred.promise;
 };
 
-ElasticClient.prototype.getQueryResults = function(query){
+ElasticClient.prototype.getQueryCache = function(query){
     var client = this.getClient(_queryIndex);
     var deferred = Q.defer();
 
@@ -199,8 +199,11 @@ ElasticClient.prototype.getQueryResults = function(query){
        body: query,
        request_cache:true
     }).then(function (resp){
-        var results = resp.hits.hits.length > 0 ? resp.hits.hits[0]:null ;
-        deferred.resolve(results);
+        if(resp.hits.hits.length > 0) {
+            deferred.resolve(resp.hits.hits[0])
+        }else{
+            deferred.resolve(null);
+        }
     }, function(err){
         logger.error("While searching for queryData object ", err.message);
         deferred.reject(err);
@@ -222,7 +225,6 @@ ElasticClient.prototype.insertQueryData = function (query) {
         type: _queryType,
         body: query
     }).then(function (resp){
-
         deferred.resolve(resp);
     }, function(err){
         logger.error("Failed to insert record in queryResults ", err.message);

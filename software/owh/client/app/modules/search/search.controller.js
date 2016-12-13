@@ -237,6 +237,10 @@
                     sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                     sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
                 }
+                if(sc.filters.selectedPrimaryFilter.key === 'bridge_race') {
+                    sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                    sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
+                }
                 sc.filters.selectedPrimaryFilter.initiated = true;
             });
         }
