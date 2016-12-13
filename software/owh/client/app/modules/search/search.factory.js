@@ -20,9 +20,27 @@
             generateHashCode: generateHashCode,
             buildAPIQuery: buildAPIQuery,
             sortAutoCompleteOptions: sortAutoCompleteOptions,
-            groupAutoCompleteOptions: groupAutoCompleteOptions
+            groupAutoCompleteOptions: groupAutoCompleteOptions,
+            removeDisabledFilters: removeDisabledFilters
         };
         return service;
+
+        function removeDisabledFilters(selectedFilter, filterView, availableFilters) {
+            if(availableFilters[filterView]) {
+                angular.forEach(selectedFilter.allFilters, function(filter, index) {
+                    if(availableFilters[filterView].indexOf(filter.key) < 0) {
+                        filter.value = [];
+                        filter.groupBy = false;
+                    }
+                });
+                angular.forEach(selectedFilter.sideFilters, function(filter, index) {
+                    if(availableFilters[filterView].indexOf(filter.filters.key) < 0) {
+                        filter.filters.value = [];
+                        filter.filters.groupBy = false;
+                    }
+                });
+            }
+        }
 
         function groupAutoCompleteOptions(filter, sort) {
             var groupedOptions = [];

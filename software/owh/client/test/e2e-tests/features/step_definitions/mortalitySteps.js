@@ -249,7 +249,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the age adjusted rates are shown for each row$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[1]).to.equal('Rate\n562.5\nDeaths\n98,769\nPopulation\n29,970,935');
+            expect(value[1]).to.equal('Rate\n557.9\nDeaths\n98,769\nPopulation\n32,250,198');
         });
     });
 
@@ -299,7 +299,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the age filter should be hidden$/, function () {
-        expect(mortalityPage.selectSideFilter('Age Groups', 'Row').isDisplayed()).to.eventually.equal(false);
+        expect(mortalityPage.selectSideFilter('Age Groups', 'Row').isPresent()).to.eventually.equal(false);
     });
 
     this.Then(/^years should be in descending order$/, function () {
@@ -457,6 +457,46 @@ var mortalityStepDefinitionsWrapper = function () {
         mortalityPage.getTableRowDataCells(1).then(function (elements) {
             expect(elements[12].getText()).to.eventually.equal('0');
         });
+    });
+
+    this.Then(/^table should not include age groups$/, function () {
+        mortalityPage.getTableRowDataCells(0).then(function (elements) {
+            expect(elements.length).to.equal(4);
+        });
+    });
+
+    this.When(/^I select the "([^"]*)" link in application$/, function (bookmarkbtn) {
+        mortalityPage.bookmarkButton.click();
+    });
+
+    this.Then(/^browser's bookmarking window should be displayed to save the link to Browser$/, function () {
+        //verify 'New Bookmark' text appears on bookmark window
+        var alertDialog = browser.switchTo().alert();
+        expect(alertDialog.getText()).to.eventually.include('HIG Search');
+    });
+
+    this.When(/^I hovers on the bookmark link$/, function () {
+        browser.actions().mouseMove(mortalityPage.bookmarkButton).perform();
+    });
+
+    this.Then(/^the link gets a background box so that I feel it like a button\/action$/, function () {
+        //Verify bookmarkbutton css
+        expect(mortalityPage.bookmarkButton.getAttribute('class')).to.eventually.include('bookmark-button');
+    });
+
+    this.When(/^I selects a saved bookmark$/, function () {
+        //Need to find out a way to select saved bookmark
+    });
+
+    this.Then(/^all the search parameters should be autopopulated and search results should be displayed$/, function () {
+        mortalityPage.isVisualizationDisplayed().then(function(value) {
+            expect(value).to.equal(true);
+        });
+        var labelArray = mortalityPage.getAxisLabelsForMinimizedVisualization();
+        expect(labelArray[0].getText()).to.eventually.equal('Race');
+        expect(labelArray[1].getText()).to.eventually.equal('Deaths');
+        //Verify autocompleted filters and table data also.
+
     });
 };
 module.exports = mortalityStepDefinitionsWrapper;
