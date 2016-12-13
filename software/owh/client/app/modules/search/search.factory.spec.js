@@ -35,6 +35,7 @@ describe('search factory ', function(){
 
         $httpBackend.whenGET('app/i18n/messages-en.json').respond({ hello: 'World' });
         $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
+        $httpBackend.whenGET('/getFBAppID').respond({data: { fbAppID: 1111111111111111}});
 
         filters = searchFactory.getAllFilters();
 
@@ -517,7 +518,7 @@ describe('search factory ', function(){
             });
 
             var questionFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'question');
-            questionFilter.onIconClick(questionFilter.autoCompleteOptions[0].title);
+            questionFilter.onIconClick(questionFilter.autoCompleteOptions[0].key);
             yrbsChart1Deferred.resolve(yrbsGradePieChartResponse);
             yrbsChart2Deferred.resolve(yrbsRacePieChartResponse);
             yrbsChart3Deferred.resolve(yrbsGenderAndRaceBarChartResponse);

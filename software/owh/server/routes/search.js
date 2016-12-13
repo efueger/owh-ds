@@ -2,6 +2,7 @@ var result = require('../models/result');
 var elasticSearch = require('../models/elasticSearch');
 var queryBuilder = require('../api/elasticQueryBuilder');
 var wonder = require("../api/wonder");
+var yrbs = require("../api/yrbs");
 var searchUtils = require('../api/utils');
 var logger = require('../config/logging')
 
@@ -54,12 +55,7 @@ var searchRouter = function(app, rConfig) {
             var yrbsPreparedQuery = queryBuilder.buildQueryForYRBS(q);
             yrbsPreparedQuery['pagination'] = {from: 0, size: 10000};
             yrbsPreparedQuery.apiQuery['pagination'] = {from: 0, size: 10000};
-            var finalQuery = queryBuilder.buildSearchQuery(yrbsPreparedQuery.apiQuery, false);
-            /*finalQuery.sort = [
-                { "percent" : {"order" : "desc"}},
-                "_score"
-            ];*/
-            new elasticSearch().aggregateMentalHealth(finalQuery[0], yrbsPreparedQuery.apiQuery.dataKeys, yrbsPreparedQuery.apiQuery.aggregations.nested.table).then(function(response){
+            new yrbs().invokeYRBSService(yrbsPreparedQuery.apiQuery).then(function(response){
                 res.send( new result('OK', response, response.pagination, "success") );
             }, function(response){
                 res.send( new result('error', response, "failed"));
@@ -78,3 +74,4 @@ var searchRouter = function(app, rConfig) {
 };
 
 module.exports = searchRouter;
+

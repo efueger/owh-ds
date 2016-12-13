@@ -29,6 +29,7 @@ describe('owhAccordionTable component: ', function() {
         $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
         $httpBackend.whenGET('app/modules/home/home.html').respond( $templateCache.get('app/modules/home/home.html'));
         $httpBackend.whenGET('app/modules/search/components/owh-accordion-table/owhAccordionTable.html').respond( $templateCache.get('app/modules/search/components/owh-accordion-table/owhAccordionTable.html'));
+        $httpBackend.whenGET('/getFBAppID').respond({data: { fbAppID: 1111111111111111}});
     });
 
     it('should have a row of headers for each column header', function() {
