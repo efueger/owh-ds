@@ -542,7 +542,7 @@
     "stop": 81,
     "field": "Hispanic Origin",
     "mappings": {
-      "00": "Non–Hispanic",
+      "00": "Non-Hispanic",
       "01": "Mexican",
       "02": "Puerto Rican",
       "03": "Cuban",
