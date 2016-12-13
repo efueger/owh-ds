@@ -28,7 +28,7 @@
         var bookmarkButton =angular.element("#bookmark-button");
         //capture currne url and assign it to bookmark button href
         $(bookmarkButton).attr({
-            href: $location.absUrl()
+            href: $location.absUrl()+""
         });
         //To verify current browser is Firefox browser or not.
         $scope.isFirefoxBrowser = function () {
