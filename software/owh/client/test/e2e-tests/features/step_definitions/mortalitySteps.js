@@ -453,6 +453,12 @@ var mortalityStepDefinitionsWrapper = function () {
         expect(element(by.id('crudeRateDiv')).getAttribute('class')).to.eventually.include('usa-width-one-half');
     });
 
+    this.Then(/^zero cells should not have percentage$/, function () {
+        mortalityPage.getTableRowDataCells(1).then(function (elements) {
+            expect(elements[12].getText()).to.eventually.equal('0');
+        });
+    });
+
     this.Then(/^table should not include age groups$/, function () {
         mortalityPage.getTableRowDataCells(0).then(function (elements) {
             expect(elements.length).to.equal(4);
