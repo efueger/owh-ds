@@ -807,3 +807,19 @@ and (-webkit-min-device-pixel-ratio: 1) {
 	}
 }
 /*css for iPad ends*/
+
+/* css for bookmark button */
+.bookmark-div {
+	margin-top: 11px !important;
+}
+.bookmark-button {
+
+	border-radius: 4px;
+	color: #222 !important;
+	box-shadow: 0 0 0 1px #ccc !important;
+	font-weight: normal;
+	padding: 10px;
+	cursor: pointer;
+
+}
+/* End of css for bookmark button */

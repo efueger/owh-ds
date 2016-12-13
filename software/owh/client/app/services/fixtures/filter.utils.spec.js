@@ -17,6 +17,8 @@ describe('filterUtils', function(){
             expect(bridgeRaceFilters[1].key).toEqual('sex');
             expect(bridgeRaceFilters[2].key).toEqual('agegroup');
             expect(bridgeRaceFilters[3].key).toEqual('race');
+            expect(bridgeRaceFilters[5].autoCompleteOptions[0].title).toEqual('Alabama');
+            expect(bridgeRaceFilters[5].autoCompleteOptions[1].title).toEqual('Alaska');
         });
 
         it('should provide me correct slider intervals', function () {
