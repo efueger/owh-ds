@@ -86,10 +86,7 @@
         function findByKeyAndValue(a, key, value) {
             if(a){
                 for (var i = 0; i < a.length; i++) {
-                    //use replace here because some characters are ending up slightly different, this fixes it for Non-Hispanic
-                    if ( a[i][key] && a[i][key].replace('–', '-') === value ) {
-                        return a[i];
-                    }
+                    if ( a[i][key] && a[i][key] === value ) {return a[i];}
                 }
             }
             return null;
