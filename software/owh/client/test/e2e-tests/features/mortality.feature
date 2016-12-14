@@ -201,10 +201,6 @@ Scenario: Age group selection disabled for age rates
   When the user chooses the option 'Age Adjusted Death Rates'
   Then table should not include age groups
 
-Scenario: Bookmark link
-  When I select the "Bookmark" link in application
-  Then browser's bookmarking window should be displayed to save the link to Browser
-
 Scenario: Bookmark link UI
   Given I am on search page
   When I hovers on the bookmark link
