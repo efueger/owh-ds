@@ -82,14 +82,14 @@
                                     ng-click="sfc.showModal(group, [group])"></button>
                         </label>
                         <div class="">
-                            <div ng-repeat="selectedValue in group.selectedValues" >
-                                <span style="font-size: 13px" ng-bind="selectedValue.text"></span>
+                            <div ng-repeat="selectedNode in group.selectedNodes" >
+                                <span style="font-size: 13px" ng-bind="selectedNode.text"></span>
                             </div>
-                            <div ng-if="!group.selectedValues || group.selectedValues.length === 0" style="margin-bottom: 20px">
+                            <div ng-if="!group.selectedNodes || group.selectedNodes.length === 0" style="margin-bottom: 20px">
                                 <span style="font-size: 13px">All</span>
                             </div>
                         </div>
-                        <div class="ucd-clear" ng-show="group.selectedValues.length > 0 ">
+                        <div class="ucd-clear" ng-show="group.selectedNodes.length > 0 ">
                             <button class="action-button" translate="label.clear"
                                     ng-click="sfc.clearSelection(group)"></button>
                         </div>

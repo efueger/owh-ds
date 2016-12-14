@@ -141,7 +141,8 @@
                         "old_id":"Threatened at school"
                     }
                 ],
-                "old_id":"Unintentional Injuries and Violence"
+                "old_id":"Unintentional Injuries and Violence",
+                "id":"yQ1"
             },
 
             {
@@ -223,7 +224,8 @@
                         "old_id":"Cigarettes from store"
                     }
                 ],
-                "old_id":"Tobacco use"
+                "old_id":"Tobacco use",
+                "id":"yQ2"
             },
             {
                 "text":"Alcohol and Other Drug Use",
@@ -334,7 +336,8 @@
                         "old_id":"Illegal drugs at school"
                     }
                 ],
-                "old_id":"Alcohol and Other Drug Use"
+                "old_id":"Alcohol and Other Drug Use",
+                "id":"yQ3"
             },
             {
                 "text":"Sexual Behaviors",
@@ -380,7 +383,8 @@
                         "old_id":"HIV testing"
                     }
                 ],
-                "old_id":"Sexual Behaviors"
+                "old_id":"Sexual Behaviors",
+                "id":"yQ4"
             },
             {
                 "text":"Physical Activity",
@@ -406,7 +410,8 @@
                         "old_id":"Television watching"
                     }
                 ],
-                "old_id":"Physical Activity"
+                "old_id":"Physical Activity",
+                "id":"yQ5"
             },
             {
                 "text":"Obesity, Overweight, and Weight Control",
@@ -422,7 +427,8 @@
                         "old_id":"Overweight"
                     }
                 ],
-                "old_id":"Obesity, Overweight, and Weight Control"
+                "old_id":"Obesity, Overweight, and Weight Control",
+                "id":"yQ6"
             },
             {
                 "text":"Dietary Behaviors",
@@ -463,7 +469,8 @@
                         "old_id":"Sports drinks >= 2 times"
                     }
                 ],
-                "old_id":"Dietary Behaviors"
+                "old_id":"Dietary Behaviors",
+                "id":"yQ7"
             },
             {
                 "text":"Other Health Topics",
@@ -494,7 +501,8 @@
                         "old_id":"Indoor tanning device use"
                     }
                 ],
-                "old_id":"Other Health Topics"
+                "old_id":"Other Health Topics",
+                "id":"yQ8"
             }
         ];
 

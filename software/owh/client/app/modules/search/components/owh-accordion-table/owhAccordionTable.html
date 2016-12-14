@@ -5,7 +5,7 @@
     </tr>
     </thead>
     <tbody class="owh-question__table" ng-repeat="eachCategory in oatc.data | filter: oatc.filterCategory">
-        <tr class="owh-question__title-row">
+        <tr class="owh-question__title-row" ng-if="eachCategory.questions.length > 0">
             <td class="owh-question__title" colspan="100%">
                 <a class="owh-question__expand cursor-pointer" ng-if="!eachCategory.collapse" ng-click="oatc.collapseRow(eachCategory)">
                     <i class="fa fa-chevron-down" title="Collapse category"></i>
@@ -26,7 +26,7 @@
                 </div>
             </td>
         </tr>
-        <tr ng-hide="eachCategory.collapse">
+        <tr ng-hide="eachCategory.collapse" ng-if="eachCategory.questions.length > 2">
             <td colspan="100%">
                 <a class="owh-question__show cursor-pointer" ng-if="eachCategory.hide" ng-click="oatc.showMore(eachCategory)">Show {{ eachCategory.questions.length - 2 }} More</a>
                 <a class="owh-question__show cursor-pointer" ng-if="!eachCategory.hide" ng-click="oatc.showLess(eachCategory)">Show Less</a>
