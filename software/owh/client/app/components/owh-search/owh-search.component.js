@@ -30,7 +30,7 @@
         $(bookmarkButton).attr({
             //If we assign $location.absURL() then 'New bookmark window' not displayed, that's why
             //assigned partial URL
-            href: $location.url()
+            href: $location.host()+""+$location.url()
         });
         //To verify current browser is Firefox browser or not.
         $scope.isFirefoxBrowser = function () {
