@@ -28,7 +28,9 @@
         var bookmarkButton =angular.element("#bookmark-button");
         //capture currne url and assign it to bookmark button href
         $(bookmarkButton).attr({
-            href: $location.absUrl()+""
+            //If we assign $location.absURL() then 'New bookmark window' not displayed, that's why
+            //split URL and added as string
+            href: "http://"+$location.host()+""+$location.url()
         });
         //To verify current browser is Firefox browser or not.
         $scope.isFirefoxBrowser = function () {
