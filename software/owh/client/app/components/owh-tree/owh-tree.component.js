@@ -21,6 +21,7 @@
         tc.ac = function(){
             return true;
         };
+        tc.removeNode = removeNode;
 
         tc.treeConfig = {
             core : {
@@ -95,10 +96,19 @@
                     var causeObj = {id:selectedNode.id, text:selectedNode.text};
                     tc.optionValues.push(causeObj);
                 });
-                tc.selectedNodesText = utilService.getValuesByKey(tc.optionValues, 'text').join(", ");
             },250);
         }
         /*Helper functions Ends*/
+
+        /*
+        * To remove node from selected nodes list
+        * */
+        function removeNode(nodeId) {
+            $timeout(function() {
+                var node = getTreeInstance().get_node(nodeId);
+                getTreeInstance().deselect_node(node);
+            }, 250)
+        }
 
     }
 }());

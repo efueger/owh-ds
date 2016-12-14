@@ -78,3 +78,48 @@ Scenario: YRBS question categories in the given order
   When I expand "Question" filter section
   When I select "Select Questions" button
   Then I see question categories in this order "Unintentional Injuries and Violence", "Tobacco Use", "Alcohol and Other Drug Use", "Sexual Behaviors", "Physical Activity", "Obesity, Overweight, and Weight Control", "Dietary Behaviors", "Other Health Topics"
+
+Scenario: Pop-up
+  When I click on "Select Questions" button
+  Then the pop up box should open up (just like UCD pop up) with a list- tree pattern- of categories of Survey Questions
+  And it should also have a Search Questions - search bar above the list
+
+Scenario: Default
+  When I open up the Survey Question pop up
+  Then by default no questions should be selected
+
+Scenario: Search Questions
+  When I begin to type a word in the search bar
+  Then the list below that should be updated dynamically
+
+Scenario: + sign
+  When I hovers his mouse on any of the questions from the list
+  Then a + sign appears in the end of the question to indicate the user that he can click to add the question
+
+Scenario: - sign
+  When I have selected a question
+  Then the + sign changes to - sign to indicate the user that he can click to deselect the question
+
+Scenario: Selected Survey Question(s)
+  When I have selected a question
+  Then another heading - "Selected Question(s)" must appear on the top of the 'Search Questions' search bar
+  And then the selected question must be listed under the Selected Question(s)
+
+Scenario: Delete x
+  When I see the selected questions under the Selected Question(s) list
+  Then I should also be able to see a x button to the end of the question
+  And I click on this button then that particular question is deleted from the list (deselected)
+
+Scenario: Data Table
+  When I select a few questions and clicks on the Add Selected Question(s) button
+  Then the data table should update based on the selection
+
+Scenario: Clear
+  When I see the selected questions under the Selected Question(s) list in side filter
+  Then I should also see a "Clear" button at the end of the selected questions list
+  And I click on this button, then all the selected questions are deleted from the list (deselected)
+
+#need to discuss with Gopal about this, is this button in filter options or in popup ?
+#Scenario: Edit Selection and Clear buttons
+#  When I select a few questions
+#  Then the 'Select Question(s)' button (on the top of the table) should be renamed to 'Update Selected Questions'

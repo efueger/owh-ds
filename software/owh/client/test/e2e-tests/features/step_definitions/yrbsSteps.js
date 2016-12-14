@@ -225,5 +225,117 @@ var yrbsStepDefinitionsWrapper = function () {
             expect(elements[2].element(by.tagName('a')).getText()).to.eventually.equal('Race/Ethnicity');
         });
     });
+
+    this.When(/^I click on "([^"]*)" button$/, function (arg1) {
+        yrbsPage.selectQuestionsButton.click();
+    });
+
+    this.Then(/^the pop up box should open up \(just like UCD pop up\) with a list\- tree pattern\- of categories of Survey Questions$/, function () {
+        browser.switchTo().window(1);
+        expect(element(by.cssContainingText('div', 'Hint: Use Ctrl + Click for multiple selections, or Shift + Click for a range.')).isPresent()).to.eventually.equal(true);
+    });
+
+    this.Then(/^it should also have a Search Questions \- search bar above the list$/, function () {
+        expect(element(by.id('search_text')).isPresent()).to.eventually.equal(true);
+        //close popup
+        yrbsPage.closePopup();
+    });
+
+    this.When(/^I open up the Survey Question pop up$/, function () {
+        yrbsPage.selectQuestionsButton.click();
+    });
+
+    this.Then(/^by default no questions should be selected$/, function () {
+        //If 'Add selected question' button not displayed means no questions selected
+        expect(yrbspage.addSelectedQuestionsButton.isPresent()).to.eventually.equal(false);
+        //if 'Remove(cross)' icon not displayed means, no questions selected
+        expect(element(by.id("removeQuestion").isPresent())).to.eventually.equal(false);
+    });
+
+    this.When(/^I begin to type a word in the search bar$/, function () {
+        yrbsPage.searchQuestionsBox.clear().sendKeys('Unintentional');
+    });
+
+    this.Then(/^the list below that should be updated dynamically$/, function () {
+        //I should see only one question with string 'Unintentional', remaining 7 parent nodes should be hidden
+        element(by.id('question')).element(by.tagName('ul')).all(by.css('jstree-hidden')).count().then(function (size) {
+            expect(size).to.equal(7);
+        });
+
+        //Clear text in search box
+        yrbsPage.searchQuestionsBox.clear();
+    });
+
+
+    this.When(/^I hovers his mouse on any of the questions from the list$/, function () {
+        browser.actions().mouseMove(element(by.css('jstree-anchor'))).perform();
+    });
+
+    this.Then(/^a \+ sign appears in the end of the question to indicate the user that he can click to add the question$/, function () {
+        //a + fontawesome icon should be displayed
+    });
+
+    this.When(/^I have selected a question$/, function () {
+        //select first child question
+        element(by.css('jstree-anchor')).click();
+    });
+
+    this.Then(/^the \+ sign changes to \- sign to indicate the user that he can click to deselect the question$/, function () {
+        //a - fontawesome icon should be displayed beside question
+
+        //and unselect it
+        element(by.css('jstree-anchor')).click();
+    });
+
+
+    this.Then(/^another heading \- "Selected Question\(s\)" must appear on the top of the 'Search Questions' search bar$/, function (arg1) {
+        expect(element(by.cssContainingText('label', arg1)).isPresent()).to.eventually.equal(true);
+    });
+
+    this.Then(/^then the selected question must be listed under the Selected Question\(s\)$/, function () {
+         var firstQuestionText = element(by.css('jstree-anchor')).getText();
+         expect(element(by.repeater('eachNode in tc.optionValues')).getText()).to.eventually.equal(firstQuestionText);
+    });
+
+
+    this.When(/^I see the selected questions under the Selected Question\(s\) list$/, function () {
+        var firstQuestionText = element(by.css('jstree-anchor')).getText();
+        expect(element(by.repeater('eachNode in tc.optionValues')).getText()).to.eventually.equal(firstQuestionText);
+    });
+
+
+    this.Then(/^I should also be able to see a x button to the end of the question$/, function () {
+        expect(element(by.id('removeQuestion')).isPresent()).equal(true);
+    });
+
+    this.Then(/^I click on this button then that particular question is deleted from the list \(deselected\)$/, function () {
+        element(by.id('removeQuestion')).click();
+        //No element should present with class 'jstree-clicked'
+        element(by.id('question')).element(by.tagName('ul')).all(by.css('jstree-clicked')).count().then(function (size) {
+            expect(size).to.equal(0);
+        });
+    });
+
+    this.When(/^I select a few questions and clicks on the Add Selected Question\(s\) button$/, function () {
+        element(by.css('jstree-anchor')).click();
+        yrbspage.addSelectedQuestionsButton.click();
+    });
+
+    this.Then(/^the data table should update based on the selection$/, function () {
+        //Verify the data table
+    });
+
+    this.When(/^I see the selected questions under the Selected Question\(s\) list in side filter$/, function () {
+        expect(element(by.repeater('selectedValue in group.selectedValues')).isPresent()).to.eventually.equal(true);
+    });
+
+    this.Then(/^I should also see a "([^"]*)" button at the end of the selected questions list$/, function (arg1) {
+        expect(yrbsPage.clearSelectedQuestionsButton.isPresent()).to.eventually.equal(true);
+    });
+
+    this.Then(/^I click on this button, then all the selected questions are deleted from the list \(deselected\)$/, function () {
+        yrbsPage.clearSelectedQuestionsButton.click();
+        expect(element(by.repeater('selectedValue in group.selectedValues')).isPresent()).to.eventually.equal(false);
+    });
 };
 module.exports = yrbsStepDefinitionsWrapper;
