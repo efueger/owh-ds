@@ -30,7 +30,7 @@
         $(bookmarkButton).attr({
             //If we assign $location.absURL() then 'New bookmark window' not displayed, that's why
             //split URL and added as string
-            href: "http://"+$location.host()+""+$location.url()
+            href: "http://owhqa.semanticbits.com"+$location.url()
         });
         //To verify current browser is Firefox browser or not.
         $scope.isFirefoxBrowser = function () {
