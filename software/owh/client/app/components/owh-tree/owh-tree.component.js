@@ -100,10 +100,12 @@
                         } else {//If user selects parent node
                             //get the node with it's child nodes
                             var parentNode = getTreeInstance().get_json(selectedNode.id);
+                            var childNodes = [];
                             //get all child nodes of a selected node
                             angular.forEach(parentNode.children, function (childNode, index) {
-                                tc.optionValues.push({id:childNode.id, text:childNode.text});
+                                childNodes.push({id:childNode.id, text:childNode.text});
                             });
+                            tc.optionValues.push({id:selectedNode.id, text:selectedNode.text, childNodes: childNodes});
                         }
                     } else {// for mortality MCD/UCD codes
                         var causeObj = {id:selectedNode.id, text:selectedNode.text};

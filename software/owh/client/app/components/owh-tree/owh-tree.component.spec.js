@@ -142,7 +142,8 @@ describe('owhTree component: ', function() {
         }};
         ctrl.treeEventsObj.select_node({});
         $timeout.flush();
-        expect(ctrl.selectedNodesText).toEqual("Were ever physically forced, Were in a physical fight");
+
+        expect(ctrl.selectedNodesText).toEqual("Unintentional Injuries");
     }));
 
     it('Should call search function', inject(function ($timeout) {
