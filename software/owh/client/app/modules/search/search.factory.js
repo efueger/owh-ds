@@ -20,9 +20,27 @@
             generateHashCode: generateHashCode,
             buildAPIQuery: buildAPIQuery,
             sortAutoCompleteOptions: sortAutoCompleteOptions,
-            groupAutoCompleteOptions: groupAutoCompleteOptions
+            groupAutoCompleteOptions: groupAutoCompleteOptions,
+            removeDisabledFilters: removeDisabledFilters
         };
         return service;
+
+        function removeDisabledFilters(selectedFilter, filterView, availableFilters) {
+            if(availableFilters[filterView]) {
+                angular.forEach(selectedFilter.allFilters, function(filter, index) {
+                    if(availableFilters[filterView].indexOf(filter.key) < 0) {
+                        filter.value = [];
+                        filter.groupBy = false;
+                    }
+                });
+                angular.forEach(selectedFilter.sideFilters, function(filter, index) {
+                    if(availableFilters[filterView].indexOf(filter.filters.key) < 0) {
+                        filter.filters.value = [];
+                        filter.filters.groupBy = false;
+                    }
+                });
+            }
+        }
 
         function groupAutoCompleteOptions(filter, sort) {
             var groupedOptions = [];
@@ -100,7 +118,7 @@
                 for(var i = 0; i < sort[filter.key].length; i++) {
                     angular.forEach(filter.autoCompleteOptions, function(option) {
                         //if type string, then just a regular option
-                        if(typeof sort[filter.key][i] === 'string') {
+                        if(typeof sort[filter.key][i] === 'string' && !option.options) {
                             //not group option
                             if(sort[filter.key][i] === option.key) {
                                 filterLength++;
@@ -109,12 +127,16 @@
                         } else {
                             //else, group option
                             //is same parent group option
-                            if(sort[filter.key][i].key === option.key) {
-                                angular.forEach(option.options, function(subOption) {
-                                    if(sort[filter.key][i].options.indexOf(subOption.key) >= 0) {
+                            if(option.options) {
+                                angular.forEach(option.options, function (subOption) {
+                                    if (sort[filter.key][i].options && sort[filter.key][i].options.indexOf(subOption.key) >= 0) {
                                         sortedOptions.push(subOption);
                                     }
                                 });
+                            } else {
+                                if (sort[filter.key][i].options && sort[filter.key][i].options.indexOf(option.key) >= 0) {
+                                    sortedOptions.push(option);
+                                }
                             }
                         }
                     });
@@ -125,9 +147,9 @@
         }
 
         //Search for YRBS data
-        function searchYRBSResults( primaryFilter ) {
+        function searchYRBSResults( primaryFilter, queryID ) {
             var deferred = $q.defer();
-            queryYRBSAPI(primaryFilter).then(function(response){
+            queryYRBSAPI(primaryFilter, queryID ).then(function(response){
                 primaryFilter.data = response.data.table;
                 //primaryFilter.chartData = response.chartData;
                 primaryFilter.headers = response.headers;
@@ -138,11 +160,11 @@
         }
 
         //Query YRBS API
-        function queryYRBSAPI( primaryFilter ) {
+        function queryYRBSAPI( primaryFilter, queryID ) {
             var deferred = $q.defer();
             var apiQuery = buildQueryForYRBS(primaryFilter);
             var headers = apiQuery.headers;
-            SearchService.searchResults(primaryFilter).then(function(response) {
+            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 /*var yearsFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
                 if(!yearsFilter.autoCompleteOptions[0][primaryFilter.key]) {
                     var total = 0;
@@ -199,8 +221,9 @@
                     questionsFilter.autoCompleteOptions = $rootScope.questionsList;
                 }*/
                 deferred.resolve({
-                    data: response.data,
-                    headers : headers
+                    data: response.data.resultData,
+                    headers : headers,
+                    queryJSON: response.data.queryJSON
                 });
             });
             return deferred.promise;
@@ -367,7 +390,7 @@
             var deferred = $q.defer();
             var apiQuery = buildAPIQuery(primaryFilter);
             var query = apiQuery.apiQuery;
-            SearchService.generateHashCode(query).then(function(response) {
+            SearchService.generateHashCode(apiQuery).then(function(response) {
                 deferred.resolve(response.data);
             });
             return deferred.promise;
@@ -707,17 +730,17 @@
             return deferred.promise;
         }
 
-        function queryCensusAPI( primaryFilter ) {
+        function queryCensusAPI( primaryFilter, queryID ) {
 
             var deferred = $q.defer();
             var apiQuery = buildAPIQuery(primaryFilter);
             var headers = apiQuery.headers;
 
-            SearchService.searchResults(primaryFilter).then(function(response) {
+            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 deferred.resolve({
                     data : response.data.resultData.nested.table,
-                    headers : response.data.headers,
-                    chartData: prepareChartData(response.data.headers, response.data.resultData.nested, primaryFilter),
+                    headers : response.data.resultData.headers,
+                    chartData: prepareChartData(response.data.resultData.headers, response.data.resultData.nested, primaryFilter),
                     totalCount: response.pagination.total
                 })
             });
@@ -727,10 +750,10 @@
         /**
          * Search census bridge race population estmation
          */
-        function searchCensusInfo(primaryFilter) {
+        function searchCensusInfo(primaryFilter, queryID) {
             var deferred = $q.defer();
 
-            queryCensusAPI(primaryFilter).then(function(response){
+            queryCensusAPI(primaryFilter, queryID).then(function(response){
                 primaryFilter.data = response.data;
                 primaryFilter.headers = response.headers;
                 primaryFilter.chartData = response.chartData;
