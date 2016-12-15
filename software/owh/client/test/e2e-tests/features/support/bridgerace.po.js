@@ -76,6 +76,10 @@ var BridgeRaceSearchPage = function() {
     brs.collapseGraph = function () {
         return brs.collapseGraphLink.click();
     };
+
+    brs.selectFilterSwitch = function(filter, switchType) {
+        return element(by.cssContainingText('a', filter)).element(By.xpath('following-sibling::owh-toggle-switch')).element(by.cssContainingText('a', switchType));
+    };
 };
 
 module.exports = new BridgeRaceSearchPage;

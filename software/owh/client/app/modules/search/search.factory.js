@@ -467,7 +467,12 @@
                 var data = nestedData.table;
                 var header = (headers.rowHeaders.length === 1) ? headers.rowHeaders[0] : headers.columnHeaders[0];
                 var pieData = data[header.key];
-                chartData.push(chartUtilService.pieChart(pieData,header,primaryFilter));
+                //for current_year dhow line graph
+                if (header.key == 'current_year') {
+                    chartData.push(chartUtilService.lineChart(pieData, header, primaryFilter));
+                } else {//for other single filters, show pie chart
+                    chartData.push(chartUtilService.pieChart(pieData, header, primaryFilter));
+                }
             }
 
             //prepare charts data to render three charts in a row
