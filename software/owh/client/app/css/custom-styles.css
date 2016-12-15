@@ -786,6 +786,10 @@ label.common-label {
 	.home-child-header {padding: 5%;}
 }
 
+.nvd3-dashed-line {
+	stroke-dasharray: 5,5;
+}
+
 /*Media queries*/
 
 /*css for iPad starts*/
