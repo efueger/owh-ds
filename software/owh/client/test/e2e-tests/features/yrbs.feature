@@ -76,7 +76,7 @@ Scenario: Race/Ethnicity label
 
 Scenario: YRBS question categories in the given order
   When I expand "Question" filter section
-  When I select "Select Questions" button
+  And I select "Select Questions" button
   Then I see question categories in this order "Unintentional Injuries and Violence", "Tobacco Use", "Alcohol and Other Drug Use", "Sexual Behaviors", "Physical Activity", "Obesity, Overweight, and Weight Control", "Dietary Behaviors", "Other Health Topics"
 
 Scenario: Pop-up
@@ -92,13 +92,14 @@ Scenario: Search Questions
   When I begin to type a word in the search bar
   Then the list below that should be updated dynamically
 
-Scenario: + sign
-  When I hovers his mouse on any of the questions from the list
-  Then a + sign appears in the end of the question to indicate the user that he can click to add the question
+#Frist scenario working, once we add + icon update second scenario
+#Scenario: + sign
+#  When I hovers his mouse on any of the questions from the list
+#  Then a + sign appears in the end of the question to indicate the user that he can click to add the question
 
-Scenario: - sign
-  When I have selected a question
-  Then the + sign changes to - sign to indicate the user that he can click to deselect the question
+#Scenario: - sign
+ # When I have selected a question
+  #Then the + sign changes to - sign to indicate the user that he can click to deselect the question
 
 Scenario: Selected Survey Question(s)
   When I have selected a question
@@ -115,11 +116,11 @@ Scenario: Data Table
   Then the data table should update based on the selection
 
 Scenario: Clear
-  When I see the selected questions under the Selected Question(s) list in side filter
-  Then I should also see a "Clear" button at the end of the selected questions list
-  And I click on this button, then all the selected questions are deleted from the list (deselected)
+ When I see the selected questions under the Selected Question(s) list in side filter
+ Then I should also see a "Clear" button at the end of the selected questions list
+ And I click on this button, then all the selected questions are deleted from the list (deselected)
 
-#need to discuss with Gopal about this, is this button in filter options or in popup ?
-#Scenario: Edit Selection and Clear buttons
-#  When I select a few questions
-#  Then the 'Select Question(s)' button (on the top of the table) should be renamed to 'Update Selected Questions'
+Scenario: Edit Selection and Clear buttons
+  When I click on "Select Questions" button
+  And I select a few questions and clicks on the Add Selected Question(s) button
+  Then the "Select Questions" button should be renamed to "Update Questions"
