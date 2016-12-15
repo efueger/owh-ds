@@ -93,8 +93,25 @@
                 tc.selectedNodes =  getTreeInstance().get_selected(true);
                 tc.optionValues=[];
                 angular.forEach(tc.selectedNodes,function(selectedNode, index){
-                    var causeObj = {id:selectedNode.id, text:selectedNode.text};
-                    tc.optionValues.push(causeObj);
+                    //For YRBS Questions
+                    if (tc.entityName == 'Question') {
+                        //If user selects leaf node
+                        if (selectedNode.children.length == 0 ) {
+                            tc.optionValues.push({id:selectedNode.id, text:selectedNode.text});
+                        } else {//If user selects parent node
+                            //get the node with it's child nodes
+                            var parentNode = getTreeInstance().get_json(selectedNode.id);
+                            var childNodes = [];
+                            //get all child nodes of a selected node
+                            angular.forEach(parentNode.children, function (childNode, index) {
+                                childNodes.push({id:childNode.id, text:childNode.text});
+                            });
+                            tc.optionValues.push({id:selectedNode.id, text:selectedNode.text, childNodes: childNodes});
+                        }
+                    } else {// for mortality MCD/UCD codes
+                        var causeObj = {id:selectedNode.id, text:selectedNode.text};
+                        tc.optionValues.push(causeObj);
+                    }
                 });
             },250);
         }

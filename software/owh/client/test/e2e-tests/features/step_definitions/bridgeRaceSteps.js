@@ -123,6 +123,26 @@ var BridgeRaceStepDefinitionsWrapper = function () {
             expect(value).to.equal(false);
         });
     });
+
+    this.When(/^I remove default filters$/, function () {
+        element.all(by.className('ui-select-match-close')).then(function (slectedFilter) {
+            slectedFilter[0].click();
+        });
+        browser.sleep(50);
+        element.all(by.className('ui-select-match-close')).then(function (slectedFilter) {
+            slectedFilter[0].click();
+        });
+    });
+
+    this.When(/^I select year filter$/, function () {
+        bridgeRacePage.selectFilterSwitch('Yearly July 1st Estimates', 'Column').click();
+    });
+
+    this.Then(/^I should see line graph$/, function () {
+        element.all(by.className('nv-lineChart')).then(function (lineChart) {
+            expect(lineChart.length).to.be.above(0);
+        })
+    });
 };
 
 module.exports = BridgeRaceStepDefinitionsWrapper;
