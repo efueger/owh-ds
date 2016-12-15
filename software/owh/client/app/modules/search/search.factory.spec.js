@@ -247,6 +247,57 @@ describe('search factory ', function(){
         expect(ethnicityFilter.autoCompleteOptions.length).toEqual(3);
     });
 
+    it('removeDisabledFilters should remove values and groupBy for filters not available', function() {
+        var allFilters = [
+            {
+                key: 'year',
+                value: ['2014', '2013'],
+                groupBy: 'row'
+            },
+            {
+                key: 'agegroup',
+                value: ['10', '25'],
+                groupBy: 'column'
+            }
+        ];
+
+        var sideFilters = [
+            {
+                filters: {
+                    key: 'year',
+                    value: ['2014', '2013'],
+                    groupBy: 'row'
+                }
+            },
+            {
+                filters: {
+                    key: 'agegroup',
+                    value: ['10', '25'],
+                    groupBy: 'column'
+                }
+            }
+        ];
+
+        var availableFilters = {
+            'crude_death_rates': ['year', 'gender', 'race'],
+            'age-adjusted_death_rates': ['year', 'gender', 'race']
+        };
+
+        var selectedFilter = {allFilters: allFilters, sideFilters: sideFilters};
+
+        searchFactory.removeDisabledFilters(selectedFilter, 'age-adjusted_death_rates', availableFilters);
+
+        expect(selectedFilter.allFilters[0].value.length).toEqual(2);
+        expect(selectedFilter.allFilters[0].groupBy).toEqual('row');
+        expect(selectedFilter.allFilters[1].value.length).toEqual(0);
+        expect(selectedFilter.allFilters[1].groupBy).toEqual(false);
+
+        expect(selectedFilter.sideFilters[0].filters.value.length).toEqual(2);
+        expect(selectedFilter.sideFilters[0].filters.groupBy).toEqual('row');
+        expect(selectedFilter.sideFilters[1].filters.value.length).toEqual(0);
+        expect(selectedFilter.sideFilters[1].filters.groupBy).toEqual(false);
+    });
+
     describe('test with mortality data', function () {
         beforeAll(function() {
             primaryFilter = filters.search[0];
@@ -395,7 +446,7 @@ describe('search factory ', function(){
         it('searchYRBSResults', function () {
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(yrbsResponse.data.table));
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(yrbsResponse.data.resultData.table));
             });
             deferred.resolve(yrbsResponse);
             $scope.$apply();

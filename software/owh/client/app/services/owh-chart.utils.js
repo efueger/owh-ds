@@ -16,6 +16,7 @@
             //bulletBar: bulletBar,
             HorizontalChart : horizontalChart,
             verticalChart : verticalChart,
+            lineChart : lineChart,
             showExpandedGraph: showExpandedGraph
         };
         return service;
@@ -247,6 +248,98 @@
             return chartData;
         }
 
+        function lineChart(data, filter, primaryFilter) {
+            var chartData = {
+                data: [],
+                title: "label.graph."+filter.key,
+                options: {
+                    "chart": {
+                        "type": "lineChart",
+                        "height": 250,
+                        "width": 300,
+                        "margin": {
+                            "top": 5,
+                            "right": 5,
+                            "bottom": 16,
+                            "left": 50
+                        },
+                        showMaxMin: false,
+                        showLegend: false,
+                        showControls: false,
+                        showValues: false,
+                        showXAxis:true,
+                        showYAxis:true,
+                        reduceXTicks:false,
+                        legend:{
+                            width:200,
+                            expanded:true
+                        },
+                        staggerLabels:true,
+                        rotateLabels:70,
+                        styles: {
+                            classes: {
+                                'with-3d-shadow': true,
+                                'with-transitions': true,
+                                gallery: false
+
+                            }
+                        },
+                        interactive: true,
+                        x: function(d){return d.x;},
+                        y: function(d){return d.y;},
+                        "xAxis": {
+                            "axisLabelDistance": -20,
+                            "axisLabel": "Year",
+                            tickFormat:function (d) {
+                                return null;
+                            }
+                        },
+                        "yAxis": {
+                            "axisLabelDistance": -20,
+                            "axisLabel": "Population",
+                            tickFormat:function (d) {
+                                return null;
+                            }
+                        },
+                        tooltip: {
+                            contentGenerator: function(d) {
+                                var html = "<div class='usa-grid-full'"+
+                                    "<div class='usa-width-one-whole' style='padding: 10px; font-weight: bold'>"+ d.value+"</div>" +
+                                    "<div class='usa-width-one-whole nvtooltip-value'>";
+                                d.series.forEach(function(elem){
+                                    html += "<i class='fa fa-square' style='color:"+elem.color+"'></i>" +
+                                        "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"+$filter('number')(elem.value) + "</div>";
+                                });
+                                html += "</div>";
+                                return html;
+                            }
+                        }
+                    }
+                }
+            };
+
+            chartData.data = function () {
+                var lineData = [];
+                angular.forEach(utilService.getSelectedAutoCompleteOptions(filter), function(eachOption) {
+                    var eachRow = utilService.findByKeyAndValue(data, 'name', eachOption.key);
+                    lineData.push({x: eachOption.title, y: eachRow ? eachRow[primaryFilter.key] : 0});
+                });
+
+                //Line chart data should be sent as an array of series objects.
+                return [
+                    {
+                        values: lineData,      //values - represents the array of {x,y} data points
+                        key: 'Population', //key  - the name of the series.
+                        color: '#ff7f0e',  //color - optional: choose your own line color.
+                        strokeWidth: 2,
+                        classed: 'nvd3-dashed-line'
+                    }
+                ];
+            };
+
+            return chartData;
+        }
+
         /*Prepare pie chart for single filter*/
         function pieChart( data, filter, primaryFilter, postFixToTooltip ) {
             postFixToTooltip = postFixToTooltip ? postFixToTooltip : '';
@@ -321,7 +414,7 @@
                 var expandedChartData = angular.copy(eachChartData);
                 /*Update chartData options*/
                 expandedChartData.options.chart.height = 500;
-                expandedChartData.options.chart.width = 720;
+                expandedChartData.options.chart.width = 750;
                 expandedChartData.options.chart.showLegend = true;
                 expandedChartData.options.chart.showControls = true;
                 expandedChartData.options.chart.showValues = true;
@@ -381,6 +474,11 @@
                         expandedChartData.options.chart.legend.margin.right = 130;
                         expandedChartData.options.chart.legend.margin.top = 30;
                     }
+                } else if (eachChartData.options.chart.type === 'lineChart') {
+                    expandedChartData.options.chart.margin.left = 85;
+                    expandedChartData.options.chart.margin.bottom = 50;
+                    expandedChartData.options.chart.xAxis.axisLabelDistance = 5;
+                    expandedChartData.options.chart.yAxis.axisLabelDistance = 20;
                 }
                 allExpandedChartDatas.push(expandedChartData);
             });
@@ -398,7 +496,8 @@
                     eg.showFbDialog = function(svgIndex, title, section, description) {
                         shareUtilService.shareOnFb(svgIndex, title, section, description);
                     }
-                }
+                },
+                size:650
             }).then(function (modal) {
                 // The modal object has the element built, if this is a bootstrap modal
                 // you can call 'modal' to show it, if it's a custom modal just show or hide
