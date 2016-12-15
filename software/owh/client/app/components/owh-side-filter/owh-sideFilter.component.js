@@ -122,7 +122,7 @@
                         mc.codeKey = selectedFilter.key;
                         mc.entityName = selectedFilter.key === 'question' ? 'Question' : 'Disease';
                         mc.modelHeader = selectedFilter.key === 'question' ? 'label.select.question' : 'label.cause.death';
-                        mc.optionValues = selectedFilter.selectedValues;
+                        mc.optionValues = selectedFilter.selectedNodes;
                         mc.close = close;
                     }
                 }).then(function (modal) {
@@ -133,12 +133,24 @@
                     modal.close.then(function (result) {
                         //remove all elements from array
                         if(!selectedFilter.selectedValues) {
+                            //selected nodes and their child nodes, which will be sent to backend for query
                             selectedFilter.selectedValues = [];
+                            //selected nodes
+                            selectedFilter.selectedNodes = [];
                         }
                         selectedFilter.selectedValues.length = 0;
+                        selectedFilter.selectedNodes.length = 0;
                         //To reflect the selected causes
                         angular.forEach(modal.controller.optionValues, function (eachOption, index) {
-                            selectedFilter.selectedValues.push(eachOption);
+                            //get child nodes, if any and add to selected values
+                            if (eachOption.childNodes && eachOption.childNodes.length > 0) {
+                                angular.forEach(eachOption.childNodes, function (childNode, index) {
+                                    selectedFilter.selectedValues.push(childNode);
+                                });
+                            } else {
+                                selectedFilter.selectedValues.push(eachOption);
+                            }
+                            selectedFilter.selectedNodes.push(eachOption);
                         });
                         selectedFilter.value = utilService.getValuesByKey(selectedFilter.selectedValues, 'id');
                         modal.element.hide();
@@ -153,6 +165,7 @@
                 filter.groupBy = false;
             }
             //remove all elements from array
+            filter.selectedNodes.length = 0;
             filter.selectedValues.length = 0;
             filter.value.length = 0;
             sfc.onFilter();

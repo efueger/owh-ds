@@ -15,12 +15,27 @@
             }
         });
 
-    OWHSearchController.$inject = ['utilService', 'searchFactory'];
+    OWHSearchController.$inject = ['utilService', 'searchFactory', '$window', '$location', '$scope'];
 
-    function OWHSearchController(utilService, searchFactory) {
+    function OWHSearchController(utilService, searchFactory, $window, $location, $scope) {
         var ots = this;
         ots.groupByFiltersUpdated = groupByFiltersUpdated;
         ots.phaseTwoImpl = phaseTwoImpl;
+        //Show alert to press Ctrl+D other than Firefox browser
+        $scope.bookmarkAlert = function() {
+            alert('Press ' + (navigator.userAgent.indexOf('Mac') != -1 ? 'Cmd' : 'Ctrl') + '+D to bookmark this page.');
+        };
+        var bookmarkButton =angular.element("#bookmark-button");
+        //capture currne url and assign it to bookmark button href
+        $(bookmarkButton).attr({
+            //If we assign $location.absURL() then 'New bookmark window' not displayed, that's why
+            //assigned partial URL
+            href: $location.host()+":"+$location.port()+$location.url()
+        });
+        //To verify current browser is Firefox browser or not.
+        $scope.isFirefoxBrowser = function () {
+            return (($window.sidebar && navigator.userAgent.indexOf('Firefox') != -1));
+        }
         angular.forEach(ots.showFilters, function(filter) {
             if(filter.key === ots.tableView) {
                 ots.selectedShowFilter = filter;
@@ -50,6 +65,7 @@
                 searchFactory.showPhaseTwoModal('label.show.impl.next');
             }
         }
+
     }
 
 }());

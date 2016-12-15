@@ -23,13 +23,22 @@
                 </ui-select-choices>
             </ui-select>
         </div>
-        <div class="usa-width-one-fourth" ng-show="ots.filters.selectedPrimaryFilter.key === 'deaths'">
+        <div class="usa-width-one-fourth margin-right-0" ng-show="ots.filters.selectedPrimaryFilter.key === 'deaths'">
             <div class="usa-width-one-fourth show-me-text" ng-bind="'label.show.me' | translate"></div>
             <select ng-model="ots.selectedShowFilter"
                     ng-change="ots.onViewFilter({selectedFilter: ots.selectedShowFilter})"
                     ng-options="eachFilter.title | translate for eachFilter in ots.showFilters"
                     class="usa-width-two-thirds add-on-element gray-border margin-0"></select>
         </div>
+        <div class="usa-width-one-sixth bookmark-div" ng-show="ots.filters.selectedPrimaryFilter.title === 'label.filter.mortality' && ots.tableView === 'number_of_deaths'">
+            <div class="button_wrapper">
+                <a id="bookmark-button" class="usa-button-outline usa-button-active bookmark-button" href="#"  title="HIG Search" ng-show="isFirefoxBrowser();"
+                   rel="sidebar"> <span><i class="fa fa-star-o"></i> Bookmark this Search</span></a>
+                <a class="usa-button-outline usa-button-active bookmark-button" ng-show="!isFirefoxBrowser();"
+                   ng-click="bookmarkAlert();"><span><i class="fa fa-star-o"></i> Bookmark this Search</span></a>
+            </div>
+        </div>
+
     </div>
 </div>
 <!--<button class="action-button" translate="label.search" ng-click="ots.searchResults({})"></button>-->

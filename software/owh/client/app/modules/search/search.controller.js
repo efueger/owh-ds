@@ -94,6 +94,8 @@
         }, true);
 
         function changeViewFilter(selectedFilter) {
+            searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);
+            search(true);
             sc.tableView = selectedFilter.key;
         }
 
@@ -234,6 +236,10 @@
                 if(sc.filters.selectedPrimaryFilter.key === 'mental_health') {
                     sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                     sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
+                }
+                if(sc.filters.selectedPrimaryFilter.key === 'bridge_race') {
+                    sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                    sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
                 }
                 sc.filters.selectedPrimaryFilter.initiated = true;
             });

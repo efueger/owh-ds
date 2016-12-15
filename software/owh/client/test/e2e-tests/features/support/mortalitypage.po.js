@@ -27,7 +27,7 @@ var MortalitySearchPage = function() {
     msp.expandEthnicity = element(by.cssContainingText('a', 'Ethnicity'));
     msp.ethnicityUnknownOption = element(by.id('deaths_hispanicOrigin_Unknown')).element(by.xpath('..'));
     msp.ethnicityNonHispanicOption = element(by.id('deaths_hispanicOrigin_Non-Hispanic')).element(by.xpath('..'));
-
+    msp.bookmarkButton = element(by.cssContainingText('a', 'Bookmark this Search'));
 
     msp.getSelectedFilterType = function() {
        return msp.interestedInSelectBox.$('option:checked').getText();
