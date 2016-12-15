@@ -65,10 +65,9 @@ function search(q) {
             });
         });
     } else if (preparedQuery.apiQuery.searchFor === "mental_health") {
-        var yrbsPreparedQuery = queryBuilder.buildQueryForYRBS(q);
-        yrbsPreparedQuery['pagination'] = {from: 0, size: 10000};
-        yrbsPreparedQuery.apiQuery['pagination'] = {from: 0, size: 10000};
-        new yrbs().invokeYRBSService(yrbsPreparedQuery.apiQuery).then(function (response) {
+        preparedQuery['pagination'] = {from: 0, size: 10000};
+        preparedQuery.apiQuery['pagination'] = {from: 0, size: 10000};
+        new yrbs().invokeYRBSService(preparedQuery.apiQuery).then(function (response) {
             var resData = {};
             resData.queryJSON = q;
             resData.resultData = response;

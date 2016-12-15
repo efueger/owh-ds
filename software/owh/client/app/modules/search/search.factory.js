@@ -951,14 +951,14 @@
                 { "key": "Hispanic / Latino", "title": "Hispanic or Latino" },
                 { "key": "Native Hawaiian/other PI", "title": "Native Hawaiian or Other Pacific Islander" },
                 { "key": "White", "title": "White" },
-                { "key": "Multiple - Hispanic", "title": "Multiple Race" }
+                { "key": "Multiple - Non-Hispanic", "title": "Multiple Race" }
             ];
 
             filters.yrbsGradeOptions = [
-                { "key": "9th", "title": "9th" },
-                { "key": "10th", "title": "10th" },
-                { "key": "11th", "title": "11th" },
-                { "key": "12th", "title": "12th" }
+                { "key": "9th grade", "title": "9th" },
+                { "key": "10th grade", "title": "10th" },
+                { "key": "11th grade", "title": "11th" },
+                { "key": "12th grade", "title": "12th" }
             ];
 
             filters.yrbsYearsOptions = [

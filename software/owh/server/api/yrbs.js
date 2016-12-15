@@ -22,10 +22,12 @@ yrbs.prototype.invokeYRBSService = function(apiQuery){
     var yrbsquery = this.buildYRBSQueries(apiQuery);
     var deferred = Q.defer();
     var queryPromises = [];
+    logger.info("Invoking YRBS service for "+yrbsquery.length+" questions");
     for (var q in yrbsquery){
         queryPromises.push(invokeYRBS(config.yrbs.url+ '?'+yrbsquery[q]));
     }
     Q.all(queryPromises).then(function(resp){
+        logger.info("YRBS service response received for all "+yrbsquery.length+" questions");
         deferred.resolve(self.processYRBSReponses(resp));
     }, function (error) {
         deferred.reject(error);
@@ -79,8 +81,10 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
 yrbs.prototype.processYRBSReponses = function(response){
     var questions = []
     for (r in response){
-        if (response[r]) {
+        if (response[r] && 'results' in response[r]) {
             questions.push(this.processQuestionResponse(response[r]));
+        } else{
+            logger.warn("Error response from YRBS: "+JSON.stringify(response[r]));
         }
     }
     var finalResp = {'table': {'question':questions}};
@@ -99,19 +103,23 @@ yrbs.prototype.processQuestionResponse = function(response){
 
     for (var i = 1; i< response.results.length; i ++){
         var r = response.results[i];
-        var cell = q;
-        // The result table is always nested in the order Sex (q2), Grade (q3) and Race (raceeth)
-        // so nest the results in that order
-        if('q2' in r) {
-            cell = getResultCell(cell, 'q2', r.q2);
+        // Process only the deepest level data which is grouped by all attributes requested
+        if(r.level == response.vars.length) {
+            var cell = q;
+
+            // The result table is always nested in the order Sex (q2), Grade (q3) and Race (raceeth)
+            // so nest the results in that order
+            if ('q2' in r) {
+                cell = getResultCell(cell, 'q2', r.q2);
+            }
+            if ('q3' in r) {
+                cell = getResultCell(cell, 'q3', r.q3);
+            }
+            if ('raceeth' in r) {
+                cell = getResultCell(cell, 'raceeth', r.raceeth);
+            }
+            cell['mental_health'] = resultCellDataString(r);
         }
-        if('raceeth' in r) {
-            cell = getResultCell(cell, 'raceeth', r.raceeth);
-        }
-        if('q3' in r) {
-            cell = getResultCell(cell, 'q3', r.q3);
-        }
-        cell['mental_health'] = resultCellDataString(r);
     }
     return q;
 };

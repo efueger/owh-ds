@@ -4,8 +4,7 @@ var queryBuilder = require('../api/elasticQueryBuilder');
 
 var generateHashCodeRouter = function(app, rConfig) {
     app.post('/generateHashCode', function(req, res) {
-        var q = req.body.q;
-        var generatedHash = hash(q, { algorithm: 'md5', encoding: 'hex' });
+        var generatedHash = hash(JSON.stringify(req.body.q), { algorithm: 'md5', encoding: 'hex' });
         res.send( new result('OK', generatedHash, "success") );
     });
 };
