@@ -57,7 +57,8 @@ Scenario: Show Less
 Scenario: Category Title
   When I hover the mouse over a category name
   Then an option/link to 'Show only this Category' should be seen
-  Scenario: Show only this Category button
+
+Scenario: Show only this Category button
   When I click on 'Show only this Category'
   Then the data table must show only that category
 
