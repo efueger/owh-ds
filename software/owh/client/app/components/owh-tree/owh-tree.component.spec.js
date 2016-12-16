@@ -74,12 +74,7 @@ describe('owhTree component: ', function() {
     }));
 
     it('Should call select call back functions', inject(function ($timeout) {
-        var optionValues = [
-            {"id": "Y455", "text": "4-Aminophenol derivatives (Y45.5)"}
-        ];
-        var codeKey = 'ucd-chapter-10';
-        var bindings = {optionValues: optionValues, codeKey: codeKey};
-        var ctrl = $componentController('owhTree', {$scope: $scope}, bindings);
+        var ctrl = $componentController('owhTree', {$scope: $scope});
         expect(ctrl.treeEventsObj).toBeDefined();
 
         /*Dummy jstree object*/
@@ -95,7 +90,45 @@ describe('owhTree component: ', function() {
 
         // flush timeout(s) for all code under test.
         $timeout.flush();
-        expect(ctrl.selectedNodesText).toEqual("46,XX true hermaphrodite (Q99.1)");
+        expect(ctrl.optionValues[0].text).toEqual("46,XX true hermaphrodite (Q99.1)");
+    }));
+
+    it('Should call select call back functions for yrbs leaf questions', inject(function ($timeout) {
+        var ctrl = $componentController('owhTree', {$scope: $scope});
+        expect(ctrl.treeEventsObj).toBeDefined();
+
+        /*Dummy jstree object*/
+        ctrl.treeInstance = {jstree:function(){
+            return  {
+                get_selected:function() {
+                    return [{"id": "qn14", "text": "Carried a gun(on at least 1 day during the 30 days before the survey)", children:[]}]
+                }
+            }
+        }};
+        ctrl.treeEventsObj.select_node({});
+        $timeout.flush();
+        expect(ctrl.optionValues[0].text).toEqual("Carried a gun(on at least 1 day during the 30 days before the survey)");
+    }));
+
+    it('Should call select call back functions for yrbs parent node questions', inject(function ($timeout) {
+        var ctrl = $componentController('owhTree', {$scope: $scope});
+        expect(ctrl.treeEventsObj).toBeDefined();
+
+        /*Dummy jstree object*/
+        ctrl.treeInstance = {jstree:function(){
+            return  {
+                get_selected:function() {
+                    return [{"id": "j1_1", "text": "Unintentional Injuries", children:["qn21", "qn18"]}];
+                },
+                get_json: function (id) {
+                    return {"id": "j1_1", "text": "Unintentional Injuries", children:[{"id": "qn21", "text": "Were ever physically forced", "children": [] }, { "id": "qn18", "text": "Were in a physical fight","children": []}]};
+                }
+            }
+        }};
+        ctrl.treeEventsObj.select_node({});
+        $timeout.flush();
+
+        expect(ctrl.optionValues[0].text).toEqual("Unintentional Injuries");
     }));
 
     it('Should call search function', inject(function ($timeout) {

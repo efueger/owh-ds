@@ -113,6 +113,7 @@ describe('OWH Side filter component: ', function() {
         expect(ctrl).toBeDefined();
         var group = angular.copy(filters.selectedPrimaryFilter.sideFilters[0].filters);
         group.selectedValues=["1","2"];
+        group.selectedNodes=["1","2"];
         //If allChecked
         ctrl.clearSelection(group, true);
         expect(group.value.length).toBe(0);
@@ -127,11 +128,12 @@ describe('OWH Side filter component: ', function() {
         var allFilters = [
             { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key",
                 primary: false, value: [], groupBy: 'row', filterType: 'tree', autoCompleteOptions: [], donotshowOnSearch:true,
-                selectTitle: 'select.label.yrbs.filter.question', iconClass: 'fa fa-pie-chart purple-text', selectedValues :[]
+                selectTitle: 'select.label.yrbs.filter.question', iconClass: 'fa fa-pie-chart purple-text', selectedValues :[], selectedNodes:[]
             },
             { key: 'ucd-chapter-10', title: 'label.filter.ucd.icd.chapter', queryKey:"ICD_10_code.path",
                 primary: true, value: [], groupBy: false, type:"label.filter.group.ucd", groupKey:"ucd",
-                autoCompleteOptions: [],aggregationKey:"ICD_10_code.code",selectedValues :[{id:"disease1",text:"disease1"}]
+                autoCompleteOptions: [],aggregationKey:"ICD_10_code.code", selectedValues :[{id:"disease1",text:"disease1"}],
+                selectedNodes:[]
             }
         ];
         var selectedFilter = allFilters[1];
@@ -157,11 +159,8 @@ describe('OWH Side filter component: ', function() {
         var allFilters = [
             { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key",
                 primary: false, value: [], groupBy: 'row', filterType: 'tree', autoCompleteOptions: [], donotshowOnSearch:true,
-                selectTitle: 'select.label.yrbs.filter.question', iconClass: 'fa fa-pie-chart purple-text', selectedValues:undefined
-            },
-            { key: 'ucd-chapter-10', title: 'label.filter.ucd.icd.chapter', queryKey:"ICD_10_code.path",
-                primary: true, value: [], groupBy: false, type:"label.filter.group.ucd", groupKey:"ucd",
-                autoCompleteOptions: [],aggregationKey:"ICD_10_code.code",selectedValues :["disease1"]
+                selectTitle: 'select.label.yrbs.filter.question', iconClass: 'fa fa-pie-chart purple-text',
+                selectedValues:[], selectedNodes:[]
             }
         ];
         var selectedFilter = allFilters[0];
@@ -174,12 +173,15 @@ describe('OWH Side filter component: ', function() {
         var modalCtrl = controllerProvider(givenModalDefaults.controller, { $scope: $scope, close: closeDeferred.promise});
         modalCtrl.element = givenModalDefaults.element;
         modalCtrl.controller = modalCtrl;
-        modalCtrl.optionValues = [];
+        modalCtrl.optionValues = [{id:"Q1", text:"Question 1", childNodes:[{id:"qn1", text:"test ques1"},
+                        {id:"qn2", text:"test ques2"}]}, {id:"Q2",text:"Question 2"}];
         thenFunction(modalCtrl);
         expect(elementVisible).toBeTruthy();
         closeDeferred.resolve({});
         $scope.$apply();
         expect(elementVisible).toBeFalsy();
+        expect(JSON.stringify(selectedFilter.selectedNodes)).toEqual(JSON.stringify(modalCtrl.optionValues))
+        expect(JSON.stringify(selectedFilter.selectedValues)).toEqual(JSON.stringify([{"id":"qn1","text":"test ques1"},{"id":"qn2","text":"test ques2"},{"id":"Q2","text":"Question 2"}]))
     });
 
 
@@ -349,5 +351,39 @@ describe('OWH Side filter component: ', function() {
         group.value = ['Non-Hispanic'];
 
         expect(ctrl.isSubOptionSelected(group, option)).toBeFalsy();
+    });
+
+    it('isOptionDisabled should make sure Unknown and other ethnicity options are mutually exclusive', function() {
+        var bindings = {filters: []};
+        var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
+
+        var hispanicOption = {
+            key: 'Hispanic'
+        };
+
+        var unknownOption = {
+            key: 'Unknown'
+        };
+
+        var nonHispanicOption = {
+            key: 'Non-Hispanic'
+        };
+
+        var group = {
+            key: 'hispanicOrigin',
+            value: []
+        };
+
+        expect(ctrl.isOptionDisabled(group, unknownOption)).toBeFalsy();
+        expect(ctrl.isOptionDisabled(group, hispanicOption)).toBeFalsy();
+        expect(ctrl.isOptionDisabled(group, nonHispanicOption)).toBeFalsy();
+
+        group.value.push('Cuban');
+
+        expect(ctrl.isOptionDisabled(group, unknownOption)).toBeTruthy();
+
+        group.value = ['Unknown'];
+
+        expect(ctrl.isOptionDisabled(group, hispanicOption)).toBeTruthy();
     });
 });

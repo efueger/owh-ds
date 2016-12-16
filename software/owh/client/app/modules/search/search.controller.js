@@ -58,12 +58,12 @@
         sc.optionsGroup = {
             "hispanicOrigin": [
                 {
-                    "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic', 'Unknown'],
+                    "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic'],
                     "title": "Hispanic",
                     "key": "Hispanic"
                 },
-                'Non-Hispanic'
-                // 'Unknown'
+                'Non-Hispanic',
+                'Unknown'
             ],
             "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
             "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
@@ -94,6 +94,8 @@
         }, true);
 
         function changeViewFilter(selectedFilter) {
+            searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);
+            search(true);
             sc.tableView = selectedFilter.key;
         }
 
@@ -234,6 +236,10 @@
                 if(sc.filters.selectedPrimaryFilter.key === 'mental_health') {
                     sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                     sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
+                }
+                if(sc.filters.selectedPrimaryFilter.key === 'bridge_race') {
+                    sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                    sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
                 }
                 sc.filters.selectedPrimaryFilter.initiated = true;
             });
