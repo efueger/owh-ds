@@ -812,6 +812,11 @@
                 {"key":"Unknown","title":"Unknown"}
             ];
 
+            filters.ethnicityGroupOptions = [
+                {"key": 'hispanic', "title": 'Hispanic'},
+                {"key": 'non', "title": "Non-Hispanic"}
+            ];
+
             filters.weekday = [
                 {key: 'Sunday', title: 'Sunday'},
                 {key: 'Monday', title: 'Monday'},
