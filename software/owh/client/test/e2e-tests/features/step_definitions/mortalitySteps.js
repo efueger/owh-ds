@@ -35,7 +35,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^user sees side filter$/, function () {
-        browser.sleep(30000);
+        browser.sleep(300);
         expect(mortalityPage.sideMenu.isDisplayed()).to.eventually.equal(true);
     });
 
@@ -94,6 +94,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the percentages get re\-calculated based on all the information displayed in a given row$/, function () {
+        browser.sleep(300);
         browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
         mortalityPage.getTableRowData(0).then(function(value){
             expect(value[2]).to.equal('985 (14.3%)');

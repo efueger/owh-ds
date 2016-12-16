@@ -78,7 +78,7 @@
                         <!--<input id="{{option.key}}" type="radio" ng-model="group.value" ng-value="option.key"
                                ng-click="sfc.showModal(option.key, option.value, group.autoCompleteOptions)">-->
                         <label for="{{group.key}}" class="custom-label" style="margin-bottom: 0">
-                            <button class="action-button condition-option" translate="{{group.selectTitle}}"
+                            <button class="action-button condition-option" translate="{{group.selectedNodes && group.selectedNodes.length > 0 ? group.updateTitle : group.selectTitle}}"
                                     ng-click="sfc.showModal(group, [group])"></button>
                         </label>
                         <div class="">
