@@ -498,5 +498,14 @@ var mortalityStepDefinitionsWrapper = function () {
         //Verify autocompleted filters and table data also.
 
     });
+
+    this.Then(/^table should display Hispanic groups only$/, function () {
+        mortalityPage.getTableRowDataCells(0).then(function (elements) {
+            expect(elements[0].getText()).to.eventually.equal('Hispanic');
+        });
+        mortalityPage.getTableRowDataCells(5).then(function (elements) {
+            expect(elements[0].getText()).to.eventually.equal('Non-Hispanic');
+        });
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;

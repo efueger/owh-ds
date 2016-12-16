@@ -215,3 +215,8 @@ Scenario: Bookmark link UI
 #Scenario: Launching the bookmark
 #  When I selects a saved bookmark
 #  Then all the search parameters should be autopopulated and search results should be displayed
+
+Scenario: Hispanic Group options for crude death rate view
+  When I update criteria in filter option with row "Ethnicity"
+  When the user chooses the option 'Death Rates'
+  Then table should display Hispanic groups only
