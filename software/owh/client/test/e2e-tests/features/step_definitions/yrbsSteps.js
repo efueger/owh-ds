@@ -52,9 +52,7 @@ var yrbsStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^'Show Less' should be replaced with 'Show \# More'$/, function () {
-        yrbsPage.getShowMoreLinks().then(function(elements) {
-            expect(elements[1].getText()).to.eventually.equal('Show 12 More');
-        });
+        expect(element(by.cssContainingText('a', 'Show Less')).isPresent()).to.eventually.equal(false);
     });
 
     this.When(/^I hover the mouse over a category name$/, function () {
