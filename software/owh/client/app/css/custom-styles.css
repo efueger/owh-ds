@@ -827,5 +827,9 @@ and (-webkit-min-device-pixel-ratio: 1) {
 /* remove font-awesome icon in yrbs select questions popup*/
 .removeQuestion {
 	cursor: pointer;
+	color: #9da0a4;
+}
+.removeQuestion:hover{
+	color:red;
 }
 /* End remove font-awesome icon in yrbs select questions popup*/
