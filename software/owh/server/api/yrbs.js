@@ -54,12 +54,13 @@ yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
  * @param questionList
  * @param years
  */
-function prepareQuestionTreeForYears(questionList, years) {
+function prepareQuestionTreeForYears(questions, years) {
     console.log("prepareQuestionTreeForYears");
     var qCategoryMap = {};
     var questionTree = [];
-    for (var qKey in questionList) {
-        var quesObj = questionList[qKey];
+    //iterate through
+    for (var qKey in questions) {
+        var quesObj = questions[qKey];
         var qCategory = quesObj.topic;
         if (qCategory && qCategoryMap[qCategory] == undefined) {
             qCategoryMap[qCategory] = {text:qCategory, children:[]}
