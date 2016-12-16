@@ -190,6 +190,11 @@ Scenario: Data should be right aligned
 #  When I select "Column" type for "Race" filter
 #  Then Rates, Deaths and Population shouldn't be overlap
 
+Scenario: Non-Hispanic should have total in the side filter
+  Given I am on search page
+  When user expands ethnicity filter
+  Then I should see total for Non-Hispanic
+
 Scenario: Disable unknown when other option is selected
   When user expands ethnicity filter
   When user checks entire Hispanic group

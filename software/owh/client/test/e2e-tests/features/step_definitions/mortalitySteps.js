@@ -454,6 +454,12 @@ var mortalityStepDefinitionsWrapper = function () {
         expect(element(by.id('crudeRateDiv')).getAttribute('class')).to.eventually.include('usa-width-one-half');
     });
 
+    this.Then(/^I should see total for Non\-Hispanic$/, function () {
+        mortalityPage.getSideFilterTotals().then(function(elements) {
+            expect(elements[34].getInnerHtml()).to.eventually.equal('34,926,053');
+        });
+    });
+
     this.Then(/^Unknown is disabled\- grayed out$/, function () {
         expect(mortalityPage.ethnicityUnknownOption.element(by.tagName('input')).isEnabled()).to.eventually.equal(false);
     });
