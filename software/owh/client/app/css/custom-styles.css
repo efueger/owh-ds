@@ -825,11 +825,11 @@ and (-webkit-min-device-pixel-ratio: 1) {
 /* End of css for bookmark button */
 
 /* remove font-awesome icon in yrbs select questions popup*/
-.removeQuestion {
+.remove-question {
 	cursor: pointer;
 	color: #9da0a4;
 }
-.removeQuestion:hover{
+.remove-question:hover{
 	color:red;
 }
 /* End remove font-awesome icon in yrbs select questions popup*/

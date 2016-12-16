@@ -11,7 +11,7 @@ var yrbsStepDefinitionsWrapper = function () {
     this.Given(/^I select YRBS as primary filter$/, function () {
         browser.sleep(300);
         yrbsPage.yrbsOption.click();
-        browser.sleep(60000);
+        browser.sleep(300);
     });
 
     this.When(/^I click on the down arrow at the corner of each category bar$/, function () {
@@ -27,10 +27,8 @@ var yrbsStepDefinitionsWrapper = function () {
     });
 
     this.When(/^I click on Show \# More under the questions in any category$/, function () {
-        browser.sleep(2000);
-        yrbsPage.getShowMoreLinks().then(function(elements){
-            elements[1].click();
-        });
+        browser.sleep(300);
+        element(by.cssContainingText('a', 'Show 21 More')).click();
     });
 
     this.Then(/^the category should expand to show all the questions$/, function () {
@@ -40,14 +38,11 @@ var yrbsStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^'Show \# More' should be replaced with 'Show Less'$/, function () {
-        expect(yrbsPage.getShowMoreLinks().get(1).getText()).to.eventually.equal('Show Less');
+        expect(element(by.cssContainingText('a', 'Show Less')).isPresent()).to.eventually.equal(true);
     });
 
     this.When(/^I click on 'Show Less'$/, function () {
-        yrbsPage.getShowMoreLinks().then(function(elements){
-            browser.sleep(300);
-            elements[1].click();
-        });
+        element(by.cssContainingText('a', 'Show Less')).click();
     });
 
     this.Then(/^the category to reset back to the original view of the two questions$/, function () {
@@ -133,7 +128,7 @@ var yrbsStepDefinitionsWrapper = function () {
             }
             raceParentElement.element(by.xpath('.//*[.="Asian"]')).click();
         });
-        browser.sleep(60000);
+        browser.sleep(300);
         raceFilter.getAttribute('class').then(function(className){
             if(className =="fa fa-chevron-right") {
                 //Exapnd filter
@@ -141,7 +136,7 @@ var yrbsStepDefinitionsWrapper = function () {
             }
             raceParentElement.element(by.xpath('.//*[.="American Indian or Alaska Native"]')).click();
         });
-        browser.sleep(60000);
+        browser.sleep(300);
     });
 
     this.Then(/^the default filter pre\-selected should be Race$/, function () {
