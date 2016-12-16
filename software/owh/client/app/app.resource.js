@@ -27,6 +27,10 @@
         method : 'POST',
         url: '/search'
       },
+      'yrbsQuestionsTree' : {
+        method : 'GET',
+        url: '/yrbsQuestionsTree'
+      },
       'upload' : {
         method : 'POST',
         url: '/fb/upload'

@@ -43,6 +43,14 @@ var searchRouter = function(app, rConfig) {
             res.send(new result('Query ID not present', null, "failed"));
         }
     });
+
+    app.get('/yrbsQuestionsTree', function (req, res) {
+        var q = req.body.q;
+        logger.debug("Incoming RAW query: ", JSON.stringify(q));
+        new yrbs().getQuestionsTreeByYears(['All']).then(function (response) {
+            res.send(new result('OK', response, "success"));
+        });
+    });
 };
 
 

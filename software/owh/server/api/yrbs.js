@@ -35,6 +35,49 @@ yrbs.prototype.invokeYRBSService = function(apiQuery){
 };
 
 /**
+ *
+ * @param yearList
+ * @returns {*|promise}
+ */
+yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
+    var deferred = Q.defer();
+    console.log(config.yrbs.qServiceUrl);
+    invokeYRBS(config.yrbs.qServiceUrl).then(function (response) {
+        var questionTree = prepareQuestionTreeForYears(response, yearList);
+        deferred.resolve(questionTree);
+    });
+    return deferred.promise;
+};
+
+/**
+ * Prepare YRBS question tree based on question categories
+ * @param questionList
+ * @param years
+ */
+function prepareQuestionTreeForYears(questionList, years) {
+    console.log("prepareQuestionTreeForYears");
+    var qCategoryMap = {};
+    var questionTree = [];
+    for (var qKey in questionList) {
+        var quesObj = questionList[qKey];
+        var qCategory = quesObj.topic;
+        if (qCategory && qCategoryMap[qCategory] == undefined) {
+            qCategoryMap[qCategory] = {text:qCategory, children:[]}
+        } else {
+            if (quesObj.description !=undefined && (years.indexOf('All') != -1 || years.indexOf(quesObj.year) != -1)) {
+                var question = {text:quesObj.question +"("+quesObj.description+")", id:qKey};
+                qCategoryMap[qCategory].children.push(question);
+            }
+        }
+    }
+
+    for (var category in qCategoryMap) {
+        questionTree.push(qCategoryMap[category]);
+    }
+    return questionTree;
+}
+
+/**
  * Build query for YRBS service.
  * YRBS service takes only one question at a time, so this method builds one query per each question selected
  * and return an array of query string for YRBS service call
@@ -173,6 +216,10 @@ function invokeYRBS (query){
     });
     return deferred.promise;
 };
+
+function getQuestionsByYear() {
+
+}
 
 
 module.exports = yrbs;
