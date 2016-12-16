@@ -121,7 +121,7 @@
                         class="group-option" ng-show="$index < 3 || sideFilter.showAll">
                         <div ng-if="!option.group">
                             <input id="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" type="checkbox"
-                                   checklist-model="group.value" checklist-value="option.key" ng-click="sfc.onFilter()">
+                                   checklist-model="group.value" checklist-value="option.key" ng-disabled="sfc.isOptionDisabled(group, option)" ng-click="sfc.onFilter()">
                             <label for="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" class="custom-label"
                                    ng-init="title = option.title == 'Nursing home/long term care' ? 'Nursing home/long term <br>care' : option.title">
                                 <span class="count-label" translate="{{title}}"></span>
@@ -131,7 +131,7 @@
 
                         <div ng-if="option.group" ng-init="option.collapse = true" class="owh-side-menu__group-option">
                             <input id="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" type="checkbox"
-                                   checklist-model="group.value" checklist-value="option.key" ng-click="sfc.filterGroup(option, group)">
+                                   checklist-model="group.value" checklist-value="option.key" ng-disabled="sfc.isOptionDisabled(group, option)" ng-click="sfc.filterGroup(option, group)">
                             <label for="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" class="custom-label"
                                    ng-init="title = option.title == 'Nursing home/long term care' ? 'Nursing home/long term <br>care' : option.title">
                                 <a href="javascript:void(0)" ng-click="option.collapse = !option.collapse" class="custom-link ">
@@ -147,7 +147,7 @@
                                     ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' "
                                     class="group-option">
                                     <input id="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{subOption.key}}" type="checkbox"
-                                           checklist-model="group.value" checklist-value="subOption.key" ng-click="sfc.onFilter()">
+                                           checklist-model="group.value" checklist-value="subOption.key" ng-disabled="sfc.isOptionDisabled(group, subOption)" ng-click="sfc.onFilter()">
                                     <label for="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{subOption.key}}" class="custom-label"
                                            ng-init="title = subOption.title == 'Nursing home/long term care' ? 'Nursing home/long term <br>care' : subOption.title">
                                         <span class="count-label" translate="{{title}}"></span>

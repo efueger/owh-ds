@@ -352,4 +352,38 @@ describe('OWH Side filter component: ', function() {
 
         expect(ctrl.isSubOptionSelected(group, option)).toBeFalsy();
     });
+
+    it('isOptionDisabled should make sure Unknown and other ethnicity options are mutually exclusive', function() {
+        var bindings = {filters: []};
+        var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
+
+        var hispanicOption = {
+            key: 'Hispanic'
+        };
+
+        var unknownOption = {
+            key: 'Unknown'
+        };
+
+        var nonHispanicOption = {
+            key: 'Non-Hispanic'
+        };
+
+        var group = {
+            key: 'hispanicOrigin',
+            value: []
+        };
+
+        expect(ctrl.isOptionDisabled(group, unknownOption)).toBeFalsy();
+        expect(ctrl.isOptionDisabled(group, hispanicOption)).toBeFalsy();
+        expect(ctrl.isOptionDisabled(group, nonHispanicOption)).toBeFalsy();
+
+        group.value.push('Cuban');
+
+        expect(ctrl.isOptionDisabled(group, unknownOption)).toBeTruthy();
+
+        group.value = ['Unknown'];
+
+        expect(ctrl.isOptionDisabled(group, hispanicOption)).toBeTruthy();
+    });
 });

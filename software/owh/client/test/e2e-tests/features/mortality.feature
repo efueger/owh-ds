@@ -190,6 +190,16 @@ Scenario: Data should be right aligned
 #  When I select "Column" type for "Race" filter
 #  Then Rates, Deaths and Population shouldn't be overlap
 
+Scenario: Disable unknown when other option is selected
+  When user expands ethnicity filter
+  When user checks entire Hispanic group
+  Then Unknown is disabled- grayed out
+
+Scenario: Disable other options when Unknown is selected
+  When user expands ethnicity filter
+  When the user selects Unknown
+  Then the rest of the options are disabled- grayed out
+
 Scenario: Only display percent for non-zero cells
   Given I am on search page
   When I update criteria in filter options with column "Ethnicity"
