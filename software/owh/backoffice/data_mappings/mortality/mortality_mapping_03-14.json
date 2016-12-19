@@ -557,7 +557,7 @@
     "field": "Hispanic Origin",
     "mappings": {
       "220":"Central and South American",
-      "100-199":"Non–Hispanic",
+      "100-199":"Non-Hispanic",
       "200-209":"Spaniard",
       "210-219":"Mexican",
       "260-269":"Puerto Rican",

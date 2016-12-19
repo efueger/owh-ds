@@ -3,7 +3,14 @@ var YRBSSearchPage = function() {
 
     ysp.yrbsOption = element(by.cssContainingText('option', 'Youth Risk Behavior'));
     ysp.sideFilterUnOrderedList = element(by.css('.side-filters'));
+    ysp.selectQuestionsButton = element(by.cssContainingText('button', 'Select Questions'));
+    ysp.addSelectedQuestionsButton = element(by.cssContainingText('button', 'Filter Selected Questions'));
+    ysp.searchQuestionsBox = element(by.id('search_text'));
+    ysp.clearSelectedQuestionsButton = element(by.cssContainingText('button', 'CLEAR'));
 
+    ysp.closePopup = function() {
+        element(by.id("modal-close")).click();
+    };
     ysp.getCategoryBars = function() {
         return element.all(by.className('owh-question__title'));
     };

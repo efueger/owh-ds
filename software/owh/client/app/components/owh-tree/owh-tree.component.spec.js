@@ -74,12 +74,7 @@ describe('owhTree component: ', function() {
     }));
 
     it('Should call select call back functions', inject(function ($timeout) {
-        var optionValues = [
-            {"id": "Y455", "text": "4-Aminophenol derivatives (Y45.5)"}
-        ];
-        var codeKey = 'ucd-chapter-10';
-        var bindings = {optionValues: optionValues, codeKey: codeKey};
-        var ctrl = $componentController('owhTree', {$scope: $scope}, bindings);
+        var ctrl = $componentController('owhTree', {$scope: $scope});
         expect(ctrl.treeEventsObj).toBeDefined();
 
         /*Dummy jstree object*/
@@ -95,16 +90,11 @@ describe('owhTree component: ', function() {
 
         // flush timeout(s) for all code under test.
         $timeout.flush();
-        expect(ctrl.selectedNodesText).toEqual("46,XX true hermaphrodite (Q99.1)");
+        expect(ctrl.optionValues[0].text).toEqual("46,XX true hermaphrodite (Q99.1)");
     }));
 
     it('Should call select call back functions for yrbs leaf questions', inject(function ($timeout) {
-        var optionValues = [
-            {"id": "qn14", "text": "Carried a gun(on at least 1 day during the 30 days before the survey)"}
-        ];
-        var codeKey = 'question';
-        var bindings = {optionValues: optionValues, codeKey: codeKey, entityName:'Question'};
-        var ctrl = $componentController('owhTree', {$scope: $scope}, bindings);
+        var ctrl = $componentController('owhTree', {$scope: $scope});
         expect(ctrl.treeEventsObj).toBeDefined();
 
         /*Dummy jstree object*/
@@ -117,16 +107,11 @@ describe('owhTree component: ', function() {
         }};
         ctrl.treeEventsObj.select_node({});
         $timeout.flush();
-        expect(ctrl.selectedNodesText).toEqual("Carried a gun(on at least 1 day during the 30 days before the survey)");
+        expect(ctrl.optionValues[0].text).toEqual("Carried a gun(on at least 1 day during the 30 days before the survey)");
     }));
 
     it('Should call select call back functions for yrbs parent node questions', inject(function ($timeout) {
-        var optionValues = [
-            {"id": "qn21", "text": "Were ever physically forced"}, { "id": "qn18", "text": "Were in a physical fight"}
-        ];
-        var codeKey = 'question';
-        var bindings = {optionValues: optionValues, codeKey: codeKey, entityName:'Question'};
-        var ctrl = $componentController('owhTree', {$scope: $scope}, bindings);
+        var ctrl = $componentController('owhTree', {$scope: $scope});
         expect(ctrl.treeEventsObj).toBeDefined();
 
         /*Dummy jstree object*/
@@ -143,7 +128,7 @@ describe('owhTree component: ', function() {
         ctrl.treeEventsObj.select_node({});
         $timeout.flush();
 
-        expect(ctrl.selectedNodesText).toEqual("Unintentional Injuries");
+        expect(ctrl.optionValues[0].text).toEqual("Unintentional Injuries");
     }));
 
     it('Should call search function', inject(function ($timeout) {

@@ -56,21 +56,32 @@
         };
 
         sc.optionsGroup = {
-            "hispanicOrigin": [
-                {
-                    "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic', 'Unknown'],
-                    "title": "Hispanic",
-                    "key": "Hispanic"
-                },
-                'Non-Hispanic'
-                // 'Unknown'
-            ],
-            "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
-            "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
+            "number_of_deaths": {
+                "hispanicOrigin": [
+                    {
+                        "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic'],
+                        "title": "Hispanic",
+                        "key": "Hispanic"
+                    },
+                    'Non-Hispanic',
+                    'Unknown'
+                ],
+                "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
+                "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
+            },
+            "crude_death_rates": {
+                "hispanicOrigin": ['hispanic', 'non', 'unknown'],
+                "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
+                "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
+            },
+            "age-adjusted_death_rates": {
+                "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
+                "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
+            }
         };
         //show certain filters for different table views
         sc.availableFilters = {
-            'crude_death_rates': ['year', 'gender', 'race'],
+            'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
             'age-adjusted_death_rates': ['year', 'gender', 'race']
         };
         sc.queryID = $stateParams.queryID;
@@ -95,7 +106,29 @@
 
         function changeViewFilter(selectedFilter) {
             searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);
-            search(true);
+            angular.forEach(sc.filters.selectedPrimaryFilter.allFilters, function(filter) {
+                if(filter.key === 'hispanicOrigin') {
+                    if(selectedFilter.key === 'crude_death_rates') {
+                        filter.queryKey = 'ethnicity_group';
+                        filter.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
+                    } else {
+                        filter.queryKey = 'hispanicOrigin';
+                        filter.autoCompleteOptions = sc.filters.hispanicOptions;
+                    }
+                }
+            });
+            angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
+                if(filter.filters.key === 'hispanicOrigin') {
+                    if(selectedFilter.key === 'crude_death_rates') {
+                        filter.filters.queryKey = 'ethnicity_group';
+                        filter.filters.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
+                    } else {
+                        filter.filters.queryKey = 'hispanicOrigin';
+                        filter.filters.autoCompleteOptions = sc.filters.hispanicOptions;
+                    }
+                }
+            });
+            sc.search(true);
             sc.tableView = selectedFilter.key;
         }
 
@@ -147,10 +180,10 @@
             var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
             //make sure row/column headers are in proper order
             angular.forEach(headers.rowHeaders, function(header) {
-                searchFactory.sortAutoCompleteOptions(header, sc.optionsGroup);
+                searchFactory.sortAutoCompleteOptions(header, sc.optionsGroup[sc.tableView]);
             });
             angular.forEach(headers.columnHeaders, function(header) {
-                searchFactory.sortAutoCompleteOptions(header, sc.optionsGroup);
+                searchFactory.sortAutoCompleteOptions(header, sc.optionsGroup[sc.tableView]);
             });
             var countKey = selectedFilter.key;
             var countLabel = selectedFilter.countLabel;
@@ -226,7 +259,7 @@
                 sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
                 //make sure side filters are in proper order
                 angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
-                    searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup);
+                    searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup[sc.tableView]);
                 });
 
                 sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);

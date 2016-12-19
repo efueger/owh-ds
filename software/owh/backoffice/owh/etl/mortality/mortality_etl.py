@@ -94,6 +94,12 @@ class MortalityIndexer (ETL):
                 else:
                     record['ICD_10_code'] = self._check_blanks(icdcode)
 
+                #add ethnicity group based on hispanic_origin
+                if(record['hispanic_origin'] == 'Unknown' or record['hispanic_origin'] == 'Non-Hispanic'):
+                    record['ethnicity_group'] = record['hispanic_origin']
+                else:
+                    record['ethnicity_group'] = 'Hispanic'
+
                 self._check_blanks(record)
                 self.batchRepository.persist({"index": {"_index": self.config['elastic_search']['index'], "_type": self.config['elastic_search']['type'], "_id": recordCount}})
                 self.batchRepository.persist(record)

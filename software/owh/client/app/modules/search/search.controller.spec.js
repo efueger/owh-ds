@@ -241,4 +241,51 @@ describe("Search controller: ", function () {
         expect(utilService.prepareMixedTableData).toHaveBeenCalled();
     }));
 
+    it('changeViewFilter should set the tableView and call out to search', function() {
+        var searchController= $controller('SearchController',{$scope:$scope});
+        spyOn(searchController, 'search');
+        searchController.filters = {selectedPrimaryFilter: {data: {}, allFilters: [], sideFilters: []}};
+        searchController.changeViewFilter({key: 'number_of_deaths'});
+
+        expect(searchController.tableView).toEqual('number_of_deaths');
+        expect(searchController.search).toHaveBeenCalled();
+    });
+
+    it('changeViewFilter should replace ethnicity queryKey and options for crude_death_rates', function() {
+        var searchController= $controller('SearchController',{$scope:$scope});
+        spyOn(searchController, 'search');
+
+        var ethnicityFilter = {
+            query_key: 'hispanicOrigin',
+            key: 'hispanicOrigin'
+        };
+
+        searchController.filters = {selectedPrimaryFilter: {data: {}, allFilters: [ethnicityFilter], sideFilters: [{filters: ethnicityFilter}]}};
+        searchController.filters.ethnicityGroupOptions = [
+            {"key": 'hispanic', "title": 'Hispanic'},
+            {"key": 'non', "title": "Non-Hispanic"}
+        ];
+        searchController.filters.hispanicOptions = [
+            {
+                key: 'Cuban'
+            },
+            {
+                key: 'Dominican'
+            }
+        ];
+
+        searchController.changeViewFilter({key: 'crude_death_rates'});
+
+        expect(searchController.tableView).toEqual('crude_death_rates');
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].queryKey).toEqual('ethnicity_group');
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[0].key).toEqual('hispanic');
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[1].key).toEqual('non');
+
+        searchController.changeViewFilter({key: 'number_of_deaths'});
+
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].queryKey).toEqual('hispanicOrigin');
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[0].key).toEqual('Cuban');
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[1].key).toEqual('Dominican');
+    });
+
 });
