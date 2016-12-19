@@ -13,11 +13,11 @@ Scenario: Filter options updated
   When I update criteria in filter options with column "Autopsy"
   Then URL in browser bar should change
 
-Scenario: Browser back button
-  When I selects the back button then browser URL should change
-  Then most recent filter action "Autopsy" type "Column" is removed and I am taken back by one step
-  And the results page should have 2 graphs and table has columns "Race", "Female", "Male" for filter "Race"
+#Scenario: Browser back button
+#  When I selects the back button then browser URL should change
+#  Then most recent filter action "Autopsy" type "Column" is removed and I am taken back by one step
+#  And the results page should have 2 graphs and table has columns "Race", "Female", "Male" for filter "Race"
 
-Scenario: Browser forward button
-  When I selects the forward button in browser then URL should change
-  Then the results page should have 4 graphs and table has columns "Yes", "No", "Unknown" for filter "Autopsy"
+#Scenario: Browser forward button
+#  When I selects the forward button in browser then URL should change
+#  Then the results page should have 4 graphs and table has columns "Yes", "No", "Unknown" for filter "Autopsy"

@@ -35,7 +35,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^user sees side filter$/, function () {
-        browser.sleep(30000);
+        browser.sleep(300);
         expect(mortalityPage.sideMenu.isDisplayed()).to.eventually.equal(true);
     });
 
@@ -94,6 +94,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the percentages get re\-calculated based on all the information displayed in a given row$/, function () {
+        browser.sleep(300);
         browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
         mortalityPage.getTableRowData(0).then(function(value){
             expect(value[2]).to.equal('985 (14.3%)');
@@ -451,6 +452,25 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^Rates, Deaths and Population shouldn't be overlap$/, function () {
         expect(element(by.id('crudeRateDiv')).getAttribute('class')).to.eventually.include('usa-width-one-half');
+    });
+
+    this.Then(/^I should see total for Non\-Hispanic$/, function () {
+        mortalityPage.getSideFilterTotals().then(function(elements) {
+            expect(elements[34].getInnerHtml()).to.eventually.equal('34,926,053');
+        });
+    });
+
+    this.Then(/^Unknown is disabled\- grayed out$/, function () {
+        expect(mortalityPage.ethnicityUnknownOption.element(by.tagName('input')).isEnabled()).to.eventually.equal(false);
+    });
+
+    this.When(/^the user selects Unknown$/, function () {
+        mortalityPage.ethnicityUnknownOption.click();
+    });
+
+    this.Then(/^the rest of the options are disabled\- grayed out$/, function () {
+        expect(mortalityPage.ethnicityHispanicOption.element(by.tagName('input')).isEnabled()).to.eventually.equal(false);
+        expect(mortalityPage.ethnicityNonHispanicOption.element(by.tagName('input')).isEnabled()).to.eventually.equal(false);
     });
 
     this.Then(/^zero cells should not have percentage$/, function () {

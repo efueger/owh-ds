@@ -59,12 +59,12 @@
             "number_of_deaths": {
                 "hispanicOrigin": [
                     {
-                        "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic', 'Unknown'],
+                        "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic'],
                         "title": "Hispanic",
                         "key": "Hispanic"
                     },
-                    'Non-Hispanic'
-                    // 'Unknown'
+                    'Non-Hispanic',
+                    'Unknown'
                 ],
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
@@ -115,8 +115,6 @@
                         filter.queryKey = 'hispanicOrigin';
                         filter.autoCompleteOptions = sc.filters.hispanicOptions;
                     }
-                    console.log('hispanic filter', angular.copy(filter));
-                    console.log('filters', angular.copy(sc.filters.ethnicityGroupOptions));
                 }
             });
             angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
