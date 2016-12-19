@@ -3,7 +3,7 @@
     {
       "key":"yrbsRace",
       "title":"label.yrbs.filter.race",
-      "queryKey":"raceeth",
+      "queryKey":"race7",
       "primary":false,
       "value":"",
       "groupBy":"row",
@@ -21,7 +21,7 @@
           "title":"Black or African American"
         },
         {
-          "key":"Hispanic / Latino",
+          "key":"Hispanic/Latino",
           "title":"Hispanic or Latino"
         },
         {

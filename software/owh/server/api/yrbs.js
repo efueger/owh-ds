@@ -55,19 +55,19 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
 
     // Grouping needs to be always in the following order Sex (sex), Grade (grade) and Race (race7)
     var sortedKeys = [];
-    if('sex' in aggrsKeys){
+    if(aggrsKeys.indexOf('sex') >= 0){
         sortedKeys.push('sex');
     }
-    if('grade' in aggrsKeys){
+    if(aggrsKeys.indexOf('grade') >= 0){
         sortedKeys.push('grade');
     }
-    if('race7' in aggrsKeys){
+    if(aggrsKeys.indexOf('race7') >= 0){
         sortedKeys.push('race7');
     }
 
     var v = null;
-    if (aggrsKeys.length > 0) {
-       v = 'v=' + aggrsKeys.join(',');
+    if (sortedKeys.length > 0) {
+       v = 'v=' + sortedKeys.join(',');
     }
 
     if('query' in apiQuery && 'question.path' in apiQuery.query) {
