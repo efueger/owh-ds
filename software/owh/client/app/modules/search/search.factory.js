@@ -953,7 +953,7 @@
                 { "key": "Am Indian / Alaska Native", "title": "American Indian or Alaska Native" },
                 { "key": "Asian", "title": "Asian" },
                 { "key": "Black or African American", "title": "Black or African American" },
-                { "key": "Hispanic / Latino", "title": "Hispanic or Latino" },
+                { "key": "Hispanic/Latino", "title": "Hispanic or Latino" },
                 { "key": "Native Hawaiian/other PI", "title": "Native Hawaiian or Other Pacific Islander" },
                 { "key": "White", "title": "White" },
                 { "key": "Multiple - Non-Hispanic", "title": "Multiple Race" }
@@ -981,11 +981,11 @@
             filters.yrbsFilters = [
                 {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: ['2015'], groupBy: false,
                    autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
-                { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"q2", primary: false, value: [], groupBy: false,
+                { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: [], groupBy: false,
                     autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
-                { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"q3", primary: false, value: [], groupBy: false,
+                { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"grade", primary: false, value: [], groupBy: false,
                      autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column" },
-                { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"raceeth", primary: false, value: [], groupBy: 'column',
+                { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race7", primary: false, value: [], groupBy: 'column',
                    autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column" },
                 { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
                     filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
