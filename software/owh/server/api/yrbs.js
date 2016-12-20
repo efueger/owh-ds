@@ -1,6 +1,6 @@
 var Q = require('q');
-var logger = require('../config/logging')
-var config = require('../config/config')
+var logger = require('../config/logging');
+var config = require('../config/config');
 var request = require('request');
 
 function yrbs() {
@@ -190,5 +190,62 @@ function invokeYRBS (query){
     return deferred.promise;
 };
 
+/**
+ * To get questions from question service dynamically.
+ * We
+ * @param yearList
+ * @returns {*|promise}
+ */
+yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
+    var deferred = Q.defer();
+    console.log(config.yrbs.qServiceUrl);
+    invokeYRBS(config.yrbs.qServiceUrl).then(function (response) {
+        var questionTree = prepareQuestionTreeForYears(response, yearList);
+        deferred.resolve(questionTree);
+    });
+    return deferred.promise;
+};
+
+/**
+ * Prepare YRBS question tree based on question categories
+ * @param questionList
+ * @param years
+ */
+function prepareQuestionTreeForYears(questions, years) {
+    console.log("prepareQuestionTreeForYears");
+    var qCategoryMap = {};
+    var questionTree = [];
+    //iterate through
+    for (var qKey in questions) {
+        var quesObj = questions[qKey];
+        var qCategory = quesObj.topic;
+        if (qCategory && qCategoryMap[qCategory] == undefined) {
+            qCategoryMap[qCategory] = {text:qCategory, children:[]}
+        } else {
+            if (quesObj.description !=undefined && (years.indexOf('All') != -1 || years.indexOf(quesObj.year) != -1)) {
+                var question = {text:quesObj.question +"("+quesObj.description+")", id:qKey};
+                qCategoryMap[qCategory].children.push(question);
+            }
+        }
+    }
+
+    for (var category in qCategoryMap) {
+      // qCategoryMap[category].children = sortByKey(qCategoryMap[category].children, 'text', true);
+       questionTree.push(qCategoryMap[category]);
+    }
+    return questionTree;
+}
+
+function sortByKey(array, key, asc) {
+    return array.sort(function(a, b) {
+        var x = typeof(key) === 'function' ? key(a) : a[key];
+        var y = typeof(key) === 'function' ? key(b) : b[key];
+        if(asc===undefined || asc === true) {
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        }else {
+            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+        }
+    });
+}
 
 module.exports = yrbs;

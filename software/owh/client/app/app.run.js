@@ -21,7 +21,7 @@
         $rootScope.conditionsICD10130 = [];
         $rootScope.conditionsListICD10130 = [];
 
-        $rootScope.questions = [
+        /*$rootScope.questions = [
             {
                 "text":"Unintentional Injuries and Violence",
                 "children":[
@@ -504,7 +504,7 @@
                 "old_id":"Other Health Topics",
                 "id":"yQ8"
             }
-        ];
+        ];*/
 
         $rootScope.allquestionsList = [
             {
@@ -1105,5 +1105,14 @@
             /*fb share*/
         }
         function onFailed(error) { console.log(error); }
+
+        /*
+        * Get YRBS questions dynamically
+        * */
+        API.getYRBSQuestionsTree().$promise.then(function(response){
+            $rootScope.questions = response.data;
+        }).catch(function(error){
+            console.log(" Failed to get YRBS questions from yrbs service ", error);
+        });
     }
 }());
