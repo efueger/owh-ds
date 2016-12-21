@@ -197,8 +197,8 @@ function invokeYRBS (query){
  * @returns {*|promise}
  */
 yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
+    logger.info("Getting questions from yrbs service...");
     var deferred = Q.defer();
-    console.log(config.yrbs.qServiceUrl);
     invokeYRBS(config.yrbs.qServiceUrl).then(function (response) {
         var questionTree = prepareQuestionTreeForYears(response, yearList);
         deferred.resolve(questionTree);
@@ -212,7 +212,7 @@ yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
  * @param years
  */
 function prepareQuestionTreeForYears(questions, years) {
-    console.log("prepareQuestionTreeForYears");
+    logger.info("Preparing questions tree...");
     var qCategoryMap = {};
     var questionTree = [];
     //iterate through
@@ -230,13 +230,21 @@ function prepareQuestionTreeForYears(questions, years) {
     }
 
     for (var category in qCategoryMap) {
-      // qCategoryMap[category].children = sortByKey(qCategoryMap[category].children, 'text', true);
+       qCategoryMap[category].children = sortByKey(qCategoryMap[category].children, 'text', true);
        questionTree.push(qCategoryMap[category]);
     }
     return questionTree;
 }
 
+/**
+ * To sort questions
+ * @param array
+ * @param key
+ * @param asc
+ * @returns {*}
+ */
 function sortByKey(array, key, asc) {
+    logger.info("Sorting questions in alphabetical order...");
     return array.sort(function(a, b) {
         var x = typeof(key) === 'function' ? key(a) : a[key];
         var y = typeof(key) === 'function' ? key(b) : b[key];
