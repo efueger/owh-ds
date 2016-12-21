@@ -15,6 +15,8 @@
     'checklist-model',
     'angularAwesomeSlider',
     'angularModalService',
+    'vs-repeat',
+    'sf.virtualScroll',
     'owh.filters',
     'owh.services',
     'owh.home',

@@ -331,15 +331,14 @@
          });
          return tableData;
          }*/
-        function prepareMixedTableData(headers, data, countKey, totalCount, countLabel, calculatePercentage,
+        function prepareMixedTableData(headers, data, countKey, totalCount, countLabel,
                                        calculateRowTotal, secondaryCountKeys) {
             var tableData = {
                 headers: prepareMixedTableHeaders(headers, countLabel),
-                data: [],
-                calculatePercentage: calculatePercentage
+                data: []
             };
             tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey,
-                totalCount, calculatePercentage, calculateRowTotal, secondaryCountKeys);
+                totalCount, calculateRowTotal, secondaryCountKeys);
             return tableData;
         }
 
@@ -450,12 +449,11 @@
          * @param data
          * @param countKey
          * @param totalCount
-         * @param calculatePercentage
          * @param calculateRowTotal
          * @param secondaryCountKey
          * @returns {Array}
          */
-        function prepareMixedTableRowData(rowHeaders, columnHeaders, data, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKeys) {
+        function prepareMixedTableRowData(rowHeaders, columnHeaders, data, countKey, totalCount, calculateRowTotal, secondaryCountKeys) {
             var tableData = [];
             /**
              * This if condition prepares data
@@ -473,7 +471,7 @@
                     if(!eachData) {
                         return;
                     }
-                    var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachData, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKeys);
+                    var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachData, countKey, totalCount, calculateRowTotal, secondaryCountKeys);
                     if(rowHeaders.length > 1 && calculateRowTotal) {
                         childTableData.push(prepareTotalRow(eachData, countKey, childTableData[0].length, totalCount, secondaryCountKeys));
                     }
@@ -498,23 +496,23 @@
              */
             else {
                 var count = data[countKey];
-                var columnData = prepareMixedTableColumnData(columnHeaders, data, countKey, count, calculatePercentage, secondaryCountKeys);
+                var columnData = prepareMixedTableColumnData(columnHeaders, data, countKey, count, secondaryCountKeys);
                 if(typeof data[countKey] !== 'undefined') {
-                    columnData.push(prepareCountCell(count, data, countKey, totalCount, calculatePercentage, secondaryCountKeys, true));
+                    columnData.push(prepareCountCell(count, data, countKey, totalCount, secondaryCountKeys, true));
                 }
                 tableData.push(columnData);
             }
             return tableData;
         }
 
-        function prepareCountCell(count, data, countKey, totalCount, calculatePercentage, secondaryCountKeys, bold) {
+        function prepareCountCell(count, data, countKey, totalCount, secondaryCountKeys, bold) {
             var title = Number(count);
             if(isNaN(title)) {
                 title = count;
             }
             var cell = {
                 title: title,
-                percentage: (calculatePercentage && !isNaN(totalCount)) ? (Number(data[countKey]) / totalCount) * 100 : undefined,
+                percentage: (!isNaN(totalCount)) ? (Number(data[countKey]) / totalCount) * 100 : undefined,
                 isCount: true,
                 rowspan: 1,
                 colspan: 1
@@ -568,16 +566,12 @@
          * @param data
          * @param countKey
          * @param totalCount
-         * @param calculatePercentage
          * @param secondaryCountKey
          * @returns {Array}
          */
-        function prepareMixedTableColumnData(columnHeaders, data, countKey, totalCount, calculatePercentage, secondaryCountKeys) {
+        function prepareMixedTableColumnData(columnHeaders, data, countKey, totalCount, secondaryCountKeys) {
             var tableData = [];
-            var percentage ;
-            if(calculatePercentage) {
-                percentage = 0 ;
-            }
+            var percentage = 0;
             if(columnHeaders && columnHeaders.length > 0) {
                 var eachColumnHeader = columnHeaders[0];
 
@@ -588,13 +582,13 @@
                     var matchedData = findByKeyAndValue(eachHeaderData, 'name', eachOption.key);
                     if(matchedData) {
                         if (columnHeaders.length > 1) {
-                            var childTableData = prepareMixedTableColumnData(columnHeaders.slice(1), matchedData, countKey, totalCount, calculatePercentage, secondaryCountKeys);
+                            var childTableData = prepareMixedTableColumnData(columnHeaders.slice(1), matchedData, countKey, totalCount, secondaryCountKeys);
                             eachOptionLength = childTableData.length;
                             tableData = tableData.concat(childTableData);
                         } else {
                             var count = matchedData[countKey];
                             eachOptionLength = 1;
-                            tableData.push(prepareCountCell(count, matchedData, countKey, totalCount, calculatePercentage, secondaryCountKeys, false));
+                            tableData.push(prepareCountCell(count, matchedData, countKey, totalCount, secondaryCountKeys, false));
                         }
                     } else {
                         if(eachOptionLength <= 0) {

@@ -11,7 +11,8 @@
                 tableView: '@',
                 rowIndex: '<',
                 colIndex: '<',
-                row: '<'
+                row: '<',
+                showPercentage: '<'
             }
         });
     OWHTableCellController.$inject = ['$scope', 'utilService', '$rootScope'];

@@ -1059,6 +1059,25 @@ body {
     font-weight: bold;
 }
 
+/*owh-table {*/
+    /*height: 150px;*/
+    /*overflow: scroll;*/
+    /*display: block;*/
+/*}*/
+
+.owh-table__viewport {
+    overflow: auto;
+    max-height: 1200px;
+}
+
+.owh-table__viewport tr {
+    height: 71px;
+}
+
+.owh-table__viewport > div {
+    height: 1200px!important;
+}
+
 #death-rate-disclaimer {
   color: #808080;
 }

@@ -98,13 +98,13 @@
                     <hr />
                     <!-- show hide percentage -->
                     <div id="togglePercentage" class="togglePercentage pull-left" ng-show="sc.filters.selectedPrimaryFilter.title === 'label.filter.mortality' && sc.tableView === 'number_of_deaths'">
-                        <a id="showPercentage" class="active-link custom-link " ng-class="{'selected': sc.filters.selectedPrimaryFilter.calculatePercentage === true}" ng-click="sc.filters.selectedPrimaryFilter.calculatePercentage = true; sc.tableData = sc.getMixedTable(sc.filters.selectedPrimaryFilter);" title="Show percentage">
-                            <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === false" ng-bind="'label.mortality.search.table.show.percentage.button' | translate"></span>
-                            <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === true" ng-bind="'label.mortality.search.table.showing.percentage.button' | translate"></span>
+                        <a id="showPercentage" class="active-link custom-link " ng-class="{'selected': sc.calculatePercentage === true}" ng-click="sc.calculatePercentage = true" title="Show percentage">
+                            <span ng-show="sc.calculatePercentage === false" ng-bind="'label.mortality.search.table.show.percentage.button' | translate"></span>
+                            <span ng-show="sc.calculatePercentage === true" ng-bind="'label.mortality.search.table.showing.percentage.button' | translate"></span>
                         </a>
-                        <a id="hidePercentage" class="active-link custom-link" ng-class="{'selected': sc.filters.selectedPrimaryFilter.calculatePercentage === false}" ng-click="sc.filters.selectedPrimaryFilter.calculatePercentage = false; sc.tableData = sc.getMixedTable(sc.filters.selectedPrimaryFilter);" title="Hide percentage">
-                            <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === true" ng-bind="'label.mortality.search.table.hide.percentage.button' | translate"></span>
-                            <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === false" ng-bind="'label.mortality.search.table.hidden.percentage.button' | translate"></span>
+                        <a id="hidePercentage" class="active-link custom-link" ng-class="{'selected': sc.calculatePercentage === false}" ng-click="sc.calculatePercentage = false" title="Hide percentage">
+                            <span ng-show="sc.calculatePercentage === true" ng-bind="'label.mortality.search.table.hide.percentage.button' | translate"></span>
+                            <span ng-show="sc.calculatePercentage === false" ng-bind="'label.mortality.search.table.hidden.percentage.button' | translate"></span>
                         </a>
                     </div>
 
@@ -119,10 +119,13 @@
                         </a>
                     </div>
                     <p id="death-rate-disclaimer" ng-show="sc.tableView === 'crude_death_rates'" ng-bind=" 'label.crude.death.rates.statement' | translate"></p>
+                    <br/>
+                    <br/>
                     <owh-table table-data="sc.tableData"
                                ng-if="(sc.filters.selectedPrimaryFilter.headers && sc.filters.selectedPrimaryFilter.key === 'deaths' ||
                                sc.filters.selectedPrimaryFilter.key === 'bridge_race')"
-                               table-view="{{sc.tableView}}"></owh-table>
+                               table-view="{{sc.tableView}}"
+                                show-percentage="sc.calculatePercentage"></owh-table>
                     <owh-accordion-table headers="sc.filters.selectedPrimaryFilter.headers" data="sc.filters.selectedPrimaryFilter.data"
                                 ng-if="sc.filters.selectedPrimaryFilter.key === 'mental_health'"></owh-accordion-table>
                 </div>
