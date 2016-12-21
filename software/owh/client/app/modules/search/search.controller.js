@@ -38,7 +38,6 @@
         sc.changeViewFilter = changeViewFilter;
         sc.getMixedTable = getMixedTable;
         sc.skipRefresh = false;
-        sc.calculatePercentage = true;
 
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
@@ -170,14 +169,11 @@
             var countKey = selectedFilter.key;
             var countLabel = selectedFilter.countLabel;
             var totalCount = selectedFilter.count;
-            // var calculatePercentage = selectedFilter.calculatePercentage;
-            var calculatePercentage = true;
+            var calculatePercentage = selectedFilter.calculatePercentage;
             var calculateRowTotal = selectedFilter.calculateRowTotal;
             var secondaryCountKeys = ['pop', 'ageAdjustedRate', 'standardPop'];
 
-            var table = utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculateRowTotal, secondaryCountKeys);
-            console.log('mixed table prepared');
-            return table;
+            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKeys);
         }
 
         function getFilename(selectedFilter) {

@@ -8,8 +8,7 @@
             controllerAs: 'otc',
             bindings: {
                 tableData: '<',
-                tableView: '@',
-                showPercentage: '<'
+                tableView: '@'
             }
         });
     OWHTableController.$inject = ['$scope', 'utilService', '$rootScope'];
