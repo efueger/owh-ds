@@ -24,7 +24,7 @@ yrbs.prototype.invokeYRBSService = function(apiQuery){
     var queryPromises = [];
     logger.info("Invoking YRBS service for "+yrbsquery.length+" questions");
     for (var q in yrbsquery){
-        queryPromises.push(invokeYRBS(config.yrbs.url+ '?'+yrbsquery[q]));
+        queryPromises.push(invokeYRBS(config.yrbs.queryUrl+ '?'+yrbsquery[q]));
     }
     Q.all(queryPromises).then(function(resp){
         logger.info("YRBS service response received for all "+yrbsquery.length+" questions");
@@ -191,15 +191,14 @@ function invokeYRBS (query){
 };
 
 /**
- * To get questions from question service dynamically.
- * We
+ * To get questions from question service dynamically. *
  * @param yearList
  * @returns {*|promise}
  */
 yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
     logger.info("Getting questions from yrbs service...");
     var deferred = Q.defer();
-    invokeYRBS(config.yrbs.qServiceUrl).then(function (response) {
+    invokeYRBS(config.yrbs.questionsUrl).then(function (response) {
         var data = prepareQuestionTreeForYears(response, yearList);
         deferred.resolve({questionTree:data.questionTree, questionsList:data.questionsList});
     });
