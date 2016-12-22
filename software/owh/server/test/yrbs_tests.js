@@ -338,13 +338,12 @@ describe("YRBS API", function () {
         });
     });
 
-    // The YRBS service is not returning results when no question
-    xit("invokeYRBS service with no grouping", function (){
+    it("invokeYRBS service with no grouping", function (){
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000}]}},
             'query': {'question.path':{ 'value': ['qn8']}}};
 
         return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
-            expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health":"81.4<br><br/><nobr>(77.0-85.1)</nobr><br/>8757"}]}} );
+            expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health": "87.4<br><br/><nobr>(86.5-88.3)</nobr><br/>121103"}]}} );
         });
     });
 });
