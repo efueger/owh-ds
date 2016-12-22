@@ -10,7 +10,7 @@ describe("Query Cache", function () {
     });
 
     it("cache query", function () {
-        queryCache.cacheQuery('1f7a679a3f9d7c425b36503d59d56b23123', 'mortality',
+        return queryCache.cacheQuery('1f7a679a3f9d7c425b36503d59d56b23123', 'mortality',
             {
                 'queryJSON': ['query string'],
                 'resultData': ['result string'],
