@@ -9,6 +9,7 @@ default:
     password : ''
   yrbs:
     url: ''
+    qServiceUrl: ''
   logging:
     level: 'debug'
   fb:
