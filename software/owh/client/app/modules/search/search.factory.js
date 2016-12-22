@@ -636,7 +636,10 @@
             if(filter.autoCompleteOptions) {
                 angular.forEach(filter.autoCompleteOptions, function(option) {
                     if(option.options) {
-                        length--;
+                        //if value has group option, then don't subtract from calculated length
+                        if(filter.value.indexOf(option.key) < 0) {
+                            length--;
+                        }
                         length += option.options.length;
                     }
                 });
