@@ -5,7 +5,7 @@ describe('search factory ', function(){
     var searchFactory, utils, $rootScope, $scope, controllerProvider, searchService, deferred, $q,
         primaryFilter, $httpBackend, $templateCache, filters, countsMortalityAutoCompletes,
         searchResponse, groupGenderResponse, genderGroupHeaders, fourGroupsResponse,
-        ModalService, givenModalDefaults, elementVisible, thenFunction, closeDeferred, uploadImageDeferred, $timeout, filterUtils;
+        ModalService, givenModalDefaults, elementVisible, thenFunction, closeDeferred, uploadImageDeferred, $timeout, filterUtils, questionsTreeJson;
     module.sharedInjector();
 
     beforeAll(module('owh'));
@@ -36,7 +36,9 @@ describe('search factory ', function(){
         $httpBackend.whenGET('app/i18n/messages-en.json').respond({ hello: 'World' });
         $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
         $httpBackend.whenGET('/getFBAppID').respond({data: { fbAppID: 1111111111111111}});
-
+        questionsTreeJson = __fixtures__['app/modules/search/fixtures/search.factory/questionsTree'];
+        $httpBackend.whenGET('/yrbsQuestionsTree/2015').respond(questionsTreeJson);
+        $rootScope.questionsList = questionsTreeJson.questionsList;
         filters = searchFactory.getAllFilters();
 
         countsMortalityAutoCompletes = __fixtures__['app/modules/search/fixtures/search.factory/countsMortalityAutoCompletes'];

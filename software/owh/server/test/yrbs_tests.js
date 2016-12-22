@@ -347,4 +347,38 @@ describe("YRBS API", function () {
             expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health":"81.4<br><br/><nobr>(77.0-85.1)</nobr><br/>8757"}]}} );
         });
     });
+
+    it("getQuestionsTreeByYears from yrbs service using 'All'", function (){
+        return yrbs.getQuestionsTreeByYears(["All"]).then(function (response) {
+            expect(response[0].text).to.eql("Unintentional Injuries and Violence");
+            //Childrens are in alphabetical order
+            expect(response[0].children[0].text).to.eql("Attempted suicide that resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse(during the 12 months before the survey)");
+            expect(response[0].children[1].text).to.eql("Attempted suicide(one or more times during the 12 months before the survey)");
+            expect(response[0].children[2].text).to.eql("Carried a gun(on at least 1 day during the 30 days before the survey)");
+            expect(response[1].text).to.eql("Tobacco Use");
+            expect(response[2].text).to.eql("Alcohol and Other Drug Use");
+            expect(response[3].text).to.eql("Sexual Behaviors");
+            expect(response[4].text).to.eql("Obesity, Overweight, and Weight Control");
+            expect(response[5].text).to.eql("Dietary Behaviors");
+            expect(response[6].text).to.eql("Physical Activity");
+            expect(response[7].text).to.eql("Other Health Topics");
+        });
+    });
+
+    it.only("getQuestionsTreeByYears from yrbs service by year", function (){
+        return yrbs.getQuestionsTreeByYears(["2015"]).then(function (response) {
+            expect(response[0].text).to.eql("Unintentional Injuries and Violence");
+            //Childrens are in alphabetical order
+            expect(response[0].children[0].text).to.eql("Attempted suicide that resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse(during the 12 months before the survey)");
+            expect(response[0].children[1].text).to.eql("Attempted suicide(one or more times during the 12 months before the survey)");
+            expect(response[0].children[2].text).to.eql("Carried a gun(on at least 1 day during the 30 days before the survey)");
+            expect(response[1].text).to.eql("Tobacco Use");
+            expect(response[2].text).to.eql("Alcohol and Other Drug Use");
+            expect(response[3].text).to.eql("Sexual Behaviors");
+            expect(response[4].text).to.eql("Obesity, Overweight, and Weight Control");
+            expect(response[5].text).to.eql("Dietary Behaviors");
+            expect(response[6].text).to.eql("Physical Activity");
+            expect(response[7].text).to.eql("Other Health Topics");
+        });
+    });
 });
