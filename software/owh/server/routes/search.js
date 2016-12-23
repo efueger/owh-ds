@@ -27,6 +27,7 @@ var searchRouter = function(app, rConfig) {
                 }else{
                     logger.info("Query with ID " + queryId + " not in cache, executing query");
                     if (q) {
+                        res.connection.setTimeout(0); // To avoid the post callback being called multiple times when the search method takes long time
                         search(q).then(function (resp) {
                             queryCache.cacheQuery(queryId, q.key, resp);
                             res.send(new result('OK', resp, "success"));
