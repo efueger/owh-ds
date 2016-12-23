@@ -86,7 +86,7 @@ Scenario: Race/Ethnicity label
 Scenario: YRBS question categories in the given order
   When I expand "Question" filter section
   And I select "Select Questions" button
-  Then I see question categories in this order "Unintentional Injuries and Violence", "Tobacco Use", "Alcohol and Other Drug Use", "Sexual Behaviors", "Physical Activity", "Obesity, Overweight, and Weight Control", "Dietary Behaviors", "Other Health Topics"
+  Then I see question categories in this order "Unintentional Injuries and Violence", "Tobacco Use", "Alcohol and Other Drug Use", "Sexual Behaviors", "Obesity, Overweight, and Weight Control", "Dietary Behaviors", "Physical Activity", "Other Health Topics"
 
 Scenario: Pop-up
   When I click on "Select Questions" button

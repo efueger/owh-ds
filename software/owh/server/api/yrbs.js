@@ -1,6 +1,6 @@
 var Q = require('q');
-var logger = require('../config/logging')
-var config = require('../config/config')
+var logger = require('../config/logging');
+var config = require('../config/config');
 var request = require('request');
 
 function yrbs() {
@@ -25,7 +25,7 @@ yrbs.prototype.invokeYRBSService = function(apiQuery){
     var startTime = new Date().getTime();
     logger.info("Invoking YRBS service for "+yrbsquery.length+" questions");
     for (var q in yrbsquery){
-        queryPromises.push(invokeYRBS(config.yrbs.url+ '?'+yrbsquery[q]));
+        queryPromises.push(invokeYRBS(config.yrbs.queryUrl+ '?'+yrbsquery[q]));
     }
     Q.all(queryPromises).then(function(resp){
         var duration = new Date().getTime() - startTime;
@@ -199,5 +199,72 @@ function invokeYRBS (query){
     return deferred.promise;
 };
 
+/**
+ * To get questions from question service dynamically. *
+ * @param yearList
+ * @returns {*|promise}
+ */
+yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
+    logger.info("Getting questions from yrbs service...");
+    var deferred = Q.defer();
+    invokeYRBS(config.yrbs.questionsUrl).then(function (response) {
+        var data = prepareQuestionTreeForYears(response, yearList);
+        deferred.resolve({questionTree:data.questionTree, questionsList:data.questionsList});
+    });
+    return deferred.promise;
+};
+
+/**
+ * Prepare YRBS question tree based on question categories
+ * @param questionList
+ * @param years
+ */
+function prepareQuestionTreeForYears(questions, years) {
+    logger.info("Preparing questions tree...");
+    var qCategoryMap = {};
+    var questionTree = [];
+    var questionsList = [];
+    //iterate through
+    for (var qKey in questions) {
+        var quesObj = questions[qKey];
+        var qCategory = quesObj.topic;
+        if (qCategory && qCategoryMap[qCategory] == undefined) {
+            qCategoryMap[qCategory] = {text:qCategory, children:[]}
+        } else {
+            if (quesObj.description !=undefined && (years.indexOf('All') != -1 || years.indexOf(quesObj.year.toString()) != -1)) {
+                var question = {text:quesObj.question +"("+quesObj.description+")", id:qKey};
+                qCategoryMap[qCategory].children.push(question);
+                //capture all questions into questionsList
+                questionsList.push({key : quesObj.question, qkey : qKey, text : quesObj.question +"("+quesObj.description+")"});
+            }
+        }
+    }
+
+    for (var category in qCategoryMap) {
+       qCategoryMap[category].children = sortByKey(qCategoryMap[category].children, 'text', true);
+       questionTree.push(qCategoryMap[category]);
+    }
+    return {questionTree:questionTree, questionsList: questionsList};
+}
+
+/**
+ * To sort questions
+ * @param array
+ * @param key
+ * @param asc
+ * @returns {*}
+ */
+function sortByKey(array, key, asc) {
+    logger.info("Sorting questions in alphabetical order...");
+    return array.sort(function(a, b) {
+        var x = typeof(key) === 'function' ? key(a) : a[key];
+        var y = typeof(key) === 'function' ? key(b) : b[key];
+        if(asc===undefined || asc === true) {
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        }else {
+            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+        }
+    });
+}
 
 module.exports = yrbs;

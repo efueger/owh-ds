@@ -8,23 +8,24 @@ default:
     user : ''
     password : ''
   yrbs:
-    url: ''
+    queryUrl: ''
+    questionsUrl: ''
   logging:
     level: 'debug'
   fb:
     appID :
-    appURL: 
+    appURL:
 
 # Dev configuration
 dev:
-    
-# Test environment configuration    
+
+# Test environment configuration
 test:
- 
-# Production configuration    
-production: 
+
+# Production configuration
+production:
   elastic_search:
-    url: 
+    url:
   rserve:
     host:
       user:
