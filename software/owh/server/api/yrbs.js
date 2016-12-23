@@ -235,7 +235,7 @@ function prepareQuestionTreeForYears(questions, years) {
                 var question = {text:quesObj.question +"("+quesObj.description+")", id:qKey};
                 qCategoryMap[qCategory].children.push(question);
                 //capture all questions into questionsList
-                questionsList.push({key : quesObj.question, qkey : qKey, text : quesObj.question +"("+quesObj.description+")"});
+                questionsList.push({key : quesObj.question, qkey : qKey, title : quesObj.question +"("+quesObj.description+")"});
             }
         }
     }

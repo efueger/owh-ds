@@ -361,6 +361,11 @@ describe("YRBS API", function () {
             expect(response.questionTree[5].text).to.eql("Dietary Behaviors");
             expect(response.questionTree[6].text).to.eql("Physical Activity");
             expect(response.questionTree[7].text).to.eql("Other Health Topics");
+            //Verify questionsList
+            expect(response.questionsList[0].qkey).to.eql("qn11");
+            expect(response.questionsList[0].title).to.eql("Drove when drinking alcohol(in a car or other vehicle one or more times during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
+            expect(response.questionsList[1].qkey).to.eql("qn12");
+            expect(response.questionsList[1].title).to.eql("Texted or e-mailed while driving a car or other vehicle(on at least 1 day during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
         });
     });
 
@@ -378,6 +383,12 @@ describe("YRBS API", function () {
             expect(response.questionTree[5].text).to.eql("Dietary Behaviors");
             expect(response.questionTree[6].text).to.eql("Physical Activity");
             expect(response.questionTree[7].text).to.eql("Other Health Topics");
+            //Verify questionsList
+            expect(response.questionsList[0].qkey).to.eql("qn11");
+            expect(response.questionsList[0].title).to.eql("Drove when drinking alcohol(in a car or other vehicle one or more times during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
+            expect(response.questionsList[1].qkey).to.eql("qn12");
+            expect(response.questionsList[1].title).to.eql("Texted or e-mailed while driving a car or other vehicle(on at least 1 day during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
+
         });
     });
 });
