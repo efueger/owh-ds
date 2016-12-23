@@ -22,12 +22,14 @@ yrbs.prototype.invokeYRBSService = function(apiQuery){
     var yrbsquery = this.buildYRBSQueries(apiQuery);
     var deferred = Q.defer();
     var queryPromises = [];
+    var startTime = new Date().getTime();
     logger.info("Invoking YRBS service for "+yrbsquery.length+" questions");
     for (var q in yrbsquery){
         queryPromises.push(invokeYRBS(config.yrbs.queryUrl+ '?'+yrbsquery[q]));
     }
     Q.all(queryPromises).then(function(resp){
-        logger.info("YRBS service response received for all "+yrbsquery.length+" questions");
+        var duration = new Date().getTime() - startTime;
+        logger.info("YRBS service response received for all "+yrbsquery.length+" questions, duration(s)="+ duration/1000);
         deferred.resolve(self.processYRBSReponses(resp));
     }, function (error) {
         deferred.reject(error);
@@ -53,7 +55,7 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
     }
 
 
-    // Grouping needs to be always in the following order Sex (sex), Grade (grade) and Race (race7)
+    // Grouping needs to be always in the following order Sex (sex), Grade (grade), Race (race7) and  Year (year)
     var sortedKeys = [];
     if(aggrsKeys.indexOf('sex') >= 0){
         sortedKeys.push('sex');
@@ -64,7 +66,9 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
     if(aggrsKeys.indexOf('race7') >= 0){
         sortedKeys.push('race7');
     }
-
+    if(aggrsKeys.indexOf('year') >= 0){
+        sortedKeys.push('year');
+    }
     var v = null;
     if (sortedKeys.length > 0) {
        v = 'v=' + sortedKeys.join(',');
@@ -115,7 +119,7 @@ yrbs.prototype.processQuestionResponse = function(response){
         if(r.level == response.vars.length) {
             var cell = q;
 
-            // The result table is always nested in the order Sex (q2), Grade (q3) and Race (raceeth)
+            // The result table is always nested in the order Sex (sex), Grade (grade), Race (race7) and  Year (year)
             // so nest the results in that order
             if ('sex' in r) {
                 cell = getResultCell(cell, 'sex', r.sex);
@@ -125,6 +129,9 @@ yrbs.prototype.processQuestionResponse = function(response){
             }
             if ('race7' in r) {
                 cell = getResultCell(cell, 'race7', r.race7);
+            }
+            if ('year' in r) {
+                cell = getResultCell(cell, 'year', r.year);
             }
             cell['mental_health'] = resultCellDataString(r);
         }
@@ -143,7 +150,7 @@ function getResultCell (currentcell, cellkey, cellvalue){
             return cell[i];
         }
     }
-    var newcell = {'name':cellvalue};
+    var newcell = {'name':cellvalue.toString()};
     cell.push(newcell);
     return newcell;
 }
@@ -177,7 +184,9 @@ function invokeYRBS (query){
     request(query ,function (error, response, body)  {
         if (!error) {
             try{
-                deferred.resolve(JSON.parse(body));
+                var result = JSON.parse(body);
+                logger.debug ("Received response from YRBS API for query "+query);
+                deferred.resolve(result);
             }catch(e){
                 logger.error("Error response from YRBS API for query "+query+": "+body);
                 deferred.resolve(null);

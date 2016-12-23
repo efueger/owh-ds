@@ -75,6 +75,14 @@ Scenario: Race/Ethnicity label
   Scenario: Data Alignment
   Then the data must be right justified in the table
 
+#Scenario: Show all odd years from 1991-2015
+#  When Click on show more on year filter
+#  Then year filter should list all odd years 1991-2015
+
+#Scenario: Group by year
+#  When Group by year is selected
+#  Then results should be grouped by year
+
 Scenario: YRBS question categories in the given order
   When I expand "Question" filter section
   And I select "Select Questions" button

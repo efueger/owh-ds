@@ -162,7 +162,7 @@
         //Query YRBS API
         function queryYRBSAPI( primaryFilter, queryID ) {
             var deferred = $q.defer();
-            var apiQuery = buildQueryForYRBS(primaryFilter);
+            var apiQuery = buildQueryForYRBS(primaryFilter, true);
             var headers = apiQuery.headers;
             SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 /*var yearsFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
@@ -965,17 +965,26 @@
             ];
 
             filters.yrbsGradeOptions = [
-                { "key": "9th grade", "title": "9th" },
-                { "key": "10th grade", "title": "10th" },
-                { "key": "11th grade", "title": "11th" },
-                { "key": "12th grade", "title": "12th" }
+                { "key": "9th", "title": "9th" },
+                { "key": "10th", "title": "10th" },
+                { "key": "11th", "title": "11th" },
+                { "key": "12th", "title": "12th" }
             ];
 
             filters.yrbsYearsOptions = [
-                { "key": "2015", "title": "2015" }
-                // { "key": "2013", "title": "2013" },
-                // { "key": "2011", "title": "2011" },
-                // { "key": "2009", "title": "2009" }
+                { "key": "2015", "title": "2015" },
+                { "key": "2013", "title": "2013" },
+                { "key": "2011", "title": "2011" },
+                { "key": "2009", "title": "2009" },
+                { "key": "2007", "title": "2007" },
+                { "key": "2005", "title": "2005" },
+                { "key": "2003", "title": "2003" },
+                { "key": "2001", "title": "2001" },
+                { "key": "1999", "title": "1999" },
+                { "key": "1997", "title": "1997" },
+                { "key": "1995", "title": "1995" },
+                { "key": "1993", "title": "1993" },
+                { "key": "1991", "title": "1991" }
             ];
 
             filters.yrbsAdditionalHeaders = [
@@ -984,7 +993,7 @@
             ];
 
             filters.yrbsFilters = [
-                {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: ['2015'], groupBy: false,
+                {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: [], groupBy: false,
                    autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
                 { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: [], groupBy: false,
                     autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
