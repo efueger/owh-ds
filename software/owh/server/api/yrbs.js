@@ -25,7 +25,7 @@ yrbs.prototype.invokeYRBSService = function(apiQuery){
     var startTime = new Date().getTime();
     logger.info("Invoking YRBS service for "+yrbsquery.length+" questions");
     for (var q in yrbsquery){
-        queryPromises.push(invokeYRBS(config.yrbs.url+ '?'+yrbsquery[q]));
+        queryPromises.push(invokeYRBS(config.yrbs.queryUrl+ '?'+yrbsquery[q]));
     }
     Q.all(queryPromises).then(function(resp){
         var duration = new Date().getTime() - startTime;
@@ -200,17 +200,16 @@ function invokeYRBS (query){
 };
 
 /**
- * To get questions from question service dynamically.
- * We
+ * To get questions from question service dynamically. *
  * @param yearList
  * @returns {*|promise}
  */
 yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
     logger.info("Getting questions from yrbs service...");
     var deferred = Q.defer();
-    invokeYRBS(config.yrbs.qServiceUrl).then(function (response) {
-        var questionTree = prepareQuestionTreeForYears(response, yearList);
-        deferred.resolve(questionTree);
+    invokeYRBS(config.yrbs.questionsUrl).then(function (response) {
+        var data = prepareQuestionTreeForYears(response, yearList);
+        deferred.resolve({questionTree:data.questionTree, questionsList:data.questionsList});
     });
     return deferred.promise;
 };
@@ -224,6 +223,7 @@ function prepareQuestionTreeForYears(questions, years) {
     logger.info("Preparing questions tree...");
     var qCategoryMap = {};
     var questionTree = [];
+    var questionsList = [];
     //iterate through
     for (var qKey in questions) {
         var quesObj = questions[qKey];
@@ -231,9 +231,11 @@ function prepareQuestionTreeForYears(questions, years) {
         if (qCategory && qCategoryMap[qCategory] == undefined) {
             qCategoryMap[qCategory] = {text:qCategory, children:[]}
         } else {
-            if (quesObj.description !=undefined && (years.indexOf('All') != -1 || years.indexOf(quesObj.year) != -1)) {
+            if (quesObj.description !=undefined && (years.indexOf('All') != -1 || years.indexOf(quesObj.year.toString()) != -1)) {
                 var question = {text:quesObj.question +"("+quesObj.description+")", id:qKey};
                 qCategoryMap[qCategory].children.push(question);
+                //capture all questions into questionsList
+                questionsList.push({key : quesObj.question, qkey : qKey, text : quesObj.question +"("+quesObj.description+")"});
             }
         }
     }
@@ -242,7 +244,7 @@ function prepareQuestionTreeForYears(questions, years) {
        qCategoryMap[category].children = sortByKey(qCategoryMap[category].children, 'text', true);
        questionTree.push(qCategoryMap[category]);
     }
-    return questionTree;
+    return {questionTree:questionTree, questionsList: questionsList};
 }
 
 /**
