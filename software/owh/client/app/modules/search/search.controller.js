@@ -87,28 +87,23 @@
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
 
-        //Intial call queryId will be empty
         if(sc.queryID === "") {
             searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
                 sc.queryID = hash;
                 $state.go('search', {queryID: sc.queryID});
             });
         }
+        /*
+        * To populate autoCompleteOptions from $rootScope
+        * When we refresh search page, below listener populate autoCompleteOptions value with $rootScope.questionList
+         */
+        $scope.$on('yrbsQuestionsLoadded', function() {
+            sc.filters.yrbsFilters[4].autoCompleteOptions = $rootScope.questionsList;
+        });
+
         if (sc.queryID) {
-            console.log('search called initially');
-            console.log('primary filter', angular.copy(sc.filters.selectedPrimaryFilter));
             search(false);
         }
-
-        $scope.$on('yrbsQuestionsLoadded', function() {
-            console.log('questions loaded');
-            sc.filters.yrbsFilters[4].autoCompleteOptions = $rootScope.questionsList;
-            if (sc.queryID) {
-                console.log('search called after questions loaded');
-                console.log('primary filter', angular.copy(sc.filters.selectedPrimaryFilter));
-                search(false);
-            }
-        });
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {

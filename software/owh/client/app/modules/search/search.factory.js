@@ -652,8 +652,6 @@
             var resultAggregation = utilService.findByKeyAndValue(apiQuery.aggregations.nested.table, 'key', resultFilter.key);
             resultAggregation.isPrimary = true;
             apiQuery.dataKeys = utilService.findAllNotContainsKeyAndValue(resultFilter.autoCompleteOptions, 'isAllOption', true);
-            console.log('headers col headers', angular.copy(headers.columnHeaders));
-            console.log('headers row headers', angular.copy(headers.rowHeaders));
             angular.forEach(headers.columnHeaders.concat(headers.rowHeaders), function(eachFilter) {
                 var allValues = utilService.getValuesByKeyIncludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
                 if(eachFilter.key === resultFilter.key) {
