@@ -94,9 +94,12 @@
                 $state.go('search', {queryID: sc.queryID});
             });
         }
-        if (sc.queryID){
-            search(false);
-        }
+
+        $scope.$on('yrbsQuestionsLoadded', function() {
+            if (sc.queryID) {
+                search(false);
+            }
+        });
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {

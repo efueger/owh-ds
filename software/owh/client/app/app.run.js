@@ -55,6 +55,7 @@
         }
         function onFailed(error) { console.log(error); }
 
+
         /*
         * Get YRBS questions dynamically
         * For now we are loading only 2015(hardcoded)
@@ -62,8 +63,12 @@
         API.getYRBSQuestionsTree({years:["2015"]}).$promise.then(function(response){
             $rootScope.questions = response.data.questionTree;
             $rootScope.questionsList = response.data.questionsList;
+            $rootScope.$broadcast("yrbsQuestionsLoadded");
+
         }).catch(function(error){
             console.log(" Failed to get YRBS questions from yrbs service ", error);
         });
+
+
     }
 }());
