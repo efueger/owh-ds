@@ -94,9 +94,18 @@
                 $state.go('search', {queryID: sc.queryID});
             });
         }
+        if (sc.queryID) {
+            console.log('search called initially');
+            console.log('primary filter', angular.copy(sc.filters.selectedPrimaryFilter));
+            search(false);
+        }
 
         $scope.$on('yrbsQuestionsLoadded', function() {
+            console.log('questions loaded');
+            sc.filters.yrbsFilters[4].autoCompleteOptions = $rootScope.questionsList;
             if (sc.queryID) {
+                console.log('search called after questions loaded');
+                console.log('primary filter', angular.copy(sc.filters.selectedPrimaryFilter));
                 search(false);
             }
         });
