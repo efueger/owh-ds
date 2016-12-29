@@ -77,7 +77,9 @@
             "age-adjusted_death_rates": {
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
-            }
+            },
+            bridge_race:{},
+            mental_health:{}
         };
         //show certain filters for different table views
         sc.availableFilters = {
@@ -107,6 +109,8 @@
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
+                //update table view each time when filter changes
+                sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
                 search(true);
             }
         }, true);

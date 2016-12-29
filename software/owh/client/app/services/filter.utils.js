@@ -43,10 +43,10 @@
             ];
 
             var censusRaceOptions =  [
-                { "key": "White", "title": "White" },
-                { "key": "Black", "title": "Black or African American" },
                 { "key": "American Indian", "title": "American Indian" },
-                { "key": "Asian or Pacific Islander", "title": "Asian or Pacific Islander" }
+                { "key": "Asian or Pacific Islander", "title": "Asian or Pacific Islander" },
+                { "key": "Black", "title": "Black or African American" },
+                { "key": "White", "title": "White" }
             ];
 
             var censusHispanicOriginOptions =  [
