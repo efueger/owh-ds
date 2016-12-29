@@ -16,8 +16,7 @@
         <input id="search_text" class="display-inline-block" name="searchText" type="text" ng-keyup="tc.searchTree(this)">
 
     </div>
-    <div class="usa-width-one-whole margin-bottom-20 condition-tree-hint" translate="label.tree.hint"></div>
-    <div class="usa-width-one-whole">
+    <div class="usa-width-one-whole margin-top-20">
         <div class="usa-width-one-whole" ng-if="$root.conditionsICD10 &&
                         (tc.codeKey === 'ucd-chapter-10' || tc.codeKey === 'mcd-chapter-10')">
             <div id="ucd-chapter-10" should-apply="tc.ac()" js-tree="tc.treeConfig" ng-model="$root.conditionsICD10"
