@@ -74,10 +74,23 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
        v = 'v=' + sortedKeys.join(',');
     }
 
-    if('query' in apiQuery && 'question.path' in apiQuery.query) {
-        var selectedQs = apiQuery.query['question.path'].value;
-        for (var i = 0; i < selectedQs.length; i++) {
-            queries.push('q=' + selectedQs[i] + (v? ('&' + v):''));
+    if('query' in apiQuery){
+        // Build filter params
+        var f = '';
+        for (q in apiQuery.query){
+            if(q != 'question.path') {
+                f += (q + ':');
+                f += apiQuery.query[q].value.join(',') +';';
+                // f += ';';
+            }
+        }
+        f = f.slice(0,f.length - 1);
+
+        if('question.path' in apiQuery.query) {
+            var selectedQs = apiQuery.query['question.path'].value;
+            for (var i = 0; i < selectedQs.length; i++) {
+                queries.push('q=' + selectedQs[i] + (v ? ('&' + v) : '') + (f ? ('&f=' + f) : ''));
+            }
         }
     }
 

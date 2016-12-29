@@ -33,6 +33,31 @@ describe("YRBS API", function () {
 
     });
 
+    it("buildYRBSQueries with only filtering params", function (){
+        var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000}]}},
+            'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'race7':{value:['White', 'Black or African American']}}};
+        var result = yrbs.buildYRBSQueries(apiQuery);
+        expect(result).to.eql( ['q=qn1&f=race7:White,Black or African American','q=qn2&f=race7:White,Black or African American','q=qn3&f=race7:White,Black or African American']);
+
+    });
+
+
+    it("buildYRBSQueries with grouping and filtering params", function (){
+        var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race7","size":100000}]}},
+        'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'race7':{value:['White', 'Black or African American']}}};
+        var result = yrbs.buildYRBSQueries(apiQuery);
+        expect(result).to.eql( ['q=qn1&v=race7&f=race7:White,Black or African American','q=qn2&v=race7&f=race7:White,Black or African American','q=qn3&v=race7&f=race7:White,Black or African American']);
+
+    });
+
+    it("buildYRBSQueries with multiple grouping and filtering params", function (){
+        var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race7","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000}]}},
+            'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'race7':{value:['White', 'Black or African American']},'sex':{value:['Female']}}};
+        var result = yrbs.buildYRBSQueries(apiQuery);
+        expect(result).to.eql( ['q=qn1&v=sex,race7&f=race7:White,Black or African American;sex:Female','q=qn2&v=sex,race7&f=race7:White,Black or African American;sex:Female','q=qn3&v=sex,race7&f=race7:White,Black or African American;sex:Female']);
+
+    });
+
     it("processYRBSReponses", function (){
         var yrbsresp = [ {
             "q": "qn41",
@@ -344,6 +369,15 @@ describe("YRBS API", function () {
 
         return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
             expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health": "87.4<br><br/><nobr>(86.5-88.3)</nobr><br/>121103"}]}} );
+        });
+    });
+
+    it("invokeYRBS service with grouping and filtering", function (){
+        var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race7","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000}]}},
+            'query': {'question.path':{ 'value': ['qn8']}, 'race7':{value:['White', 'Black or African American']},'sex':{value:['Female']}}};
+
+        return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
+            expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health":"86.1<br><br/><nobr>(84.9-87.3)</nobr><br/>35384","sex":[{"name":"Female","race7":[{"name":"Black or African American","mental_health":"92.9<br><br/><nobr>(91.5-94.0)</nobr><br/>11670"},{"name":"White","mental_health":"84.8<br><br/><nobr>(83.4-86.1)</nobr><br/>23714"}]}]}]}} );
         });
     });
 
