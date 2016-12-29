@@ -224,12 +224,14 @@ function prepareQuestionTreeForYears(questions, years) {
     var qCategoryMap = {};
     var questionTree = [];
     var questionsList = [];
-    //iterate through
+    var catCount = 0;
+    //iterate through questions
     for (var qKey in questions) {
         var quesObj = questions[qKey];
         var qCategory = quesObj.topic;
         if (qCategory && qCategoryMap[qCategory] == undefined) {
-            qCategoryMap[qCategory] = {text:qCategory, children:[]}
+            qCategoryMap[qCategory] = {id:'cat_'+catCount, text:qCategory, children:[]};
+            catCount = catCount + 1;
         } else {
             if (quesObj.description !=undefined && (years.indexOf('All') != -1 || years.indexOf(quesObj.year.toString()) != -1)) {
                 var question = {text:quesObj.question +"("+quesObj.description+")", id:qKey};

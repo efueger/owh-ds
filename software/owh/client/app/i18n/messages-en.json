@@ -87,7 +87,6 @@
   "label.select.question":"Select question",
   "label.search.disease.hint":"NOTE: Ctrl + Click to multiple select/deselect",
   "label.tree.submit":"Filter Selected {{entityName}}s",
-  "label.tree.hint":"Hint: Use Ctrl + Click for multiple selections, or Shift + Click for a range.",
   "label.title.gender.race":"Race and Sex",
   "label.title.race.agegroup":"Race and Age Group",
   "label.title.gender.agegroup":"Sex and Age Group",
