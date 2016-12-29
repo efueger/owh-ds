@@ -83,7 +83,15 @@ Scenario: Race/Ethnicity label
 #  When Group by year is selected
 #  Then results should be grouped by year
 
-Scenario: YRBS question categories in the given order
+#Scenario: Filter by year
+#  When Years "2015", "2013" are selected
+#  Then results shows only 2015 and 2013 data
+
+#Scenario: Filter by ethnicity
+#  When ethniciy "White", "Asian" are selected
+#  Then results shows only data for the selected ethnicities
+
+  Scenario: YRBS question categories in the given order
   When I expand "Question" filter section
   And I select "Select Questions" button
   Then I see question categories in this order "Unintentional Injuries and Violence", "Tobacco Use", "Alcohol and Other Drug Use", "Sexual Behaviors", "Obesity, Overweight, and Weight Control", "Dietary Behaviors", "Physical Activity", "Other Health Topics"
