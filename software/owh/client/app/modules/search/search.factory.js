@@ -993,7 +993,7 @@
             ];
 
             filters.yrbsFilters = [
-                {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: [], groupBy: false,
+                {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: ['2015'], groupBy: false,
                    autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
                 { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: [], groupBy: false,
                     autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },

@@ -14,6 +14,7 @@ Feature: As a User
     #Given user select YRBS as primary filter
     When I select YRBS as primary filter
     Then the default filter pre-selected should be Race
+    Then the default year selected should be 2015
     And side menu slides back into view
 
   Scenario: Hide Sidebar
