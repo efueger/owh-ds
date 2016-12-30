@@ -9,6 +9,7 @@ var BridgeRaceSearchPage = function() {
     brs.sexOptionsLink = element(by.partialLinkText('Sex'));
     brs.expandGraphLink = element(by.css('a[name=expand_graph]'));
     brs.collapseGraphLink = element(by.name('close'));
+    brs.stateOptionsLink = element(by.partialLinkText('State'));
 
     brs.getSelectedFilterOptions = function() {
         return element(by.css('.ui-select-match')).all(by.css('.ui-select-match-item')).getText();

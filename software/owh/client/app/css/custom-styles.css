@@ -832,4 +832,8 @@ and (-webkit-min-device-pixel-ratio: 1) {
 .remove-question:hover{
 	color:red;
 }
+
+.height-35x {
+	height:35px
+}
 /* End remove font-awesome icon in yrbs select questions popup*/

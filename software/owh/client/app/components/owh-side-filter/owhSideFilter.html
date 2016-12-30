@@ -105,6 +105,10 @@
                     </li>-->
                     <!--Radio button filters (UCD & MCD)-->
 
+                    <!--search box for side filter options-->
+                    <li class="group-option padding-right-10" ng-show="group.displaySearchBox">
+                        <input ng-model="search.title" type="text" class="height-35x">
+                    </li>
 
                     <!--Fot all other filters-->
                     <li class="group-option" ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' ">
@@ -115,7 +119,7 @@
                         </label>
                     </li>
                     <!--group options-->
-                    <li ng-repeat="option in group.autoCompleteOptions"
+                    <li ng-repeat="option in group.autoCompleteOptions | filter:search"
                         ng-init="$outerIndex = $index"
                         ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' "
                         class="group-option" ng-show="$index < 3 || sideFilter.showAll">
