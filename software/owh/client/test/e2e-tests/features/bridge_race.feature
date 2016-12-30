@@ -56,3 +56,9 @@ Feature: Bridge race filters
     When I remove default filters
     And I select year filter
     Then I should see line graph
+
+  Scenario: State filter search box
+    When I expands the State filter
+    Then I see the search box
+    When I begins to type a state name "alas" in the search box
+    Then I see results dynamically populate with the states matching the "alas"
