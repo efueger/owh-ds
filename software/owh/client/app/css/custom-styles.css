@@ -842,6 +842,6 @@ and (-webkit-min-device-pixel-ratio: 1) {
 	position: absolute;
 	margin-top: -28px;
 	right: 30px;
-	color: red;
+	color: #999999;
 }
 /* End remove font-awesome icon in yrbs select questions popup*/
