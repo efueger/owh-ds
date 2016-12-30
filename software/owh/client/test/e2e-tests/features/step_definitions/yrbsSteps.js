@@ -146,7 +146,7 @@ var yrbsStepDefinitionsWrapper = function () {
 
     this.Then(/^the default year selected should be 2015$/, function () {
         var raceFilter = element(by.className('side-filters')).element(by.xpath('.//*[.="Year"]'));
-        raceFilter.element(by.xpath('2016')).isSelected().to.eventually.equal(true);
+        raceFilter.element(by.xpath('2015')).isSelected().to.eventually.equal(true);
     });
 
     this.Then(/^then table and visualizations adjust to that they use up the entire available screen space$/, function () {
