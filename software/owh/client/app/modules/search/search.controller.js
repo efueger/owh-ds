@@ -1,20 +1,4 @@
 (function(){
-    angular.module('owh.search').directive('postRepeatDirective',
-        ['$timeout', '$log',  'searchFactory',
-            function($timeout, $log, searchFactory) {
-                return function(scope, element, attrs) {
-                    if (scope.$last){
-                        $timeout(function(){
-                            // var timeFinishedLoadingList = TimeTracker.reviewListLoaded();
-                            var timeFinishedLoadingData = searchFactory.dataLoaded();
-                            var ref = new Date(timeFinishedLoadingData);
-                            var end = new Date();
-                            $log.debug("## DOM rendering list took: " + (end - ref) + " ms");
-                        });
-                    }
-                };
-            }
-        ]);
     angular
         .module('owh.search')
         .controller('SearchController', SearchController);

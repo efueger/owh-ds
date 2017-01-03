@@ -20,16 +20,9 @@
             generateHashCode: generateHashCode,
             buildAPIQuery: buildAPIQuery,
             sortAutoCompleteOptions: sortAutoCompleteOptions,
-            groupAutoCompleteOptions: groupAutoCompleteOptions,
-            dataLoaded: dataLoaded
+            groupAutoCompleteOptions: groupAutoCompleteOptions
         };
         return service;
-
-        var loaded = new Date();
-
-        function dataLoaded() {
-            return loaded;
-        }
 
         function groupAutoCompleteOptions(filter, sort) {
             var groupedOptions = [];
@@ -318,7 +311,6 @@
         function searchMortalityResults(primaryFilter, queryID) {
             var deferred = $q.defer();
             queryMortalityAPI(primaryFilter, queryID).then(function(response){
-                loaded = new Date();
                //@TODO: @Joe here I am getting sideFilters from ES 'response.sideFilterResults'
                 primaryFilter.count = response.sideFilterResults.pagination.total;
                 angular.forEach(response.sideFilterResults.data.simple, function(eachFilterData, key) {
