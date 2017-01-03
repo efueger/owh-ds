@@ -844,4 +844,14 @@ and (-webkit-min-device-pixel-ratio: 1) {
 	right: 30px;
 	color: #999999;
 }
+
+.disabled-filter {
+	pointer-events: none;
+}
+
+.cursor-not-allowed {
+	cursor: not-allowed;
+	opacity: 0.4;
+}
+
 /* End remove font-awesome icon in yrbs select questions popup*/

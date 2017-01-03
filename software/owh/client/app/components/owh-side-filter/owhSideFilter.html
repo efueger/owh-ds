@@ -1,11 +1,14 @@
 <aside>
     <ul class="usa-sidenav-list side-filters">
-        <li class="accordion" ng-repeat="sideFilter in sfc.filters.selectedPrimaryFilter.sideFilters | orderBy: sfc.getFilterOrder" ng-if="sfc.isVisible(sideFilter)">
-            <span ng-init="group = (sideFilter.filterGroup ? sideFilter : sideFilter.filters)">
+        <li class="accordion" ng-repeat="sideFilter in sfc.filters.selectedPrimaryFilter.sideFilters | orderBy: sfc.getFilterOrder"
+            ng-class="{'cursor-not-allowed': !sfc.isVisible(sideFilter)}">
+
+            <span ng-init="group = (sideFilter.filterGroup ? sideFilter : sideFilter.filters)"
+                  ng-class="{'disabled-filter': !sfc.isVisible(sideFilter)}">
                 <label class="side-pane-label custom-label">
                     <a href="javascript:void(0)" ng-click="sideFilter.collapse = !sideFilter.collapse" class="custom-link">
                         <i class="fa" ng-class="sideFilter.collapse?'fa-chevron-right':'fa-chevron-down'"></i>
-                        <span translate="{{group.title}}"></span>
+                        <span translate="{{group.title}}" class="filter-display-name"></span>
                     </a>
                     <owh-toggle-switch ng-if="sideFilter.allowGrouping" class="pull-right"
                                        options="sideFilter.groupOptions ? sideFilter.groupOptions : sfc.filters.groupOptions"
