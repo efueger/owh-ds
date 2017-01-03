@@ -56,44 +56,90 @@
         };
 
         sc.optionsGroup = {
-            "hispanicOrigin": [
-                {
-                    "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic', 'Unknown'],
-                    "title": "Hispanic",
-                    "key": "Hispanic"
-                },
-                'Non-Hispanic'
-                // 'Unknown'
-            ],
-            "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
-            "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
+            "number_of_deaths": {
+                "hispanicOrigin": [
+                    {
+                        "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic'],
+                        "title": "Hispanic",
+                        "key": "Hispanic"
+                    },
+                    'Non-Hispanic',
+                    'Unknown'
+                ],
+                "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
+                "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1997','1995','1993','1991' ]
+            },
+            "crude_death_rates": {
+                "hispanicOrigin": ['hispanic', 'non', 'unknown'],
+                "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
+                "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
+            },
+            "age-adjusted_death_rates": {
+                "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
+                "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
+            },
+            bridge_race:{},
+            mental_health:{}
         };
         //show certain filters for different table views
         sc.availableFilters = {
-            'crude_death_rates': ['year', 'gender', 'race'],
+            'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
             'age-adjusted_death_rates': ['year', 'gender', 'race']
         };
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
 
-        //Intial call queryId will be empty
         if(sc.queryID === "") {
             searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
                 sc.queryID = hash;
                 $state.go('search', {queryID: sc.queryID});
             });
         }
-        if (sc.queryID){
+        /*
+        * To populate autoCompleteOptions from $rootScope
+        * When we refresh search page, below listener populate autoCompleteOptions value with $rootScope.questionsList
+         */
+        $scope.$on('yrbsQuestionsLoadded', function() {
+            sc.filters.yrbsFilters[4].autoCompleteOptions = $rootScope.questionsList;
+        });
+
+        if (sc.queryID) {
             search(false);
         }
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
+                //update table view each time when filter changes
+                sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
                 search(true);
             }
         }, true);
 
         function changeViewFilter(selectedFilter) {
+            searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);
+            angular.forEach(sc.filters.selectedPrimaryFilter.allFilters, function(filter) {
+                if(filter.key === 'hispanicOrigin') {
+                    if(selectedFilter.key === 'crude_death_rates') {
+                        filter.queryKey = 'ethnicity_group';
+                        filter.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
+                    } else {
+                        filter.queryKey = 'hispanicOrigin';
+                        filter.autoCompleteOptions = sc.filters.hispanicOptions;
+                    }
+                }
+            });
+            angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
+                if(filter.filters.key === 'hispanicOrigin') {
+                    if(selectedFilter.key === 'crude_death_rates') {
+                        filter.filters.queryKey = 'ethnicity_group';
+                        filter.filters.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
+                    } else {
+                        filter.filters.queryKey = 'hispanicOrigin';
+                        filter.filters.autoCompleteOptions = sc.filters.hispanicOptions;
+                    }
+                }
+            });
+            sc.search(true);
             sc.tableView = selectedFilter.key;
         }
 
@@ -145,10 +191,10 @@
             var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
             //make sure row/column headers are in proper order
             angular.forEach(headers.rowHeaders, function(header) {
-                searchFactory.sortAutoCompleteOptions(header, sc.optionsGroup);
+                searchFactory.sortAutoCompleteOptions(header, sc.optionsGroup[sc.tableView]);
             });
             angular.forEach(headers.columnHeaders, function(header) {
-                searchFactory.sortAutoCompleteOptions(header, sc.optionsGroup);
+                searchFactory.sortAutoCompleteOptions(header, sc.optionsGroup[sc.tableView]);
             });
             var countKey = selectedFilter.key;
             var countLabel = selectedFilter.countLabel;
@@ -224,7 +270,7 @@
                 sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
                 //make sure side filters are in proper order
                 angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
-                    searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup);
+                    searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup[sc.tableView]);
                 });
 
                 sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
@@ -234,6 +280,10 @@
                 if(sc.filters.selectedPrimaryFilter.key === 'mental_health') {
                     sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                     sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
+                }
+                if(sc.filters.selectedPrimaryFilter.key === 'bridge_race') {
+                    sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                    sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
                 }
                 sc.filters.selectedPrimaryFilter.initiated = true;
             });

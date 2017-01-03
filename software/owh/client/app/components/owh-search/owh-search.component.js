@@ -50,6 +50,7 @@
                 searchFactory.showPhaseTwoModal('label.show.impl.next');
             }
         }
+
     }
 
 }());

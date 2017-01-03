@@ -190,3 +190,48 @@ Scenario: Data should be right aligned
 #  When I select "Column" type for "Race" filter
 #  Then Rates, Deaths and Population shouldn't be overlap
 
+Scenario: Non-Hispanic should have total in the side filter
+  Given I am on search page
+  When user expands ethnicity filter
+  Then I should see total for Non-Hispanic
+
+Scenario: Disable unknown when other option is selected
+  When user expands ethnicity filter
+  When user checks entire Hispanic group
+  Then Unknown is disabled- grayed out
+
+Scenario: Disable other options when Unknown is selected
+  When user expands ethnicity filter
+  When the user selects Unknown
+  Then the rest of the options are disabled- grayed out
+
+Scenario: Only display percent for non-zero cells
+  Given I am on search page
+  When I update criteria in filter options with column "Ethnicity"
+  Then zero cells should not have percentage
+
+Scenario: Age group selection disabled for age rates
+  Given I am on search page
+  When I update criteria in filter option with row "Age Groups"
+  When the user chooses the option 'Age Adjusted Death Rates'
+  Then table should not include age groups
+
+Scenario: Bookmark link UI
+  Given I am on search page
+  When I hovers on the bookmark link
+  Then the link gets a background box so that I feel it like a button/action
+
+#This scenario opening bookmark window but unable to find the tex on bookmark window.
+#Scenario: Bookmark link
+#  When I select the "Bookmark this search" link in application
+#  Then browser's bookmarking window should be displayed to save the link to Browser
+
+#Unable to find a way to click on button
+#Scenario: Launching the bookmark
+#  When I selects a saved bookmark
+#  Then all the search parameters should be autopopulated and search results should be displayed
+
+Scenario: Hispanic Group options for crude death rate view
+  When I update criteria in filter option with row "Ethnicity"
+  When the user chooses the option 'Death Rates'
+  Then table should display Hispanic groups only

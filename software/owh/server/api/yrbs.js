@@ -1,6 +1,6 @@
 var Q = require('q');
-var logger = require('../config/logging')
-var config = require('../config/config')
+var logger = require('../config/logging');
+var config = require('../config/config');
 var request = require('request');
 
 function yrbs() {
@@ -22,10 +22,14 @@ yrbs.prototype.invokeYRBSService = function(apiQuery){
     var yrbsquery = this.buildYRBSQueries(apiQuery);
     var deferred = Q.defer();
     var queryPromises = [];
+    var startTime = new Date().getTime();
+    logger.info("Invoking YRBS service for "+yrbsquery.length+" questions");
     for (var q in yrbsquery){
-        queryPromises.push(invokeYRBS(config.yrbs.url+ '?'+yrbsquery[q]));
+        queryPromises.push(invokeYRBS(config.yrbs.queryUrl+ '?'+yrbsquery[q]));
     }
     Q.all(queryPromises).then(function(resp){
+        var duration = new Date().getTime() - startTime;
+        logger.info("YRBS service response received for all "+yrbsquery.length+" questions, duration(s)="+ duration/1000);
         deferred.resolve(self.processYRBSReponses(resp));
     }, function (error) {
         deferred.reject(error);
@@ -50,20 +54,43 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
         }
     }
 
-    // Grouping needs to be always in the following order Sex (q2), Grade (q3) and Race (raceeth)
-    aggrsKeys.sort(function (a,b) {
-        return a < b ? -1 : a > b ? 1 : 0;
-    });
 
+    // Grouping needs to be always in the following order Sex (sex), Grade (grade), Race (race7) and  Year (year)
+    var sortedKeys = [];
+    if(aggrsKeys.indexOf('sex') >= 0){
+        sortedKeys.push('sex');
+    }
+    if(aggrsKeys.indexOf('grade') >= 0){
+        sortedKeys.push('grade');
+    }
+    if(aggrsKeys.indexOf('race7') >= 0){
+        sortedKeys.push('race7');
+    }
+    if(aggrsKeys.indexOf('year') >= 0){
+        sortedKeys.push('year');
+    }
     var v = null;
-    if (aggrsKeys.length > 0) {
-       v = 'v=' + aggrsKeys.join(',');
+    if (sortedKeys.length > 0) {
+       v = 'v=' + sortedKeys.join(',');
     }
 
-    if('query' in apiQuery && 'question.path' in apiQuery.query) {
-        var selectedQs = apiQuery.query['question.path'].value;
-        for (var i = 0; i < selectedQs.length; i++) {
-            queries.push('q=' + selectedQs[i] + (v? ('&' + v):''));
+    if('query' in apiQuery){
+        // Build filter params
+        var f = '';
+        for (q in apiQuery.query){
+            if(q != 'question.path') {
+                f += (q + ':');
+                f += apiQuery.query[q].value.join(',') +';';
+                // f += ';';
+            }
+        }
+        f = f.slice(0,f.length - 1);
+
+        if('question.path' in apiQuery.query) {
+            var selectedQs = apiQuery.query['question.path'].value;
+            for (var i = 0; i < selectedQs.length; i++) {
+                queries.push('q=' + selectedQs[i] + (v ? ('&' + v) : '') + (f ? ('&f=' + f) : ''));
+            }
         }
     }
 
@@ -79,8 +106,10 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
 yrbs.prototype.processYRBSReponses = function(response){
     var questions = []
     for (r in response){
-        if (response[r]) {
+        if (response[r] && 'results' in response[r]) {
             questions.push(this.processQuestionResponse(response[r]));
+        } else{
+            logger.warn("Error response from YRBS: "+JSON.stringify(response[r]));
         }
     }
     var finalResp = {'table': {'question':questions}};
@@ -99,19 +128,26 @@ yrbs.prototype.processQuestionResponse = function(response){
 
     for (var i = 1; i< response.results.length; i ++){
         var r = response.results[i];
-        var cell = q;
-        // The result table is always nested in the order Sex (q2), Grade (q3) and Race (raceeth)
-        // so nest the results in that order
-        if('q2' in r) {
-            cell = getResultCell(cell, 'q2', r.q2);
+        // Process only the deepest level data which is grouped by all attributes requested
+        if(r.level == response.vars.length) {
+            var cell = q;
+
+            // The result table is always nested in the order Sex (sex), Grade (grade), Race (race7) and  Year (year)
+            // so nest the results in that order
+            if ('sex' in r) {
+                cell = getResultCell(cell, 'sex', r.sex);
+            }
+            if ('grade' in r) {
+                cell = getResultCell(cell, 'grade', r.grade);
+            }
+            if ('race7' in r) {
+                cell = getResultCell(cell, 'race7', r.race7);
+            }
+            if ('year' in r) {
+                cell = getResultCell(cell, 'year', r.year);
+            }
+            cell['mental_health'] = resultCellDataString(r);
         }
-        if('raceeth' in r) {
-            cell = getResultCell(cell, 'raceeth', r.raceeth);
-        }
-        if('q3' in r) {
-            cell = getResultCell(cell, 'q3', r.q3);
-        }
-        cell['mental_health'] = resultCellDataString(r);
     }
     return q;
 };
@@ -127,7 +163,7 @@ function getResultCell (currentcell, cellkey, cellvalue){
             return cell[i];
         }
     }
-    var newcell = {'name':cellvalue};
+    var newcell = {'name':cellvalue.toString()};
     cell.push(newcell);
     return newcell;
 }
@@ -161,7 +197,9 @@ function invokeYRBS (query){
     request(query ,function (error, response, body)  {
         if (!error) {
             try{
-                deferred.resolve(JSON.parse(body));
+                var result = JSON.parse(body);
+                logger.debug ("Received response from YRBS API for query "+query);
+                deferred.resolve(result);
             }catch(e){
                 logger.error("Error response from YRBS API for query "+query+": "+body);
                 deferred.resolve(null);
@@ -174,5 +212,74 @@ function invokeYRBS (query){
     return deferred.promise;
 };
 
+/**
+ * To get questions from question service dynamically. *
+ * @param yearList
+ * @returns {*|promise}
+ */
+yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
+    logger.info("Getting questions from yrbs service...");
+    var deferred = Q.defer();
+    invokeYRBS(config.yrbs.questionsUrl).then(function (response) {
+        var data = prepareQuestionTreeForYears(response, yearList);
+        deferred.resolve({questionTree:data.questionTree, questionsList:data.questionsList});
+    });
+    return deferred.promise;
+};
+
+/**
+ * Prepare YRBS question tree based on question categories
+ * @param questionList
+ * @param years
+ */
+function prepareQuestionTreeForYears(questions, years) {
+    logger.info("Preparing questions tree...");
+    var qCategoryMap = {};
+    var questionTree = [];
+    var questionsList = [];
+    var catCount = 0;
+    //iterate through questions
+    for (var qKey in questions) {
+        var quesObj = questions[qKey];
+        var qCategory = quesObj.topic;
+        if (qCategory && qCategoryMap[qCategory] == undefined) {
+            qCategoryMap[qCategory] = {id:'cat_'+catCount, text:qCategory, children:[]};
+            catCount = catCount + 1;
+        } else {
+            if (quesObj.description !=undefined && (years.indexOf('All') != -1 || years.indexOf(quesObj.year.toString()) != -1)) {
+                var question = {text:quesObj.question +"("+quesObj.description+")", id:qKey};
+                qCategoryMap[qCategory].children.push(question);
+                //capture all questions into questionsList
+                questionsList.push({key : quesObj.question, qkey : qKey, title : quesObj.question +"("+quesObj.description+")"});
+            }
+        }
+    }
+
+    for (var category in qCategoryMap) {
+       qCategoryMap[category].children = sortByKey(qCategoryMap[category].children, 'text', true);
+       questionTree.push(qCategoryMap[category]);
+    }
+    return {questionTree:questionTree, questionsList: questionsList};
+}
+
+/**
+ * To sort questions
+ * @param array
+ * @param key
+ * @param asc
+ * @returns {*}
+ */
+function sortByKey(array, key, asc) {
+    logger.info("Sorting questions in alphabetical order...");
+    return array.sort(function(a, b) {
+        var x = typeof(key) === 'function' ? key(a) : a[key];
+        var y = typeof(key) === 'function' ? key(b) : b[key];
+        if(asc===undefined || asc === true) {
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        }else {
+            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+        }
+    });
+}
 
 module.exports = yrbs;

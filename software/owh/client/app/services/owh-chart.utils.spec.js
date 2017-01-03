@@ -7,8 +7,8 @@ describe('chart utils', function(){
         horizontalStackExpectedResult1, horizontalStackExpectedResult2,
         verticalStackExpectedResult, horizontalBarExpectedResult,
         verticalBarExpectedResult1, verticalBarExpectedResult2,
-        horizontalStackNoDataExpectedResult, verticalBarNoDataExpectedResult,
-        pieChartData, pieChartExpectedResult, pieChartWithpostFixToTooltipExpectedResult,
+        horizontalStackNoDataExpectedResult, verticalBarNoDataExpectedResult, lineChartFilter, lineChartExpectedResult,
+        lineChartData, pieChartData, pieChartExpectedResult, pieChartWithpostFixToTooltipExpectedResult,
         expandedGraphExpectedResult, elementVisible, thenFunction, $httpBackend, $templateCache;
 
     beforeEach(module('owh'));
@@ -54,7 +54,12 @@ describe('chart utils', function(){
         data2 = __fixtures__['app/services/fixtures/owh.chart.utils/data2'];
 
         pieChartData = __fixtures__['app/services/fixtures/owh.chart.utils/pieChartData'];
+
         primaryFilter = {"key":"deaths", "chartAxisLabel":"Deaths"};
+
+        lineChartFilter =  __fixtures__['app/services/fixtures/owh.chart.utils/lineChartFilter'];
+        lineChartData = __fixtures__['app/services/fixtures/owh.chart.utils/lineChartData'];
+        lineChartExpectedResult = __fixtures__['app/services/fixtures/owh.chart.utils/lineChartExpectedResults'];
 
         horizontalStackExpectedResult1 = __fixtures__['app/services/fixtures/owh.chart.utils/horizontalStackExpectedResult1'];
         horizontalStackExpectedResult2 = __fixtures__['app/services/fixtures/owh.chart.utils/horizontalStackExpectedResult2'];
@@ -81,6 +86,7 @@ describe('chart utils', function(){
         $httpBackend.whenGET('app/i18n/messages-en.json').respond({ hello: 'World' });
         $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
         $httpBackend.whenGET('/getFBAppID').respond({data: { fbAppID: 1111111111111111}});
+        $httpBackend.whenGET('/yrbsQuestionsTree/2015').respond({data: { }});
     }));
 
     it('test chart utils horizontalStack', function () {
@@ -146,6 +152,25 @@ describe('chart utils', function(){
     it('test chart utils verticalBar without gender filter', function () {
         var result = chartUtils.verticalBar(filter2, filter3, data2, primaryFilter);
         expect(JSON.stringify(result)).toEqual(JSON.stringify(verticalBarExpectedResult2));
+    });
+
+    it('test chart utils lineChart', function () {
+        var result = chartUtils.lineChart(lineChartData, lineChartFilter, {key:'current_year'});
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(lineChartExpectedResult));
+        result.data();
+        expect(result.options.chart.x({x: 'x label'})).toEqual('x label');
+        expect(result.options.chart.y({y: 'y value'})).toEqual('y value');
+
+        expect(result.options.chart.xAxis.tickFormat(1234)).toEqual(null);
+
+        expect(result.options.chart.yAxis.tickFormat(1234)).toEqual(null);
+        console.log(result.options.chart.tooltip.contentGenerator({value: 1234, series: [{color: 'red', value: 1234}]}));
+        expect(result.options.chart.tooltip.contentGenerator({value: 1234, series: [{color: 'red', value: 1234}]})).toEqual("<div class='usa-grid-full'<div class='usa-width-one-whole' style='padding: 10px; font-weight: bold'>1234</div><div class='usa-width-one-whole nvtooltip-value'><i class='fa fa-square' style='color:red'></i>&nbsp;&nbsp;&nbsp;undefined&nbsp;&nbsp;&nbsp;1,234</div></div>");
+
+    });
+
+    it('test showExpandedGraph for lineChart', function () {
+        chartUtils.showExpandedGraph([lineChartExpectedResult]);
     });
 
     it('test chart utils pieChart', function () {

@@ -42,6 +42,10 @@
       'getFBAppID' : {
         method : 'GET',
         url: '/getFBAppID'
+      },
+      'getYRBSQuestionsTree' : {
+        method : 'GET',
+        url: '/yrbsQuestionsTree/:years'
       }
     }
   }

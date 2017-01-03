@@ -120,38 +120,6 @@ function getPopulationSumQuery() {
 }
 
 /**
- *
- * @param query
- * @param results
- * @param dataset
- * @param hashcode
- * @returns {{}}
- */
-var buildInsertQueryResultsQuery = function (query, results, dataset, hashcode, sideFilterResults) {
-    var insertQuery = {};
-    insertQuery.queryJSON = query;
-    insertQuery.resultJSON = results;
-    insertQuery.dataset = dataset;  //Find a way to get dataset value
-    //@TODO current data with yyy-mm-dd format
-    insertQuery.lastupdated = "2016-10-25";
-    insertQuery.queryID = hashcode;
-    insertQuery.sideFilterResults = sideFilterResults;
-    return insertQuery;
-};
-
-
-var buildSearchQueryResultsQuery = function(hashcode) {
-    var searchQuery = {
-        "query": {
-            "term": {
-                "queryID": hashcode
-            }
-        }
-    }
-    return searchQuery;
-};
-
-/**
  * Builds a search query
  * @param params
  * @param isAggregation
@@ -300,36 +268,37 @@ var isEmptyObject = function(obj) {
     return !Object.keys(obj).length;
 };
 
-function buildQueryForYRBS(primaryFilter, dontAddYearAgg) {
-    var result = buildAPIQuery(primaryFilter);
-    var apiQuery = result.apiQuery;
-    var headers = result.headers;
-    var resultFilter = headers.columnHeaders.length > 0 ? headers.columnHeaders[0] : headers.rowHeaders[0];
-    var resultAggregation = findByKeyAndValue(apiQuery.aggregations.nested.table, 'key', resultFilter.key);
-    resultAggregation.isPrimary = true;
-    apiQuery.dataKeys = findAllNotContainsKeyAndValue(resultFilter.autoCompleteOptions, 'isAllOption', true);
-    headers.columnHeaders.concat(headers.rowHeaders).forEach(function(eachFilter) {
-        var allValues = getValuesByKeyIncludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
-        if(eachFilter.key === resultFilter.key) {
-            if(apiQuery.query[eachFilter.queryKey]) {
-                apiQuery.query[eachFilter.queryKey].value = allValues;
-            }
-        } else if(eachFilter.key !== resultFilter.key && eachFilter.key !== 'question') {
-            if(!apiQuery.query[eachFilter.queryKey] || allValues.indexOf(apiQuery.query[eachFilter.queryKey].value) >= 0) {
-                apiQuery.query[eachFilter.queryKey] = getFilterQuery(eachFilter);
-                apiQuery.query[eachFilter.queryKey].value = getValuesByKeyExcludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
-            }
-        }
-    });
-    apiQuery.query.primary_filter = getFilterQuery({key: 'primary_filter', queryKey: 'primary_filter', value: resultFilter.queryKey, primary: false});
-    var yearFilter = findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
-    if(yearFilter.value.length != 1 && !dontAddYearAgg) {
-        headers.columnHeaders.push(yearFilter);
-        apiQuery.aggregations.nested.table.push(getGroupQuery(yearFilter));
-    }
-    result.resultFilter = resultFilter;
-    return result;
-}
+// Obsolete code
+// function buildQueryForYRBS(primaryFilter, dontAddYearAgg) {
+//     var result = buildAPIQuery(primaryFilter);
+//     var apiQuery = result.apiQuery;
+//     var headers = result.headers;
+//     var resultFilter = headers.columnHeaders.length > 0 ? headers.columnHeaders[0] : headers.rowHeaders[0];
+//     var resultAggregation = findByKeyAndValue(apiQuery.aggregations.nested.table, 'key', resultFilter.key);
+//     resultAggregation.isPrimary = true;
+//     apiQuery.dataKeys = findAllNotContainsKeyAndValue(resultFilter.autoCompleteOptions, 'isAllOption', true);
+//     headers.columnHeaders.concat(headers.rowHeaders).forEach(function(eachFilter) {
+//         var allValues = getValuesByKeyIncludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
+//         if(eachFilter.key === resultFilter.key) {
+//             if(apiQuery.query[eachFilter.queryKey]) {
+//                 apiQuery.query[eachFilter.queryKey].value = allValues;
+//             }
+//         } else if(eachFilter.key !== resultFilter.key && eachFilter.key !== 'question') {
+//             if(!apiQuery.query[eachFilter.queryKey] || allValues.indexOf(apiQuery.query[eachFilter.queryKey].value) >= 0) {
+//                 apiQuery.query[eachFilter.queryKey] = getFilterQuery(eachFilter);
+//                 apiQuery.query[eachFilter.queryKey].value = getValuesByKeyExcludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
+//             }
+//         }
+//     });
+//     apiQuery.query.primary_filter = getFilterQuery({key: 'primary_filter', queryKey: 'primary_filter', value: resultFilter.queryKey, primary: false});
+//     var yearFilter = findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
+//     if(yearFilter.value.length != 1 && !dontAddYearAgg) {
+//         headers.columnHeaders.push(yearFilter);
+//         apiQuery.aggregations.nested.table.push(getGroupQuery(yearFilter));
+//     }
+//     result.resultFilter = resultFilter;
+//     return result;
+// }
 
 /**
  * Finds and returns the first object in array of objects by using the key and value
@@ -618,8 +587,6 @@ function addCountsToAutoCompleteOptions(primaryFilter) {
 module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;
-module.exports.buildInsertQueryResultsQuery = buildInsertQueryResultsQuery;
-module.exports.buildSearchQueryResultsQuery = buildSearchQueryResultsQuery;
 module.exports.buildAPIQuery = buildAPIQuery;
-module.exports.buildQueryForYRBS = buildQueryForYRBS;
+// module.exports.buildQueryForYRBS = buildQueryForYRBS;
 module.exports.addCountsToAutoCompleteOptions = addCountsToAutoCompleteOptions;

@@ -20,9 +20,27 @@
             generateHashCode: generateHashCode,
             buildAPIQuery: buildAPIQuery,
             sortAutoCompleteOptions: sortAutoCompleteOptions,
-            groupAutoCompleteOptions: groupAutoCompleteOptions
+            groupAutoCompleteOptions: groupAutoCompleteOptions,
+            removeDisabledFilters: removeDisabledFilters
         };
         return service;
+
+        function removeDisabledFilters(selectedFilter, filterView, availableFilters) {
+            if(availableFilters[filterView]) {
+                angular.forEach(selectedFilter.allFilters, function(filter, index) {
+                    if(availableFilters[filterView].indexOf(filter.key) < 0) {
+                        filter.value = [];
+                        filter.groupBy = false;
+                    }
+                });
+                angular.forEach(selectedFilter.sideFilters, function(filter, index) {
+                    if(availableFilters[filterView].indexOf(filter.filters.key) < 0) {
+                        filter.filters.value = [];
+                        filter.filters.groupBy = false;
+                    }
+                });
+            }
+        }
 
         function groupAutoCompleteOptions(filter, sort) {
             var groupedOptions = [];
@@ -100,7 +118,7 @@
                 for(var i = 0; i < sort[filter.key].length; i++) {
                     angular.forEach(filter.autoCompleteOptions, function(option) {
                         //if type string, then just a regular option
-                        if(typeof sort[filter.key][i] === 'string') {
+                        if(typeof sort[filter.key][i] === 'string' && !option.options) {
                             //not group option
                             if(sort[filter.key][i] === option.key) {
                                 filterLength++;
@@ -109,12 +127,16 @@
                         } else {
                             //else, group option
                             //is same parent group option
-                            if(sort[filter.key][i].key === option.key) {
-                                angular.forEach(option.options, function(subOption) {
-                                    if(sort[filter.key][i].options.indexOf(subOption.key) >= 0) {
+                            if(option.options) {
+                                angular.forEach(option.options, function (subOption) {
+                                    if (sort[filter.key][i].options && sort[filter.key][i].options.indexOf(subOption.key) >= 0) {
                                         sortedOptions.push(subOption);
                                     }
                                 });
+                            } else {
+                                if (sort[filter.key][i].options && sort[filter.key][i].options.indexOf(option.key) >= 0) {
+                                    sortedOptions.push(option);
+                                }
                             }
                         }
                     });
@@ -125,9 +147,9 @@
         }
 
         //Search for YRBS data
-        function searchYRBSResults( primaryFilter ) {
+        function searchYRBSResults( primaryFilter, queryID ) {
             var deferred = $q.defer();
-            queryYRBSAPI(primaryFilter).then(function(response){
+            queryYRBSAPI(primaryFilter, queryID ).then(function(response){
                 primaryFilter.data = response.data.table;
                 //primaryFilter.chartData = response.chartData;
                 primaryFilter.headers = response.headers;
@@ -138,11 +160,11 @@
         }
 
         //Query YRBS API
-        function queryYRBSAPI( primaryFilter ) {
+        function queryYRBSAPI( primaryFilter, queryID ) {
             var deferred = $q.defer();
-            var apiQuery = buildQueryForYRBS(primaryFilter);
+            var apiQuery = buildQueryForYRBS(primaryFilter, true);
             var headers = apiQuery.headers;
-            SearchService.searchResults(primaryFilter).then(function(response) {
+            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 /*var yearsFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
                 if(!yearsFilter.autoCompleteOptions[0][primaryFilter.key]) {
                     var total = 0;
@@ -199,8 +221,9 @@
                     questionsFilter.autoCompleteOptions = $rootScope.questionsList;
                 }*/
                 deferred.resolve({
-                    data: response.data,
-                    headers : headers
+                    data: response.data.resultData,
+                    headers : headers,
+                    queryJSON: response.data.queryJSON
                 });
             });
             return deferred.promise;
@@ -367,7 +390,7 @@
             var deferred = $q.defer();
             var apiQuery = buildAPIQuery(primaryFilter);
             var query = apiQuery.apiQuery;
-            SearchService.generateHashCode(query).then(function(response) {
+            SearchService.generateHashCode(apiQuery).then(function(response) {
                 deferred.resolve(response.data);
             });
             return deferred.promise;
@@ -444,7 +467,12 @@
                 var data = nestedData.table;
                 var header = (headers.rowHeaders.length === 1) ? headers.rowHeaders[0] : headers.columnHeaders[0];
                 var pieData = data[header.key];
-                chartData.push(chartUtilService.pieChart(pieData,header,primaryFilter));
+                //for current_year dhow line graph
+                if (header.key == 'current_year') {
+                    chartData.push(chartUtilService.lineChart(pieData, header, primaryFilter));
+                } else {//for other single filters, show pie chart
+                    chartData.push(chartUtilService.pieChart(pieData, header, primaryFilter));
+                }
             }
 
             //prepare charts data to render three charts in a row
@@ -707,17 +735,17 @@
             return deferred.promise;
         }
 
-        function queryCensusAPI( primaryFilter ) {
+        function queryCensusAPI( primaryFilter, queryID ) {
 
             var deferred = $q.defer();
             var apiQuery = buildAPIQuery(primaryFilter);
             var headers = apiQuery.headers;
 
-            SearchService.searchResults(primaryFilter).then(function(response) {
+            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 deferred.resolve({
                     data : response.data.resultData.nested.table,
-                    headers : response.data.headers,
-                    chartData: prepareChartData(response.data.headers, response.data.resultData.nested, primaryFilter),
+                    headers : response.data.resultData.headers,
+                    chartData: prepareChartData(response.data.resultData.headers, response.data.resultData.nested, primaryFilter),
                     totalCount: response.pagination.total
                 })
             });
@@ -727,10 +755,10 @@
         /**
          * Search census bridge race population estmation
          */
-        function searchCensusInfo(primaryFilter) {
+        function searchCensusInfo(primaryFilter, queryID) {
             var deferred = $q.defer();
 
-            queryCensusAPI(primaryFilter).then(function(response){
+            queryCensusAPI(primaryFilter, queryID).then(function(response){
                 primaryFilter.data = response.data;
                 primaryFilter.headers = response.headers;
                 primaryFilter.chartData = response.chartData;
@@ -782,6 +810,11 @@
                 {"key":"South American","title":"South American"},
                 {"key":"Spaniard","title":"Spaniard"},
                 {"key":"Unknown","title":"Unknown"}
+            ];
+
+            filters.ethnicityGroupOptions = [
+                {"key": 'hispanic', "title": 'Hispanic'},
+                {"key": 'non', "title": "Non-Hispanic"}
             ];
 
             filters.weekday = [
@@ -925,10 +958,10 @@
                 { "key": "Am Indian / Alaska Native", "title": "American Indian or Alaska Native" },
                 { "key": "Asian", "title": "Asian" },
                 { "key": "Black or African American", "title": "Black or African American" },
-                { "key": "Hispanic / Latino", "title": "Hispanic or Latino" },
+                { "key": "Hispanic/Latino", "title": "Hispanic or Latino" },
                 { "key": "Native Hawaiian/other PI", "title": "Native Hawaiian or Other Pacific Islander" },
                 { "key": "White", "title": "White" },
-                { "key": "Multiple - Hispanic", "title": "Multiple Race" }
+                { "key": "Multiple - Non-Hispanic", "title": "Multiple Race" }
             ];
 
             filters.yrbsGradeOptions = [
@@ -939,10 +972,19 @@
             ];
 
             filters.yrbsYearsOptions = [
-                { "key": "2015", "title": "2015" }
-                // { "key": "2013", "title": "2013" },
-                // { "key": "2011", "title": "2011" },
-                // { "key": "2009", "title": "2009" }
+                { "key": "2015", "title": "2015" },
+                { "key": "2013", "title": "2013" },
+                { "key": "2011", "title": "2011" },
+                { "key": "2009", "title": "2009" },
+                { "key": "2007", "title": "2007" },
+                { "key": "2005", "title": "2005" },
+                { "key": "2003", "title": "2003" },
+                { "key": "2001", "title": "2001" },
+                { "key": "1999", "title": "1999" },
+                { "key": "1997", "title": "1997" },
+                { "key": "1995", "title": "1995" },
+                { "key": "1993", "title": "1993" },
+                { "key": "1991", "title": "1991" }
             ];
 
             filters.yrbsAdditionalHeaders = [
@@ -953,15 +995,15 @@
             filters.yrbsFilters = [
                 {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: ['2015'], groupBy: false,
                    autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
-                { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"q2", primary: false, value: [], groupBy: false,
+                { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: [], groupBy: false,
                     autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
-                { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"q3", primary: false, value: [], groupBy: false,
+                { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"grade", primary: false, value: [], groupBy: false,
                      autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column" },
-                { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"raceeth", primary: false, value: [], groupBy: 'column',
+                { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race7", primary: false, value: [], groupBy: 'column',
                    autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column" },
                 { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
                     filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
-                    selectTitle: 'select.label.yrbs.filter.question', iconClass: 'fa fa-pie-chart purple-text', onIconClick: function(question) {
+                    selectTitle: 'select.label.yrbs.filter.question', updateTitle: 'update.label.yrbs.filter.question',  iconClass: 'fa fa-pie-chart purple-text', onIconClick: function(question) {
                         showChartForQuestion(filters.selectedPrimaryFilter, question);
                     }
                 }
@@ -1046,7 +1088,7 @@
                 {
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
                     allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, showMap:true,
-                    chartAxisLabel:'Deaths', countLabel: 'Number of Deaths', mapData:{},
+                    chartAxisLabel:'Deaths', countLabel: 'Number of Deaths', mapData:{}, tableView:'number_of_deaths',
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
@@ -1097,7 +1139,7 @@
                 {
                     key: 'mental_health', title: 'label.risk.behavior', primary: true, value:[], header:"Youth risk behavior",
                     allFilters: filters.yrbsFilters, searchResults: searchYRBSResults, dontShowInlineCharting: true,
-                    additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total',
+                    additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total', tableView:'mental_health',
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
@@ -1124,7 +1166,7 @@
                 {
                     key: 'bridge_race', title: 'label.census.bridge.race.pop.estimate', primary: true, value:[], header:"Bridged-Race Population Estimates",
                     allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true,
-                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop',
+                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop', tableView:'bridge_race',
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, dontShowCounts: true,

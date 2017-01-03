@@ -786,6 +786,10 @@ label.common-label {
 	.home-child-header {padding: 5%;}
 }
 
+.nvd3-dashed-line {
+	stroke-dasharray: 5,5;
+}
+
 /*Media queries*/
 
 /*css for iPad starts*/
@@ -803,3 +807,41 @@ and (-webkit-min-device-pixel-ratio: 1) {
 	}
 }
 /*css for iPad ends*/
+
+/* css for bookmark button */
+.bookmark-div {
+	margin-top: 11px !important;
+}
+.bookmark-button {
+
+	border-radius: 4px;
+	color: #222 !important;
+	box-shadow: 0 0 0 1px #ccc !important;
+	font-weight: normal;
+	padding: 10px;
+	cursor: pointer;
+
+}
+/* End of css for bookmark button */
+
+/* remove font-awesome icon in yrbs select questions popup*/
+.remove-question {
+	cursor: pointer;
+	color: #9da0a4;
+}
+.remove-question:hover{
+	color:red;
+}
+
+.filter-search-box {
+	height:32px;
+	padding: 0rem 0.7em !important;
+}
+
+.clear-text-icon {
+	position: absolute;
+	margin-top: -28px;
+	right: 30px;
+	color: #999999;
+}
+/* End remove font-awesome icon in yrbs select questions popup*/

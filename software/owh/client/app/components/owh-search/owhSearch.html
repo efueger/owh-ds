@@ -23,13 +23,14 @@
                 </ui-select-choices>
             </ui-select>
         </div>
-        <div class="usa-width-one-fourth" ng-show="ots.filters.selectedPrimaryFilter.key === 'deaths'">
+        <div class="usa-width-one-fourth margin-right-0" ng-show="ots.filters.selectedPrimaryFilter.key === 'deaths'">
             <div class="usa-width-one-fourth show-me-text" ng-bind="'label.show.me' | translate"></div>
             <select ng-model="ots.selectedShowFilter"
                     ng-change="ots.onViewFilter({selectedFilter: ots.selectedShowFilter})"
                     ng-options="eachFilter.title | translate for eachFilter in ots.showFilters"
                     class="usa-width-two-thirds add-on-element gray-border margin-0"></select>
         </div>
+        <owh-bookmark table-view="ots.tableView"></owh-bookmark>
     </div>
 </div>
 <!--<button class="action-button" translate="label.search" ng-click="ots.searchResults({})"></button>-->
