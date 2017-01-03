@@ -168,7 +168,7 @@
                                 cell += '<span>Suppressed</span>';
                             } else {
                                 cell += '<span class="count-value">' + $filter('number')(column.title) + '</span>';
-                                if(colIndex !== row.length - 1 && column.percentage !== undefined) {
+                                if(colIndex !== row.length - 1 && column.percentage  > 0) {
                                     cell += '<span class="count-value"> (' + $filter('number')(column.percentage, 1) + '%)</span>';
                                 }
                             }
