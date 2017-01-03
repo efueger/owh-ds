@@ -27,6 +27,7 @@ var searchRouter = function(app, rConfig) {
                 }else{
                     logger.info("Query with ID " + queryId + " not in cache, executing query");
                     if (q) {
+                        res.connection.setTimeout(0); // To avoid the post callback being called multiple times when the search method takes long time
                         search(q).then(function (resp) {
                             queryCache.cacheQuery(queryId, q.key, resp);
                             res.send(new result('OK', resp, "success"));
@@ -42,6 +43,13 @@ var searchRouter = function(app, rConfig) {
             logger.warn('Query ID not present, query failed');
             res.send(new result('Query ID not present', null, "failed"));
         }
+    });
+
+    app.get('/yrbsQuestionsTree/:years', function (req, res) {
+        var years = req.params.years.split(',');
+        new yrbs().getQuestionsTreeByYears(years).then(function (response) {
+            res.send(new result('OK', response, "success"));
+        });
     });
 };
 

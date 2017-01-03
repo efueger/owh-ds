@@ -832,4 +832,16 @@ and (-webkit-min-device-pixel-ratio: 1) {
 .remove-question:hover{
 	color:red;
 }
+
+.filter-search-box {
+	height:32px;
+	padding: 0rem 0.7em !important;
+}
+
+.clear-text-icon {
+	position: absolute;
+	margin-top: -28px;
+	right: 30px;
+	color: #999999;
+}
 /* End remove font-awesome icon in yrbs select questions popup*/

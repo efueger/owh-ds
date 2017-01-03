@@ -33,6 +33,31 @@ describe("YRBS API", function () {
 
     });
 
+    it("buildYRBSQueries with only filtering params", function (){
+        var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000}]}},
+            'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'race7':{value:['White', 'Black or African American']}}};
+        var result = yrbs.buildYRBSQueries(apiQuery);
+        expect(result).to.eql( ['q=qn1&f=race7:White,Black or African American','q=qn2&f=race7:White,Black or African American','q=qn3&f=race7:White,Black or African American']);
+
+    });
+
+
+    it("buildYRBSQueries with grouping and filtering params", function (){
+        var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race7","size":100000}]}},
+        'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'race7':{value:['White', 'Black or African American']}}};
+        var result = yrbs.buildYRBSQueries(apiQuery);
+        expect(result).to.eql( ['q=qn1&v=race7&f=race7:White,Black or African American','q=qn2&v=race7&f=race7:White,Black or African American','q=qn3&v=race7&f=race7:White,Black or African American']);
+
+    });
+
+    it("buildYRBSQueries with multiple grouping and filtering params", function (){
+        var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race7","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000}]}},
+            'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'race7':{value:['White', 'Black or African American']},'sex':{value:['Female']}}};
+        var result = yrbs.buildYRBSQueries(apiQuery);
+        expect(result).to.eql( ['q=qn1&v=sex,race7&f=race7:White,Black or African American;sex:Female','q=qn2&v=sex,race7&f=race7:White,Black or African American;sex:Female','q=qn3&v=sex,race7&f=race7:White,Black or African American;sex:Female']);
+
+    });
+
     it("processYRBSReponses", function (){
         var yrbsresp = [ {
             "q": "qn41",
@@ -338,13 +363,66 @@ describe("YRBS API", function () {
         });
     });
 
-    // The YRBS service is not returning results when no question
-    xit("invokeYRBS service with no grouping", function (){
+    it("invokeYRBS service with no grouping", function (){
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000}]}},
             'query': {'question.path':{ 'value': ['qn8']}}};
 
         return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
-            expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health":"81.4<br><br/><nobr>(77.0-85.1)</nobr><br/>8757"}]}} );
+            expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health": "87.4<br><br/><nobr>(86.5-88.3)</nobr><br/>121103"}]}} );
+        });
+    });
+
+    it("invokeYRBS service with grouping and filtering", function (){
+        var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race7","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000}]}},
+            'query': {'question.path':{ 'value': ['qn8']}, 'race7':{value:['White', 'Black or African American']},'sex':{value:['Female']}}};
+
+        return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
+            expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health":"86.1<br><br/><nobr>(84.9-87.3)</nobr><br/>35384","sex":[{"name":"Female","race7":[{"name":"Black or African American","mental_health":"92.9<br><br/><nobr>(91.5-94.0)</nobr><br/>11670"},{"name":"White","mental_health":"84.8<br><br/><nobr>(83.4-86.1)</nobr><br/>23714"}]}]}]}} );
+        });
+    });
+
+    it("getQuestionsTreeByYears from yrbs service using 'All'", function (){
+        return yrbs.getQuestionsTreeByYears(["All"]).then(function (response) {
+            expect(response.questionTree[0].text).to.eql("Unintentional Injuries and Violence");
+            //Childrens are in alphabetical order
+            expect(response.questionTree[0].children[0].text).to.eql("Attempted suicide that resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse(during the 12 months before the survey)");
+            expect(response.questionTree[0].children[1].text).to.eql("Attempted suicide(one or more times during the 12 months before the survey)");
+            expect(response.questionTree[0].children[2].text).to.eql("Carried a gun(on at least 1 day during the 30 days before the survey)");
+            expect(response.questionTree[1].text).to.eql("Tobacco Use");
+            expect(response.questionTree[2].text).to.eql("Alcohol and Other Drug Use");
+            expect(response.questionTree[3].text).to.eql("Sexual Behaviors");
+            expect(response.questionTree[4].text).to.eql("Obesity, Overweight, and Weight Control");
+            expect(response.questionTree[5].text).to.eql("Dietary Behaviors");
+            expect(response.questionTree[6].text).to.eql("Physical Activity");
+            expect(response.questionTree[7].text).to.eql("Other Health Topics");
+            //Verify questionsList
+            expect(response.questionsList[0].qkey).to.eql("qn11");
+            expect(response.questionsList[0].title).to.eql("Drove when drinking alcohol(in a car or other vehicle one or more times during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
+            expect(response.questionsList[1].qkey).to.eql("qn12");
+            expect(response.questionsList[1].title).to.eql("Texted or e-mailed while driving a car or other vehicle(on at least 1 day during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
+        });
+    });
+
+    it("getQuestionsTreeByYears from yrbs service by year", function (){
+        return yrbs.getQuestionsTreeByYears(["2015"]).then(function (response) {
+            expect(response.questionTree[0].text).to.eql("Unintentional Injuries and Violence");
+            //Childrens are in alphabetical order
+            expect(response.questionTree[0].children[0].text).to.eql("Attempted suicide that resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse(during the 12 months before the survey)");
+            expect(response.questionTree[0].children[1].text).to.eql("Attempted suicide(one or more times during the 12 months before the survey)");
+            expect(response.questionTree[0].children[2].text).to.eql("Carried a gun(on at least 1 day during the 30 days before the survey)");
+            expect(response.questionTree[1].text).to.eql("Tobacco Use");
+            expect(response.questionTree[2].text).to.eql("Alcohol and Other Drug Use");
+            expect(response.questionTree[3].text).to.eql("Sexual Behaviors");
+            expect(response.questionTree[4].text).to.eql("Obesity, Overweight, and Weight Control");
+            expect(response.questionTree[5].text).to.eql("Dietary Behaviors");
+            expect(response.questionTree[6].text).to.eql("Physical Activity");
+            expect(response.questionTree[7].text).to.eql("Other Health Topics");
+            //Verify questionsList
+            expect(response.questionsList[0].qkey).to.eql("qn11");
+            expect(response.questionsList[0].title).to.eql("Drove when drinking alcohol(in a car or other vehicle one or more times during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
+            expect(response.questionsList[1].qkey).to.eql("qn12");
+            expect(response.questionsList[1].title).to.eql("Texted or e-mailed while driving a car or other vehicle(on at least 1 day during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
+
         });
     });
 });

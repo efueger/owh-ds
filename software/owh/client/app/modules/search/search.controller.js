@@ -67,7 +67,7 @@
                     'Unknown'
                 ],
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
-                "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
+                "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1997','1995','1993','1991' ]
             },
             "crude_death_rates": {
                 "hispanicOrigin": ['hispanic', 'non', 'unknown'],
@@ -77,7 +77,9 @@
             "age-adjusted_death_rates": {
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
-            }
+            },
+            bridge_race:{},
+            mental_health:{}
         };
         //show certain filters for different table views
         sc.availableFilters = {
@@ -87,19 +89,28 @@
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
 
-        //Intial call queryId will be empty
         if(sc.queryID === "") {
             searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
                 sc.queryID = hash;
                 $state.go('search', {queryID: sc.queryID});
             });
         }
-        if (sc.queryID){
+        /*
+        * To populate autoCompleteOptions from $rootScope
+        * When we refresh search page, below listener populate autoCompleteOptions value with $rootScope.questionsList
+         */
+        $scope.$on('yrbsQuestionsLoadded', function() {
+            sc.filters.yrbsFilters[4].autoCompleteOptions = $rootScope.questionsList;
+        });
+
+        if (sc.queryID) {
             search(false);
         }
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
+                //update table view each time when filter changes
+                sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
                 search(true);
             }
         }, true);

@@ -25,6 +25,7 @@ describe('owhTree component: ', function() {
         $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
         $httpBackend.whenGET('app/components/owh-tree/owhTree.html').respond( $templateCache.get('app/components/owh-tree/owhTree.html'));
         $httpBackend.whenGET('/getFBAppID').respond({data: { fbAppID: 1111111111111111}});
+        $httpBackend.whenGET('/yrbsQuestionsTree/2015').respond({data: { }});
 
     });
 
@@ -81,7 +82,7 @@ describe('owhTree component: ', function() {
         ctrl.treeInstance = {jstree:function(){
             return  {
                 get_selected:function() {
-                    return [{"id": "Q991", "text": "46,XX true hermaphrodite (Q99.1)"}]
+                    return [{"id": "Q991", "text": "46,XX true hermaphrodite (Q99.1)", children:[]}]
                 }
             }
         }};
@@ -115,13 +116,16 @@ describe('owhTree component: ', function() {
         expect(ctrl.treeEventsObj).toBeDefined();
 
         /*Dummy jstree object*/
+        ctrl.entityName = 'Question';
         ctrl.treeInstance = {jstree:function(){
             return  {
                 get_selected:function() {
-                    return [{"id": "j1_1", "text": "Unintentional Injuries", children:["qn21", "qn18"]}];
+                    return [{"id": "j1_1", "text": "Unintentional Injuries",  children:["qn21", "qn18"]}];
                 },
                 get_json: function (id) {
-                    return {"id": "j1_1", "text": "Unintentional Injuries", children:[{"id": "qn21", "text": "Were ever physically forced", "children": [] }, { "id": "qn18", "text": "Were in a physical fight","children": []}]};
+                    return {"id": "j1_1", "text": "Unintentional Injuries",
+                        children:[{"id": "qn21", "text": "Were ever physically forced", "parent":"j1_1", "children": [] },
+                                  { "id": "qn18", "text": "Were in a physical fight", "parent":"j1_1", "children": []}]};
                 }
             }
         }};

@@ -162,7 +162,7 @@
         //Query YRBS API
         function queryYRBSAPI( primaryFilter, queryID ) {
             var deferred = $q.defer();
-            var apiQuery = buildQueryForYRBS(primaryFilter);
+            var apiQuery = buildQueryForYRBS(primaryFilter, true);
             var headers = apiQuery.headers;
             SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 /*var yearsFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
@@ -968,17 +968,26 @@
             ];
 
             filters.yrbsGradeOptions = [
-                { "key": "9th grade", "title": "9th" },
-                { "key": "10th grade", "title": "10th" },
-                { "key": "11th grade", "title": "11th" },
-                { "key": "12th grade", "title": "12th" }
+                { "key": "9th", "title": "9th" },
+                { "key": "10th", "title": "10th" },
+                { "key": "11th", "title": "11th" },
+                { "key": "12th", "title": "12th" }
             ];
 
             filters.yrbsYearsOptions = [
-                { "key": "2015", "title": "2015" }
-                // { "key": "2013", "title": "2013" },
-                // { "key": "2011", "title": "2011" },
-                // { "key": "2009", "title": "2009" }
+                { "key": "2015", "title": "2015" },
+                { "key": "2013", "title": "2013" },
+                { "key": "2011", "title": "2011" },
+                { "key": "2009", "title": "2009" },
+                { "key": "2007", "title": "2007" },
+                { "key": "2005", "title": "2005" },
+                { "key": "2003", "title": "2003" },
+                { "key": "2001", "title": "2001" },
+                { "key": "1999", "title": "1999" },
+                { "key": "1997", "title": "1997" },
+                { "key": "1995", "title": "1995" },
+                { "key": "1993", "title": "1993" },
+                { "key": "1991", "title": "1991" }
             ];
 
             filters.yrbsAdditionalHeaders = [
@@ -1082,7 +1091,7 @@
                 {
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
                     allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, showMap:true,
-                    chartAxisLabel:'Deaths', countLabel: 'Number of Deaths', mapData:{},
+                    chartAxisLabel:'Deaths', countLabel: 'Number of Deaths', mapData:{}, tableView:'number_of_deaths',
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
@@ -1133,7 +1142,7 @@
                 {
                     key: 'mental_health', title: 'label.risk.behavior', primary: true, value:[], header:"Youth risk behavior",
                     allFilters: filters.yrbsFilters, searchResults: searchYRBSResults, dontShowInlineCharting: true,
-                    additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total',
+                    additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total', tableView:'mental_health',
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
@@ -1160,7 +1169,7 @@
                 {
                     key: 'bridge_race', title: 'label.census.bridge.race.pop.estimate', primary: true, value:[], header:"Bridged-Race Population Estimates",
                     allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true,
-                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop',
+                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop', tableView:'bridge_race',
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, dontShowCounts: true,

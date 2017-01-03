@@ -11,14 +11,8 @@ function queryCache() {
  * @param queryId
  */
 queryCache.prototype.getCachedQuery = function (queryId) {
-    var deferred = Q.defer();
     var queryChacheQuery = buildQueryCacheQuery(queryId);
-    new elasticSearch().getQueryCache(queryChacheQuery).then(function (response) {
-        deferred.resolve(response);
-    }, function (error) {
-        deferred.resolve(null);
-    });
-    return  deferred.promise;
+    return new elasticSearch().getQueryCache(queryChacheQuery);
 }
 
 /**
@@ -35,11 +29,15 @@ queryCache.prototype.cacheQuery = function (queryId, dataset, result) {
     insertQuery.dataset = dataset;
     insertQuery.lastupdated = new Date();
     insertQuery.queryID = queryId;
+    var deferred = Q.defer();
     new elasticSearch().insertQueryData(insertQuery).then(function (resp){
         logger.info("Qeury with " + queryId + " added to query cache");
+        deferred.resolve(resp);
     }, function (err) {
         logger.warn("Unable to add query "+ hashCode + " to query cache");
+        deferred.reject(err);
     });
+    return deferred.promise;
 }
 
 /**
