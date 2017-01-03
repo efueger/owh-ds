@@ -345,5 +345,25 @@ var yrbsStepDefinitionsWrapper = function () {
         expect(element(by.cssContainingText('button', selectButton)).isPresent()).to.eventually.equal(false);
         expect(element(by.cssContainingText('button', updateButton)).isPresent()).to.eventually.equal(true);
     });
+
+    this.When(/^I select the back button in browser$/, function () {
+        return false;
+    });
+
+    this.Then(/^most recent filter action is removed and user is taken back by one step$/, function () {
+        return false;
+    });
+
+    this.Then(/^the results page \(data table and visualizations\) should be refreshed to reflect the currently selected filter options$/, function () {
+        return false;
+    });
+
+    this.When(/^I select the forward button in browser$/, function () {
+        return false;
+    });
+
+    this.Then(/^I am taken forward by one step$/, function () {
+        return false;
+    });
 };
 module.exports = yrbsStepDefinitionsWrapper;

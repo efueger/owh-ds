@@ -136,3 +136,12 @@ Feature: As a User
 #    And  I see it's parent node is also un-checked
 #    But  I see it's siblings are not un-checked
 
+  Scenario: Browser back button
+    When I select the back button in browser
+    Then most recent filter action is removed and user is taken back by one step
+    And the results page (data table and visualizations) should be refreshed to reflect the currently selected filter options
+
+  Scenario: Browser forward button
+    When I select the forward button in browser
+    Then I am taken forward by one step
+    And the results page (data table and visualizations) should be refreshed to reflect the currently selected filter options

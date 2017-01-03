@@ -102,7 +102,43 @@
         });
 
         if (sc.queryID) {
-            search(false);
+            searchFactory.getQueryResults(sc.queryID).then(function (response) {
+                if(response.data) {
+
+                   // sc.filters.selectedPrimaryFilter.allFilters = response.data.queryJSON.allFilters;
+                    //sc.filters.selectedPrimaryFilter.sideFilters = response.data.queryJSON.sideFilters;
+                   // sc.filters.selectedPrimaryFilter.key = response.data.queryJSON.key;
+                   // sc.filters.selectedPrimaryFilter.title = response.data.queryJSON.title;
+                    sc.filters.selectedPrimaryFilter = response.data.queryJSON;
+                    if(response.data.queryJSON.key == 'deaths') {
+                        mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
+                        sc.filters.selectedPrimaryFilter.searchResults = searchFactory.searchMortalityResults;
+                        sc.filters.selectedPrimaryFilter.header = response.data.queryJSON.headers;
+                        var headers = searchFactory.buildAPIQuery(response.data.queryJSON).headers;
+                        var customResponse = {
+                            data : response.data.resultData.nested.table,
+                            dataPrepared : false,
+                            headers : headers,
+                            chartDataFromAPI : response.data.resultData.simple,
+                            chartData: searchFactory.prepareChartData(headers, response.data.resultData.nested, sc.filters.selectedPrimaryFilter),
+                            maps: response.data.resultData.nested.maps,
+                            totalCount: response.pagination.total,
+                            sideFilterResults: response.data.sideFilterResults,
+                            queryJSON: response.data.queryJSON
+                        };
+                        searchFactory.prepareMortalityResults(sc.filters.selectedPrimaryFilter, customResponse);
+                    }
+                    else if(response.data.queryJSON.key == 'mental_health'){
+                        sc.filters.selectedPrimaryFilter.searchResults = searchFactory.searchYRBSResults;
+                        sc.filters.selectedPrimaryFilter.data = response.data.resultData.table;
+                        sc.filters.selectedPrimaryFilter.headers = searchFactory.buildQueryForYRBS(response.data.queryJSON, true).headers;
+                    }
+                    mortalityAndYRBSSearchResults(response);
+                }
+                else {
+                    search(false);
+                }
+            });
         }
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
@@ -250,38 +286,42 @@
             return categories;
         }
 
+        function mortalityAndYRBSSearchResults(response) {
+            //populate side filters based on cached query filters
+            if (response.queryJSON) {
+                angular.forEach(response.queryJSON.sideFilters, function (filter, index) {
+                    sc.filters.selectedPrimaryFilter.sideFilters[index].filters.value = filter.filters.value;
+                    sc.filters.selectedPrimaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
+                });
+            }
+            searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
+            //update table headers based on cached query
+            sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
+            //make sure side filters are in proper order
+            angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function (filter) {
+                searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup[sc.tableView]);
+            });
+
+            sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
+            if (sc.filters.selectedPrimaryFilter.key === 'deaths') {
+                updateStatesDeaths(sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
+            }
+            if (sc.filters.selectedPrimaryFilter.key === 'mental_health') {
+                sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
+            }
+            if (sc.filters.selectedPrimaryFilter.key === 'bridge_race') {
+                sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
+            }
+            sc.filters.selectedPrimaryFilter.initiated = true;
+        }
+
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
-                //populate side filters based on cached query filters
-                if(response.queryJSON) {
-                    angular.forEach(response.queryJSON.sideFilters, function(filter, index) {
-                        sc.filters.selectedPrimaryFilter.sideFilters[index].filters.value = filter.filters.value;
-                        sc.filters.selectedPrimaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
-                    });
-                }
-                searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
-                //update table headers based on cached query
-                sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
-                //make sure side filters are in proper order
-                angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
-                    searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup[sc.tableView]);
-                });
-
-                sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
-                if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
-                    updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
-                }
-                if(sc.filters.selectedPrimaryFilter.key === 'mental_health') {
-                    sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
-                    sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
-                }
-                if(sc.filters.selectedPrimaryFilter.key === 'bridge_race') {
-                    sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
-                    sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
-                }
-                sc.filters.selectedPrimaryFilter.initiated = true;
+                mortalityAndYRBSSearchResults(response);
             });
         }
 
