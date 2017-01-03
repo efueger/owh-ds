@@ -1059,6 +1059,18 @@ body {
     font-weight: bold;
 }
 
+#headers-table {
+    margin-bottom: 0;
+}
+
+#clusterize-table {
+    max-height: 900px;
+}
+
+#clusterize-table table {
+    margin-top: 0;
+}
+
 #death-rate-disclaimer {
   color: #808080;
 }
