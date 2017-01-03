@@ -61,11 +61,11 @@ var MortalitySearchPage = function() {
 
     };
     msp.getTableRowData = function(rowNumber) {
-        return msp.owhTable.element(by.tagName('table')).element(by.tagName('tbody')).all(by.tagName('tr')).get(rowNumber).all(by.tagName('td')).getText();
+        return msp.owhTable.element(by.id('clusterize-table')).element(by.tagName('tbody')).all(by.tagName('tr')).get(rowNumber).all(by.tagName('td')).getText();
     };
 
     msp.getTableRowDataCells = function(rowNumber) {
-        return msp.owhTable.element(by.tagName('table')).element(by.tagName('tbody')).all(by.tagName('tr')).get(rowNumber).all(by.tagName('td'));
+        return msp.owhTable.element(by.id('clusterize-table')).element(by.tagName('tbody')).all(by.tagName('tr')).get(rowNumber).all(by.tagName('td'));
     };
     //FilterType ex: Race, Sex, Autopsy...
     //viewType ex: Column, Row, Off
