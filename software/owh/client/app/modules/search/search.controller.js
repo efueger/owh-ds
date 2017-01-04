@@ -169,31 +169,59 @@
 
         }
         /**************************************************/
+        //US-states map
+        angular.extend(mortalityFilter.mapData, {
+            usa: {
+                lat: 39,
+                lng: -100,
+                zoom: 3
+            },
+            legend: {},
+            defaults: {
+                tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+                scrollWheelZoom: false
+            },
+            markers: {},
+            events: {
+                map: {
+                    enable: ['click'],
+                    logic: 'emit'
+                }
+            },
+            controls: {
+                custom: [new mapExpandControl(), new mapShareControl()]
+            },
+            isMap:true
+        });
+
         if (sc.queryID) {
+            /*
+            * get query results from owh_querycache index
+            * This function takes queryID and get queryJSON, sideFilterResults, resultData from owh_querycache index if query exists
+            * */
             searchFactory.getQueryResults(sc.queryID).then(function (response) {
+                //if queryID exists in owh_querycache index
                 if(response.data) {
+                    //set I'm interested in dropdown values, sideFilters etc..
                     for(var i = 0; i < sc.filters.primaryFilters.length; i++) {
                         if(sc.filters.primaryFilters[i].key === response.data.queryJSON.key) {
                             sc.filters.selectedPrimaryFilter = sc.filters.primaryFilters[i];
                         }
                     }
-                    //sc.filters.selectedPrimaryFilter = JSON.stringify(response.data.queryJSON);
                     sc.filters.selectedPrimaryFilter.allFilters = response.data.queryJSON.allFilters;
                     sc.filters.selectedPrimaryFilter.sideFilters = response.data.queryJSON.sideFilters;
-                    // sc.filters.selectedPrimaryFilter.key = response.data.queryJSON.key;
-                    sc.filters.selectedPrimaryFilter.title = response.data.queryJSON.title;
-
-                   // sc.filters.selectedPrimaryFilter.mapData = response.data.queryJSON.mapData;
                     sc.filters.selectedPrimaryFilter.countLabel = response.data.queryJSON.countLabel;
                     sc.filters.selectedPrimaryFilter.primary = response.data.queryJSON.primary;
                     sc.filters.selectedPrimaryFilter.value = response.data.queryJSON.value;
                     sc.filters.selectedPrimaryFilter.header = response.data.queryJSON.header;
-
+                    sc.filters.selectedPrimaryFilter.title = response.data.queryJSON.title;
+                    //Set values for mortality search page
                     if(response.data.queryJSON.key == 'deaths') {
                         mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
                         sc.filters.selectedPrimaryFilter.chartAxisLabel = response.data.queryJSON.chartAxisLabel;
                         //TODO: fix this
                         //sc.filters.selectedPrimaryFilter.mapData.controls.custom = response.data.queryJSON.mapData.controls.custom;
+                        //Build US-state map data
                         sc.filters.selectedPrimaryFilter.mapData = {};
                         //US-states map
                         angular.extend(sc.filters.selectedPrimaryFilter.mapData, {
@@ -219,29 +247,29 @@
                             },
                             isMap:true
                         });
-
                         sc.filters.selectedPrimaryFilter.mapData.defaults = response.data.queryJSON.mapData.defaults;
                         sc.filters.selectedPrimaryFilter.mapData.events = response.data.queryJSON.mapData.events;
                         sc.filters.selectedPrimaryFilter.mapData.legends = response.data.queryJSON.mapData.legends;
                         sc.filters.selectedPrimaryFilter.mapData.markers = response.data.queryJSON.mapData.markers;
                         sc.filters.selectedPrimaryFilter.mapData.usa = response.data.queryJSON.mapData.usa;
-
                         sc.filters.selectedPrimaryFilter.showMap = response.data.queryJSON.showMap;
-
+                        //queryJSON don't have searchResults function, so manually assgined it
                         sc.filters.selectedPrimaryFilter.searchResults = searchFactory.searchMortalityResults;
-
+                        //build headers to prepare motality chart data
                         var headers = searchFactory.buildAPIQuery(response.data.queryJSON).headers;
+                        var selectedPrimaryFilters = sc.filters.selectedPrimaryFilter;
                         var customResponse = {
                             data : response.data.resultData.nested.table,
                             dataPrepared : false,
                             headers : headers,
                             chartDataFromAPI : response.data.resultData.simple,
-                            chartData: searchFactory.prepareChartData(headers, response.data.resultData.nested, sc.filters.selectedPrimaryFilter),
+                            chartData: searchFactory.prepareChartData(headers, response.data.resultData.nested, selectedPrimaryFilters),
                             maps: response.data.resultData.nested.maps,
                             totalCount: response.pagination.total,
                             sideFilterResults: response.data.sideFilterResults,
                             queryJSON: response.data.queryJSON
                         };
+                        //Prepare mortality table data.
                         searchFactory.prepareMortalityResults(sc.filters.selectedPrimaryFilter, customResponse);
                     }
                     else if(response.data.queryJSON.key == 'mental_health'){
@@ -252,6 +280,7 @@
                         sc.filters.selectedPrimaryFilter.data = response.data.resultData.table;
                         sc.filters.selectedPrimaryFilter.headers = searchFactory.buildQueryForYRBS(response.data.queryJSON, true).headers;
                     }
+                    //searchFactory.updatePrimaryFiltersWithQueryResults(sc.filters.selectedPrimaryFilter, sc.filters.primaryFilters, response);
                     mortalityAndYRBSSearchResults(response);
                 }
                 else {
@@ -311,13 +340,6 @@
                 });
             }
             else {
-                console.log('filter', angular.copy(sc.filters.selectedPrimaryFilter));
-                for (var key in sc.filters.selectedPrimaryFilter) {
-                    if (sc.filters.selectedPrimaryFilter.hasOwnProperty(key)) {
-                        console.log(key);
-                        JSON.stringify(sc.filters.selectedPrimaryFilter[key]);
-                    }
-                }
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter, sc.queryID);
             }
         }
@@ -463,32 +485,6 @@
         function showPhaseTwoGraphs(text) {
             searchFactory.showPhaseTwoModal(text);
         }
-
-
-        //US-states map
-        angular.extend(mortalityFilter.mapData, {
-            usa: {
-                lat: 39,
-                lng: -100,
-                zoom: 3
-            },
-            legend: {},
-            defaults: {
-                tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
-                scrollWheelZoom: false
-            },
-            markers: {},
-            events: {
-                map: {
-                    enable: ['click'],
-                    logic: 'emit'
-                }
-            },
-            controls: {
-                custom: [new mapExpandControl(), new mapShareControl()]
-            },
-            isMap:true
-        });
 
         function updateStatesDeaths(data, totalCount) {
             var years = sc.getSelectedYears;
