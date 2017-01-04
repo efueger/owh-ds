@@ -43,10 +43,10 @@
             ];
 
             var censusRaceOptions =  [
-                { "key": "White", "title": "White" },
-                { "key": "Black", "title": "Black or African American" },
                 { "key": "American Indian", "title": "American Indian" },
-                { "key": "Asian or Pacific Islander", "title": "Asian or Pacific Islander" }
+                { "key": "Asian or Pacific Islander", "title": "Asian or Pacific Islander" },
+                { "key": "Black", "title": "Black or African American" },
+                { "key": "White", "title": "White" }
             ];
 
             var censusHispanicOriginOptions =  [
@@ -187,7 +187,7 @@
                 {key: 'ethnicity', title: 'label.filter.hispanicOrigin', queryKey:"hispanic_origin",primary: false, defaultGroup:'row', groupBy: false,
                     autoCompleteOptions: angular.copy(censusHispanicOriginOptions), value:[]},
                 {key: 'state', title: 'label.filter.state', queryKey:"state",primary: false, value:[], defaultGroup:'row', groupBy: false,
-                    autoCompleteOptions: angular.copy(censusStateOptions)}
+                    autoCompleteOptions: angular.copy(censusStateOptions), displaySearchBox:true}
             ];
 
             return bridgeDataFilters;

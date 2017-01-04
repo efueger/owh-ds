@@ -3,6 +3,7 @@ var logger = require('../config/logging');
 var config = require('../config/config');
 var request = require('request');
 
+var cahcedQuestions = null;
 function yrbs() {
 }
 
@@ -74,10 +75,23 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
        v = 'v=' + sortedKeys.join(',');
     }
 
-    if('query' in apiQuery && 'question.path' in apiQuery.query) {
-        var selectedQs = apiQuery.query['question.path'].value;
-        for (var i = 0; i < selectedQs.length; i++) {
-            queries.push('q=' + selectedQs[i] + (v? ('&' + v):''));
+    if('query' in apiQuery){
+        // Build filter params
+        var f = '';
+        for (q in apiQuery.query){
+            if(q != 'question.path') {
+                f += (q + ':');
+                f += apiQuery.query[q].value.join(',') +';';
+                // f += ';';
+            }
+        }
+        f = f.slice(0,f.length - 1);
+
+        if('question.path' in apiQuery.query) {
+            var selectedQs = apiQuery.query['question.path'].value;
+            for (var i = 0; i < selectedQs.length; i++) {
+                queries.push('q=' + selectedQs[i] + (v ? ('&' + v) : '') + (f ? ('&f=' + f) : ''));
+            }
         }
     }
 
@@ -100,7 +114,7 @@ yrbs.prototype.processYRBSReponses = function(response){
         }
     }
     var finalResp = {'table': {'question':questions}};
-    logger.info("YRBS Response: "+ JSON.stringify(finalResp));
+    logger.debug("YRBS Response: "+ JSON.stringify(finalResp));
     return finalResp;
 };
 
@@ -205,12 +219,18 @@ function invokeYRBS (query){
  * @returns {*|promise}
  */
 yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
-    logger.info("Getting questions from yrbs service...");
     var deferred = Q.defer();
-    invokeYRBS(config.yrbs.questionsUrl).then(function (response) {
-        var data = prepareQuestionTreeForYears(response, yearList);
-        deferred.resolve({questionTree:data.questionTree, questionsList:data.questionsList});
-    });
+    if(cahcedQuestions){
+        logger.info("Returning cached questions");
+        deferred.resolve(cahcedQuestions);
+    } else {
+        invokeYRBS(config.yrbs.questionsUrl).then(function (response) {
+            logger.info("Getting questions from yrbs service");
+            var data = prepareQuestionTreeForYears(response, yearList);
+            cahcedQuestions = {questionTree: data.questionTree, questionsList: data.questionsList}
+            deferred.resolve(cahcedQuestions);
+        });
+    }
     return deferred.promise;
 };
 
@@ -220,7 +240,7 @@ yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
  * @param years
  */
 function prepareQuestionTreeForYears(questions, years) {
-    logger.info("Preparing questions tree...");
+    logger.info("Preparing questions tree");
     var qCategoryMap = {};
     var questionTree = [];
     var questionsList = [];

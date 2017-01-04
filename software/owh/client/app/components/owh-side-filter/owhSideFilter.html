@@ -105,6 +105,11 @@
                     </li>-->
                     <!--Radio button filters (UCD & MCD)-->
 
+                    <!--search box for side filter options-->
+                    <li class="group-option padding-right-10" ng-show="group.displaySearchBox">
+                        <input ng-model="search.title" type="text" class="filter-search-box" placeholder="Start typing to find">
+                        <i class="cursor-pointer clear-text-icon fa fa-remove" ng-click="search.title =''"></i>
+                    </li>
 
                     <!--Fot all other filters-->
                     <li class="group-option" ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' ">
@@ -115,7 +120,7 @@
                         </label>
                     </li>
                     <!--group options-->
-                    <li ng-repeat="option in group.autoCompleteOptions"
+                    <li ng-repeat="option in group.autoCompleteOptions | filter:search as filteredOptions"
                         ng-init="$outerIndex = $index"
                         ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' "
                         class="group-option" ng-show="$index < 3 || sideFilter.showAll">
@@ -159,14 +164,14 @@
 
                     </li>
 
-                    <li class="group-option more-options" ng-if="group.autoCompleteOptions.length > 3 &&
+                    <li class="group-option more-options" ng-if="filteredOptions.length > 3 &&
                         group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions' &&
                         group.filterType !== 'radio' " >
                         <a ng-show="!sideFilter.showAll" class="custom-link" translate="label.show.more"
-                           translate-values="{showLength: group.autoCompleteOptions.length - 3}"
+                           translate-values="{showLength: filteredOptions.length - 3}"
                            ng-click="sideFilter.showAll = !sideFilter.showAll" href="javascript:void(0)"></a>
                         <a ng-show="sideFilter.showAll" class="custom-link" translate="label.hide.more"
-                           translate-values="{hideLength: group.autoCompleteOptions.length - 3}"
+                           translate-values="{hideLength: filteredOptions.length - 3}"
                            ng-click="sideFilter.showAll = !sideFilter.showAll" href="javascript:void(0)"></a>
                     </li>
                 </ul>

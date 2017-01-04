@@ -589,7 +589,10 @@
             if(filter.autoCompleteOptions) {
                 angular.forEach(filter.autoCompleteOptions, function(option) {
                     if(option.options) {
-                        length--;
+                        //if value has group option, then don't subtract from calculated length
+                        if(filter.value.indexOf(option.key) < 0) {
+                            length--;
+                        }
                         length += option.options.length;
                     }
                 });
@@ -946,7 +949,7 @@
             ];
 
             filters.yrbsFilters = [
-                {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: [], groupBy: false,
+                {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: ['2015'], groupBy: false,
                    autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
                 { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: [], groupBy: false,
                     autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
@@ -1041,7 +1044,7 @@
                 {
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
                     allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, showMap:true,
-                    chartAxisLabel:'Deaths', countLabel: 'Number of Deaths', mapData:{},
+                    chartAxisLabel:'Deaths', countLabel: 'Number of Deaths', mapData:{}, tableView:'number_of_deaths',
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
@@ -1092,7 +1095,7 @@
                 {
                     key: 'mental_health', title: 'label.risk.behavior', primary: true, value:[], header:"Youth risk behavior",
                     allFilters: filters.yrbsFilters, searchResults: searchYRBSResults, dontShowInlineCharting: true,
-                    additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total',
+                    additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total', tableView:'mental_health',
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
@@ -1119,7 +1122,7 @@
                 {
                     key: 'bridge_race', title: 'label.census.bridge.race.pop.estimate', primary: true, value:[], header:"Bridged-Race Population Estimates",
                     allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true,
-                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop',
+                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop', tableView:'bridge_race',
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, dontShowCounts: true,

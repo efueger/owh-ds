@@ -143,6 +143,34 @@ var BridgeRaceStepDefinitionsWrapper = function () {
             expect(lineChart.length).to.be.above(0);
         })
     });
+
+    this.When(/^I expands the State filter$/, function (callback) {
+        bridgeRacePage.stateOptionsLink.click();
+        callback(null, 'done');
+    });
+
+    this.Then(/^I see the search box$/, function (callback) {
+        var searchBox = element(by.model('search.title'));
+        expect(searchBox).to.exist;
+        callback(null, 'done');
+    });
+
+    this.When(/^I begins to type a state name "([^"]*)" in the search box$/, function (arg1, callback) {
+        var searchBox = element(by.model('search.title'));
+        console.log(searchBox);
+        searchBox.clear().sendKeys(arg1);
+        callback(null, 'done');
+    });
+
+    this.Then(/^I see results dynamically populate with the states matching the "([^"]*)"$/, function (arg1, callback) {
+        bridgeRacePage.getSubFiltersOfAFilter('State').then(function(elements) {
+            expect(elements.count()).to.equal(2);
+            expect(elements[0].getText()).to.eventually.contains('All');
+            expect(elements[1].getText()).to.eventually.contains(arg1);
+        });
+        callback(null, 'done');
+    });
+
 };
 
 module.exports = BridgeRaceStepDefinitionsWrapper;

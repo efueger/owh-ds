@@ -30,15 +30,7 @@
                     ng-options="eachFilter.title | translate for eachFilter in ots.showFilters"
                     class="usa-width-two-thirds add-on-element gray-border margin-0"></select>
         </div>
-        <div class="usa-width-one-sixth bookmark-div" ng-show="ots.filters.selectedPrimaryFilter.title === 'label.filter.mortality' && ots.tableView === 'number_of_deaths'">
-            <div class="button_wrapper">
-                <a id="bookmark-button" class="usa-button-outline usa-button-active bookmark-button" href="#"  title="HIG Search" ng-show="isFirefoxBrowser();"
-                   rel="sidebar"> <span><i class="fa fa-star-o"></i> Bookmark this Search</span></a>
-                <a class="usa-button-outline usa-button-active bookmark-button" ng-show="!isFirefoxBrowser();"
-                   ng-click="bookmarkAlert();"><span><i class="fa fa-star-o"></i> Bookmark this Search</span></a>
-            </div>
-        </div>
-
+        <owh-bookmark table-view="ots.tableView"></owh-bookmark>
     </div>
 </div>
 <!--<button class="action-button" translate="label.search" ng-click="ots.searchResults({})"></button>-->
