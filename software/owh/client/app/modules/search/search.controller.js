@@ -101,19 +101,128 @@
             sc.filters.yrbsFilters[4].autoCompleteOptions = $rootScope.questionsList;
         });
 
+
+
+        /**************************************************/
+        var mapExpandControl =  L.Control.extend({
+            options: {
+                position: 'topright'
+            },
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom fa fa-expand fa-2x purple-icon');
+                container.onclick = function(event){
+                    if (sc.selectedMapSize==="small") {
+                        sc.selectedMapSize = "big";
+                        resizeUSAMap(true);
+                        angular.element(container).removeClass('fa-expand');
+                        angular.element(container).addClass('fa-compress');
+                    } else if(sc.selectedMapSize==="big"){
+                        sc.selectedMapSize = "small";
+                        resizeUSAMap(false);
+                        angular.element(container).removeClass('fa-compress');
+                        angular.element(container).addClass('fa-expand');
+                    } else{
+                        sc.selectedMapSize = "small";
+                        resizeUSAMap(false);
+                        angular.element(container).removeClass('fa-compress');
+                        angular.element(container).addClass('fa-expand');
+                    }
+                };
+                return container;
+            }
+        });
+
+        var mapShareControl =  L.Control.extend({
+            options: {
+                position: 'topright'
+            },
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom fa fa-share-alt fa-2x purple-icon');
+                container.onclick = function(event){
+                    angular.element(document.getElementById('spindiv')).removeClass('ng-hide');
+                    leafletData.getMap().then(function(map) {
+                        leafletImage(map, function(err, canvas) {
+                            sc.showFbDialog('chart_us_map', 'OWH - Map', canvas.toDataURL());
+                        });
+                    });
+
+                };
+                return container;
+            }
+        });
+
+        function resizeUSAMap(isZoomIn) {
+            leafletData.getMap().then(function(map) {
+                if(isZoomIn) {
+                    map.zoomIn();
+                    angular.extend(sc.filters.selectedPrimaryFilter.mapData, {
+                        legend: generateLegend(sc.filters.selectedPrimaryFilter.mapData.mapMinValue, sc.filters.selectedPrimaryFilter.mapData.mapMaxValue)
+                    });
+                } else {
+                    sc.filters.selectedPrimaryFilter.mapData.legend = undefined;
+                    map.zoomOut();
+                }
+                $timeout(function(){ map.invalidateSize()}, 1000);
+            });
+
+        }
+        /**************************************************/
         if (sc.queryID) {
             searchFactory.getQueryResults(sc.queryID).then(function (response) {
                 if(response.data) {
+                    //sc.filters.selectedPrimaryFilter = JSON.stringify(response.data.queryJSON);
+                    sc.filters.selectedPrimaryFilter.allFilters = response.data.queryJSON.allFilters;
+                    sc.filters.selectedPrimaryFilter.sideFilters = response.data.queryJSON.sideFilters;
+                    sc.filters.selectedPrimaryFilter.key = response.data.queryJSON.key;
+                    sc.filters.selectedPrimaryFilter.title = response.data.queryJSON.title;
 
-                   // sc.filters.selectedPrimaryFilter.allFilters = response.data.queryJSON.allFilters;
-                    //sc.filters.selectedPrimaryFilter.sideFilters = response.data.queryJSON.sideFilters;
-                   // sc.filters.selectedPrimaryFilter.key = response.data.queryJSON.key;
-                   // sc.filters.selectedPrimaryFilter.title = response.data.queryJSON.title;
-                    sc.filters.selectedPrimaryFilter = response.data.queryJSON;
+                   // sc.filters.selectedPrimaryFilter.mapData = response.data.queryJSON.mapData;
+                    sc.filters.selectedPrimaryFilter.countLabel = response.data.queryJSON.countLabel;
+                    sc.filters.selectedPrimaryFilter.primary = response.data.queryJSON.primary;
+                    sc.filters.selectedPrimaryFilter.value = response.data.queryJSON.value;
+                    sc.filters.selectedPrimaryFilter.header = response.data.queryJSON.header;
+
                     if(response.data.queryJSON.key == 'deaths') {
                         mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
+                        sc.filters.selectedPrimaryFilter.chartAxisLabel = response.data.queryJSON.chartAxisLabel;
+                        //TODO: fix this
+                        //sc.filters.selectedPrimaryFilter.mapData.controls.custom = response.data.queryJSON.mapData.controls.custom;
+                        sc.filters.selectedPrimaryFilter.mapData = {};
+                        //US-states map
+                        angular.extend(sc.filters.selectedPrimaryFilter.mapData, {
+                            usa: {
+                                lat: 39,
+                                lng: -100,
+                                zoom: 3
+                            },
+                            legend: {},
+                            defaults: {
+                                tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+                                scrollWheelZoom: false
+                            },
+                            markers: {},
+                            events: {
+                                map: {
+                                    enable: ['click'],
+                                    logic: 'emit'
+                                }
+                            },
+                            controls: {
+                                custom: [new mapExpandControl(), new mapShareControl()]
+                            },
+                            isMap:true
+                        });
+
+                        sc.filters.selectedPrimaryFilter.mapData.defaults = response.data.queryJSON.mapData.defaults;
+                        sc.filters.selectedPrimaryFilter.mapData.events = response.data.queryJSON.mapData.events;
+                        sc.filters.selectedPrimaryFilter.mapData.legends = response.data.queryJSON.mapData.legends;
+                        sc.filters.selectedPrimaryFilter.mapData.markers = response.data.queryJSON.mapData.markers;
+                        sc.filters.selectedPrimaryFilter.mapData.usa = response.data.queryJSON.mapData.usa;
+
+                        sc.filters.selectedPrimaryFilter.showMap = response.data.queryJSON.showMap;
+
                         sc.filters.selectedPrimaryFilter.searchResults = searchFactory.searchMortalityResults;
-                        sc.filters.selectedPrimaryFilter.header = response.data.queryJSON.headers;
+
                         var headers = searchFactory.buildAPIQuery(response.data.queryJSON).headers;
                         var customResponse = {
                             data : response.data.resultData.nested.table,
@@ -129,6 +238,9 @@
                         searchFactory.prepareMortalityResults(sc.filters.selectedPrimaryFilter, customResponse);
                     }
                     else if(response.data.queryJSON.key == 'mental_health'){
+                        sc.filters.selectedPrimaryFilter.additionalHeaders = response.data.queryJSON.additionalHeaders;
+                        sc.filters.selectedPrimaryFilter.dontShowInlineCharting = response.data.queryJSON.dontShowInlineCharting;
+                        sc.filters.selectedPrimaryFilter.initiated = response.data.queryJSON.initiated;
                         sc.filters.selectedPrimaryFilter.searchResults = searchFactory.searchYRBSResults;
                         sc.filters.selectedPrimaryFilter.data = response.data.resultData.table;
                         sc.filters.selectedPrimaryFilter.headers = searchFactory.buildQueryForYRBS(response.data.queryJSON, true).headers;
@@ -336,70 +448,6 @@
             searchFactory.showPhaseTwoModal(text);
         }
 
-        /**************************************************/
-        var mapExpandControl =  L.Control.extend({
-            options: {
-                position: 'topright'
-            },
-            onAdd: function (map) {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom fa fa-expand fa-2x purple-icon');
-                container.onclick = function(event){
-                    if (sc.selectedMapSize==="small") {
-                        sc.selectedMapSize = "big";
-                        resizeUSAMap(true);
-                        angular.element(container).removeClass('fa-expand');
-                        angular.element(container).addClass('fa-compress');
-                    } else if(sc.selectedMapSize==="big"){
-                        sc.selectedMapSize = "small";
-                        resizeUSAMap(false);
-                        angular.element(container).removeClass('fa-compress');
-                        angular.element(container).addClass('fa-expand');
-                    } else{
-                        sc.selectedMapSize = "small";
-                        resizeUSAMap(false);
-                        angular.element(container).removeClass('fa-compress');
-                        angular.element(container).addClass('fa-expand');
-                    }
-                };
-                return container;
-            }
-        });
-
-        var mapShareControl =  L.Control.extend({
-            options: {
-                position: 'topright'
-            },
-            onAdd: function (map) {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom fa fa-share-alt fa-2x purple-icon');
-                container.onclick = function(event){
-                    angular.element(document.getElementById('spindiv')).removeClass('ng-hide');
-                    leafletData.getMap().then(function(map) {
-                        leafletImage(map, function(err, canvas) {
-                            sc.showFbDialog('chart_us_map', 'OWH - Map', canvas.toDataURL());
-                        });
-                    });
-
-                };
-                return container;
-            }
-        });
-
-        function resizeUSAMap(isZoomIn) {
-            leafletData.getMap().then(function(map) {
-                if(isZoomIn) {
-                    map.zoomIn();
-                    angular.extend(sc.filters.selectedPrimaryFilter.mapData, {
-                        legend: generateLegend(sc.filters.selectedPrimaryFilter.mapData.mapMinValue, sc.filters.selectedPrimaryFilter.mapData.mapMaxValue)
-                    });
-                } else {
-                    sc.filters.selectedPrimaryFilter.mapData.legend = undefined;
-                    map.zoomOut();
-                }
-                $timeout(function(){ map.invalidateSize()}, 1000);
-            });
-
-        }
-        /**************************************************/
 
         //US-states map
         angular.extend(mortalityFilter.mapData, {
