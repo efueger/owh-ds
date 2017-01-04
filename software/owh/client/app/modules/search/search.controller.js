@@ -172,10 +172,15 @@
         if (sc.queryID) {
             searchFactory.getQueryResults(sc.queryID).then(function (response) {
                 if(response.data) {
+                    for(var i = 0; i < sc.filters.primaryFilters.length; i++) {
+                        if(sc.filters.primaryFilters[i].key === response.data.queryJSON.key) {
+                            sc.filters.selectedPrimaryFilter = sc.filters.primaryFilters[i];
+                        }
+                    }
                     //sc.filters.selectedPrimaryFilter = JSON.stringify(response.data.queryJSON);
                     sc.filters.selectedPrimaryFilter.allFilters = response.data.queryJSON.allFilters;
                     sc.filters.selectedPrimaryFilter.sideFilters = response.data.queryJSON.sideFilters;
-                    sc.filters.selectedPrimaryFilter.key = response.data.queryJSON.key;
+                    // sc.filters.selectedPrimaryFilter.key = response.data.queryJSON.key;
                     sc.filters.selectedPrimaryFilter.title = response.data.queryJSON.title;
 
                    // sc.filters.selectedPrimaryFilter.mapData = response.data.queryJSON.mapData;
@@ -306,6 +311,13 @@
                 });
             }
             else {
+                console.log('filter', angular.copy(sc.filters.selectedPrimaryFilter));
+                for (var key in sc.filters.selectedPrimaryFilter) {
+                    if (sc.filters.selectedPrimaryFilter.hasOwnProperty(key)) {
+                        console.log(key);
+                        JSON.stringify(sc.filters.selectedPrimaryFilter[key]);
+                    }
+                }
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter, sc.queryID);
             }
         }
