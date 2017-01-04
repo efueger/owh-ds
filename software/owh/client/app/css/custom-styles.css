@@ -841,8 +841,13 @@ and (-webkit-min-device-pixel-ratio: 1) {
 .clear-text-icon {
 	position: absolute;
 	margin-top: -28px;
-	right: 30px;
-	color: #999999;
+	right: 25px;
+	background-color: #833eb0;
+	border-color: #833eb0;
+	color: white;
+	padding-bottom: 1px;
+	padding-left: 2px;
+	padding-right: 2px;
 }
 
 .disabled-filter {
