@@ -588,9 +588,6 @@ function addCountsToAutoCompleteOptions(primaryFilter) {
     return apiQuery;
 }
 
-function clone (a) {
-    return JSON.parse(JSON.stringify(a));
-};
 module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;

@@ -46,10 +46,6 @@
       'getYRBSQuestionsTree' : {
         method : 'GET',
         url: '/yrbsQuestionsTree/:years'
-      },
-      'getQueryResults' : {
-        method : 'GET',
-        url: '/getQueryResults/:queryId'
       }
     }
   }
