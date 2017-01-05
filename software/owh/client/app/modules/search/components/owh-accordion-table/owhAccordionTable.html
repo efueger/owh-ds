@@ -20,7 +20,14 @@
         <tr class="owh-question__question" ng-repeat="eachRow in oatc.listRows(eachCategory)" ng-hide="$index > 1 && eachCategory.hide || eachCategory.collapse">
             <td ng-repeat="eachColumn in eachRow" colspan="{{ eachColumn.colspan }}" rowspan="{{ eachColumn.rowspan }}">
                 <div class="owh-question__content" ng-class="{'text-right': $index > 0}">
-                    <span ng-bind-html="eachColumn.title"></span>
+                    <span ng-if="!eachColumn.title.mean" ng-bind-html="eachColumn.title"></span>
+                    <span ng-if="eachColumn.title.mean">
+                        {{eachColumn.title.mean}}
+                        <br/><br/>
+                        ({{eachColumn.title.ci_l}}-{{eachColumn.title.ci_u}})
+                        <br/>
+                        {{eachColumn.title.count}}
+                    </span>
                     <!--  Commenting the chart for now
                     <i class="cursor-pointer {{eachColumn.iconClass}}" ng-if="eachColumn.iconClass" ng-click="eachColumn.onIconClick(eachColumn.key)"></i> -->
                 </div>
