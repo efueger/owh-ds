@@ -194,6 +194,7 @@ var yrbsStepDefinitionsWrapper = function () {
         var raceFilter = yrbsPage.selectSideFilter(filterName);
         var raceParentElement = raceFilter.element(by.xpath('..')).element(by.xpath('..')).element(by.xpath('..'));
         raceParentElement.element(by.xpath('.//*[.="'+option+'"]')).click();
+        browser.sleep(300);
     });
 
     this.Then(/^I see question categories in this order "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)"$/, function (questionCat1, questionCat2, questionCat3, questionCat4, questionCat5, questionCat6, questionCat7, questionCat8) {
@@ -355,45 +356,18 @@ var yrbsStepDefinitionsWrapper = function () {
         browser.navigate().back();
     });
 
-   /* this.Then(/^most recent filter action is removed and user is taken back by one step$/, function () {
-        return false;
-    });*/
-
-    this.Then(/^the results page \(mortality data table and visualizations\) should be refreshed to reflect the currently selected filter options$/, function () {
-        var mortalityPage = require('../support/mortalitypage.po')
-        mortalityPage.isVisualizationDisplayed().then(function(value) {
-            expect(value).to.equal(true);
-        });
-        var labelArray = mortalityPage.getAxisLabelsForMinimizedVisualization();
-        expect(labelArray[0].getText()).to.eventually.equal('Race');
-        expect(labelArray[1].getText()).to.eventually.equal('Deaths');
-
-        expect(mortalityPage.sideMenu.isDisplayed()).to.eventually.equal(true);
-        mortalityPage.getTableRowData(1).then(function(text) {
-            expect(text[1]).to.equal('336,172 (47.8%)');
-        });
-
-    });
-
     this.When(/^I select the forward button in browser$/, function () {
         browser.navigate().forward();
     });
 
-    this.Then(/^the results page \(bridged\-Race data table and visualizations\) should be refreshed to reflect the currently selected filter options$/, function () {
-        var bridgeRacePage = require('../support/bridgerace.po');
-
-        element.all(by.css('.side-filters')).all(by.css('.accordion')).then(function (items) {
-            expect(items[0].getText()).to.eventually.contains(arg1);
-        });
-        var raceFilter = yrbsPage.selectSideFilter("Yearly July 1st Estimates");
+    this.Then(/^the results page \(yrbs data table\) should be refreshed to reflect "([^"]*)" filter with option "([^"]*)"$/, function (filterName, option) {
+        var raceFilter = yrbsPage.selectSideFilter(filterName);
         var raceParentElement = raceFilter.element(by.xpath('..')).element(by.xpath('..')).element(by.xpath('..'));
-        raceParentElement.element(by.xpath('.//*[.="All"]')).click();
+        raceParentElement.element(by.xpath('.//*[.="'+option+'"]')).isSelected().to.eventually.equal(true);
 
-        var dtTableHeaders = bridgeRacePage.getTableHeaders();
-        expect(dtTableHeaders).to.eventually.contains('Race');
-        expect(dtTableHeaders).to.eventually.contains('Female');
-        expect(dtTableHeaders).to.eventually.contains('Male');
-        expect(dtTableHeaders).to.eventually.contains('Total');
+        var raceFilter2 = yrbsPage.selectSideFilter("year");
+        var raceParentElement2 = raceFilter2.element(by.xpath('..')).element(by.xpath('..')).element(by.xpath('..'));
+        raceParentElement2.element(by.xpath('.//*[.="2015"]')).isSelected().to.eventually.equal(true);
     });
 };
 module.exports = yrbsStepDefinitionsWrapper;
