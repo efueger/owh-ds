@@ -202,6 +202,7 @@
                 //if queryID exists in owh_querycache index
                 if(response.data) {
                     sc.filters.selectedPrimaryFilter.tableView = response.data.queryJSON.tableView;
+                    sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
                     for(var i = 0; i < sc.filters.primaryFilters.length; i++) {
                         if(sc.filters.primaryFilters[i].key === response.data.queryJSON.key) {
                             sc.filters.selectedPrimaryFilter = sc.filters.primaryFilters[i];
