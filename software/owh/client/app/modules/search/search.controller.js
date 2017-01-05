@@ -198,16 +198,19 @@
             * get query results from owh_querycache index
             * This function takes queryID and get queryJSON, sideFilterResults, resultData from owh_querycache index if query exists
             * */
+
             searchFactory.getQueryResults(sc.queryID).then(function (response) {
-                //if queryID exists in owh_querycache index
+                //if queryID exists in owh_querycache index, then update data that are required to display search results
                 if(response.data) {
                     sc.filters.selectedPrimaryFilter.tableView = response.data.queryJSON.tableView;
+                    sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
+                    //Update I'm interested in drop down key, value etc..
                     for(var i = 0; i < sc.filters.primaryFilters.length; i++) {
                         if(sc.filters.primaryFilters[i].key === response.data.queryJSON.key) {
                             sc.filters.selectedPrimaryFilter = sc.filters.primaryFilters[i];
                         }
                     }
-                    //Update site filter selected values
+                    //Update side filters selected values
                     for(var i = 0; i < response.data.queryJSON.sideFilters.length; i++){
                         if(sc.filters.selectedPrimaryFilter.sideFilters[i].filters.key === response.data.queryJSON.sideFilters[i].filters.key){
                             sc.filters.selectedPrimaryFilter.sideFilters[i].filters.groupBy = response.data.queryJSON.sideFilters[i].filters.groupBy;
@@ -232,16 +235,18 @@
                         //Prepare mortality table data.
                         searchFactory.prepareMortalityResults(sc.filters.selectedPrimaryFilter, customResponse);
                     }
+                    //To update yrbs page
                     else if(response.data.queryJSON.key == 'mental_health'){
                         sc.filters.selectedPrimaryFilter.data = response.data.resultData.table;
                     }
+                    //To update bridge race page
                     else if(response.data.queryJSON.key == 'bridge_race'){
                         var selectedPrimaryFilters = sc.filters.selectedPrimaryFilter;
                         sc.filters.selectedPrimaryFilter.data = response.data.resultData.nested.table;
                         sc.filters.selectedPrimaryFilter.headers = response.data.resultData.headers;
                         sc.filters.selectedPrimaryFilter.chartData = searchFactory.prepareChartData(response.data.resultData.headers, response.data.resultData.nested, selectedPrimaryFilters);
                     }
-                    mortalityAndYRBSSearchResults(response);
+                    updateFiltersAndData(response);
                 }
                 else {
                     search(false);
@@ -397,7 +402,11 @@
             return categories;
         }
 
-        function mortalityAndYRBSSearchResults(response) {
+        /**
+         * Using search results response update filters, table headers and data for search page
+         * @param response
+         */
+        function updateFiltersAndData(response) {
             //populate side filters based on cached query filters
             if (response.queryJSON) {
                 angular.forEach(response.queryJSON.sideFilters, function (filter, index) {
@@ -428,11 +437,17 @@
             sc.filters.selectedPrimaryFilter.initiated = true;
         }
 
+        /**
+         * This method getting called when filters changed
+         * This function get
+         * @param newFilter
+         * @param queryID
+         */
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             //TODO: this executes the actualy query, only perform this when queryId is present
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
-                mortalityAndYRBSSearchResults(response);
+                updateFiltersAndData(response);
             });
         }
 

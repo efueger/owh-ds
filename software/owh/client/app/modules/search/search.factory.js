@@ -360,7 +360,6 @@
             var req = {};
             req.key= pFilter.key;
             req.searchFor = pFilter.searchFor;
-            console.log(" in create backent reqeust " , pFilter.tableView);
             req.tableView = pFilter.tableView;
             req.allFilters = []
             for (var i = 0; i< pFilter.allFilters.length; i++){
