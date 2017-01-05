@@ -347,6 +347,49 @@
             primaryFilter.searchCount = response.totalCount;
         }
 
+        function removeSearchResults(ac){
+            if(ac){
+                for (var i =0; i < ac.length; i++ ){
+                    delete ac[i].deaths;
+                    delete ac[i].count;
+                    delete ac[i].deathsPercentage;
+                }
+            }
+        }
+        function createBackendSearchRequest(pFilter){
+            var req = {};
+            req.key= pFilter.key;
+            req.searchFor = pFilter.searchFor;
+            console.log(" in create backent reqeust " , pFilter.tableView);
+            req.tableView = pFilter.tableView;
+            req.allFilters = []
+            for (var i = 0; i< pFilter.allFilters.length; i++){
+                var filter = utilService.clone(pFilter.allFilters[i]);
+                // Clear autocomplete options for mcd and ucd
+                if( i == 9 || i == 12){
+                    filter.autoCompleteOptions = [];
+                }
+                removeSearchResults(filter.autoCompleteOptions);
+                req.allFilters.push(filter);
+            }
+            req.sideFilters = [];
+            for (var i = 0; i< pFilter.sideFilters.length; i++){
+                var filter = utilService.clone(pFilter.sideFilters[i]);
+                // Clear autocomplete options for mcd and ucd
+                if( i == 9 || i == 10){
+                    filter.autoCompleteOptions = [];
+                    filter.filters.autoCompleteOptions[0].autoCompleteOptions = [];
+                }
+                removeSearchResults(filter.autoCompleteOptions);
+                if(filter.filters.autoCompleteOptions){
+                    removeSearchResults(filter.filters.autoCompleteOptions[0].autoCompleteOptions);
+                }
+                req.sideFilters.push(filter);
+            }
+            return req;
+        }
+
+
         function searchMortalityResults(primaryFilter, queryID) {
             var deferred = $q.defer();
             queryMortalityAPI(primaryFilter, queryID).then(function(response){
@@ -368,7 +411,7 @@
 
         function getQueryResults(queryId) {
             var deferred = $q.defer();
-            SearchService.getQueryResults(queryId).then(function(response) {
+            SearchService.searchResults(null,queryId).then(function(response) {
                 deferred.resolve(response);
             });
             return deferred.promise;
@@ -382,8 +425,7 @@
             var headers = apiQuery.headers;
             //var query = apiQuery.apiQuery;
             //Passing completed primaryFilters to backend and building query at server side
-            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
-
+            SearchService.searchResults(createBackendSearchRequest(primaryFilter), queryID).then(function(response) {
                 //resolve data for controller
                 //need to build headers with primary filter returned from backend in order for charts to build properly
                 if(response.data.queryJSON) {

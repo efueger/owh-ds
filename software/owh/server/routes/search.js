@@ -51,25 +51,6 @@ var searchRouter = function(app, rConfig) {
             res.send(new result('OK', response, "success"));
         });
     });
-
-    app.get('/getQueryResults/:queryId', function(req, res){
-        var queryId = req.params.queryId;
-        queryCache.getCachedQuery(queryId).then(function (r) {
-            if (r) {
-                logger.info("Retrieved query results for query ID " + queryId + " from query cache");
-                var resData = {};
-                resData.queryJSON = JSON.parse(r._source.queryJSON);
-                resData.sideFilterResults = JSON.parse(r._source.sideFilterResults);
-                resData.resultData = JSON.parse(r._source.resultJSON);
-                //resData.sideFilterResults = JSON.parse(r._source.sideFilterResults);
-                res.send(new result('OK', resData, "success"));
-            }
-            else {
-                logger.info("Query with ID " + queryId + " not in cache, executing query");
-                res.send(new result('No query data present in request'));
-            }
-        });
-    })
 };
 
 
@@ -78,9 +59,8 @@ function search(q) {
     var preparedQuery = queryBuilder.buildAPIQuery(q);
     logger.debug("Incoming query: ", JSON.stringify(preparedQuery));
     if (preparedQuery.apiQuery.searchFor === "deaths") {
-        var mortalityQuery = queryBuilder.createBackendSearchRequest(q);
         var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
-        var sideFilterQuery = queryBuilder.buildSearchQuery(queryBuilder.addCountsToAutoCompleteOptions(mortalityQuery), true);
+        var sideFilterQuery = queryBuilder.buildSearchQuery(queryBuilder.addCountsToAutoCompleteOptions(q), true);
         finalQuery.wonderQuery = preparedQuery.apiQuery;
         new elasticSearch().aggregateDeaths(sideFilterQuery).then(function (sideFilterResults) {
             new elasticSearch().aggregateDeaths(finalQuery).then(function (response) {

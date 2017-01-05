@@ -587,46 +587,6 @@ function addCountsToAutoCompleteOptions(primaryFilter) {
     //}
     return apiQuery;
 }
-function createBackendSearchRequest(pFilter){
-    var req = {};
-    req.key= pFilter.key;
-    req.searchFor = pFilter.searchFor;
-    req.allFilters = [];
-    for (var i = 0; i< pFilter.allFilters.length; i++){
-        var filter = clone(pFilter.allFilters[i]);
-        // Clear autocomplete options for mcd and ucd
-        if( i == 9 || i == 12){
-            filter.autoCompleteOptions = [];
-        }
-        removeSearchResults(filter.autoCompleteOptions);
-        req.allFilters.push(filter);
-    }
-    req.sideFilters = [];
-    for (var i = 0; i< pFilter.sideFilters.length; i++){
-        var filter = clone(pFilter.sideFilters[i]);
-        // Clear autocomplete options for mcd and ucd
-        if( i == 9 || i == 10){
-            filter.autoCompleteOptions = [];
-            filter.filters.autoCompleteOptions[0].autoCompleteOptions = [];
-        }
-        removeSearchResults(filter.autoCompleteOptions);
-        if(filter.filters.autoCompleteOptions){
-            removeSearchResults(filter.filters.autoCompleteOptions[0].autoCompleteOptions);
-        }
-        req.sideFilters.push(filter);
-    }
-    return req;
-}
-
-function removeSearchResults(ac){
-    if(ac){
-        for (var i =0; i < ac.length; i++ ){
-            delete ac[i].deaths;
-            delete ac[i].count;
-            delete ac[i].deathsPercentage;
-        }
-    }
-}
 
 function clone (a) {
     return JSON.parse(JSON.stringify(a));
@@ -637,4 +597,3 @@ module.exports.isEmptyObject = isEmptyObject;
 module.exports.buildAPIQuery = buildAPIQuery;
 // module.exports.buildQueryForYRBS = buildQueryForYRBS;
 module.exports.addCountsToAutoCompleteOptions = addCountsToAutoCompleteOptions;
-module.exports.createBackendSearchRequest = createBackendSearchRequest;
