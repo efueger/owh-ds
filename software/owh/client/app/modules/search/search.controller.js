@@ -235,6 +235,12 @@
                     else if(response.data.queryJSON.key == 'mental_health'){
                         sc.filters.selectedPrimaryFilter.data = response.data.resultData.table;
                     }
+                    else if(response.data.queryJSON.key == 'bridge_race'){
+                        var selectedPrimaryFilters = sc.filters.selectedPrimaryFilter;
+                        sc.filters.selectedPrimaryFilter.data = response.data.resultData.nested.table;
+                        sc.filters.selectedPrimaryFilter.headers = response.data.resultData.headers;
+                        sc.filters.selectedPrimaryFilter.chartData = searchFactory.prepareChartData(response.data.resultData.headers, response.data.resultData.nested, selectedPrimaryFilters);
+                    }
                     mortalityAndYRBSSearchResults(response);
                 }
                 else {
