@@ -253,7 +253,7 @@ function prepareQuestionTreeForYears(questions, years) {
             qCategoryMap[qCategory] = {id:'cat_'+catCount, text:qCategory, children:[]};
             catCount = catCount + 1;
         } else {
-            if (quesObj.description !=undefined && (years.indexOf('All') != -1 || years.indexOf(quesObj.year.toString()) != -1)) {
+            if (quesObj.description !== undefined) {
                 var question = {text:quesObj.question +"("+quesObj.description+")", id:qKey};
                 qCategoryMap[qCategory].children.push(question);
                 //capture all questions into questionsList
