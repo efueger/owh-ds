@@ -21,6 +21,7 @@
         sc.showFbDialog = showFbDialog;
         sc.changeViewFilter = changeViewFilter;
         sc.getMixedTable = getMixedTable;
+        sc.getQueryResults = getQueryResults;
         sc.skipRefresh = false;
 
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
@@ -193,39 +194,34 @@
             isMap:true
         });
 
-        if (sc.queryID) {
-            /*
-            * get query results from owh_querycache index
-            * This function takes queryID and get queryJSON, sideFilterResults, resultData from owh_querycache index if query exists
-            * */
-
-            searchFactory.getQueryResults(sc.queryID).then(function (response) {
-                //if queryID exists in owh_querycache index, then update data that are required to display search results
-                if(response.data) {
+        function getQueryResults(queryID) {
+            searchFactory.getQueryResults(queryID).then(function (response) {
+               //if queryID exists in owh_querycache index, then update data that are required to display search results
+                if (response.data) {
                     sc.filters.selectedPrimaryFilter.tableView = response.data.queryJSON.tableView;
                     sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
                     //Update I'm interested in drop down key, value etc..
-                    for(var i = 0; i < sc.filters.primaryFilters.length; i++) {
-                        if(sc.filters.primaryFilters[i].key === response.data.queryJSON.key) {
+                    for (var i = 0; i < sc.filters.primaryFilters.length; i++) {
+                        if (sc.filters.primaryFilters[i].key === response.data.queryJSON.key) {
                             sc.filters.selectedPrimaryFilter = sc.filters.primaryFilters[i];
                         }
                     }
                     //Update side filters selected values
-                    for(var i = 0; i < response.data.queryJSON.sideFilters.length; i++){
-                        if(sc.filters.selectedPrimaryFilter.sideFilters[i].filters.key === response.data.queryJSON.sideFilters[i].filters.key){
+                    for (var i = 0; i < response.data.queryJSON.sideFilters.length; i++) {
+                        if (sc.filters.selectedPrimaryFilter.sideFilters[i].filters.key === response.data.queryJSON.sideFilters[i].filters.key) {
                             sc.filters.selectedPrimaryFilter.sideFilters[i].filters.groupBy = response.data.queryJSON.sideFilters[i].filters.groupBy;
                             sc.filters.selectedPrimaryFilter.sideFilters[i].filters.value = response.data.queryJSON.sideFilters[i].filters.value;
                         }
                     }
                     //Set values for mortality search page
-                    if(response.data.queryJSON.key == 'deaths') {
+                    if (response.data.queryJSON.key == 'deaths') {
                         var headers = searchFactory.buildAPIQuery(response.data.queryJSON).headers;
                         var selectedPrimaryFilters = sc.filters.selectedPrimaryFilter;
                         var customResponse = {
-                            data : response.data.resultData.nested.table,
-                            dataPrepared : false,
-                            headers : headers,
-                            chartDataFromAPI : response.data.resultData.simple,
+                            data: response.data.resultData.nested.table,
+                            dataPrepared: false,
+                            headers: headers,
+                            chartDataFromAPI: response.data.resultData.simple,
                             chartData: searchFactory.prepareChartData(headers, response.data.resultData.nested, selectedPrimaryFilters),
                             maps: response.data.resultData.nested.maps,
                             totalCount: response.pagination.total,
@@ -236,11 +232,11 @@
                         searchFactory.prepareMortalityResults(sc.filters.selectedPrimaryFilter, customResponse);
                     }
                     //To update yrbs page
-                    else if(response.data.queryJSON.key == 'mental_health'){
+                    else if (response.data.queryJSON.key == 'mental_health') {
                         sc.filters.selectedPrimaryFilter.data = response.data.resultData.table;
                     }
                     //To update bridge race page
-                    else if(response.data.queryJSON.key == 'bridge_race'){
+                    else if (response.data.queryJSON.key == 'bridge_race') {
                         var selectedPrimaryFilters = sc.filters.selectedPrimaryFilter;
                         sc.filters.selectedPrimaryFilter.data = response.data.resultData.nested.table;
                         sc.filters.selectedPrimaryFilter.headers = response.data.resultData.headers;
@@ -252,6 +248,15 @@
                     search(false);
                 }
             });
+            console.log("********************************response outside  ****************************************");
+        }
+
+        if (sc.queryID) {
+            /*
+            * get query results from owh_querycache index
+            * This function takes queryID and get queryJSON, sideFilterResults, resultData from owh_querycache index if query exists
+            * */
+            getQueryResults(sc.queryID);
         }
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
@@ -445,7 +450,6 @@
          */
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
-            //TODO: this executes the actualy query, only perform this when queryId is present
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
                 updateFiltersAndData(response);
             });

@@ -408,6 +408,11 @@
             return deferred.promise;
         }
 
+        /**
+         * Get owhquery_cache data using queryID
+         * @param queryId
+         * @returns {Function}
+         */
         function getQueryResults(queryId) {
             var deferred = $q.defer();
             SearchService.searchResults(null,queryId).then(function(response) {
