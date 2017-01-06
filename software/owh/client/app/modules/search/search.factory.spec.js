@@ -300,18 +300,6 @@ describe('search factory ', function(){
         expect(selectedFilter.sideFilters[1].filters.groupBy).toEqual(false);
     });
 
-    /*it('getqueryResults', function(){
-        var searchResultsResponse = __fixtures__['app/modules/search/fixtures/search.factory/searchResultsResponse'];
-        //deferred = $q.defer();
-       // deferred.resolve(searchResultsResponse);
-        spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
-        searchFactory.getQueryResults("ae38fb09ec8b6020a9478edc62a271ca").then(function(response) {
-            expect(JSON.stringify(response.data.resultData.nested.table)).toEqual(JSON.stringify(searchResultsResponse.resultData.nested.table));
-            expect(JSON.stringify(response.data.resultData.nested.maps)).toEqual(JSON.stringify(searchResultsResponse.resultData.nested.maps));
-        });
-    });*/
-
-
     describe('test with mortality data', function () {
         beforeAll(function() {
             primaryFilter = filters.search[0];
@@ -432,6 +420,17 @@ describe('search factory ', function(){
             $timeout.flush();
             expect(agegroupFilter.timer).toBeUndefined();
             filters.selectedPrimaryFilter.initiated = false;
+        });
+
+        it('getqueryResults', function(){
+            var searchResultsResponse = __fixtures__['app/modules/search/fixtures/search.factory/searchResultsResponse'];
+            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
+            searchFactory.getQueryResults("ae38fb09ec8b6020a9478edc62a271ca").then(function(response) {
+                expect(JSON.stringify(response.data.resultData.nested.table)).toEqual(JSON.stringify(searchResultsResponse.data.resultData.nested.table));
+                expect(JSON.stringify(response.data.resultData.chartData)).toEqual(JSON.stringify(searchResultsResponse.data.resultData.chartData));
+            });
+            deferred.resolve(searchResultsResponse);
+            $scope.$apply();
         });
 
     });
@@ -568,17 +567,6 @@ describe('search factory ', function(){
             });
             deferred.resolve(response);
             $scope.$apply();
-        });
-
-        it('getqueryResults', function(){
-            var searchResultsResponse = __fixtures__['app/modules/search/fixtures/search.factory/searchResultsResponse'];
-            deferred.resolve(searchResultsResponse);
-            $scope.$apply();
-            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
-            searchFactory.getQueryResults("ae38fb09ec8b6020a9478edc62a271ca").then(function(response) {
-                expect(JSON.stringify("Tesdsfdsfdsfdsfd")).toEqual(JSON.stringify(searchResultsResponse.resultData.nested.table));
-                expect(JSON.stringify(response.resultData.chartData)).toEqual(JSON.stringify(searchResultsResponse.resultData.chartData));
-            });
         });
     })
 });

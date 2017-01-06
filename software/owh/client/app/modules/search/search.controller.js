@@ -248,7 +248,6 @@
                     search(false);
                 }
             });
-            console.log("********************************response outside  ****************************************");
         }
 
         if (sc.queryID) {

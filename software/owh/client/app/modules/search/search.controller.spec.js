@@ -26,7 +26,7 @@ describe("Search controller: ", function () {
             $httpBackend.whenGET('/yrbsQuestionsTree/2015').respond({});
             $httpBackend.whenGET('app/modules/home/home.html').respond({});
             searchResultsResponse = __fixtures__['app/modules/search/fixtures/search.factory/searchResultsResponse'];
-            $searchFactory = searchFactory; //$injector.get('searchFactory');
+            $searchFactory = searchFactory;
             filters = $searchFactory.getAllFilters();
         });
     });
@@ -295,17 +295,20 @@ describe("Search controller: ", function () {
         expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[1].key).toEqual('Dominican');
     });
 
-   /* it("search results by queryID", inject(function(searchFactory) {
+    it("search results by queryID", inject(function(searchFactory) {
          var searchController= $controller('SearchController',{$scope:$scope, searchFactory: searchFactory});
+         var utilService = $injector.get('utilService');
          var deferred = $q.defer();
-         deferred.resolve(searchResultsResponse);
-          $scope.$apply();
          searchController.filters = filters;
          filters.selectedPrimaryFilter = filters.search[0];
+         filters.primaryFilters = utilService.findAllByKeyAndValue(searchController.filters.search, 'primary', true);
          spyOn(searchFactory, 'getQueryResults').and.returnValue(deferred.promise);
          searchController.getQueryResults("ae38fb09ec8b6020a9478edc62a271ca");
-         expect(searchController.tableView).toEqual(searchResultsResponse.queryJSON.tableView);
-         //expect(searchController.filters.data).toEqual(searchResultsResponse.resultData.nested.table);
-    }));*/
+         expect(searchController.tableView).toEqual(searchResultsResponse.data.queryJSON.tableView);
+         expect(searchController.filters.selectedPrimaryFilter.headers).toEqual(searchResultsResponse.data.resultData.headers);
+         expect(searchResultsResponse.data.queryJSON.key).toEqual('deaths');
+         deferred.resolve(searchResultsResponse);
+         $scope.$apply();
+    }));
 
 });
