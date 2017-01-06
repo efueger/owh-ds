@@ -43,6 +43,7 @@
                     on-filter="sc.search(sc.filters.selectedPrimaryFilter, sc.filters, true)"
                     sort="sc.sort[sc.filters.selectedPrimaryFilter.title]"
                     show-filters="sc.availableFilters[sc.tableView]"
+                    utilities="sc.filterUtilities[sc.filters.selectedPrimaryFilter.key]"
                     ></owh-side-filter>
             </div>
         </div>
@@ -124,7 +125,9 @@
                                sc.filters.selectedPrimaryFilter.key === 'bridge_race')"
                                table-view="{{sc.tableView}}"></owh-table>
                     <owh-accordion-table headers="sc.filters.selectedPrimaryFilter.headers" data="sc.filters.selectedPrimaryFilter.data"
-                                ng-if="sc.filters.selectedPrimaryFilter.key === 'mental_health'"></owh-accordion-table>
+                                ng-if="sc.filters.selectedPrimaryFilter.key === 'mental_health'"
+                                show-ci="sc.showConfidenceIntervals"
+                                show-uf="sc.showUnweightedFrequency"></owh-accordion-table>
                 </div>
             </div>
             <!--Table-->

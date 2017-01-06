@@ -86,6 +86,53 @@
             'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
             'age-adjusted_death_rates': ['year', 'gender', 'race']
         };
+
+        //functionality to be added to the side filters
+        sc.filterUtilities = {
+            'mental_health': [
+                {
+                    title: 'Variance',
+                    options: [
+                        {
+                            title: 'Confidence Intervals',
+                            type: 'toggle',
+                            value: false,
+                            onChange: function(value) {
+                                sc.showConfidenceIntervals = value;
+                            },
+                            options: [
+                                {
+                                    title: 'label.mortality.search.table.show.percentage.button',
+                                    key: true
+                                },
+                                {
+                                    title: 'label.mortality.search.table.hide.percentage.button',
+                                    key: false
+                                }
+                            ]
+                        },
+                        {
+                            title: 'Unweighted Frequency',
+                            type: 'toggle',
+                            value: false,
+                            onChange: function(value) {
+                                sc.showUnweightedFrequency = value;
+                            },
+                            options: [
+                                {
+                                    title: 'label.mortality.search.table.show.percentage.button',
+                                    key: true
+                                },
+                                {
+                                    title: 'label.mortality.search.table.hide.percentage.button',
+                                    key: false
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
 

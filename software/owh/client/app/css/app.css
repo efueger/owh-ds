@@ -1019,6 +1019,16 @@ body {
     margin-bottom: 0;
 }
 
+.owh-side-menu__utility-option {
+    padding-left: 10px;
+    padding-right: 5px;
+    min-height: 50px;
+}
+
+.owh-side-menu__options-list {
+    padding-bottom: 10px;
+}
+
 /* To increase visualization(charts) axis label size*/
 .nv-axislabel {
     font-size: 13px !important;
