@@ -421,6 +421,14 @@ describe('search factory ', function(){
             expect(agegroupFilter.timer).toBeUndefined();
             filters.selectedPrimaryFilter.initiated = false;
         });
+        it('getqueryResults', function(){
+            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
+            searchFactory.getQueryResults("ae38fb09ec8b6020a9478edc62a271ca").then(function() {
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.table));
+                expect(JSON.stringify(primaryFilter.maps)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.maps));
+                expect(JSON.stringify(primaryFilter.headers)).toEqual(JSON.stringify(genderGroupHeaders));
+            });
+        });
     });
 
     describe('test with yrbs data', function () {
@@ -528,6 +536,13 @@ describe('search factory ', function(){
 
         });
 
+        it('getqueryResults', function(){
+            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
+            searchFactory.getQueryResults("ae38fb09ec8b6020a9478edc62a271ca").then(function() {
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(yrbsResponse.data.resultData.table));
+            });
+        });
+
     });
     
     describe('test with bridge race data', function () {
@@ -555,6 +570,14 @@ describe('search factory ', function(){
             });
             deferred.resolve(response);
             $scope.$apply();
+        });
+
+        it('getqueryResults', function(){
+            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
+            searchFactory.getQueryResults("ae38fb09ec8b6020a9478edc62a271ca").then(function(data) {
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(response.data.resultData.nested.table));
+                expect(JSON.stringify(primaryFilter.chartData)).toEqual(JSON.stringify(response.data.resultData.chartData));
+            });
         });
     })
 });
