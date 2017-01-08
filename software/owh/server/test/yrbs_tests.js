@@ -175,29 +175,59 @@ describe("YRBS API", function () {
                 "question":[
                     {
                         "name":"qn41",
-                        "mental_health":"63.2<br><br/><nobr>(60.6-65.8)</nobr><br/>15049",
+                        "mental_health": {
+                            "mean": 63.2,
+                            "ci_l": 60.6,
+                            "ci_u": 65.8,
+                            "count": 15049
+                        },
                         "sex":[
                             {
                                 "name":"Female",
-                                "mental_health":"65.3<br><br/><nobr>(61.5-69.0)</nobr><br/>7518"
+                                "mental_health": {
+                                    "mean": 65.3,
+                                    "ci_l": 61.5,
+                                    "ci_u": 69.0,
+                                    "count": 7518
+                                }
                             },
                             {
                                 "name":"Male",
-                                "mental_health":"61.4<br><br/><nobr>(59.1-63.7)</nobr><br/>7424"
+                                "mental_health": {
+                                    "mean": 61.4,
+                                    "ci_l": 59.1,
+                                    "ci_u": 63.7,
+                                    "count": 7424
+                                }
                             }
                         ]
                     },
                     {
                         "name":"qn45",
-                        "mental_health":"63.2<br><br/><nobr>(60.6-65.8)</nobr><br/>15049",
+                        "mental_health": {
+                            "mean": 63.2,
+                            "ci_l": 60.6,
+                            "ci_u": 65.8,
+                            "count": 15049
+                        },
                         "sex":[
                             {
                                 "name":"Female",
-                                "mental_health":"65.3<br><br/><nobr>(61.5-69.0)</nobr><br/>7518"
+                                "mental_health": {
+                                    "mean": 65.3,
+                                    "ci_l": 61.5,
+                                    "ci_u": 69.0,
+                                    "count": 7518
+                                }
                             },
                             {
                                 "name":"Male",
-                                "mental_health":"61.4<br><br/><nobr>(59.1-63.7)</nobr><br/>7424"
+                                "mental_health": {
+                                    "mean": 61.4,
+                                    "ci_l": 59.1,
+                                    "ci_u": 63.7,
+                                    "count": 7424
+                                }
                             }
                         ]
                     }
@@ -243,11 +273,21 @@ describe("YRBS API", function () {
                 "question":[
                     {
                         "name":"qn45",
-                        "mental_health":"63.3<br><br/><nobr>(60.6-65.8)</nobr><br/>15049"
+                        "mental_health": {
+                            "mean": 63.3,
+                            "ci_l": 60.6,
+                            "ci_u": 65.8,
+                            "count": 15049
+                        }
                     },
                     {
                         "name":"qn46",
-                        "mental_health":"63.2<br><br/><nobr>(60.6-65.0)</nobr><br/>15049"
+                        "mental_health": {
+                            "mean": 63.2,
+                            "ci_l": 60.6,
+                            "ci_u": 65.0,
+                            "count": 15049
+                        }
                     }
                 ]
             }
@@ -262,42 +302,87 @@ describe("YRBS API", function () {
                 "question":[
                     {
                         "name":"qn41",
-                        "mental_health":"63.2<br><br/><nobr>(60.6-65.8)</nobr><br/>15049",
+                        "mental_health": {
+                            "mean": "63.2",
+                            "ci_l": "60.6",
+                            "ci_u": "65.8",
+                            "count": 15049
+                        },
                         "sex":[
                             {
                                 "name":"Female",
                                 "race7":[
                                     {
                                         "name":"Am Indian / Alaska Native",
-                                        "mental_health":"61.7<br><br/><nobr>(45.5-75.7)</nobr><br/>63"
+                                        "mental_health": {
+                                            "mean": "61.7",
+                                            "ci_l": "45.5",
+                                            "ci_u": "75.7",
+                                            "count": 63
+                                        }
                                     },
                                     {
                                         "name":"Asian",
-                                        "mental_health":"44.5<br><br/><nobr>(37.0-52.2)</nobr><br/>302"
+                                        "mental_health": {
+                                            "mean": "44.5",
+                                            "ci_l": "37.0",
+                                            "ci_u": "52.2",
+                                            "count": 302
+                                        }
                                     },
                                     {
                                         "name":"Black or African American",
-                                        "mental_health":"57.9<br><br/><nobr>(51.1-64.4)</nobr><br/>776"
+                                        "mental_health": {
+                                            "mean": "57.9",
+                                            "ci_l": "51.1",
+                                            "ci_u": "64.4",
+                                            "count": 776
+                                        }
                                     },
                                     {
                                         "name":"Hispanic / Latino",
-                                        "mental_health":"65.2<br><br/><nobr>(61.5-68.8)</nobr><br/>1150"
+                                        "mental_health": {
+                                            "mean": "65.2",
+                                            "ci_l": "61.5",
+                                            "ci_u": "68.8",
+                                            "count": 1150
+                                        }
                                     },
                                     {
                                         "name":"Multiple - Hispanic",
-                                        "mental_health":"71.4<br><br/><nobr>(67.6-75.0)</nobr><br/>1323"
+                                        "mental_health": {
+                                            "mean": "71.4",
+                                            "ci_l": "67.6",
+                                            "ci_u": "75.0",
+                                            "count": 1323
+                                        }
                                     },
                                     {
                                         "name":"Multiple - Non-Hispanic",
-                                        "mental_health":"75.2<br><br/><nobr>(67.9-81.3)</nobr><br/>376"
+                                        "mental_health": {
+                                            "mean": "75.2",
+                                            "ci_l": "67.9",
+                                            "ci_u": "81.3",
+                                            "count": 376
+                                        }
                                     },
                                     {
                                         "name":"Native Hawaiian/other PI",
-                                        "mental_health":"39.1<br><br/><nobr>(15.3-69.7)</nobr><br/>22"
+                                        "mental_health": {
+                                            "mean": "39.1",
+                                            "ci_l": "15.3",
+                                            "ci_u": "69.7",
+                                            "count": 22
+                                        }
                                     },
                                     {
                                         "name":"White",
-                                        "mental_health":"66.7<br><br/><nobr>(60.5-72.4)</nobr><br/>3386"
+                                        "mental_health": {
+                                            "mean": "66.7",
+                                            "ci_l": "60.5",
+                                            "ci_u": "72.4",
+                                            "count": 3386
+                                        }
                                     }
                                 ]
                             },
@@ -306,35 +391,75 @@ describe("YRBS API", function () {
                                 "race7":[
                                     {
                                         "name":"Am Indian / Alaska Native",
-                                        "mental_health":"77.5<br><br/><nobr>(60.8-88.5)</nobr><br/>92"
+                                        "mental_health": {
+                                            "mean": "77.5",
+                                            "ci_l": "60.8",
+                                            "ci_u": "88.5",
+                                            "count": 92
+                                        }
                                     },
                                     {
                                         "name":"Asian",
-                                        "mental_health":"42.1<br><br/><nobr>(34.8-49.8)</nobr><br/>308"
+                                        "mental_health": {
+                                            "mean": "42.1",
+                                            "ci_l": "34.8",
+                                            "ci_u": "49.8",
+                                            "count": 308
+                                        }
                                     },
                                     {
                                         "name":"Black or African American",
-                                        "mental_health":"51.0<br><br/><nobr>(44.8-57.2)</nobr><br/>776"
+                                        "mental_health": {
+                                            "mean": "51.0",
+                                            "ci_l": "44.8",
+                                            "ci_u": "57.2",
+                                            "count": 776
+                                        }
                                     },
                                     {
                                         "name":"Hispanic / Latino",
-                                        "mental_health":"60.9<br><br/><nobr>(55.5-66.0)</nobr><br/>1134"
+                                        "mental_health": {
+                                            "mean": "60.9",
+                                            "ci_l": "55.5",
+                                            "ci_u": "66.0",
+                                            "count": 1134
+                                        }
                                     },
                                     {
                                         "name":"Multiple - Hispanic",
-                                        "mental_health":"65.5<br><br/><nobr>(62.2-68.6)</nobr><br/>1296"
+                                        "mental_health": {
+                                            "mean": "65.5",
+                                            "ci_l": "62.2",
+                                            "ci_u": "68.6",
+                                            "count": 1296
+                                        }
                                     },
                                     {
                                         "name":"Multiple - Non-Hispanic",
-                                        "mental_health":"66.2<br><br/><nobr>(58.6-73.0)</nobr><br/>331"
+                                        "mental_health": {
+                                            "mean": "66.2",
+                                            "ci_l": "58.6",
+                                            "ci_u": "73.0",
+                                            "count": 331
+                                        }
                                     },
                                     {
                                         "name":"Native Hawaiian/other PI",
-                                        "mental_health":"73.0<br><br/><nobr>(59.3-83.4)</nobr><br/>71"
+                                        "mental_health": {
+                                            "mean": "73.0",
+                                            "ci_l": "59.3",
+                                            "ci_u": "83.4",
+                                            "count": 71
+                                        }
                                     },
                                     {
                                         "name":"White",
-                                        "mental_health":"64.0<br><br/><nobr>(60.9-67.0)</nobr><br/>3266"
+                                        "mental_health": {
+                                            "mean": "64.0",
+                                            "ci_l": "60.9",
+                                            "ci_u": "67.0",
+                                            "count": 3266
+                                        }
                                     }
                                 ]
                             }
