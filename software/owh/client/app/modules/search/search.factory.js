@@ -21,7 +21,14 @@
             buildAPIQuery: buildAPIQuery,
             sortAutoCompleteOptions: sortAutoCompleteOptions,
             groupAutoCompleteOptions: groupAutoCompleteOptions,
-            removeDisabledFilters: removeDisabledFilters
+            removeDisabledFilters: removeDisabledFilters,
+            getQueryResults: getQueryResults,
+            prepareChartData: prepareChartData,
+            searchYRBSResults: searchYRBSResults,
+            buildQueryForYRBS: buildQueryForYRBS,
+            prepareMortalityResults: prepareMortalityResults
+
+
         };
         return service;
 
@@ -154,7 +161,7 @@
                 //primaryFilter.chartData = response.chartData;
                 primaryFilter.headers = response.headers;
                 //primaryFilter.dataPrepared = true;
-                deferred.resolve({});
+                deferred.resolve(response);
             });
             return deferred.promise;
         }
@@ -291,6 +298,55 @@
             });
         };
 
+
+        function prepareMortalityResults(primaryFilter, response) {
+            primaryFilter.count = response.sideFilterResults.pagination.total;
+            angular.forEach(response.sideFilterResults.data.simple, function (eachFilterData, key) {
+                //fill auto-completer data with counts
+                var filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', key);
+                if (filter) {
+                    if (filter.autoCompleteOptions) {
+                        angular.forEach(filter.autoCompleteOptions, function (option) {
+                            var optionData = utilService.findByKeyAndValue(eachFilterData, 'name', option.key);
+                            if (optionData) {
+                                option[primaryFilter.key] = optionData[primaryFilter.key];
+                                option['count'] = optionData[primaryFilter.key];
+                                option[primaryFilter.key + 'Percentage'] = 0;
+                                option[primaryFilter.key + 'Percentage'] = Number(((optionData[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
+                            } else {
+                                option[primaryFilter.key] = 0;
+                                option['count'] = 0;
+                                option[primaryFilter.key + 'Percentage'] = 0;
+                            }
+                        });
+                    } else {
+                        var autoCompleteOptions = [];
+                        angular.forEach(eachFilterData, function (eachData) {
+                            var eachOption = {key: eachData.name, title: eachData.name};
+                            eachOption[primaryFilter.key] = eachData[primaryFilter.key];
+                            eachOption['count'] = eachData[primaryFilter.key];
+                            eachOption[primaryFilter.key + 'Percentage'] = Number(((eachData[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
+                            autoCompleteOptions.push(eachOption);
+                        });
+                        filter.autoCompleteOptions = autoCompleteOptions;
+                    }
+                    //sort on primary filter key.. so that it will rendered in desc order in side filter
+                    //filter.sortedAutoCompleteOptions = utilService.sortByKey(angular.copy(filter.autoCompleteOptions), 'count', false);
+                }
+            });
+            var ucd10Filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'ucd-chapter-10');
+            ucd10Filter.autoCompleteOptions = $rootScope.conditionsListICD10;
+            primaryFilter.data = response.data;
+            primaryFilter.headers = response.headers;
+            primaryFilter.calculatePercentage = true;
+            primaryFilter.calculateRowTotal = true;
+            primaryFilter.chartDataFromAPI = response.chartDataFromAPI;
+            primaryFilter.chartData = response.chartData;
+            primaryFilter.dataPrepared = response.dataPrepared;
+            primaryFilter.maps = response.maps;
+            primaryFilter.searchCount = response.totalCount;
+        }
+
         function removeSearchResults(ac){
             if(ac){
                 for (var i =0; i < ac.length; i++ ){
@@ -304,6 +360,7 @@
             var req = {};
             req.key= pFilter.key;
             req.searchFor = pFilter.searchFor;
+            req.tableView = pFilter.tableView;
             req.allFilters = []
             for (var i = 0; i< pFilter.allFilters.length; i++){
                 var filter = utilService.clone(pFilter.allFilters[i]);
@@ -331,56 +388,11 @@
             return req;
         }
 
+
         function searchMortalityResults(primaryFilter, queryID) {
             var deferred = $q.defer();
             queryMortalityAPI(primaryFilter, queryID).then(function(response){
-               //@TODO: @Joe here I am getting sideFilters from ES 'response.sideFilterResults'
-                primaryFilter.count = response.sideFilterResults.pagination.total;
-                angular.forEach(response.sideFilterResults.data.simple, function(eachFilterData, key) {
-                    //fill auto-completer data with counts
-                    var filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', key);
-                    if(filter) {
-                        if(filter.autoCompleteOptions) {
-                            angular.forEach(filter.autoCompleteOptions, function (option) {
-                                var optionData = utilService.findByKeyAndValue(eachFilterData, 'name', option.key);
-                                if (optionData) {
-                                    option[primaryFilter.key] = optionData[primaryFilter.key];
-                                    option['count'] = optionData[primaryFilter.key];
-                                    option[primaryFilter.key + 'Percentage'] = 0;
-                                    option[primaryFilter.key + 'Percentage'] = Number(((optionData[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
-                                } else {
-                                    option[primaryFilter.key] = 0;
-                                    option['count'] = 0;
-                                    option[primaryFilter.key + 'Percentage'] = 0;
-                                }
-                            });
-                        } else {
-                            var autoCompleteOptions = [];
-                            angular.forEach(eachFilterData, function(eachData) {
-                                var eachOption = {  key: eachData.name, title: eachData.name };
-                                eachOption[primaryFilter.key] = eachData[primaryFilter.key];
-                                eachOption['count'] = eachData[primaryFilter.key];
-                                eachOption[primaryFilter.key + 'Percentage'] = Number(((eachData[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
-                                autoCompleteOptions.push(eachOption);
-                            });
-                            filter.autoCompleteOptions = autoCompleteOptions;
-                        }
-                        //sort on primary filter key.. so that it will rendered in desc order in side filter
-                        //filter.sortedAutoCompleteOptions = utilService.sortByKey(angular.copy(filter.autoCompleteOptions), 'count', false);
-                    }
-                });
-                var ucd10Filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'ucd-chapter-10');
-                ucd10Filter.autoCompleteOptions = $rootScope.conditionsListICD10;
-
-                primaryFilter.data = response.data;
-                primaryFilter.headers = response.headers;
-                primaryFilter.calculatePercentage = true;
-                primaryFilter.calculateRowTotal = true;
-                primaryFilter.chartDataFromAPI = response.chartDataFromAPI;
-                primaryFilter.chartData = response.chartData;
-                primaryFilter.dataPrepared = response.dataPrepared;
-                primaryFilter.maps = response.maps;
-                primaryFilter.searchCount = response.totalCount;
+                prepareMortalityResults(primaryFilter, response);
                 deferred.resolve(response);
             });
             return deferred.promise;
@@ -396,31 +408,18 @@
             return deferred.promise;
         }
 
-       /* function getResults(primaryFilter) {
+        /**
+         * Get owhquery_cache data using queryID
+         * @param queryId
+         * @returns {Function}
+         */
+        function getQueryResults(queryId) {
             var deferred = $q.defer();
-            var apiQuery = buildAPIQuery(primaryFilter);
-            var headers = apiQuery.headers;
-            SearchService.getResults(apiQuery.apiQuery).then(function(response){
-                console.log(" in search factory..... after service getResults call");
-                deferred.resolve({
-                    data : "",
-                    dataPrepared : false,
-                    headers : headers,
-                    chartDataFromAPI : "",
-                    chartData: "",
-                    maps: "",
-                    totalCount: ""
-                });
+            SearchService.searchResults(null,queryId).then(function(response) {
+                deferred.resolve(response);
             });
             return deferred.promise;
         }
-
-        function generateHashFromQueryJson(queryJson) {
-            var deferred = $q.defer();
-            var apiQuery = buildAPIQuery(queryJson);
-            //var headers = apiQuery.headers;
-            return SearchService.generateHashCode(apiQuery.apiQuery.query);
-        }*/
 
         //search results by grouping
         function queryMortalityAPI( primaryFilter, queryID) {
