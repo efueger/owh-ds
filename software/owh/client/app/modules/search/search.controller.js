@@ -21,6 +21,7 @@
         sc.showFbDialog = showFbDialog;
         sc.changeViewFilter = changeViewFilter;
         sc.getMixedTable = getMixedTable;
+        sc.getQueryResults = getQueryResults;
         sc.skipRefresh = false;
 
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
@@ -150,8 +151,158 @@
             sc.filters.yrbsFilters[4].autoCompleteOptions = $rootScope.questionsList;
         });
 
+
+        /**************************************************/
+        var mapExpandControl =  L.Control.extend({
+            options: {
+                position: 'topright'
+            },
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom fa fa-expand fa-2x purple-icon');
+                container.onclick = function(event){
+                    if (sc.selectedMapSize==="small") {
+                        sc.selectedMapSize = "big";
+                        resizeUSAMap(true);
+                        angular.element(container).removeClass('fa-expand');
+                        angular.element(container).addClass('fa-compress');
+                    } else if(sc.selectedMapSize==="big"){
+                        sc.selectedMapSize = "small";
+                        resizeUSAMap(false);
+                        angular.element(container).removeClass('fa-compress');
+                        angular.element(container).addClass('fa-expand');
+                    } else{
+                        sc.selectedMapSize = "small";
+                        resizeUSAMap(false);
+                        angular.element(container).removeClass('fa-compress');
+                        angular.element(container).addClass('fa-expand');
+                    }
+                };
+                return container;
+            }
+        });
+
+        var mapShareControl =  L.Control.extend({
+            options: {
+                position: 'topright'
+            },
+            onAdd: function (map) {
+                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom fa fa-share-alt fa-2x purple-icon');
+                container.onclick = function(event){
+                    angular.element(document.getElementById('spindiv')).removeClass('ng-hide');
+                    leafletData.getMap().then(function(map) {
+                        leafletImage(map, function(err, canvas) {
+                            sc.showFbDialog('chart_us_map', 'OWH - Map', canvas.toDataURL());
+                        });
+                    });
+
+                };
+                return container;
+            }
+        });
+
+        function resizeUSAMap(isZoomIn) {
+            leafletData.getMap().then(function(map) {
+                if(isZoomIn) {
+                    map.zoomIn();
+                    angular.extend(sc.filters.selectedPrimaryFilter.mapData, {
+                        legend: generateLegend(sc.filters.selectedPrimaryFilter.mapData.mapMinValue, sc.filters.selectedPrimaryFilter.mapData.mapMaxValue)
+                    });
+                } else {
+                    sc.filters.selectedPrimaryFilter.mapData.legend = undefined;
+                    map.zoomOut();
+                }
+                $timeout(function(){ map.invalidateSize()}, 1000);
+            });
+
+        }
+        /**************************************************/
+        //US-states map
+        angular.extend(mortalityFilter.mapData, {
+            usa: {
+                lat: 39,
+                lng: -100,
+                zoom: 3
+            },
+            legend: {},
+            defaults: {
+                tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+                scrollWheelZoom: false
+            },
+            markers: {},
+            events: {
+                map: {
+                    enable: ['click'],
+                    logic: 'emit'
+                }
+            },
+            controls: {
+                custom: [new mapExpandControl(), new mapShareControl()]
+            },
+            isMap:true
+        });
+
+        function getQueryResults(queryID) {
+            searchFactory.getQueryResults(queryID).then(function (response) {
+               //if queryID exists in owh_querycache index, then update data that are required to display search results
+                if (response.data) {
+                    sc.filters.selectedPrimaryFilter.tableView = response.data.queryJSON.tableView;
+                    sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
+                    //Update I'm interested in drop down key, value etc..
+                    for (var i = 0; i < sc.filters.primaryFilters.length; i++) {
+                        if (sc.filters.primaryFilters[i].key === response.data.queryJSON.key) {
+                            sc.filters.selectedPrimaryFilter = sc.filters.primaryFilters[i];
+                        }
+                    }
+                    //Update side filters selected values
+                    for (var i = 0; i < response.data.queryJSON.sideFilters.length; i++) {
+                        if (sc.filters.selectedPrimaryFilter.sideFilters[i].filters.key === response.data.queryJSON.sideFilters[i].filters.key) {
+                            sc.filters.selectedPrimaryFilter.sideFilters[i].filters.groupBy = response.data.queryJSON.sideFilters[i].filters.groupBy;
+                            sc.filters.selectedPrimaryFilter.sideFilters[i].filters.value = response.data.queryJSON.sideFilters[i].filters.value;
+                        }
+                    }
+                    //Set values for mortality search page
+                    if (response.data.queryJSON.key == 'deaths') {
+                        var headers = searchFactory.buildAPIQuery(response.data.queryJSON).headers;
+                        var selectedPrimaryFilters = sc.filters.selectedPrimaryFilter;
+                        var customResponse = {
+                            data: response.data.resultData.nested.table,
+                            dataPrepared: false,
+                            headers: headers,
+                            chartDataFromAPI: response.data.resultData.simple,
+                            chartData: searchFactory.prepareChartData(headers, response.data.resultData.nested, selectedPrimaryFilters),
+                            maps: response.data.resultData.nested.maps,
+                            totalCount: response.pagination.total,
+                            sideFilterResults: response.data.sideFilterResults,
+                            queryJSON: response.data.queryJSON
+                        };
+                        //Prepare mortality table data.
+                        searchFactory.prepareMortalityResults(sc.filters.selectedPrimaryFilter, customResponse);
+                    }
+                    //To update yrbs page
+                    else if (response.data.queryJSON.key == 'mental_health') {
+                        sc.filters.selectedPrimaryFilter.data = response.data.resultData.table;
+                    }
+                    //To update bridge race page
+                    else if (response.data.queryJSON.key == 'bridge_race') {
+                        var selectedPrimaryFilters = sc.filters.selectedPrimaryFilter;
+                        sc.filters.selectedPrimaryFilter.data = response.data.resultData.nested.table;
+                        sc.filters.selectedPrimaryFilter.headers = response.data.resultData.headers;
+                        sc.filters.selectedPrimaryFilter.chartData = searchFactory.prepareChartData(response.data.resultData.headers, response.data.resultData.nested, selectedPrimaryFilters);
+                    }
+                    updateFiltersAndData(response);
+                }
+                else {
+                    search(false);
+                }
+            });
+        }
+
         if (sc.queryID) {
-            search(false);
+            /*
+            * get query results from owh_querycache index
+            * This function takes queryID and get queryJSON, sideFilterResults, resultData from owh_querycache index if query exists
+            * */
+            getQueryResults(sc.queryID);
         }
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
@@ -205,6 +356,7 @@
                 });
             }
             else {
+                sc.filters.selectedPrimaryFilter.tableView = sc.tableView;
                 primaryFilterChanged(sc.filters.selectedPrimaryFilter, sc.queryID);
             }
         }
@@ -301,38 +453,51 @@
             return categories;
         }
 
+        /**
+         * Using search results response update filters, table headers and data for search page
+         * @param response
+         */
+        function updateFiltersAndData(response) {
+            //populate side filters based on cached query filters
+            if (response.queryJSON) {
+                angular.forEach(response.queryJSON.sideFilters, function (filter, index) {
+                    sc.filters.selectedPrimaryFilter.sideFilters[index].filters.value = filter.filters.value;
+                    sc.filters.selectedPrimaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
+                });
+            }
+            searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
+            //update table headers based on cached query
+            sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
+            //make sure side filters are in proper order
+            angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function (filter) {
+                searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup[sc.tableView]);
+            });
+
+            sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
+            if (sc.filters.selectedPrimaryFilter.key === 'deaths') {
+                updateStatesDeaths(sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
+            }
+            if (sc.filters.selectedPrimaryFilter.key === 'mental_health') {
+                sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
+            }
+            if (sc.filters.selectedPrimaryFilter.key === 'bridge_race') {
+                sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
+            }
+            sc.filters.selectedPrimaryFilter.initiated = true;
+        }
+
+        /**
+         * This method getting called when filters changed
+         * This function get
+         * @param newFilter
+         * @param queryID
+         */
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
-            //TODO: this executes the actualy query, only perform this when queryId is present
             sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
-                //populate side filters based on cached query filters
-                if(response.queryJSON) {
-                    angular.forEach(response.queryJSON.sideFilters, function(filter, index) {
-                        sc.filters.selectedPrimaryFilter.sideFilters[index].filters.value = filter.filters.value;
-                        sc.filters.selectedPrimaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
-                    });
-                }
-                searchFactory.updateFilterValues(sc.filters.selectedPrimaryFilter);
-                //update table headers based on cached query
-                sc.filters.selectedPrimaryFilter.headers = searchFactory.buildAPIQuery(sc.filters.selectedPrimaryFilter).headers;
-                //make sure side filters are in proper order
-                angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
-                    searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup[sc.tableView]);
-                });
-
-                sc.tableData = getMixedTable(sc.filters.selectedPrimaryFilter);
-                if(sc.filters.selectedPrimaryFilter.key === 'deaths') {
-                    updateStatesDeaths( sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
-                }
-                if(sc.filters.selectedPrimaryFilter.key === 'mental_health') {
-                    sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
-                    sc.filters.selectedPrimaryFilter.data = categorizeQuestions(sc.tableData.data);
-                }
-                if(sc.filters.selectedPrimaryFilter.key === 'bridge_race') {
-                    sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
-                    sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
-                }
-                sc.filters.selectedPrimaryFilter.initiated = true;
+                updateFiltersAndData(response);
             });
         }
 
@@ -346,96 +511,6 @@
         function showPhaseTwoGraphs(text) {
             searchFactory.showPhaseTwoModal(text);
         }
-
-        /**************************************************/
-        var mapExpandControl =  L.Control.extend({
-            options: {
-                position: 'topright'
-            },
-            onAdd: function (map) {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom fa fa-expand fa-2x purple-icon');
-                container.onclick = function(event){
-                    if (sc.selectedMapSize==="small") {
-                        sc.selectedMapSize = "big";
-                        resizeUSAMap(true);
-                        angular.element(container).removeClass('fa-expand');
-                        angular.element(container).addClass('fa-compress');
-                    } else if(sc.selectedMapSize==="big"){
-                        sc.selectedMapSize = "small";
-                        resizeUSAMap(false);
-                        angular.element(container).removeClass('fa-compress');
-                        angular.element(container).addClass('fa-expand');
-                    } else{
-                        sc.selectedMapSize = "small";
-                        resizeUSAMap(false);
-                        angular.element(container).removeClass('fa-compress');
-                        angular.element(container).addClass('fa-expand');
-                    }
-                };
-                return container;
-            }
-        });
-
-        var mapShareControl =  L.Control.extend({
-            options: {
-                position: 'topright'
-            },
-            onAdd: function (map) {
-                var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom fa fa-share-alt fa-2x purple-icon');
-                container.onclick = function(event){
-                    angular.element(document.getElementById('spindiv')).removeClass('ng-hide');
-                    leafletData.getMap().then(function(map) {
-                        leafletImage(map, function(err, canvas) {
-                            sc.showFbDialog('chart_us_map', 'OWH - Map', canvas.toDataURL());
-                        });
-                    });
-
-                };
-                return container;
-            }
-        });
-
-        function resizeUSAMap(isZoomIn) {
-            leafletData.getMap().then(function(map) {
-                if(isZoomIn) {
-                    map.zoomIn();
-                    angular.extend(sc.filters.selectedPrimaryFilter.mapData, {
-                        legend: generateLegend(sc.filters.selectedPrimaryFilter.mapData.mapMinValue, sc.filters.selectedPrimaryFilter.mapData.mapMaxValue)
-                    });
-                } else {
-                    sc.filters.selectedPrimaryFilter.mapData.legend = undefined;
-                    map.zoomOut();
-                }
-                $timeout(function(){ map.invalidateSize()}, 1000);
-            });
-
-        }
-        /**************************************************/
-
-        //US-states map
-        angular.extend(mortalityFilter.mapData, {
-            usa: {
-                lat: 39,
-                lng: -100,
-                zoom: 3
-            },
-            legend: {},
-            defaults: {
-                tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
-                scrollWheelZoom: false
-            },
-            markers: {},
-            events: {
-                map: {
-                    enable: ['click'],
-                    logic: 'emit'
-                }
-            },
-            controls: {
-                custom: [new mapExpandControl(), new mapShareControl()]
-            },
-            isMap:true
-        });
 
         function updateStatesDeaths(data, totalCount) {
             var years = sc.getSelectedYears;

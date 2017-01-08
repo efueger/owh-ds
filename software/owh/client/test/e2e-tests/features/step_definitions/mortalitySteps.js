@@ -527,5 +527,36 @@ var mortalityStepDefinitionsWrapper = function () {
             expect(elements[0].getText()).to.eventually.equal('Non-Hispanic');
         });
     });
+
+    this.When(/^I choose the option Crude Death Rates$/, function () {
+        browser.sleep(3000);
+        mortalityPage.deathRatesOption.click();
+    });
+
+    this.Then(/^I see Age Groups, Autopsy, Place of Death, Weekday, Month, Underlying Cause of Death, Multiple Causes of Death disabled$/, function () {
+        var allElements = element.all(by.css('.cursor-not-allowed')).all(By.css('.filter-display-name'));
+        allElements.getText().then(function (filters) {
+            filters.forEach(function (filter) {
+                expect(['Age Groups','Autopsy','Place of Death', 'Weekday', 'Month',
+                    'Underlying Cause of Death', 'Multiple Causes of Death']).to.include(filter);
+            });
+        });
+    });
+
+    this.When(/^I choose the option Age Adjusted Death Rates$/, function () {
+        mortalityPage.ageRatesOption.click();
+    });
+
+    this.Then(/^I see Ethnicity, Age Groups, Autopsy, Place of Death, Weekday, Month, Underlying Cause of Death, Multiple Causes of Death disabled$/, function () {
+        var allElements = element.all(by.css('.cursor-not-allowed')).all(By.css('.filter-display-name'));
+        allElements.getText().then(function (filters) {
+            filters.forEach(function (filter) {
+                expect(['Ethnicity', 'Age Groups','Autopsy','Place of Death', 'Weekday', 'Month',
+                    'Underlying Cause of Death', 'Multiple Causes of Death']).to.include(filter);
+            })
+        });
+    });
+
+
 };
 module.exports = mortalityStepDefinitionsWrapper;

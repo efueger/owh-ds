@@ -490,7 +490,10 @@ function getAutoCompleteOptionsLength(filter) {
     if(filter.autoCompleteOptions) {
         filter.autoCompleteOptions.forEach(function(option) {
             if(option.options) {
-                length--;
+                //if value has group option, then don't subtract from calculated length
+                if(filter.value.indexOf(option.key) < 0) {
+                    length--;
+                }
                 length += option.options.length;
             }
         });
@@ -584,6 +587,7 @@ function addCountsToAutoCompleteOptions(primaryFilter) {
     //}
     return apiQuery;
 }
+
 module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;

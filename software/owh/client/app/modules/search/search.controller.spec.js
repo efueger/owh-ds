@@ -1,12 +1,13 @@
 'use strict';
 
 describe("Search controller: ", function () {
-    var searchController, $scope, $controller, $httpBackend, $injector, $templateCache, $rootScope;
+    var searchController, $scope, $controller, $httpBackend, $injector, $templateCache, $rootScope,
+        searchResultsResponse, $searchFactory, $q, filters;
 
     beforeEach(function() {
         module('owh');
 
-        inject(function (_$controller_, _$rootScope_, _$injector_, _$templateCache_) {
+        inject(function (_$controller_, _$rootScope_, _$injector_, _$templateCache_, _$q_, searchFactory) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
             $rootScope = _$rootScope_;
             $controller = _$controller_;
@@ -14,13 +15,19 @@ describe("Search controller: ", function () {
             $scope= _$rootScope_.$new();
             $httpBackend = $injector.get('$httpBackend');
             $templateCache = _$templateCache_;
-
+            $q = _$q_;
 
             searchController= $controller('SearchController',{$scope:$scope});
             $httpBackend.whenGET('app/i18n/messages-en.json').respond({ hello: 'World' });
             $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
             $httpBackend.whenGET('app/partials/home/home.html').respond( $templateCache.get('app/partials/home/home.html'));
-            $httpBackend.whenPOST('/search').respond( $templateCache.get('app/partials/marker-template.html'))
+            $httpBackend.whenPOST('/search').respond( $templateCache.get('app/partials/marker-template.html'));
+            $httpBackend.whenGET('/getFBAppID').respond({data: { fbAppID: 11111}});
+            $httpBackend.whenGET('/yrbsQuestionsTree/2015').respond({});
+            $httpBackend.whenGET('app/modules/home/home.html').respond({});
+            searchResultsResponse = __fixtures__['app/modules/search/fixtures/search.factory/searchResultsResponse'];
+            $searchFactory = searchFactory;
+            filters = $searchFactory.getAllFilters();
         });
     });
 
@@ -307,5 +314,21 @@ describe("Search controller: ", function () {
 
         expect(searchController.showUnweightedFrequency).toBeFalsy();
     });
+
+    it("search results by queryID", inject(function(searchFactory) {
+         var searchController= $controller('SearchController',{$scope:$scope, searchFactory: searchFactory});
+         var utilService = $injector.get('utilService');
+         var deferred = $q.defer();
+         searchController.filters = filters;
+         filters.selectedPrimaryFilter = filters.search[0];
+         filters.primaryFilters = utilService.findAllByKeyAndValue(searchController.filters.search, 'primary', true);
+         spyOn(searchFactory, 'getQueryResults').and.returnValue(deferred.promise);
+         searchController.getQueryResults("ae38fb09ec8b6020a9478edc62a271ca");
+         expect(searchController.tableView).toEqual(searchResultsResponse.data.queryJSON.tableView);
+         expect(searchController.filters.selectedPrimaryFilter.headers).toEqual(searchResultsResponse.data.resultData.headers);
+         expect(searchResultsResponse.data.queryJSON.key).toEqual('deaths');
+         deferred.resolve(searchResultsResponse);
+         $scope.$apply();
+    }));
 
 });
