@@ -235,3 +235,14 @@ Scenario: Hispanic Group options for crude death rate view
   When I update criteria in filter option with row "Ethnicity"
   When the user chooses the option 'Death Rates'
   Then table should display Hispanic groups only
+
+Scenario Outline: Show disabled filters sdfsa
+  Given I am on search page
+  When I choose the option <showMeFilter>
+  Then I see <sideFilters> disabled
+
+  Examples:
+    | showMeFilter              | sideFilters                                                                                                          |
+    |  Crude Death Rates        |  Age Groups, Autopsy, Place of Death, Weekday, Month, Underlying Cause of Death, Multiple Causes of Death            |
+    |  Age Adjusted Death Rates |  Ethnicity, Age Groups, Autopsy, Place of Death, Weekday, Month, Underlying Cause of Death, Multiple Causes of Death |
+

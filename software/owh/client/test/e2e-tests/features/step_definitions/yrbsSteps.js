@@ -194,6 +194,7 @@ var yrbsStepDefinitionsWrapper = function () {
         var raceFilter = yrbsPage.selectSideFilter(filterName);
         var raceParentElement = raceFilter.element(by.xpath('..')).element(by.xpath('..')).element(by.xpath('..'));
         raceParentElement.element(by.xpath('.//*[.="'+option+'"]')).click();
+        browser.sleep(300);
     });
 
     this.Then(/^I see question categories in this order "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)", "([^"]*)"$/, function (questionCat1, questionCat2, questionCat3, questionCat4, questionCat5, questionCat6, questionCat7, questionCat8) {
@@ -349,6 +350,24 @@ var yrbsStepDefinitionsWrapper = function () {
     this.Then(/^the "([^"]*)" button should be renamed to "([^"]*)"$/, function (selectButton, updateButton) {
         expect(element(by.cssContainingText('button', selectButton)).isPresent()).to.eventually.equal(false);
         expect(element(by.cssContainingText('button', updateButton)).isPresent()).to.eventually.equal(true);
+    });
+
+    this.When(/^I select the back button in browser$/, function () {
+        browser.navigate().back();
+    });
+
+    this.When(/^I select the forward button in browser$/, function () {
+        browser.navigate().forward();
+    });
+
+    this.Then(/^the results page \(yrbs data table\) should be refreshed to reflect "([^"]*)" filter with option "([^"]*)"$/, function (filterName, option) {
+        var raceFilter = yrbsPage.selectSideFilter(filterName);
+        var raceParentElement = raceFilter.element(by.xpath('..')).element(by.xpath('..')).element(by.xpath('..'));
+        raceParentElement.element(by.xpath('.//*[.="'+option+'"]')).isSelected().to.eventually.equal(true);
+
+        var raceFilter2 = yrbsPage.selectSideFilter("year");
+        var raceParentElement2 = raceFilter2.element(by.xpath('..')).element(by.xpath('..')).element(by.xpath('..'));
+        raceParentElement2.element(by.xpath('.//*[.="2015"]')).isSelected().to.eventually.equal(true);
     });
 };
 module.exports = yrbsStepDefinitionsWrapper;

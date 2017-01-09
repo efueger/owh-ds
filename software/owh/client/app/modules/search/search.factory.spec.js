@@ -421,6 +421,18 @@ describe('search factory ', function(){
             expect(agegroupFilter.timer).toBeUndefined();
             filters.selectedPrimaryFilter.initiated = false;
         });
+
+        it('getqueryResults', function(){
+            var searchResultsResponse = __fixtures__['app/modules/search/fixtures/search.factory/searchResultsResponse'];
+            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
+            searchFactory.getQueryResults("ae38fb09ec8b6020a9478edc62a271ca").then(function(response) {
+                expect(JSON.stringify(response.data.resultData.nested.table)).toEqual(JSON.stringify(searchResultsResponse.data.resultData.nested.table));
+                expect(JSON.stringify(response.data.resultData.chartData)).toEqual(JSON.stringify(searchResultsResponse.data.resultData.chartData));
+            });
+            deferred.resolve(searchResultsResponse);
+            $scope.$apply();
+        });
+
     });
 
     describe('test with yrbs data', function () {

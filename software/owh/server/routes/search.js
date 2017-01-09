@@ -18,7 +18,7 @@ var searchRouter = function(app, rConfig) {
         if (queryId) {
             queryCache.getCachedQuery(queryId).then(function (r) {
                 if(r) {
-                    logger.info("Retrieved query results for query ID " + queryId + " from query cache");
+                   logger.info("Retrieved query results for query ID " + queryId + " from query cache");
                     var resData = {};
                     resData.queryJSON = JSON.parse(r._source.queryJSON);
                     resData.resultData = JSON.parse(r._source.resultJSON);

@@ -3,6 +3,7 @@ var logger = require('../config/logging');
 var config = require('../config/config');
 var request = require('request');
 
+var cahcedQuestions = null;
 function yrbs() {
 }
 
@@ -113,7 +114,7 @@ yrbs.prototype.processYRBSReponses = function(response){
         }
     }
     var finalResp = {'table': {'question':questions}};
-    logger.info("YRBS Response: "+ JSON.stringify(finalResp));
+    logger.debug("YRBS Response: "+ JSON.stringify(finalResp));
     return finalResp;
 };
 
@@ -218,12 +219,18 @@ function invokeYRBS (query){
  * @returns {*|promise}
  */
 yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
-    logger.info("Getting questions from yrbs service...");
     var deferred = Q.defer();
-    invokeYRBS(config.yrbs.questionsUrl).then(function (response) {
-        var data = prepareQuestionTreeForYears(response, yearList);
-        deferred.resolve({questionTree:data.questionTree, questionsList:data.questionsList});
-    });
+    if(cahcedQuestions){
+        logger.info("Returning cached questions");
+        deferred.resolve(cahcedQuestions);
+    } else {
+        invokeYRBS(config.yrbs.questionsUrl).then(function (response) {
+            logger.info("Getting questions from yrbs service");
+            var data = prepareQuestionTreeForYears(response, yearList);
+            cahcedQuestions = {questionTree: data.questionTree, questionsList: data.questionsList}
+            deferred.resolve(cahcedQuestions);
+        });
+    }
     return deferred.promise;
 };
 
@@ -233,7 +240,7 @@ yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
  * @param years
  */
 function prepareQuestionTreeForYears(questions, years) {
-    logger.info("Preparing questions tree...");
+    logger.info("Preparing questions tree");
     var qCategoryMap = {};
     var questionTree = [];
     var questionsList = [];
@@ -246,7 +253,7 @@ function prepareQuestionTreeForYears(questions, years) {
             qCategoryMap[qCategory] = {id:'cat_'+catCount, text:qCategory, children:[]};
             catCount = catCount + 1;
         } else {
-            if (quesObj.description !=undefined && (years.indexOf('All') != -1 || years.indexOf(quesObj.year.toString()) != -1)) {
+            if (quesObj.description !== undefined) {
                 var question = {text:quesObj.question +"("+quesObj.description+")", id:qKey};
                 qCategoryMap[qCategory].children.push(question);
                 //capture all questions into questionsList

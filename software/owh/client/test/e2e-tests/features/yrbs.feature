@@ -97,9 +97,9 @@ Feature: As a User
 #  Then results shows only data for the selected ethnicities
 
   Scenario: YRBS question categories in the given order
-  When I expand "Question" filter section
-  And I select "Select Questions" button
-  Then I see question categories in this order "Unintentional Injuries and Violence", "Tobacco Use", "Alcohol and Other Drug Use", "Sexual Behaviors", "Obesity, Overweight, and Weight Control", "Dietary Behaviors", "Physical Activity", "Other Health Topics"
+    When I expand "Question" filter section
+    And I select "Select Questions" button
+    Then I see question categories in this order "Unintentional Injuries and Violence", "Tobacco Use", "Alcohol and Other Drug Use", "Sexual Behaviors", "Obesity, Overweight, and Weight Control", "Dietary Behaviors", "Physical Activity", "Other Health Topics"
 
   Scenario: Pop-up
     When I click on "Select Questions" button
@@ -149,3 +149,17 @@ Feature: As a User
 #    And  I see it's parent node is also un-checked
 #    But  I see it's siblings are not un-checked
 
+  Scenario: Browser back button
+    Given I am on search page
+    When I select YRBS as primary filter
+    Then I should get search page with default filter type "Youth Risk Behavior"
+    When I expand "Race/Ethnicity" filter section
+    And  filter "Race/Ethnicity" and option "Asian" selected
+    When I select the back button in browser
+    Then I should get search page with default filter type "Youth Risk Behavior"
+    And the results page (yrbs data table) should be refreshed to reflect "Race/Ethnicity" filter with option "All"
+
+  Scenario: Browser forward button
+    When I select the forward button in browser
+    Then I should get search page with default filter type "Youth Risk Behavior"
+    And the results page (yrbs data table) should be refreshed to reflect "Race/Ethnicity" filter with option "Asian"
