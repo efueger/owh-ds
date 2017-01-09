@@ -479,7 +479,7 @@ describe("YRBS API", function () {
         });
     });
 
-    it("invokeYRBS returns response even when there are errors with some questions", function (){
+    xit("invokeYRBS returns response even when there are errors with some questions", function (){
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000}]}},
             'query': {'question.path':{ 'value': ['qn8', 'qn9', 'qn100000']}}};
 
