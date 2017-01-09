@@ -179,16 +179,6 @@ function resultCellObject (response) {
     };
 }
 
-/**
- * Generate the string for display in the result table cells, values are converted to % with 1 digit precision
- * @param yrbsresponse
- * @returns {string}
- */
-function resultCellDataString (yrbsresponse){
-    var prec = 1;
-    return toRoundedPercentage(yrbsresponse.mean, prec) +"<br><br/><nobr>("+toRoundedPercentage(yrbsresponse.ci_l, prec) +"-"+toRoundedPercentage(yrbsresponse.ci_u, prec) +")</nobr><br/>"+yrbsresponse.count;
-};
-
 function toRoundedPercentage(num, prec){
     if (!isNaN(num)){
         return (num * 100).toFixed(prec);
