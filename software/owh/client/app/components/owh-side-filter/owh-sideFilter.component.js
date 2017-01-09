@@ -11,7 +11,8 @@
                 filters : "=",
                 onFilter: '&',
                 sort: '<',
-                showFilters: '<'
+                showFilters: '<',
+                utilities: '<'
             }
         });
 

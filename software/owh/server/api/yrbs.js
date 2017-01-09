@@ -125,7 +125,7 @@ yrbs.prototype.processYRBSReponses = function(response){
  */
 yrbs.prototype.processQuestionResponse = function(response){
     var q = {"name" :response.q,
-        "mental_health": resultCellDataString(response.results[0])}; // the questions level total is the first record
+        "mental_health": resultCellObject(response.results[0])};
 
     for (var i = 1; i< response.results.length; i ++){
         var r = response.results[i];
@@ -147,7 +147,7 @@ yrbs.prototype.processQuestionResponse = function(response){
             if ('year' in r) {
                 cell = getResultCell(cell, 'year', r.year);
             }
-            cell['mental_health'] = resultCellDataString(r);
+            cell['mental_health'] = resultCellObject(r);
         }
     }
     return q;
@@ -169,15 +169,15 @@ function getResultCell (currentcell, cellkey, cellvalue){
     return newcell;
 }
 
-/**
- * Generate the string for display in the result table cells, values are converted to % with 1 digit precision
- * @param yrbsresponse
- * @returns {string}
- */
-function resultCellDataString (yrbsresponse){
+function resultCellObject (response) {
     var prec = 1;
-    return toRoundedPercentage(yrbsresponse.mean, prec) +"<br><br/><nobr>("+toRoundedPercentage(yrbsresponse.ci_l, prec) +"-"+toRoundedPercentage(yrbsresponse.ci_u, prec) +")</nobr><br/>"+yrbsresponse.count;
-};
+    return {
+        mean: toRoundedPercentage(response.mean, prec),
+        ci_l: toRoundedPercentage(response.ci_l, prec),
+        ci_u: toRoundedPercentage(response.ci_u, prec),
+        count: response.count
+    };
+}
 
 function toRoundedPercentage(num, prec){
     if (!isNaN(num)){
