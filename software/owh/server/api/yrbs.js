@@ -64,8 +64,8 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
     if(aggrsKeys.indexOf('grade') >= 0){
         sortedKeys.push('grade');
     }
-    if(aggrsKeys.indexOf('race7') >= 0){
-        sortedKeys.push('race7');
+    if(aggrsKeys.indexOf('race') >= 0){
+        sortedKeys.push('race');
     }
     if(aggrsKeys.indexOf('year') >= 0){
         sortedKeys.push('year');
@@ -141,8 +141,8 @@ yrbs.prototype.processQuestionResponse = function(response){
             if ('grade' in r) {
                 cell = getResultCell(cell, 'grade', r.grade);
             }
-            if ('race7' in r) {
-                cell = getResultCell(cell, 'race7', r.race7);
+            if ('race' in r) {
+                cell = getResultCell(cell, 'race', r.race);
             }
             if ('year' in r) {
                 cell = getResultCell(cell, 'year', r.year);
