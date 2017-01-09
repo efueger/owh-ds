@@ -8,7 +8,8 @@
             controllerAs: 'otc',
             bindings: {
                 tableData: '<',
-                tableView: '@'
+                tableView: '@',
+                rowspanThreshold: '<'
             }
         });
     OWHTableController.$inject = ['$scope', '$rootScope', '$filter', '$timeout'];
@@ -191,7 +192,7 @@
                 angular.forEach(table.data, function(eachRow, rowIndex) {
                     var row = '<tr>';
                     //is max rowspan is above threshold, use repeating logic
-                    if(maxRowspan > 50) {
+                    if(maxRowspan > otc.rowspanThreshold) {
                         for(var i = 0; i < newCells.length; i++) {
                             if(newCells[i].rowspan > 1) {
                                 row += getTableCell(newCells[i], eachRow, i, rowIndex, true);
@@ -202,9 +203,9 @@
 
                     angular.forEach(eachRow, function(eachColumn, colIndex){
                         //add row, flatten depending on rowspan threshold
-                        row += getTableCell(eachColumn, eachRow, colIndex, rowIndex, maxRowspan > 50);
+                        row += getTableCell(eachColumn, eachRow, colIndex, rowIndex, maxRowspan > otc.rowspanThreshold);
                         //if row has rowspan and maxRowspan is above threshold, then populate newCells array
-                        if(eachColumn.rowspan > 1 && maxRowspan > 50) {
+                        if(eachColumn.rowspan > 1 && maxRowspan > otc.rowspanThreshold) {
                             var newCell = false;
                             for(var j = 0; j < newCells.length; j++) {
                                 //replace newCell
