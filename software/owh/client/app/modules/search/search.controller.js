@@ -246,7 +246,9 @@
                //if queryID exists in owh_querycache index, then update data that are required to display search results
                 if (response.data) {
                     sc.filters.selectedPrimaryFilter.tableView = response.data.queryJSON.tableView;
-                    sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
+                    if(sc.filters.selectedPrimaryFilter.tableView) {
+                        sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
+                    }
                     //Update I'm interested in drop down key, value etc..
                     for (var i = 0; i < sc.filters.primaryFilters.length; i++) {
                         if (sc.filters.primaryFilters[i].key === response.data.queryJSON.key) {

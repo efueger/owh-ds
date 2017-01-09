@@ -123,7 +123,8 @@
                     <owh-table table-data="sc.tableData"
                                ng-if="(sc.filters.selectedPrimaryFilter.headers && sc.filters.selectedPrimaryFilter.key === 'deaths' ||
                                sc.filters.selectedPrimaryFilter.key === 'bridge_race')"
-                               table-view="{{sc.tableView}}"></owh-table>
+                               table-view="{{sc.tableView}}"
+                               rowspan-threshold="50"></owh-table>
                     <owh-accordion-table headers="sc.filters.selectedPrimaryFilter.headers" data="sc.filters.selectedPrimaryFilter.data"
                                 ng-if="sc.filters.selectedPrimaryFilter.key === 'mental_health'"
                                 show-ci="sc.showConfidenceIntervals"
