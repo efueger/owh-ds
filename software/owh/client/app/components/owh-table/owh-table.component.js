@@ -15,6 +15,7 @@
     OWHTableController.$inject = ['$scope', '$rootScope', '$filter', '$timeout'];
     function OWHTableController($scope, $rootScope, $filter, $timeout) {
         var otc = this;
+        otc.compileTable = compileTable;
 
         otc.$postLink = function() {
             $timeout(function() {
@@ -23,7 +24,7 @@
         };
 
         otc.$onChanges = function() {
-            compileTable(otc.tableData);
+            otc.compileTable(otc.tableData);
         };
 
         var $scroll = $('#clusterize-table');
@@ -74,6 +75,7 @@
         }
 
         function compileTable(table) {
+
             /**
              * Keep header equal width to tbody
              */
@@ -106,7 +108,7 @@
                                 cell += '<label class="owh-table__label">Rate</label>';
                             }
                             var rateVisibility = getRateVisibility(column.title, column.pop);
-                            if(rateVisibility === 'visible' && otc.tableView === 'crude_death_rates') {
+                            if(otc.tableView === 'crude_death_rates') {
                                 cell += '<span>'
                                 if(rateVisibility === 'visible') {
                                     cell += $filter('number')(column.title / column.pop * 100000, 1);
