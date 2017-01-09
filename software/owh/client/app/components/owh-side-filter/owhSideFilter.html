@@ -180,5 +180,28 @@
                 </ul>
             </span>
         </li>
+        <li class="accordion" ng-repeat="util in sfc.utilities">
+            <span>
+                <label class="side-pane-label custom-label">
+                    <a href="javascript:void(0)" ng-click="util.collapse = !util.collapse" class="custom-link">
+                        <i class="fa" ng-class="util.collapse?'fa-chevron-right':'fa-chevron-down'"></i>
+                        <span translate="{{util.title}}"></span>
+                    </a>
+                </label>
+                <ul class="owh-side-menu__options-list usa-unstyled-list group-options" ng-hide="util.collapse">
+                    <div class="owh-side-menu__utility-option" ng-repeat="option in util.options">
+                        <div ng-if="option.type === 'toggle'">
+                            <span>{{option.title}}</span>
+                            <br/>
+                            <owh-toggle-switch class="pull-right"
+                                               model="option.value"
+                                               options="option.options"
+                                               on-change="option.onChange(option.value)">
+                            </owh-toggle-switch>
+                        </div>
+                    </div>
+                </ul>
+            </span>
+        </li>
     </ul>
 </aside>

@@ -87,6 +87,53 @@
             'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
             'age-adjusted_death_rates': ['year', 'gender', 'race']
         };
+
+        //functionality to be added to the side filters
+        sc.filterUtilities = {
+            'mental_health': [
+                {
+                    title: 'Variance',
+                    options: [
+                        {
+                            title: 'Confidence Intervals',
+                            type: 'toggle',
+                            value: false,
+                            onChange: function(value) {
+                                sc.showConfidenceIntervals = value;
+                            },
+                            options: [
+                                {
+                                    title: 'label.mortality.search.table.show.percentage.button',
+                                    key: true
+                                },
+                                {
+                                    title: 'label.mortality.search.table.hide.percentage.button',
+                                    key: false
+                                }
+                            ]
+                        },
+                        {
+                            title: 'Unweighted Frequency',
+                            type: 'toggle',
+                            value: false,
+                            onChange: function(value) {
+                                sc.showUnweightedFrequency = value;
+                            },
+                            options: [
+                                {
+                                    title: 'label.mortality.search.table.show.percentage.button',
+                                    key: true
+                                },
+                                {
+                                    title: 'label.mortality.search.table.hide.percentage.button',
+                                    key: false
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
 
@@ -199,7 +246,9 @@
                //if queryID exists in owh_querycache index, then update data that are required to display search results
                 if (response.data) {
                     sc.filters.selectedPrimaryFilter.tableView = response.data.queryJSON.tableView;
-                    sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
+                    if(sc.filters.selectedPrimaryFilter.tableView) {
+                        sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
+                    }
                     //Update I'm interested in drop down key, value etc..
                     for (var i = 0; i < sc.filters.primaryFilters.length; i++) {
                         if (sc.filters.primaryFilters[i].key === response.data.queryJSON.key) {

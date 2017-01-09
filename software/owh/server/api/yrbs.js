@@ -64,8 +64,8 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
     if(aggrsKeys.indexOf('grade') >= 0){
         sortedKeys.push('grade');
     }
-    if(aggrsKeys.indexOf('race7') >= 0){
-        sortedKeys.push('race7');
+    if(aggrsKeys.indexOf('race') >= 0){
+        sortedKeys.push('race');
     }
     if(aggrsKeys.indexOf('year') >= 0){
         sortedKeys.push('year');
@@ -141,8 +141,8 @@ yrbs.prototype.processQuestionResponse = function(response){
             if ('grade' in r) {
                 cell = getResultCell(cell, 'grade', r.grade);
             }
-            if ('race7' in r) {
-                cell = getResultCell(cell, 'race7', r.race7);
+            if ('race' in r) {
+                cell = getResultCell(cell, 'race', r.race);
             }
             if ('year' in r) {
                 cell = getResultCell(cell, 'year', r.year);
@@ -178,16 +178,6 @@ function resultCellObject (response) {
         count: response.count
     };
 }
-
-/**
- * Generate the string for display in the result table cells, values are converted to % with 1 digit precision
- * @param yrbsresponse
- * @returns {string}
- */
-function resultCellDataString (yrbsresponse){
-    var prec = 1;
-    return toRoundedPercentage(yrbsresponse.mean, prec) +"<br><br/><nobr>("+toRoundedPercentage(yrbsresponse.ci_l, prec) +"-"+toRoundedPercentage(yrbsresponse.ci_u, prec) +")</nobr><br/>"+yrbsresponse.count;
-};
 
 function toRoundedPercentage(num, prec){
     if (!isNaN(num)){

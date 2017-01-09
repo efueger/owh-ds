@@ -295,6 +295,26 @@ describe("Search controller: ", function () {
         expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[1].key).toEqual('Dominican');
     });
 
+    it('filterUtilities for yrbs should perform proper functions', function() {
+        var searchController= $controller('SearchController',{$scope:$scope});
+
+        searchController.filterUtilities['mental_health'][0].options[0].onChange(true);
+
+        expect(searchController.showConfidenceIntervals).toBeTruthy();
+
+        searchController.filterUtilities['mental_health'][0].options[0].onChange(false);
+
+        expect(searchController.showConfidenceIntervals).toBeFalsy();
+
+        searchController.filterUtilities['mental_health'][0].options[1].onChange(true);
+
+        expect(searchController.showUnweightedFrequency).toBeTruthy();
+
+        searchController.filterUtilities['mental_health'][0].options[1].onChange(false);
+
+        expect(searchController.showUnweightedFrequency).toBeFalsy();
+    });
+
     it("search results by queryID", inject(function(searchFactory) {
          var searchController= $controller('SearchController',{$scope:$scope, searchFactory: searchFactory});
          var utilService = $injector.get('utilService');
