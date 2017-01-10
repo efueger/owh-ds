@@ -643,7 +643,7 @@
                     }
                 });
             }
-            return length;
+            return -length;
         }
 
         function buildQueryForYRBS(primaryFilter, dontAddYearAgg) {

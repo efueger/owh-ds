@@ -56,19 +56,19 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
     }
 
 
-    // Grouping needs to be always in the following order Sex (sex), Grade (grade), Race (race7) and  Year (year)
+    // Grouping needs to be always in the following order Year (year), Race (race), Grade(grade) and Sex (sex)
     var sortedKeys = [];
-    if(aggrsKeys.indexOf('sex') >= 0){
-        sortedKeys.push('sex');
+    if(aggrsKeys.indexOf('year') >= 0){
+        sortedKeys.push('year');
+    }
+    if(aggrsKeys.indexOf('race') >= 0){
+        sortedKeys.push('race');
     }
     if(aggrsKeys.indexOf('grade') >= 0){
         sortedKeys.push('grade');
     }
-    if(aggrsKeys.indexOf('race7') >= 0){
-        sortedKeys.push('race7');
-    }
-    if(aggrsKeys.indexOf('year') >= 0){
-        sortedKeys.push('year');
+    if(aggrsKeys.indexOf('sex') >= 0){
+        sortedKeys.push('sex');
     }
     var v = null;
     if (sortedKeys.length > 0) {
@@ -135,17 +135,17 @@ yrbs.prototype.processQuestionResponse = function(response){
 
             // The result table is always nested in the order Sex (sex), Grade (grade), Race (race7) and  Year (year)
             // so nest the results in that order
-            if ('sex' in r) {
-                cell = getResultCell(cell, 'sex', r.sex);
+            if ('year' in r) {
+                cell = getResultCell(cell, 'year', r.year);
+            }
+            if ('race' in r) {
+                cell = getResultCell(cell, 'race', r.race);
             }
             if ('grade' in r) {
                 cell = getResultCell(cell, 'grade', r.grade);
             }
-            if ('race7' in r) {
-                cell = getResultCell(cell, 'race7', r.race7);
-            }
-            if ('year' in r) {
-                cell = getResultCell(cell, 'year', r.year);
+            if ('sex' in r) {
+                cell = getResultCell(cell, 'sex', r.sex);
             }
             cell['mental_health'] = resultCellDataString(r);
         }
