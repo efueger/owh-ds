@@ -134,85 +134,55 @@
                 }
             ]
         };
-        console.log('state params', angular.copy($stateParams));
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
-        sc.queryCached = $stateParams.queryCached;
+        //this flags whether to cache the incoming filter query
+        sc.cacheQuery = $stateParams.cacheQuery;
 
-        sc.onFilter = function() {
-            console.log('onFilter called');
-        };
-
-        function cacheQuery(newQuery) {
-            console.log('no query id, generating hashcode');
-            searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
-                // sc.queryID = hash;
-                // $state.go('search', {queryID: sc.queryID});
-                // primaryFilterChanged(sc.filters.selectedPrimaryFilter, sc.queryID);
-                // sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, sc.queryID).then(function(){
-                //     $state.go('search', {queryID: sc.queryID, queryCached: true});
-                // });
-                //if we already have a queryID, we can just run the query, otherwise we redirect after we've cached it
-                if(sc.queryID && !newQuery) {
-                    search(false);
-                } else {
-                    primaryFilterChanged(sc.filters.selectedPrimaryFilter, hash).then(function(){
-
-                        console.log('redirecting after cacheing query');
-                        // $state.go('search', {queryID: hash, queryCached: true});
-                        $state.go('search', {
-                            queryID: hash,
-                            allFilters: sc.filters,
-                            selectedFilters: sc.filters.selectedPrimaryFilter,
-                            tableView: sc.tableView,
-                            queryCached: true
-                        });
-                    });
-                }
-
-            });
+        if(sc.queryID === '') {
+            //run default query
+            search(true);
         }
 
-        if(sc.queryID === "") {
-            cacheQuery();
-        }
-        console.log(sc.queryCached);
-        /*
-            1. filter,
-         */
-        if (sc.queryID) {
-            if(sc.queryCached) {
-                console.log('queryId present, getQueryResults based on ID');
-                /*
-                 * get query results from owh_querycache index
-                 * This function takes queryID and get queryJSON, sideFilterResults, resultData from owh_querycache index if query exists
-                 * */
-                getQueryResults(sc.queryID);
+        if(sc.queryID) {
+            //if queryID is present, check to see if query needs to be cached
+            if(sc.cacheQuery) {
+                //run a search and cache this query with the queryID
+                search(false);
             } else {
-                //could be loading a bookmarked page, so check for cached query results, if none display error and redirect
-
+                //query is either already cached or not found
                 getQueryResults(sc.queryID).then(function(response) {
-                   console.log('queryResults response', angular.copy(response));
-                   if(!response.data) {
-                       $window.alert('Query ' + sc.queryID + ' could not be found');
-                       $state.go('search', {
-                           queryID: ''
-                       // allFilters: sc.filters,
-                       // selectedFilters: sc.filters.selectedPrimaryFilter,
-                       // tableView: sc.tableView
-                       });
-                   }
+                    //redirect if query was uncached
+                    if(!response.data) {
+                        $window.alert('Query ' + sc.queryID + ' could not be found');
+                        $state.go('search', {
+                            queryID: ''
+                        });
+                    }
                 });
-                // $window.alert('Query ' + sc.queryID + ' could not be found');
-                // $state.go('search', {
-                //     queryID: ''
-                    // allFilters: sc.filters,
-                    // selectedFilters: sc.filters.selectedPrimaryFilter,
-                    // tableView: sc.tableView
-                // });
-                // cacheQuery();
             }
         }
+
+        function search(isFilterChanged) {
+            //TODO: $rootScope.requestProcessing is keeping this from running on initialization, do we need that check?
+            // if(isFilterChanged && !$rootScope.requestProcessing) {
+            if(isFilterChanged) {
+                //filters changed
+                searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash) {
+                    //after generating query hash, redirect and flag
+                    $state.go('search', {
+                        queryID: hash,
+                        allFilters: sc.filters,
+                        selectedFilters: sc.filters.selectedPrimaryFilter,
+                        tableView: sc.tableView,
+                        cacheQuery: true
+                    });
+                });
+            } else {
+                primaryFilterChanged(sc.filters.selectedPrimaryFilter, sc.queryID);
+            }
+        }
+
         /*
         * To populate autoCompleteOptions from $rootScope
         * When we refresh search page, below listener populate autoCompleteOptions value with $rootScope.questionsList
@@ -363,30 +333,9 @@
                     }
                     updateFiltersAndData(response);
                 }
-                else {
-                    // $window.alert('Query ' + queryID + ' could not be found');
-                    // $state.go('search', {
-                        // queryID: ''
-                        // allFilters: sc.filters,
-                        // selectedFilters: sc.filters.selectedPrimaryFilter,
-                        // tableView: sc.tableView
-                    // });
-                    // search(false);
-                    // primaryFilterChanged(sc.filters.selectedPrimaryFilter, sc.queryID);
-                }
                 return response;
             });
         }
-
-        // console.log(sc.queryCached);
-        // if (sc.queryID && sc.queryCached) {
-        //     console.log('queryId present, getQueryResults based on ID');
-        //     /*
-        //     * get query results from owh_querycache index
-        //     * This function takes queryID and get queryJSON, sideFilterResults, resultData from owh_querycache index if query exists
-        //     * */
-        //     getQueryResults(sc.queryID);
-        // }
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
             if(newValue !== oldValue) {
@@ -397,7 +346,6 @@
         }, true);
 
         function changeViewFilter(selectedFilter) {
-            console.log('changeViewFilter selectedFilter', angular.copy(selectedFilter));
             searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);
             angular.forEach(sc.filters.selectedPrimaryFilter.allFilters, function(filter) {
                 if(filter.key === 'hispanicOrigin') {
@@ -421,37 +369,9 @@
                     }
                 }
             });
-            console.log('calling search from changeViewFilter');
             sc.filters.selectedPrimaryFilter.tableView = selectedFilter.key;
             sc.search(true);
             sc.tableView = selectedFilter.key;
-        }
-
-        function search(isFilterChanged) {
-            console.log('search called');
-            console.log('requestProcessing', $rootScope.requestProcessing);
-            //TODO: would be better if there was a way to filter using query but also get all possible values back from api
-            if (isFilterChanged && !$rootScope.requestProcessing) {
-                // sc.sideFilterQuery = true;
-                // console.log('generateHashCode');
-                // searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function (hash) {
-                //     sc.queryID = hash;
-                //     console.log('redirect after get hashcode');
-                //     $state.go('search', {
-                //         queryID: sc.queryID,
-                //         allFilters: sc.filters,
-                //         selectedFilters: sc.filters.selectedPrimaryFilter,
-                //         tableView: sc.tableView,
-                //         queryCached: false
-                //     });
-                // });
-                console.log('filter before cacheing query', angular.copy(sc.filters.selectedPrimaryFilter));
-                cacheQuery(true);
-            }
-            else {
-                sc.filters.selectedPrimaryFilter.tableView = sc.tableView;
-                primaryFilterChanged(sc.filters.selectedPrimaryFilter, sc.queryID);
-            }
         }
 
         function downloadCSV() {
