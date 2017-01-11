@@ -3,7 +3,7 @@
     {
       "key":"yrbsRace",
       "title":"label.yrbs.filter.race",
-      "queryKey":"race7",
+      "queryKey":"race",
       "primary":false,
       "value":"",
       "groupBy":"row",

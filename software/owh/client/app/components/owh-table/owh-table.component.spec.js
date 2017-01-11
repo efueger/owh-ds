@@ -105,6 +105,17 @@ describe('owhTable component: ', function() {
         ctrl.$onChanges();
 
         expect(ctrl.compileTable).toHaveBeenCalled();
-    })
+    });
+
+    it('should compileTable for bridge race tableView', function() {
+        var bindings = {tableView: 'bridge_race'};
+        var ctrl = $componentController('owhTable', { $scope: $scope }, bindings);
+
+        spyOn(window, "Clusterize");
+        var table = {"headers":[[{"colspan":1,"rowspan":1,"title":"Race"},{"title":"Female","colspan":1,"rowspan":1,"isData":true},{"title":"Male","colspan":1,"rowspan":1,"isData":true},{"title":"Number of Deaths","colspan":1,"rowspan":1,"isData":true}]],"data":[[{"title":"American Indian","isCount":false,"rowspan":1,"colspan":1,"key":"American Indian"},{"title":8179,"percentage":45.41870279875611,"isCount":true,"rowspan":1,"colspan":1,"pop":28544528,"ageAdjustedRate":"557.9","standardPop":32250198},{"title":9829,"percentage":54.58129720124389,"isCount":true,"rowspan":1,"colspan":1,"pop":28645741,"ageAdjustedRate":"754.4","standardPop":32369216},{"title":18008,"percentage":0.6856486667392624,"isCount":true,"rowspan":1,"colspan":1,"isBold":true,"pop":57190269,"ageAdjustedRate":"647.7","standardPop":64619414}],[{"title":"Asian or Pacific Islander","isCount":false,"rowspan":1,"colspan":1,"key":"Asian or Pacific Islander"},{"title":29884,"percentage":48.536624979697905,"isCount":true,"rowspan":1,"colspan":1,"pop":121309960,"ageAdjustedRate":"368.3","standardPop":137270512},{"title":31686,"percentage":51.463375020302095,"isCount":true,"rowspan":1,"colspan":1,"pop":112325576,"ageAdjustedRate":"524.1","standardPop":127115817},{"title":61570,"percentage":2.3442574639680354,"isCount":true,"rowspan":1,"colspan":1,"isBold":true,"pop":233635536,"ageAdjustedRate":"435.2","standardPop":264386329}],[{"title":"Black","isCount":false,"rowspan":1,"colspan":1,"key":"Black"},{"title":151227,"percentage":48.94711289487312,"isCount":true,"rowspan":1,"colspan":1,"pop":317237591,"ageAdjustedRate":"807.4","standardPop":359386608},{"title":157733,"percentage":51.05288710512688,"isCount":true,"rowspan":1,"colspan":1,"pop":289840863,"ageAdjustedRate":"1,193.3","standardPop":328414017},{"title":308960,"percentage":11.763550204118308,"isCount":true,"rowspan":1,"colspan":1,"isBold":true,"pop":607078454,"ageAdjustedRate":"967.6","standardPop":687800625}],[{"title":"White","isCount":false,"rowspan":1,"colspan":1,"key":"White"},{"title":1108887,"percentage":49.55078020269183,"isCount":true,"rowspan":1,"colspan":1,"pop":1828192603,"ageAdjustedRate":"660.1","standardPop":2070887962},{"title":1128993,"percentage":50.44921979730817,"isCount":true,"rowspan":1,"colspan":1,"pop":1787480522,"ageAdjustedRate":"922.5","standardPop":2024924546},{"title":2237880,"percentage":85.2065436651744,"isCount":true,"rowspan":1,"colspan":1,"isBold":true,"pop":3615673125,"ageAdjustedRate":"777.0","standardPop":4095812508}]],"calculatePercentage":true};
+        ctrl.compileTable(table);
+
+        expect(window.Clusterize).toHaveBeenCalled();
+    });
 });
 
