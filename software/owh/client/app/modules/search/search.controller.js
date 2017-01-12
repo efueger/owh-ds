@@ -85,7 +85,7 @@
         //show certain filters for different table views
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
-            'age-adjusted_death_rates': ['year', 'gender', 'race']
+            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin']
         };
 
         //functionality to be added to the side filters
@@ -349,7 +349,7 @@
             searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);
             angular.forEach(sc.filters.selectedPrimaryFilter.allFilters, function(filter) {
                 if(filter.key === 'hispanicOrigin') {
-                    if(selectedFilter.key === 'crude_death_rates') {
+                    if(selectedFilter.key === 'crude_death_rates' || selectedFilter.key === 'age-adjusted_death_rates') {
                         filter.queryKey = 'ethnicity_group';
                         filter.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
                     } else {
@@ -360,7 +360,7 @@
             });
             angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
                 if(filter.filters.key === 'hispanicOrigin') {
-                    if(selectedFilter.key === 'crude_death_rates') {
+                    if(selectedFilter.key === 'crude_death_rates' || selectedFilter.key === 'age-adjusted_death_rates') {
                         filter.filters.queryKey = 'ethnicity_group';
                         filter.filters.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
                     } else {
