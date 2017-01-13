@@ -25,7 +25,13 @@ var wonderParamCodeMap = {
             "Male": 'M',
         }
     },
-    'hispanicOrigin':'D76.V17',
+    'hispanicOrigin': {
+        'key': 'D76.V17',
+        'values': {
+            'Hispanic': '2135-2',
+            'Non-Hispanic': '2186-2'
+        }
+    },
     'year':'D76.V1',
     'year-group':'D76.V1-level1',
     'agegroup':'D76.V51',
@@ -87,7 +93,6 @@ function wonder(dbID) {
 wonder.prototype.invokeWONDER = function (query){
     var req = createWONDERRquest(query);
     //var groupattrs = getGroupAttributes(query);
-    //console.log(inspect(req, {depth : null, colors : true} ));
     var defer = q.defer();
     request.post({url:WONDER_API_URL+this.dbID, form:{request_xml:req} },function (error, response, body) {
         result = {};
@@ -246,6 +251,7 @@ function addOptionParams(wreq){
     addParamToWONDERReq(wreq,'O_V9_fmode', 'freg');
     addParamToWONDERReq(wreq,'O_V7_fmode', 'freg');
     addParamToWONDERReq(wreq,'O_V8_fmode', 'freg');
+    addParamToWONDERReq(wreq,'O_V17_fmode', 'freg');
     addParamToWONDERReq(wreq,'O_aar', 'aar_std');
     addParamToWONDERReq(wreq,'O_aar_pop', '0000');
     addParamToWONDERReq(wreq,'O_age', 'D76.V5'); // Age adjusted rate by 10 year interval
