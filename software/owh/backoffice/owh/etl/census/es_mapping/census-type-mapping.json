@@ -20,7 +20,7 @@
       "race": {
         "type":"string", "index":"not_analyzed"
       },
-      "hispanic_origin": {
+      "ethnicity_group": {
         "type":"string", "index":"not_analyzed"
       },
       "current_year": {
