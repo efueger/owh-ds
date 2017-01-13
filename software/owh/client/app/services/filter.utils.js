@@ -50,8 +50,8 @@
             ];
 
             var censusHispanicOriginOptions =  [
-                { "key": "Non Hispanic", "title": "Non Hispanic" },
-                { "key": "Hispanic or Latino", "title": "Hispanic or Latino" }
+                { "key": "Non-Hispanic", "title": "Non Hispanic" },
+                { "key": "Hispanic", "title": "Hispanic or Latino" }
             ];
 
             var censusStateOptions =  [
@@ -184,7 +184,7 @@
 
                 {key: 'race', title: 'label.filter.race', queryKey:"race",primary: false, defaultGroup:'column', groupBy: 'row',
                     autoCompleteOptions: angular.copy(censusRaceOptions), value:[]},
-                {key: 'ethnicity', title: 'label.filter.hispanicOrigin', queryKey:"hispanic_origin",primary: false, defaultGroup:'row', groupBy: false,
+                {key: 'ethnicity', title: 'label.filter.hispanicOrigin', queryKey:"ethnicity_group",primary: false, defaultGroup:'row', groupBy: false,
                     autoCompleteOptions: angular.copy(censusHispanicOriginOptions), value:[]},
                 {key: 'state', title: 'label.filter.state', queryKey:"state",primary: false, value:[], defaultGroup:'row', groupBy: false,
                     autoCompleteOptions: angular.copy(censusStateOptions), displaySearchBox:true}
