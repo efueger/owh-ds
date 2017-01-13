@@ -815,8 +815,8 @@
             ];
 
             filters.ethnicityGroupOptions = [
-                {"key": 'hispanic', "title": 'Hispanic'},
-                {"key": 'non', "title": "Non-Hispanic"}
+                {"key": 'Hispanic', "title": 'Hispanic'},
+                {"key": 'Non-Hispanic', "title": "Non-Hispanic"}
             ];
 
             filters.weekday = [

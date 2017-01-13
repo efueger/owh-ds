@@ -277,8 +277,8 @@ var mergeAgeAdjustedRates = function(mort, rates) {
     var keyMap = {
         'Black': 'Black or African American',
         'American Indian': 'American Indian or Alaska Native',
-        'hispanic': 'Hispanic or Latino',
-        'non': 'Not Hispanic or Latino'
+        'Hispanic': 'Hispanic or Latino',
+        'Non-Hispanic': 'Not Hispanic or Latino'
     };
 
     for(var key in mort) {
