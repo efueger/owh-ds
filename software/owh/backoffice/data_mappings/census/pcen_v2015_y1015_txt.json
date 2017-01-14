@@ -142,7 +142,7 @@
   },
   {  
     "column":"ethnicity_group",
-    "type":"simple",
+    "type":"map",
     "start":13,
     "stop":13,
     "field":"Hispanic origin",
