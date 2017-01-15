@@ -26,7 +26,8 @@
             prepareChartData: prepareChartData,
             searchYRBSResults: searchYRBSResults,
             buildQueryForYRBS: buildQueryForYRBS,
-            prepareMortalityResults: prepareMortalityResults
+            prepareMortalityResults: prepareMortalityResults,
+            prepareQuestionChart: prepareQuestionChart
 
 
         };
@@ -259,44 +260,90 @@
             }
         }
 
+        /**
+         * Display chart for Selected YRBS Question
+         * @param primaryFilter
+         * @param question
+         */
         function showChartForQuestion(primaryFilter, question) {
-            var copiedPrimaryFilter = angular.copy(primaryFilter);
-            var pieChartFilterKeys = ['yrbsGrade', 'yrbsRace'];
-            var barChartFilterKeys = ['yrbsSex', 'yrbsRace'];
-            var promises = [];
-            var pieChartFilters = [];
-            var barChartFilters = [];
-            utilService.updateAllByKeyAndValue(copiedPrimaryFilter.allFilters, 'groupBy', false);
-            var questionFilter = utilService.findByKeyAndValue(copiedPrimaryFilter.allFilters, 'key', 'question');
-            questionFilter.value = [question];
 
-            angular.forEach(pieChartFilterKeys, function(eachKey) {
-                var eachChartPrimaryFilter = angular.copy(copiedPrimaryFilter);
-                var eachFilter = utilService.findByKeyAndValue(eachChartPrimaryFilter.allFilters, 'key', eachKey);
-                eachFilter.groupBy = 'column';
-                eachFilter.getPercent = true;
-                pieChartFilters.push(eachFilter);
-                promises.push(SearchService.searchResults(eachChartPrimaryFilter));
-
+            prepareQuestionChart(primaryFilter, question).then(function (response) {
+                chartUtilService.showExpandedGraph([response.chartData], question.key,
+                    null, response.chartTypes, primaryFilter, question);
             });
-            var barChartPrimaryFilter = angular.copy(copiedPrimaryFilter);
-            angular.forEach(barChartFilterKeys, function(eachKey) {
-                var eachFilter = utilService.findByKeyAndValue(barChartPrimaryFilter.allFilters, 'key', eachKey);
+
+        }
+
+        /**
+         * This function is used to build visualization data based on selected filters
+         * If chart type is specified, visualization will be built for selected chart type
+         * Otherwise visualizations will be decided with different combinations of selected filter
+         * @param primaryFilter -> YRBS side filters
+         * @param question -> Seleted question for which visualizations needs to be built
+         * @param chartType -> Array of keys of selected combination e.g. ['yrbsSex', 'yrbsRace']
+         */
+        function prepareQuestionChart(primaryFilter, question, chartType ) {
+            //make copy of side filters
+            var copiedPrimaryFilter = angular.copy(primaryFilter);
+
+            //get the selected side filters
+            var selectedFilters = copiedPrimaryFilter.value;
+            console.log(JSON.stringify(selectedFilters.length));
+
+            //possible chart combinations
+            var chartMappings = {
+                "yrbsSex&yrbsRace": "horizontalBar",
+                "yrbsSex&yrbsGrade": "horizontalBar",
+                "yrbsGrade&yrbsRace": "horizontalBar"
+            };
+
+            var chartTypes = [];
+
+            //collect all chart combinations
+            selectedFilters.forEach( function(selectedPrimaryFilter) {
+                selectedFilters.forEach( function(selectedSecondaryFilter) {
+                    var chartType = chartMappings[selectedPrimaryFilter.key + '&' + selectedSecondaryFilter.key];
+                    if(chartType) {
+                        chartTypes.push([selectedPrimaryFilter.key, selectedSecondaryFilter.key]);
+                    }
+                });
+            });
+
+            var barChartFilters = [];
+            //reset all grouping combinations
+            utilService.updateAllByKeyAndValue(copiedPrimaryFilter.allFilters, 'groupBy', false);
+
+            //get the question filter and update question filter with selected question
+            var questionFilter = utilService.findByKeyAndValue(copiedPrimaryFilter.allFilters, 'key', 'question');
+            questionFilter.value = [question.qkey];
+
+            //if chart type is not specified, select first from possible combinations
+            if(!chartType) {
+                chartType = chartTypes[0];
+            }
+
+            //set column groupings on selected chart
+            angular.forEach(chartType, function(eachKey) {
+                var eachFilter = utilService.findByKeyAndValue(copiedPrimaryFilter.allFilters, 'key', eachKey);
                 eachFilter.groupBy = 'column';
                 eachFilter.getPercent = true;
                 barChartFilters.push(eachFilter);
             });
-            promises.push(SearchService.searchResults(barChartPrimaryFilter));
-            $q.all(promises).then(function(values) {
-                var chartData = [];
-                angular.forEach(values.slice(0, 2), function(eachValue, index) {
-                    chartData.push(chartUtilService.pieChart(eachValue.data.table[pieChartFilters[index].key], pieChartFilters[index], primaryFilter, '%'));
+
+            var deferred = $q.defer();
+            //calculate query hash
+            generateHashCode(copiedPrimaryFilter).then(function (hash) {
+                //get the chart data
+                SearchService.searchResults(copiedPrimaryFilter, hash).then(function(response) {
+                    deferred.resolve({
+                        chartData: chartUtilService.horizontalBar(barChartFilters[0],
+                            barChartFilters[1], response.data.resultData.table, copiedPrimaryFilter, '%'),
+                        chartTypes : chartTypes
+                    });
                 });
-                chartData.push(chartUtilService.horizontalStack(barChartFilters[0], barChartFilters[1], values[2].data.table, primaryFilter, '%'));
-                var selectedQuestion = utilService.findByKeyAndValue(questionFilter.autoCompleteOptions, 'key', question);
-                chartUtilService.showExpandedGraph(chartData, selectedQuestion.title);
             });
-        };
+            return deferred.promise;
+        }
 
 
         function prepareMortalityResults(primaryFilter, response) {
@@ -1005,7 +1052,8 @@
                    autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column" },
                 { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
                     filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
-                    selectTitle: 'select.label.yrbs.filter.question', updateTitle: 'update.label.yrbs.filter.question',  iconClass: 'fa fa-pie-chart purple-text', onIconClick: function(question) {
+                    selectTitle: 'select.label.yrbs.filter.question', updateTitle: 'update.label.yrbs.filter.question',  iconClass: 'fa fa-pie-chart purple-text',
+                    onIconClick: function(question) {
                         showChartForQuestion(filters.selectedPrimaryFilter, question);
                     }
                 }
@@ -1142,6 +1190,7 @@
                     key: 'mental_health', title: 'label.risk.behavior', primary: true, value:[], header:"Youth risk behavior",
                     allFilters: filters.yrbsFilters, searchResults: searchYRBSResults, dontShowInlineCharting: true,
                     additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total', tableView:'mental_health',
+                    chartAxisLabel:'Percentage',
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,

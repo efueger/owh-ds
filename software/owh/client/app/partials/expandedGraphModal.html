@@ -12,6 +12,11 @@
             <div ng-bind="eg.graphSubTitle"></div>
         </div>
         <div class="custom-modal-body usa-grid">
+            <div class="usa-navbar" ng-repeat="chartType in eg.chartTypes" style="float: left">
+                <button class="usa-menu-btn"
+                        ng-bind="eg.getChartName(chartType);"
+                        ng-click="eg.getChartData(chartType);"></button>
+            </div>
             <div class="usa-grid">
                 <div class="usa-width-one-whole" ng-repeat="eachChartData in eg.chartData">
                     <div class="text-center margin-top-5" ng-if="eg.chartData.length > 1">
