@@ -288,13 +288,15 @@
 
             //get the selected side filters
             var selectedFilters = copiedPrimaryFilter.value;
-            console.log(JSON.stringify(selectedFilters.length));
 
             //possible chart combinations
             var chartMappings = {
                 "yrbsSex&yrbsRace": "horizontalBar",
                 "yrbsSex&yrbsGrade": "horizontalBar",
-                "yrbsGrade&yrbsRace": "horizontalBar"
+                "yrbsGrade&yrbsRace": "horizontalBar",
+                "yrbsSex": "horizontalBar",
+                "yrbsRace": "horizontalBar",
+                "yrbsGrade": "horizontalBar",
             };
 
             var chartTypes = [];
@@ -302,14 +304,22 @@
             //collect all chart combinations
             selectedFilters.forEach( function(selectedPrimaryFilter) {
                 selectedFilters.forEach( function(selectedSecondaryFilter) {
-                    var chartType = chartMappings[selectedPrimaryFilter.key + '&' + selectedSecondaryFilter.key];
-                    if(chartType) {
-                        chartTypes.push([selectedPrimaryFilter.key, selectedSecondaryFilter.key]);
+                    var chartType;
+                    //for single filter
+                    if (selectedPrimaryFilter === selectedSecondaryFilter) {
+                        chartType = chartMappings[selectedPrimaryFilter.key];
+                        if(chartType) {
+                            chartTypes.push([selectedPrimaryFilter.key]);
+                        }
+                    } else {//for combinations of two filters
+                        chartType = chartMappings[selectedPrimaryFilter.key + '&' + selectedSecondaryFilter.key];
+                        if(chartType) {
+                            chartTypes.push([selectedPrimaryFilter.key, selectedSecondaryFilter.key]);
+                        }
                     }
                 });
             });
 
-            var barChartFilters = [];
             //reset all grouping combinations
             utilService.updateAllByKeyAndValue(copiedPrimaryFilter.allFilters, 'groupBy', false);
 
@@ -322,12 +332,13 @@
                 chartType = chartTypes[0];
             }
 
+            var chartFilters = [];
             //set column groupings on selected chart
             angular.forEach(chartType, function(eachKey) {
                 var eachFilter = utilService.findByKeyAndValue(copiedPrimaryFilter.allFilters, 'key', eachKey);
                 eachFilter.groupBy = 'column';
                 eachFilter.getPercent = true;
-                barChartFilters.push(eachFilter);
+                chartFilters.push(eachFilter);
             });
 
             var deferred = $q.defer();
@@ -335,9 +346,16 @@
             generateHashCode(copiedPrimaryFilter).then(function (hash) {
                 //get the chart data
                 SearchService.searchResults(copiedPrimaryFilter, hash).then(function(response) {
+                    var chartData;
+                    if (chartFilters.length == 1) {
+                        chartData = chartUtilService.horizontalBar(chartFilters[0],
+                            chartFilters[0], response.data.resultData.table, copiedPrimaryFilter, '%');
+                    } else {
+                        chartData = chartUtilService.horizontalBar(chartFilters[0],
+                            chartFilters[1], response.data.resultData.table, copiedPrimaryFilter, '%');
+                    }
                     deferred.resolve({
-                        chartData: chartUtilService.horizontalBar(barChartFilters[0],
-                            barChartFilters[1], response.data.resultData.table, copiedPrimaryFilter, '%'),
+                        chartData: chartData,
                         chartTypes : chartTypes
                     });
                 });

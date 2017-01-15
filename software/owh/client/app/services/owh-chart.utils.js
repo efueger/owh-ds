@@ -111,34 +111,52 @@
 
             if (primaryFilter.key == 'mental_health') {
 
-                angular.forEach(utilService.getSelectedAutoCompleteOptions(filter1), function (primaryOption,index) {
+                //if primary and secondary filters are same i.e. Single filter
+                if (filter1.queryKey == filter2.queryKey) {
                     var primaryDataObj = {};
-                    var eachPrimaryData = utilService.findByKeyAndValue(data.question[0][filter1.queryKey], 'name', primaryOption.key);
-
-                    primaryDataObj["key"] = primaryOption.title;
-                    if(filter1.queryKey === 'sex') {
-                        primaryDataObj["color"] = primaryOption.key === 'Male' ?  "#009aff" : "#fe66ff";
-                    }
+                    //series name
+                    primaryDataObj["key"] = primaryFilter.chartAxisLabel;
                     primaryDataObj["values"] = [];
-                    //primaryDataObj[primaryFilter.key] = eachPrimaryData ? eachPrimaryData[primaryFilter.key]: 0;
+                    angular.forEach(utilService.getSelectedAutoCompleteOptions(filter1), function (primaryOption,index) {
+                        //get data for series
+                        var eachPrimaryData = utilService.findByKeyAndValue(data.question[0][filter1.queryKey], 'name', primaryOption.key);
+                        //set data to series values
+                        primaryDataObj.values.push({"label":primaryOption.title, "value":
+                        (eachPrimaryData &&  eachPrimaryData[primaryFilter.key]) ?
+                            parseFloat(eachPrimaryData[primaryFilter.key].mean) : 0});
 
-                    if(eachPrimaryData && eachPrimaryData[filter2.queryKey]) {
-                        angular.forEach(utilService.getSelectedAutoCompleteOptions(filter2) , function (secondaryOption,j) {
-                            var eachSecondaryData = utilService.findByKeyAndValue(eachPrimaryData[filter2.queryKey], 'name', secondaryOption.key);
-                            primaryDataObj.values.push({"label":secondaryOption.title, "value":
-                                (eachSecondaryData &&  eachSecondaryData[primaryFilter.key]) ?
-                                    parseFloat(eachSecondaryData[primaryFilter.key].mean) : 0});
-                        });
-                        multiChartBarData.push(primaryDataObj);
-                    } else{
-                        angular.forEach(utilService.getSelectedAutoCompleteOptions(filter2), function (secondaryOption,j) {
-                            primaryDataObj.values.push(
-                                { label : secondaryOption.title, value : 0 }
-                            );
-                        });
-                        multiChartBarData.push(primaryDataObj);
-                    }
-                });
+                    });
+                    multiChartBarData.push(primaryDataObj);
+                } else {//for two filters
+                    angular.forEach(utilService.getSelectedAutoCompleteOptions(filter1), function (primaryOption,index) {
+                        var primaryDataObj = {};
+                        //get data for series
+                        var eachPrimaryData = utilService.findByKeyAndValue(data.question[0][filter1.queryKey], 'name', primaryOption.key);
+                        //Set name to series
+                        primaryDataObj["key"] = primaryOption.title;
+                        if(filter1.queryKey === 'sex') {
+                            primaryDataObj["color"] = primaryOption.key === 'Male' ?  "#009aff" : "#fe66ff";
+                        }
+                        primaryDataObj["values"] = [];
+                        //set chart values to series
+                        if(eachPrimaryData && eachPrimaryData[filter2.queryKey]) {
+                            angular.forEach(utilService.getSelectedAutoCompleteOptions(filter2) , function (secondaryOption,j) {
+                                var eachSecondaryData = utilService.findByKeyAndValue(eachPrimaryData[filter2.queryKey], 'name', secondaryOption.key);
+                                primaryDataObj.values.push({"label":secondaryOption.title, "value":
+                                    (eachSecondaryData &&  eachSecondaryData[primaryFilter.key]) ?
+                                        parseFloat(eachSecondaryData[primaryFilter.key].mean) : 0});
+                            });
+                            multiChartBarData.push(primaryDataObj);
+                        } else {//if no data avalable, set it yo zero
+                            angular.forEach(utilService.getSelectedAutoCompleteOptions(filter2), function (secondaryOption,j) {
+                                primaryDataObj.values.push(
+                                    { label : secondaryOption.title, value : 0 }
+                                );
+                            });
+                            multiChartBarData.push(primaryDataObj);
+                        }
+                    });
+                }
 
             } else if(data && data[filter1.key]) {
                 angular.forEach(utilService.getSelectedAutoCompleteOptions(filter1), function (primaryOption,index) {
@@ -448,6 +466,11 @@
             console.log('showExpandedGraph');
             console.log(JSON.stringify(chartData));
 
+            /**
+             * Update chart dimensions and data
+             * @param chartData
+             * @returns {Array}
+             */
             var updateChart = function (chartData) {
                 var allExpandedChartDatas = [];
                 graphTitle = graphTitle ? graphTitle : (chartData.length > 1? 'label.graph.expanded': chartData[0].title);
@@ -543,14 +566,31 @@
                     eg.showFbDialog = function(svgIndex, title, section, description) {
                         shareUtilService.shareOnFb(svgIndex, title, section, description);
                     };
+
+                    /**
+                     * get the display name for chart
+                     * @param chartType
+                     * @returns {*}
+                     */
                     eg.getChartName = function (chartType) {
                         var chartNames = {'yrbsSex&yrbsRace':'Sex and Race',
                             'yrbsSex&yrbsGrade':'Sex and Grade',
-                            'yrbsGrade&yrbsRace': 'Grade and Race'};
+                            'yrbsGrade&yrbsRace': 'Grade and Race',
+                            'yrbsRace': 'Race',
+                            'yrbsSex': 'Sex',
+                            'yrbsGrade': 'Grade'};
 
-                        return chartNames[chartType[0]+'&'+chartType[1]];
+                        if (chartType.length == 1) {
+                            return chartNames[chartType[0]];
+                        } else {
+                            return chartNames[chartType[0]+'&'+chartType[1]];
+                        }
                     };
 
+                    /**
+                     * Get data for specified chart and update it
+                     * @param chartType
+                     */
                     eg.getChartData = function (chartType) {
                         searchFactory.prepareQuestionChart(eg.primaryFilters,
                             eg.selectedQuestion, chartType).then(function (response) {
