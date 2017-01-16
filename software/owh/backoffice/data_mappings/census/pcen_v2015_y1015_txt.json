@@ -141,14 +141,14 @@
     }
   },
   {  
-    "column":"hispanic_origin",
-    "type":"simple",
+    "column":"ethnicity_group",
+    "type":"map",
     "start":13,
     "stop":13,
     "field":"Hispanic origin",
     "mappings": {
-      "1":"Non Hispanic",
-      "2":"Hispanic or Latino"
+      "1":"Non-Hispanic",
+      "2":"Hispanic"
     }
   },
   {  
@@ -157,8 +157,8 @@
     "index_column":"current_year",
     "fields":[  
       {  
-        "start":14,
-        "stop":21,
+        "start":22,
+        "stop":29,
         "index_value":"2010",
         "field":"July 1, 2010 base population estimate",
         "mappings":{  

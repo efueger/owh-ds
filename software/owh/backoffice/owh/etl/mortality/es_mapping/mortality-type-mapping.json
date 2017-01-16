@@ -64,6 +64,9 @@
       },
       "hispanic_origin": {
         "type":"string", "index":"not_analyzed"
+      },
+      "ethnicity_group": {
+        "type":"string", "index":"not_analyzed"
       }
     }
   }

@@ -71,7 +71,7 @@
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1997','1995','1993','1991' ]
             },
             "crude_death_rates": {
-                "hispanicOrigin": ['hispanic', 'non', 'unknown'],
+                "hispanicOrigin": ['Hispanic', 'Non-Hispanic', 'Unknown'],
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
             },
@@ -85,7 +85,7 @@
         //show certain filters for different table views
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
-            'age-adjusted_death_rates': ['year', 'gender', 'race']
+            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin']
         };
 
         //functionality to be added to the side filters
@@ -136,13 +136,53 @@
         };
         sc.queryID = $stateParams.queryID;
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
+        //this flags whether to cache the incoming filter query
+        sc.cacheQuery = $stateParams.cacheQuery;
 
-        if(sc.queryID === "") {
-            searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash){
-                sc.queryID = hash;
-                $state.go('search', {queryID: sc.queryID});
-            });
+        if(sc.queryID === '') {
+            //run default query
+            search(true);
         }
+
+        if(sc.queryID) {
+            //if queryID is present, check to see if query needs to be cached
+            if(sc.cacheQuery) {
+                //run a search and cache this query with the queryID
+                search(false);
+            } else {
+                //query is either already cached or not found
+                getQueryResults(sc.queryID).then(function(response) {
+                    //redirect if query was uncached
+                    if(!response.data) {
+                        $window.alert('Query ' + sc.queryID + ' could not be found');
+                        $state.go('search', {
+                            queryID: ''
+                        });
+                    }
+                });
+            }
+        }
+
+        function search(isFilterChanged) {
+            //TODO: $rootScope.requestProcessing is keeping this from running on initialization, do we need that check?
+            // if(isFilterChanged && !$rootScope.requestProcessing) {
+            if(isFilterChanged) {
+                //filters changed
+                searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash) {
+                    //after generating query hash, redirect and flag
+                    $state.go('search', {
+                        queryID: hash,
+                        allFilters: sc.filters,
+                        selectedFilters: sc.filters.selectedPrimaryFilter,
+                        tableView: sc.tableView,
+                        cacheQuery: true
+                    });
+                });
+            } else {
+                primaryFilterChanged(sc.filters.selectedPrimaryFilter, sc.queryID);
+            }
+        }
+
         /*
         * To populate autoCompleteOptions from $rootScope
         * When we refresh search page, below listener populate autoCompleteOptions value with $rootScope.questionsList
@@ -242,7 +282,7 @@
         });
 
         function getQueryResults(queryID) {
-            searchFactory.getQueryResults(queryID).then(function (response) {
+            return searchFactory.getQueryResults(queryID).then(function (response) {
                //if queryID exists in owh_querycache index, then update data that are required to display search results
                 if (response.data) {
                     sc.filters.selectedPrimaryFilter.tableView = response.data.queryJSON.tableView;
@@ -293,18 +333,8 @@
                     }
                     updateFiltersAndData(response);
                 }
-                else {
-                    search(false);
-                }
+                return response;
             });
-        }
-
-        if (sc.queryID) {
-            /*
-            * get query results from owh_querycache index
-            * This function takes queryID and get queryJSON, sideFilterResults, resultData from owh_querycache index if query exists
-            * */
-            getQueryResults(sc.queryID);
         }
 
         $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
@@ -319,7 +349,7 @@
             searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);
             angular.forEach(sc.filters.selectedPrimaryFilter.allFilters, function(filter) {
                 if(filter.key === 'hispanicOrigin') {
-                    if(selectedFilter.key === 'crude_death_rates') {
+                    if(selectedFilter.key === 'crude_death_rates' || selectedFilter.key === 'age-adjusted_death_rates') {
                         filter.queryKey = 'ethnicity_group';
                         filter.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
                     } else {
@@ -330,7 +360,7 @@
             });
             angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
                 if(filter.filters.key === 'hispanicOrigin') {
-                    if(selectedFilter.key === 'crude_death_rates') {
+                    if(selectedFilter.key === 'crude_death_rates' || selectedFilter.key === 'age-adjusted_death_rates') {
                         filter.filters.queryKey = 'ethnicity_group';
                         filter.filters.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
                     } else {
@@ -339,28 +369,9 @@
                     }
                 }
             });
+            sc.filters.selectedPrimaryFilter.tableView = selectedFilter.key;
             sc.search(true);
             sc.tableView = selectedFilter.key;
-        }
-
-        function search(isFilterChanged) {
-            //TODO: would be better if there was a way to filter using query but also get all possible values back from api
-            if (isFilterChanged && !$rootScope.requestProcessing) {
-                // sc.sideFilterQuery = true;
-                searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function (hash) {
-                    sc.queryID = hash;
-                    $state.go('search', {
-                        queryID: sc.queryID,
-                        allFilters: sc.filters,
-                        selectedFilters: sc.filters.selectedPrimaryFilter,
-                        tableView: sc.tableView
-                    });
-                });
-            }
-            else {
-                sc.filters.selectedPrimaryFilter.tableView = sc.tableView;
-                primaryFilterChanged(sc.filters.selectedPrimaryFilter, sc.queryID);
-            }
         }
 
         function downloadCSV() {
@@ -498,7 +509,7 @@
          */
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
-            sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
+            return sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
                 updateFiltersAndData(response);
             });
         }
