@@ -168,7 +168,7 @@
             // if(isFilterChanged && !$rootScope.requestProcessing) {
             if(isFilterChanged) {
                 //filters changed
-                searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter).then(function(hash) {
+                searchFactory.generateHashCode(sc.filters.selectedPrimaryFilter, sc.optionsGroup[sc.tableView]).then(function(hash) {
                     //after generating query hash, redirect and flag
                     $state.go('search', {
                         queryID: hash,
