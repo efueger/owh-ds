@@ -300,7 +300,7 @@ describe('search factory ', function(){
         expect(selectedFilter.sideFilters[1].filters.groupBy).toEqual(false);
     });
     
-    it('generateHashCode should call out to search service with a normalized apiQuery', function() {
+    it('generateHashCode should call out to search service with a normalized hashQuery', function() {
         spyOn(searchService, "generateHashCode").and.callFake(function() {
             return {
                 then: function(){
@@ -308,134 +308,42 @@ describe('search factory ', function(){
                 }
             };
         });
-        
+
         var primaryFilter = {
-            allFilters: [
+            key: 'deaths',
+            tableView: 'number_of_deaths',
+            sideFilters: [
                 {
-                    "key":"race",
-                    "title":"label.filter.race",
-                    "queryKey":"race",
-                    "primary":false,
-                    "value":[
-                    ],
-                    "groupBy":"row",
-                    "type":"label.filter.group.demographics",
-                    "showChart":true,
-                    "defaultGroup":"column",
-                    "autoCompleteOptions":[
-                        {
-                            "key":"American Indian",
-                            "title":"American Indian",
-                            "deaths":18008,
-                            "count":18008,
-                            "deathsPercentage":0.69
-                        },
-                        {
-                            "key":"Asian or Pacific Islander",
-                            "title":"Asian or Pacific Islander",
-                            "deaths":61570,
-                            "count":61570,
-                            "deathsPercentage":2.34
-                        },
-                        {
-                            "key":"Black",
-                            "title":"Black",
-                            "deaths":308960,
-                            "count":308960,
-                            "deathsPercentage":11.76
-                        },
-                        {
-                            "key":"Other (Puerto Rico only)",
-                            "title":"Other (Puerto Rico only)",
-                            "deaths":0,
-                            "count":0,
-                            "deathsPercentage":0
-                        },
-                        {
-                            "key":"White",
-                            "title":"White",
-                            "deaths":2237880,
-                            "count":2237880,
-                            "deathsPercentage":85.21
-                        }],
-                    "allChecked":true
+                    filters: {
+                        key: 'race',
+                        groupBy: false,
+                        value: ['White', 'Black']
+                    }
                 },
                 {
-                    "key":"gender",
-                    "title":"label.filter.race",
-                    "queryKey":"race",
-                    "primary":false,
-                    "value":[
-                    ],
-                    "groupBy":"column",
-                    "type":"label.filter.group.demographics",
-                    "showChart":true,
-                    "defaultGroup":"column",
-                    "autoCompleteOptions":[
-                        {
-                            "key":"American Indian",
-                            "title":"American Indian",
-                            "deaths":18008,
-                            "count":18008,
-                            "deathsPercentage":0.69
-                        },
-                        {
-                            "key":"Asian or Pacific Islander",
-                            "title":"Asian or Pacific Islander",
-                            "deaths":61570,
-                            "count":61570,
-                            "deathsPercentage":2.34
-                        },
-                        {
-                            "key":"Black",
-                            "title":"Black",
-                            "deaths":308960,
-                            "count":308960,
-                            "deathsPercentage":11.76
-                        },
-                        {
-                            "key":"Other (Puerto Rico only)",
-                            "title":"Other (Puerto Rico only)",
-                            "deaths":0,
-                            "count":0,
-                            "deathsPercentage":0
-                        },
-                        {
-                            "key":"White",
-                            "title":"White",
-                            "deaths":2237880,
-                            "count":2237880,
-                            "deathsPercentage":85.21
-                        }],
-                    "allChecked":true
+                    filters: {
+                        key: 'gender',
+                        groupBy: 'row',
+                        value: ['Male']
+                    }
                 }
-
             ]
-        };
+        }
 
-        searchFactory.generateHashCode(primaryFilter, {});
+        searchFactory.generateHashCode(primaryFilter);
 
         expect(searchService.generateHashCode).toHaveBeenCalled();
 
-        expect(searchService.generateHashCode.calls.argsFor(0)[0].headers.rowHeaders[0]['allChecked']).toBeUndefined();
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].primaryKey).toEqual('deaths');
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].tableView).toEqual('number_of_deaths');
 
-        expect(searchService.generateHashCode.calls.argsFor(0)[0].headers.rowHeaders[0].autoCompleteOptions[0].deaths).toBeUndefined();
-        expect(searchService.generateHashCode.calls.argsFor(0)[0].headers.rowHeaders[0].autoCompleteOptions[0].count).toBeUndefined();
-        expect(searchService.generateHashCode.calls.argsFor(0)[0].headers.rowHeaders[0].autoCompleteOptions[0].deathsPercentage).toBeUndefined();
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[0].key).toEqual('race');
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[0].groupBy).toEqual(false);
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[0].value).toEqual(['Black', 'White']);
 
-
-        expect(searchService.generateHashCode.calls.argsFor(0)[0].headers.columnHeaders[0]['allChecked']).toBeUndefined();
-
-        expect(searchService.generateHashCode.calls.argsFor(0)[0].headers.columnHeaders[0].autoCompleteOptions[0].deaths).toBeUndefined();
-        expect(searchService.generateHashCode.calls.argsFor(0)[0].headers.columnHeaders[0].autoCompleteOptions[0].count).toBeUndefined();
-        expect(searchService.generateHashCode.calls.argsFor(0)[0].headers.columnHeaders[0].autoCompleteOptions[0].deathsPercentage).toBeUndefined();
-
-
-        expect(searchService.generateHashCode.calls.argsFor(0)[0].headers.chartHeaders[0]['allChecked']).toBeUndefined();
-
-        expect(searchService.generateHashCode.calls.argsFor(0)[0].headers.chartHeaders[0].headers[0].autoCompleteOptions[0].deaths).toBeUndefined();
-        expect(searchService.generateHashCode.calls.argsFor(0)[0].headers.chartHeaders[0].headers[0].autoCompleteOptions[0].count).toBeUndefined();
-        expect(searchService.generateHashCode.calls.argsFor(0)[0].headers.chartHeaders[0].headers[0].autoCompleteOptions[0].deathsPercentage).toBeUndefined();
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[1].key).toEqual('gender');
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[1].groupBy).toEqual('row');
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[1].value).toEqual(['Male']);
 
     });
 

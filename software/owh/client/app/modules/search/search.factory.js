@@ -398,44 +398,31 @@
             return deferred.promise;
         }
 
-        function generateHashCode(primaryFilter, sort) {
+        function generateHashCode(primaryFilter) {
             var deferred = $q.defer();
-            var apiQuery = buildHashcodeQuery(primaryFilter, sort);
-            SearchService.generateHashCode(apiQuery).then(function(response) {
+            var hashQuery = buildHashcodeQuery(primaryFilter);
+            SearchService.generateHashCode(hashQuery).then(function(response) {
                 deferred.resolve(response.data);
             });
             return deferred.promise;
         }
 
-        function buildHashcodeQuery(primaryFilter, sort) {
+        function buildHashcodeQuery(primaryFilter) {
 
-            function normalizeHeader(header) {
-                delete header['allChecked'];
-                delete header['filterLength'];
-                sortAutoCompleteOptions(header, sort);
-                angular.forEach(header.autoCompleteOptions, function(option) {
-                    normalizeAutoCompleteOption(option);
-                });
-            }
+            var hashQuery = {
+                primaryKey: primaryFilter.key,
+                tableView: primaryFilter.tableView,
+                filters: []
+            };
 
-            function normalizeAutoCompleteOption(option) {
-                delete option['deaths'];
-                delete option['count'];
-                delete option['deathsPercentage'];
-            }
-            var apiQuery = buildAPIQuery(primaryFilter);
-            angular.forEach(apiQuery.headers.rowHeaders, function(header) {
-                normalizeHeader(header);
-            });
-            angular.forEach(apiQuery.headers.columnHeaders, function(header) {
-                normalizeHeader(header);
-            });
-            angular.forEach(apiQuery.headers.chartHeaders, function(header) {
-                angular.forEach(header.headers, function(chartHeader) {
-                    normalizeHeader(chartHeader);
+            angular.forEach(primaryFilter.sideFilters, function(filter){
+                hashQuery.filters.push({
+                    key: filter.filters.key,
+                    groupBy: filter.filters.groupBy,
+                    value: filter.filters.value.sort()
                 });
             });
-            return apiQuery;
+            return hashQuery;
         }
 
         /**
