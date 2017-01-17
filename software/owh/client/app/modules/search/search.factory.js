@@ -466,12 +466,29 @@
 
         function generateHashCode(primaryFilter) {
             var deferred = $q.defer();
-            var apiQuery = buildAPIQuery(primaryFilter);
-            var query = apiQuery.apiQuery;
-            SearchService.generateHashCode(apiQuery).then(function(response) {
+            var hashQuery = buildHashcodeQuery(primaryFilter);
+            SearchService.generateHashCode(hashQuery).then(function(response) {
                 deferred.resolve(response.data);
             });
             return deferred.promise;
+        }
+
+        function buildHashcodeQuery(primaryFilter) {
+
+            var hashQuery = {
+                primaryKey: primaryFilter.key,
+                tableView: primaryFilter.tableView,
+                filters: []
+            };
+
+            angular.forEach(primaryFilter.sideFilters, function(filter){
+                hashQuery.filters.push({
+                    key: filter.filters.key,
+                    groupBy: filter.filters.groupBy,
+                    value: filter.filters.value.sort()
+                });
+            });
+            return hashQuery;
         }
 
         /**
