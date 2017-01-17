@@ -300,6 +300,11 @@
                         if (sc.filters.selectedPrimaryFilter.sideFilters[i].filters.key === response.data.queryJSON.sideFilters[i].filters.key) {
                             sc.filters.selectedPrimaryFilter.sideFilters[i].filters.groupBy = response.data.queryJSON.sideFilters[i].filters.groupBy;
                             sc.filters.selectedPrimaryFilter.sideFilters[i].filters.value = response.data.queryJSON.sideFilters[i].filters.value;
+                            //To show selected nodes in sidefilters section
+                            var group = response.data.queryJSON.sideFilters[i].filterGroup ? response.data.queryJSON.sideFilters[i] : response.data.queryJSON.sideFilters[i].filters;
+                            if(group.filterType === 'tree') {
+                                sc.filters.selectedPrimaryFilter.sideFilters[i].filters.selectedNodes =  group.selectedNodes ;
+                            }
                         }
                     }
                     //Set values for mortality search page
