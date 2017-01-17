@@ -33,7 +33,8 @@
                         </div>
                     </div>
 
-                    <i class="cursor-pointer {{eachColumn.iconClass}}" ng-if="eachColumn.iconClass"
+                    <i class="cursor-pointer {{eachColumn.iconClass}}"
+                       ng-if="eachColumn.iconClass && oatc.showCharts"
                        ng-click="eachColumn.onIconClick(eachColumn)"></i>
                 </div>
             </td>

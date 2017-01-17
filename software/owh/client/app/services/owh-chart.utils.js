@@ -572,7 +572,7 @@
                      * @param chartType
                      * @returns {*}
                      */
-                    eg.getChartName = function (chartType) {
+                    eg.getYrbsChartName = function (chartType) {
                         var chartNames = {'yrbsSex&yrbsRace':'Sex and Race',
                             'yrbsSex&yrbsGrade':'Sex and Grade',
                             'yrbsGrade&yrbsRace': 'Grade and Race',
@@ -591,10 +591,11 @@
                      * Get data for specified chart and update it
                      * @param chartType
                      */
-                    eg.getChartData = function (chartType) {
+                    eg.getYrbsChartData = function (chartType) {
                         searchFactory.prepareQuestionChart(eg.primaryFilters,
                             eg.selectedQuestion, chartType).then(function (response) {
                             eg.chartData = updateChart([response.chartData]);
+                            eg.activeTab = eg.getYrbsChartName(chartType);
                         })
                     }
                 },

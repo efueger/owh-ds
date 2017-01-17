@@ -268,7 +268,7 @@
         function showChartForQuestion(primaryFilter, question) {
 
             prepareQuestionChart(primaryFilter, question).then(function (response) {
-                chartUtilService.showExpandedGraph([response.chartData], question.key,
+                chartUtilService.showExpandedGraph([response.chartData], question.title,
                     null, response.chartTypes, primaryFilter, question);
             });
 
@@ -347,10 +347,11 @@
                 //get the chart data
                 SearchService.searchResults(copiedPrimaryFilter, hash).then(function(response) {
                     var chartData;
+                    //chart data for single filter
                     if (chartFilters.length == 1) {
                         chartData = chartUtilService.horizontalBar(chartFilters[0],
                             chartFilters[0], response.data.resultData.table, copiedPrimaryFilter, '%');
-                    } else {
+                    } else {//chart data for two filters
                         chartData = chartUtilService.horizontalBar(chartFilters[0],
                             chartFilters[1], response.data.resultData.table, copiedPrimaryFilter, '%');
                     }
