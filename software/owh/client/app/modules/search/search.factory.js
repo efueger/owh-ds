@@ -994,6 +994,60 @@
                 { "key": "count", "title": "Total" }
             ];
 
+            filters.yrbsStateFilters =  [
+                { "key": "AL", "title": "Alabama" },
+                { "key": "AK", "title": "Alaska" },
+                { "key": "AZB", "title": "Arizona" },
+                { "key": "AR", "title": "Arkansas" },
+                { "key": "CA", "title": "California" },
+                { "key": "", "title": "Colorado" },
+                { "key": "CT", "title": "Connecticut" },
+                { "key": "DE", "title": "Delaware" },
+                //{ "key": "", "title": "District of Columbia" },
+                { "key": "FL", "title": "Florida" },
+                { "key": "", "title": "Georgia" },
+                { "key": "", "title": "Hawaii" },
+                { "key": "ID", "title": "Idaho" },
+                { "key": "IL", "title": "Illinois" },
+                { "key": "IN", "title": "Indiana"},
+                { "key": "IA", "title": "Iowa" },
+                { "key": "KS", "title": "Kansas" },
+                { "key": "KY", "title": "Kentucky" },
+                { "key": "LA", "title": "Louisiana" },
+                { "key": "ME", "title": "Maine" },
+                { "key": "MD", "title": "Maryland" },
+                { "key": "", "title": "Massachusetts" },
+                { "key": "MI", "title": "Michigan" },
+                { "key": "MN", "title": "Minnesota" },
+                { "key": "MS", "title": "Mississippi" },
+                { "key": "MO", "title": "Missouri" },
+                { "key": "MT", "title": "Montana" },
+                { "key": "NE", "title": "Nebraska" },
+                { "key": "NV", "title": "Nevada" },
+                { "key": "NH", "title": "New Hampshire" },
+                { "key": "NJ", "title": "New Jersey" },
+                { "key": "NM", "title": "New Mexico" },
+                { "key": "NY", "title": "New York" },
+                { "key": "NC", "title": "North Carolina" },
+                { "key": "ND", "title": "North Dakota" },
+                { "key": "OH", "title": "Ohio" },
+                { "key": "OK", "title": "Oklahoma" },
+                { "key": "OR", "title": "Oregon" },
+                { "key": "", "title": "Pennsylvania" },
+                { "key": "RI", "title": "Rhode Island" },
+                { "key": "SC", "title": "South Carolina" },
+                { "key": "SD", "title": "South Dakota" },
+                { "key": "TN", "title": "Tennessee" },
+                { "key": "", "title": "Texas" },
+                { "key": "UT", "title": "Utah" },
+                { "key": "", "title": "Vermont" },
+                { "key": "VA", "title": "Virginia" },
+                { "key": "", "title": "Washington" },
+                { "key": "WV", "title": "West Virginia" },
+                { "key": "WI", "title": "Wisconsin" },
+                { "key": "WY", "title": "Wyoming" }
+            ];
+
             filters.yrbsFilters = [
                 {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: ['2015'], groupBy: false,
                    autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
@@ -1001,8 +1055,10 @@
                     autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
                 { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"grade", primary: false, value: [], groupBy: false,
                      autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column" },
+                { key: 'yrbsState', title: 'label.yrbs.filter.state', queryKey:"sitecode", primary: false, value: [], groupBy: false,
+                    autoCompleteOptions: angular.copy(filters.yrbsStateFilters), defaultGroup:"column", displaySearchBox:true },
                 { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race", primary: false, value: [], groupBy: 'column',
-                   autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column" },
+                   autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column"},
                 { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
                     filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
                     selectTitle: 'select.label.yrbs.filter.question', updateTitle: 'update.label.yrbs.filter.question',  iconClass: 'fa fa-pie-chart purple-text', onIconClick: function(question) {
@@ -1158,6 +1214,10 @@
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsGrade')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsState')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: false,

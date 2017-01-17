@@ -110,6 +110,7 @@
   "label.visualization.more.two": "based on the selected data, rows, and columns.",
   "label.yrbs.filter.grade": "Grade",
   "label.yrbs.filter.year": "Year",
+  "label.yrbs.filter.state": "State",
   "label.yrbs.filter.question": "Question",
   "select.label.yrbs.filter.question": "Select Questions",
   "update.label.yrbs.filter.question": "Update Questions",
