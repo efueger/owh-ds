@@ -299,6 +299,53 @@ describe('search factory ', function(){
         expect(selectedFilter.sideFilters[1].filters.value.length).toEqual(0);
         expect(selectedFilter.sideFilters[1].filters.groupBy).toEqual(false);
     });
+    
+    it('generateHashCode should call out to search service with a normalized hashQuery', function() {
+        spyOn(searchService, "generateHashCode").and.callFake(function() {
+            return {
+                then: function(){
+
+                }
+            };
+        });
+
+        var primaryFilter = {
+            key: 'deaths',
+            tableView: 'number_of_deaths',
+            sideFilters: [
+                {
+                    filters: {
+                        key: 'race',
+                        groupBy: false,
+                        value: ['White', 'Black']
+                    }
+                },
+                {
+                    filters: {
+                        key: 'gender',
+                        groupBy: 'row',
+                        value: ['Male']
+                    }
+                }
+            ]
+        }
+
+        searchFactory.generateHashCode(primaryFilter);
+
+        expect(searchService.generateHashCode).toHaveBeenCalled();
+
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].primaryKey).toEqual('deaths');
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].tableView).toEqual('number_of_deaths');
+
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[0].key).toEqual('race');
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[0].groupBy).toEqual(false);
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[0].value).toEqual(['Black', 'White']);
+
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[1].key).toEqual('gender');
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[1].groupBy).toEqual('row');
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[1].value).toEqual(['Male']);
+
+    });
 
     describe('test with mortality data', function () {
         beforeAll(function() {
@@ -568,5 +615,6 @@ describe('search factory ', function(){
             deferred.resolve(response);
             $scope.$apply();
         });
-    })
+    });
+    
 });
