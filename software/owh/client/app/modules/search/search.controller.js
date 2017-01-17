@@ -300,10 +300,14 @@
                         if (sc.filters.selectedPrimaryFilter.sideFilters[i].filters.key === response.data.queryJSON.sideFilters[i].filters.key) {
                             sc.filters.selectedPrimaryFilter.sideFilters[i].filters.groupBy = response.data.queryJSON.sideFilters[i].filters.groupBy;
                             sc.filters.selectedPrimaryFilter.sideFilters[i].filters.value = response.data.queryJSON.sideFilters[i].filters.value;
-                            //To show selected nodes in sidefilters section
+                            //To show selected nodes in sidefilters section in yrbs page
                             var group = response.data.queryJSON.sideFilters[i].filterGroup ? response.data.queryJSON.sideFilters[i] : response.data.queryJSON.sideFilters[i].filters;
                             if(group.filterType === 'tree') {
                                 sc.filters.selectedPrimaryFilter.sideFilters[i].filters.selectedNodes =  group.selectedNodes ;
+                            }
+                            //To show UCD & MCD selected values in mortality page
+                            if(group.filterType == 'conditions') {
+                                sc.filters.selectedPrimaryFilter.sideFilters[i].filters.autoCompleteOptions =  group.autoCompleteOptions ;
                             }
                         }
                     }
