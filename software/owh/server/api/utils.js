@@ -46,7 +46,7 @@ var populateDataWithMappings = function(resp, countKey, countQueryKey) {
                 result.data.nested.maps[dataKey]= aggData[dataKey];
                 // console.log("done");
             } else {
-                result.data.simple[key] = populateAggregatedData(data[key].buckets, countKey);
+                result.data.simple[key] = populateAggregatedData(data[key].buckets, countKey, undefined, undefined, countQueryKey);
             }
         });
     }

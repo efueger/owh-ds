@@ -643,6 +643,19 @@ describe('search factory ', function(){
             deferred.resolve(response);
             $scope.$apply();
         });
+
+        it('test searchCensusInfo for population counts in side filters', function () {
+            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
+            primaryFilter.searchResults(primaryFilter).then(function() {
+                primaryFilter.allFilters.forEach(function (eachFilter) {
+                    eachFilter.autoCompleteOptions.forEach(function (option) {
+                        expect(option.bridge_race).toBeDefined();
+                    });
+                });
+            });
+            deferred.resolve(response);
+            $scope.$apply();
+        });
     });
     
 });

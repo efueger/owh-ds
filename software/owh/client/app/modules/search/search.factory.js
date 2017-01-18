@@ -821,20 +821,42 @@
         }
 
         function queryCensusAPI( primaryFilter, queryID ) {
-
             var deferred = $q.defer();
-            var apiQuery = buildAPIQuery(primaryFilter);
-            var headers = apiQuery.headers;
-
             SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 deferred.resolve({
                     data : response.data.resultData.nested.table,
                     headers : response.data.resultData.headers,
+                    sideFilterResults: response.data.sideFilterResults,
                     chartData: prepareChartData(response.data.resultData.headers, response.data.resultData.nested, primaryFilter),
                     totalCount: response.pagination.total
                 })
             });
             return deferred.promise;
+        }
+
+        /**
+         * Update the total count in side filter options
+         * @param primaryFilter
+         * @param sideFilterData
+         */
+        function updateSideFilterPopulationCount(primaryFilter, sideFilterData) {
+            angular.forEach(sideFilterData, function (eachFilterData, key) {
+                //get the filter
+                var filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', key);
+                if (filter) {
+                    //assign total count to all options
+                    if (filter.autoCompleteOptions) {
+                        angular.forEach(filter.autoCompleteOptions, function (option) {
+                            var optionData = utilService.findByKeyAndValue(eachFilterData, 'name', option.key);
+                            if (optionData) {
+                                option[primaryFilter.key] = optionData[primaryFilter.key];
+                            } else {
+                                option[primaryFilter.key] = 0;
+                            }
+                        });
+                    }
+                }
+            });
         }
 
         /**
@@ -847,6 +869,9 @@
                 primaryFilter.data = response.data;
                 primaryFilter.headers = response.headers;
                 primaryFilter.chartData = response.chartData;
+                //update total population count for side filters
+                debugger;
+                updateSideFilterPopulationCount(primaryFilter, response.sideFilterResults.data.simple);
                 deferred.resolve({});
             });
 
@@ -1256,28 +1281,28 @@
                     chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop', tableView:'bridge_race',
                     sideFilters:[
                         {
-                            filterGroup: false, collapse: false, allowGrouping: true, dontShowCounts: true,
+                            filterGroup: false, collapse: false, allowGrouping: true,
                             filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'current_year')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'sex'), dontShowCounts: true
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'sex')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'agegroup'), dontShowCounts: true
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'agegroup')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'race'), dontShowCounts: true
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'race')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'ethnicity'), dontShowCounts: true
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'ethnicity')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'state'), dontShowCounts: true
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'state')
                         }
                     ]
                 }

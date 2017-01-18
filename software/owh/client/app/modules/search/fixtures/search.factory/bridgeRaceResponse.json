@@ -318,6 +318,92 @@
         ]
       ]
     },
+    "sideFilterResults":{
+      "data":{
+        "simple":{
+          "current_year": [
+            {
+              "name": "2000",
+              "bridge_race": 282162411
+            },
+            {
+              "name": "2001",
+              "bridge_race": 284968955
+            },
+            {
+              "name": "2002",
+              "bridge_race": 287625193
+            },
+            {
+              "name": "2003",
+              "bridge_race": 290107933
+            }
+          ],
+          "race": [
+            {
+              "name": "American Indian",
+              "bridge_race": 61777509
+            },
+            {
+              "name": "Asian or Pacific Islander",
+              "bridge_race": 0
+            }
+          ],
+          "ethnicity": [
+            {
+              "name": "Hispanic",
+              "bridge_race": 745898226
+            },
+            {
+              "name": "Non-Hispanic",
+              "bridge_race": 4089686736
+            }
+          ],
+          "sex": [
+            {
+              "name": "Female",
+              "bridge_race": 2458763697
+            },
+            {
+              "name": "Male",
+              "bridge_race": 2376821265
+            }
+          ],
+          "state": [
+            {
+              "name": "01",
+              "bridge_race": 74720167
+            },
+            {
+              "name": "02",
+              "bridge_race": 11001501
+            },
+            {
+              "name": "04",
+              "bridge_race": 97270350
+            },
+            {
+              "name": "05",
+              "bridge_race": 45486920
+            }
+          ],
+          "agegroup": [
+            {
+              "name": "0-4 years",
+              "bridge_race": 317711228
+            },
+            {
+              "name": "10-14 years",
+              "bridge_race": 334186315
+            },
+            {
+              "name": "15-19 years",
+              "bridge_race": 341427822
+            }
+          ]
+        }
+      }
+    }
 
   },
   "pagination":{
