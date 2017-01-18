@@ -463,13 +463,9 @@
         /*Show expanded graphs with whole set of features*/
         function showExpandedGraph(chartData, graphTitle, graphSubTitle,
                                    chartTypes, primaryFilters, selectedQuestion) {
-            console.log('showExpandedGraph');
-            console.log(JSON.stringify(chartData));
 
             /**
              * Update chart dimensions and data
-             * @param chartData
-             * @returns {Array}
              */
             var updateChart = function (chartData) {
                 var allExpandedChartDatas = [];
@@ -572,7 +568,7 @@
                      * @param chartType
                      * @returns {*}
                      */
-                    eg.getYrbsChartName = function (chartType) {
+                    eg.getChartName = function (chartType) {
                         var chartNames = {'yrbsSex&yrbsRace':'Sex and Race',
                             'yrbsSex&yrbsGrade':'Sex and Grade',
                             'yrbsGrade&yrbsRace': 'Grade and Race',
@@ -595,8 +591,8 @@
                         searchFactory.prepareQuestionChart(eg.primaryFilters,
                             eg.selectedQuestion, chartType).then(function (response) {
                             eg.chartData = updateChart([response.chartData]);
-                            eg.activeTab = eg.getYrbsChartName(chartType);
-                        })
+                            eg.activeTab = eg.getChartName(chartType);
+                        });
                     }
                 },
                 size:650
