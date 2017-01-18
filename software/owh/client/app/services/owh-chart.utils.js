@@ -111,50 +111,40 @@
 
             if (primaryFilter.key == 'mental_health') {
 
-                //if primary and secondary filters are same i.e. Single filter
-                if (filter1.queryKey == filter2.queryKey) {
-                    var primaryDataObj = {};
-                    //series name
-                    primaryDataObj["key"] = primaryFilter.chartAxisLabel;
-                    primaryDataObj["values"] = [];
-                    angular.forEach(utilService.getSelectedAutoCompleteOptions(filter1), function (primaryOption,index) {
+                var getBarValues = function (barData, filter) {
+                    var barValues = [];
+                    angular.forEach(utilService.getSelectedAutoCompleteOptions(filter), function (option,index) {
                         //get data for series
-                        var eachPrimaryData = utilService.findByKeyAndValue(data.question[0][filter1.queryKey], 'name', primaryOption.key);
+                        var eachPrimaryData = utilService.findByKeyAndValue(barData, 'name', option.key);
                         //set data to series values
-                        primaryDataObj.values.push({"label":primaryOption.title, "value":
-                        (eachPrimaryData &&  eachPrimaryData[primaryFilter.key]) ?
-                            parseFloat(eachPrimaryData[primaryFilter.key].mean) : 0});
+                        barValues.push({"label":option.title, "value":
+                            (eachPrimaryData &&  eachPrimaryData[primaryFilter.key]) ?
+                                parseFloat(eachPrimaryData[primaryFilter.key].mean) : 0});
 
                     });
-                    multiChartBarData.push(primaryDataObj);
+                    return barValues;
+                };
+                //if primary and secondary filters are same i.e. Single filter
+                if (filter1.queryKey == filter2.queryKey) {
+                    var seriesDataObj = {};
+                    //series name
+                    seriesDataObj["key"] = primaryFilter.chartAxisLabel;
+                    //collect series values
+                    seriesDataObj["values"] = getBarValues(data.question[0][filter1.queryKey], filter1);
+                    multiChartBarData.push(seriesDataObj);
                 } else {//for two filters
                     angular.forEach(utilService.getSelectedAutoCompleteOptions(filter1), function (primaryOption,index) {
-                        var primaryDataObj = {};
-                        //get data for series
+                        var seriesDataObj = {};
                         var eachPrimaryData = utilService.findByKeyAndValue(data.question[0][filter1.queryKey], 'name', primaryOption.key);
                         //Set name to series
-                        primaryDataObj["key"] = primaryOption.title;
+                        seriesDataObj["key"] = primaryOption.title;
                         if(filter1.queryKey === 'sex') {
-                            primaryDataObj["color"] = primaryOption.key === 'Male' ?  "#009aff" : "#fe66ff";
+                            seriesDataObj["color"] = primaryOption.key === 'Male' ?  "#009aff" : "#fe66ff";
                         }
-                        primaryDataObj["values"] = [];
-                        //set chart values to series
-                        if(eachPrimaryData && eachPrimaryData[filter2.queryKey]) {
-                            angular.forEach(utilService.getSelectedAutoCompleteOptions(filter2) , function (secondaryOption,j) {
-                                var eachSecondaryData = utilService.findByKeyAndValue(eachPrimaryData[filter2.queryKey], 'name', secondaryOption.key);
-                                primaryDataObj.values.push({"label":secondaryOption.title, "value":
-                                    (eachSecondaryData &&  eachSecondaryData[primaryFilter.key]) ?
-                                        parseFloat(eachSecondaryData[primaryFilter.key].mean) : 0});
-                            });
-                            multiChartBarData.push(primaryDataObj);
-                        } else {//if no data avalable, set it yo zero
-                            angular.forEach(utilService.getSelectedAutoCompleteOptions(filter2), function (secondaryOption,j) {
-                                primaryDataObj.values.push(
-                                    { label : secondaryOption.title, value : 0 }
-                                );
-                            });
-                            multiChartBarData.push(primaryDataObj);
-                        }
+
+                        //collect series values
+                        seriesDataObj["values"] = getBarValues(eachPrimaryData[filter2.queryKey], filter2);
+                        multiChartBarData.push(seriesDataObj);
                     });
                 }
 
