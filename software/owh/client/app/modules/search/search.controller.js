@@ -354,7 +354,7 @@
                         filter.queryKey = 'ethnicity_group';
                         filter.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
                     } else {
-                        filter.queryKey = 'hispanicOrigin';
+                        filter.queryKey = 'hispanic_origin';
                         filter.autoCompleteOptions = sc.filters.hispanicOptions;
                     }
                 }
@@ -365,7 +365,7 @@
                         filter.filters.queryKey = 'ethnicity_group';
                         filter.filters.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
                     } else {
-                        filter.filters.queryKey = 'hispanicOrigin';
+                        filter.filters.queryKey = 'hispanic_origin';
                         filter.filters.autoCompleteOptions = sc.filters.hispanicOptions;
                     }
                 }
