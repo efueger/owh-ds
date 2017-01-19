@@ -463,7 +463,6 @@
                 angular.forEach(chartData, function(eachChartData) {
                     var expandedChartData = angular.copy(eachChartData);
                     /*Update chartData options*/
-                    debugger;
                     expandedChartData.options.chart.height = 500;
                     expandedChartData.options.chart.width = 750;
                     expandedChartData.options.chart.showLegend = true;

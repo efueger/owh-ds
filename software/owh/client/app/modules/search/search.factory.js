@@ -870,7 +870,6 @@
                 primaryFilter.headers = response.headers;
                 primaryFilter.chartData = response.chartData;
                 //update total population count for side filters
-                debugger;
                 updateSideFilterPopulationCount(primaryFilter, response.sideFilterResults.data.simple);
                 deferred.resolve({});
             });
