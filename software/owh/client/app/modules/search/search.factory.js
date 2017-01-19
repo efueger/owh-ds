@@ -296,7 +296,7 @@
                 "yrbsGrade&yrbsRace": "horizontalBar",
                 "yrbsSex": "horizontalBar",
                 "yrbsRace": "horizontalBar",
-                "yrbsGrade": "horizontalBar",
+                "yrbsGrade": "horizontalBar"
             };
 
             var chartTypes = [];
