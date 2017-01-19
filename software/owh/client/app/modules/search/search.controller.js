@@ -307,7 +307,7 @@
                             }
                             //To show UCD & MCD selected values in mortality page
                             if(group.filterType == 'conditions') {
-                                sc.filters.selectedPrimaryFilter.sideFilters[i].filters.autoCompleteOptions =  group.autoCompleteOptions ;
+                                sc.filters.selectedPrimaryFilter.sideFilters[i].filters.selectedValues =  group.selectedValues ;
                             }
                         }
                     }
