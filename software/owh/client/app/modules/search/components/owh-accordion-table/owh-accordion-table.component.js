@@ -10,7 +10,8 @@
                 data: '<',
                 headers: '<',
                 showCi: '<',
-                showUf: '<'
+                showUf: '<',
+                showCharts:'<'
             }
         });
     OWHAccordionTableController.$inject = ['$scope', 'utilService', '$rootScope'];

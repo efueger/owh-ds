@@ -171,6 +171,14 @@ var BridgeRaceStepDefinitionsWrapper = function () {
         callback(null, 'done');
     });
 
+    this.Then(/^I see population count for "([^"]*)" option$/, function (arg) {
+        var countEle = element(by.cssContainingText('.count-label', arg))
+            .element(by.xpath('following-sibling::span'));
+        countEle.getText().then(function (text) {
+            expect(parseInt(text)).to.be.above(0);
+        });
+    });
+
 };
 
 module.exports = BridgeRaceStepDefinitionsWrapper;
