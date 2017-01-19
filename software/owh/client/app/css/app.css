@@ -1022,7 +1022,7 @@ body {
 .owh-side-menu__utility-option {
     padding-left: 10px;
     padding-right: 5px;
-    min-height: 50px;
+    min-height: 30px;
 }
 
 .owh-side-menu__options-list {
