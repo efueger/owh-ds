@@ -59,23 +59,24 @@
         sc.optionsGroup = {
             "number_of_deaths": {
                 "hispanicOrigin": [
+                    'Non-Hispanic',
                     {
                         "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic'],
                         "title": "Hispanic",
                         "key": "Hispanic"
                     },
-                    'Non-Hispanic',
                     'Unknown'
                 ],
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1997','1995','1993','1991' ]
             },
             "crude_death_rates": {
-                "hispanicOrigin": ['Hispanic', 'Non-Hispanic', 'Unknown'],
+                "hispanicOrigin": ['Non-Hispanic', 'Hispanic', 'Unknown'],
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
             },
             "age-adjusted_death_rates": {
+                "hispanicOrigin": ['Non-Hispanic', 'Hispanic', 'Unknown'],
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
             },
@@ -362,7 +363,7 @@
                         filter.queryKey = 'ethnicity_group';
                         filter.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
                     } else {
-                        filter.queryKey = 'hispanicOrigin';
+                        filter.queryKey = 'hispanic_origin';
                         filter.autoCompleteOptions = sc.filters.hispanicOptions;
                     }
                 }
@@ -373,7 +374,7 @@
                         filter.filters.queryKey = 'ethnicity_group';
                         filter.filters.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
                     } else {
-                        filter.filters.queryKey = 'hispanicOrigin';
+                        filter.filters.queryKey = 'hispanic_origin';
                         filter.filters.autoCompleteOptions = sc.filters.hispanicOptions;
                     }
                 }

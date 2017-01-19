@@ -263,7 +263,7 @@ describe("Search controller: ", function () {
         spyOn(searchController, 'search');
 
         var ethnicityFilter = {
-            query_key: 'hispanicOrigin',
+            query_key: 'hispanic_origin',
             key: 'hispanicOrigin'
         };
 
@@ -290,7 +290,7 @@ describe("Search controller: ", function () {
 
         searchController.changeViewFilter({key: 'number_of_deaths'});
 
-        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].queryKey).toEqual('hispanicOrigin');
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].queryKey).toEqual('hispanic_origin');
         expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[0].key).toEqual('Cuban');
         expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[1].key).toEqual('Dominican');
     });
