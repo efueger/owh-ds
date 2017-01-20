@@ -2,7 +2,7 @@
 
 /*group of common test goes here as describe*/
 describe('chart utils', function(){
-    var chartUtils, shareUtils, closeDeferred, givenModalDefaults, ModalService, $rootScope, $scope, controllerProvider,
+    var chartUtils, shareUtils, searchFactory, diferred, closeDeferred, givenModalDefaults, ModalService, $rootScope, $scope, controllerProvider,
         filter1, filter2, filter3, data1, data2, primaryFilter, postFixToTooltip,
         horizontalStackExpectedResult1, horizontalStackExpectedResult2,
         verticalStackExpectedResult, horizontalBarExpectedResult,
@@ -39,12 +39,14 @@ describe('chart utils', function(){
 
     beforeEach(inject(function ($injector, _$rootScope_, $controller, _$q_, _$templateCache_) {
         closeDeferred = _$q_.defer();
+        diferred = _$q_.defer();
         controllerProvider = $controller;
         $rootScope  = _$rootScope_;
         $scope = $rootScope.$new();
         $templateCache = _$templateCache_;
         chartUtils = $injector.get('chartUtilService');
         shareUtils = $injector.get('shareUtilService');
+        searchFactory = $injector.get('searchFactory');
         $httpBackend = $injector.get('$httpBackend');
         filter1 = __fixtures__['app/services/fixtures/owh.chart.utils/filter1'];
         filter2 = __fixtures__['app/services/fixtures/owh.chart.utils/filter2'];
@@ -244,6 +246,32 @@ describe('chart utils', function(){
         expect(ctrl.graphSubTitle).toEqual('graph sub title');
         ctrl.showFbDialog();
         expect(shareUtils.shareOnFb).toHaveBeenCalled();
+    });
+
+    it('test chart utils showExpandedGraph for getChartName', function () {
+        var ctrl = controllerProvider(givenModalDefaults.controller,
+            { $scope: $scope, close: closeDeferred.promise});
+        var chartName = ctrl.getChartName(['yrbsSex','yrbsGrade']);
+        expect(chartName).toEqual('Sex and Grade');
+
+        var chartName = ctrl.getChartName(['yrbsGrade']);
+        expect(chartName).toEqual('Grade');
+    });
+
+    it('test chart utils showExpandedGraph for getYrbsChartData', function () {
+
+        spyOn(searchFactory, 'prepareQuestionChart').and.returnValue(diferred.promise);
+
+        var ctrl = controllerProvider(givenModalDefaults.controller,
+            { $scope: $scope, close: closeDeferred.promise, shareUtilService: shareUtils, searchFactory: searchFactory});
+
+        ctrl.primaryFilters = {key:"mental health", value:[]};
+        ctrl.selectedQuestion = {key:'Currently smoked', qKey:'qbe23', 'title':"Currently smoked"};
+
+        ctrl.getYrbsChartData(['yrbsSex','yrbsGrade']);
+
+        diferred.resolve({chartData:horizontalBarExpectedResult});
+        $scope.$apply()
     });
 
 });

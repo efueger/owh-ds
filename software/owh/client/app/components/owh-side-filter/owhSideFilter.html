@@ -185,13 +185,13 @@
                     <div class="owh-side-menu__utility-option" ng-repeat="option in util.options">
                         <div ng-if="option.type === 'toggle'">
                             <span>{{option.title}}</span>
-                            <br/>
                             <owh-toggle-switch class="pull-right"
                                                model="option.value"
                                                options="option.options"
                                                on-change="option.onChange(option.value)">
                             </owh-toggle-switch>
                         </div>
+                        <br ng-if="$index === 0" />
                     </div>
                 </ul>
             </span>
