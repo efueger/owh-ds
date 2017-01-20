@@ -825,6 +825,7 @@
             SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 deferred.resolve({
                     data : response.data.resultData.nested.table,
+                    queryJSON: response.data.queryJSON,
                     headers : response.data.resultData.headers,
                     sideFilterResults: response.data.sideFilterResults,
                     chartData: prepareChartData(response.data.resultData.headers, response.data.resultData.nested, primaryFilter),
@@ -871,7 +872,7 @@
                 primaryFilter.chartData = response.chartData;
                 //update total population count for side filters
                 updateSideFilterPopulationCount(primaryFilter, response.sideFilterResults.data.simple);
-                deferred.resolve({});
+                deferred.resolve(response);
             });
 
             return deferred.promise;
