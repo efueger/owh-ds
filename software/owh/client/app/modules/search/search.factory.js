@@ -1238,11 +1238,11 @@
             ];
 
             filters.ucdMcdFilters = [
-                {key: 'ucd-filters', title: 'label.filter.ucd', queryKey:"",
+                {key: 'ucd-filters', title: 'label.filter.ucd', selectTitle: 'select.label.filter.ucd', updateTitle: 'update.label.filter.ucd', queryKey:"",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.ucd",
                     filterType: 'conditions', groupOptions: filters.conditionGroupOptions,
                     autoCompleteOptions: utilService.findAllByKeyAndValue(filters.allMortalityFilters, 'key', 'ucd-chapter-10')},
-                {key: 'mcd-filters', title: 'label.filter.mcd', queryKey:"",
+                {key: 'mcd-filters', title: 'label.filter.mcd', selectTitle: 'select.label.filter.mcd', updateTitle: 'update.label.filter.mcd',  queryKey:"",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.mcd",
                     filterType: 'conditions', groupOptions: [],
                     autoCompleteOptions: utilService.findAllByKeyAndValue(filters.allMortalityFilters, 'key', 'mcd-chapter-10')}
