@@ -47,30 +47,23 @@
                     </li>
 
                     <!--Radio button filters (UCD & MCD)-->
-                    <li ng-if="group.filterType === 'conditions'" ng-repeat="option in group.autoCompleteOptions" class="group-option" >
-                        <!--<input id="{{option.key}}" type="radio" ng-model="group.value" ng-value="option.key"
-                               ng-click="sfc.showModal(option.key, option.value, group.autoCompleteOptions)">-->
-                        <label for="{{option.key}}" class="custom-label" style="margin-bottom: 0">
-                            <button class="action-button condition-option" translate="select.{{option.title}}"
-                                    ng-click="group.value = option.key;sfc.showModal(option, group.autoCompleteOptions)"></button>
-                            <owh-toggle-switch class="pull-right" ng-show="option.selectedValues.length > 0 "
-                                               options="group.groupOptions"
-                                               model="option.groupBy" on-change="sfc.onFilter()"
-                                               tooltip="{{'label.group.by.tooltip' | translate}}">
-                            </owh-toggle-switch>
+                    <li ng-if="group.filterType === 'conditions' && ( group.key === 'ucd-filters' || group.key === 'mcd-filters')"  class="group-option" >
+                       <label for="{{group.key}}" class="custom-label" style="margin-bottom: 0">
+                            <button class="action-button condition-option"
+                                    translate="{{group.selectedValues && group.selectedValues.length > 0 ? group.updateTitle : group.selectTitle}}"
+                                    ng-click="sfc.showModal(group, [group])"></button>
 
                         </label>
-                        <div ng-show="group.value===option.key">
-                            <div ng-repeat="selectedValue in option.selectedValues" >
+                            <div ng-repeat="selectedValue in group.selectedValues" >
                                 <span style="font-size: 13px" ng-bind="selectedValue.text"></span>
                             </div>
-                            <div ng-if="!option.selectedValues || option.selectedValues.length === 0" style="margin-bottom: 20px">
+                            <div ng-if="!group.selectedValues || group.selectedValues.length === 0" style="margin-bottom: 20px">
                                 <span style="font-size: 13px">All</span>
                             </div>
-                        </div>
-                          <div class="ucd-clear" ng-show="option.selectedValues.length > 0 ">
+
+                          <div class="ucd-clear" ng-show="group.selectedValues.length > 0 ">
                               <button class="action-button" translate="label.clear"
-                                      ng-click="sfc.clearSelection(option, true)"></button>
+                                      ng-click="sfc.clearSelection(group, true)"></button>
                             </div>
                     </li>
                     <!--Radio button filters (UCD & MCD)-->

@@ -946,7 +946,7 @@
 
             filters.podOptions = [
                 {key:'Decedent’s home',title:'Decedent’s home'},
-                {key:'Hospital, clinic or Medical Center - Patient status unknown',title:'Hospital, clinic or Medical Center-  Patient status unknown'},
+                {key:'Hospital, Clinic or Medical Center - Patient status unknown',title:'Hospital, clinic or Medical Center-  Patient status unknown'},
                 {key:'Hospital, Clinic or Medical Center - Dead on Arrival',title:'Hospital, Clinic or Medical Center-  Dead on Arrival'},
                 {key:'Hospital, clinic or Medical Center - Inpatient',title:'Hospital, clinic or Medical Center-  Inpatient'},
                 {key:'Hospital, Clinic or Medical Center - Outpatient or admitted to Emergency Room',title:'Hospital, Clinic or Medical Center-  Outpatient or admitted to Emergency Room'},
@@ -1239,11 +1239,11 @@
             ];
 
             filters.ucdMcdFilters = [
-                {key: 'ucd-filters', title: 'label.filter.ucd', queryKey:"",
+                {key: 'ucd-filters', title: 'label.filter.ucd', selectTitle: 'select.label.filter.ucd', updateTitle: 'update.label.filter.ucd', queryKey:"",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.ucd",
                     filterType: 'conditions', groupOptions: filters.conditionGroupOptions,
                     autoCompleteOptions: utilService.findAllByKeyAndValue(filters.allMortalityFilters, 'key', 'ucd-chapter-10')},
-                {key: 'mcd-filters', title: 'label.filter.mcd', queryKey:"",
+                {key: 'mcd-filters', title: 'label.filter.mcd', selectTitle: 'select.label.filter.mcd', updateTitle: 'update.label.filter.mcd',  queryKey:"",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.mcd",
                     filterType: 'conditions', groupOptions: [],
                     autoCompleteOptions: utilService.findAllByKeyAndValue(filters.allMortalityFilters, 'key', 'mcd-chapter-10')}

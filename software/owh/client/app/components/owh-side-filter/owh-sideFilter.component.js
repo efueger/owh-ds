@@ -110,7 +110,7 @@
                     clearSelection(eachFilter)
                 }
             });
-            var showTree = selectedFilter.key ==='ucd-chapter-10' || selectedFilter.key === 'question';
+            var showTree = selectedFilter.key ==='ucd-filters' || selectedFilter.key === 'question';
             if(!showTree) {
                 searchFactory.showPhaseTwoModal('label.mcd.impl.next');
             }else {
@@ -123,7 +123,7 @@
                         mc.codeKey = selectedFilter.key;
                         mc.entityName = selectedFilter.key === 'question' ? 'Question' : 'Disease';
                         mc.modelHeader = selectedFilter.key === 'question' ? 'label.select.question' : 'label.cause.death';
-                        mc.optionValues = selectedFilter.selectedNodes;
+                        mc.optionValues = selectedFilter.selectedNodes ? selectedFilter.selectedNodes : selectedFilter.selectedValues;
                         mc.close = close;
                     }
                 }).then(function (modal) {
@@ -133,7 +133,7 @@
                     modal.element.show();
                     modal.close.then(function (result) {
                         //remove all elements from array
-                        if(!selectedFilter.selectedValues) {
+                        if(!selectedFilter.selectedValues || !selectedFilter.selectedNodes) {
                             //selected nodes and their child nodes, which will be sent to backend for query
                             selectedFilter.selectedValues = [];
                             //selected nodes
