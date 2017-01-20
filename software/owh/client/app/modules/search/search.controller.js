@@ -68,7 +68,7 @@
                     'Unknown'
                 ],
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
-                "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1997','1995','1993','1991' ]
+                "year": ['2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1997','1995','1993','1991' ]
             },
             "crude_death_rates": {
                 "hispanicOrigin": ['Non-Hispanic', 'Hispanic', 'Unknown'],
@@ -140,7 +140,22 @@
         //this flags whether to cache the incoming filter query
         sc.cacheQuery = $stateParams.cacheQuery;
 
+        function setDefaults() {
+            var yearFilter = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters, 'key', 'year');
+            angular.forEach(sc.optionsGroup[sc.tableView]['year'], function(year) {
+                if(!yearFilter.autoCompleteOptions) {
+                    yearFilter.autoCompleteOptions = [];
+                }
+                yearFilter.autoCompleteOptions.push({
+                    key: year,
+                    title: year
+                });
+            });
+            yearFilter.value.push('2014');
+        }
+
         if(sc.queryID === '') {
+            setDefaults();
             //run default query
             search(true);
         }
