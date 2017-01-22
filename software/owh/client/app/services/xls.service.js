@@ -184,8 +184,10 @@
                     }
                     rowArray.push({title: cell.title, colspan: colspan, rowspan: cell.rowspan});
                     //if we have a percentage then add an extra column to display it
-                    if(table.calculatePercentage && cell.percentage !== undefined && innerIdx < row.length - 1 ) {
-                        rowArray.push({title: cell.percentage, colspan: colspan, rowspan: cell.rowspan});
+                    if(table.calculatePercentage
+                        && (cell.percentage !== undefined || cell.title === 'suppressed')
+                        && innerIdx < row.length - 1 ) {
+                        rowArray.push({title: (cell.percentage ? cell.percentage : ''), colspan: colspan, rowspan: cell.rowspan});
                     }
                 });
                 sheet.push(rowArray);

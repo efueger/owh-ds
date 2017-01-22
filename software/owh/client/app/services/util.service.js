@@ -511,6 +511,11 @@
             var title = Number(count);
             if(isNaN(title)) {
                 title = count;
+            } else {
+                //need to set total count if title is number but row total is suppressed
+                if(isNaN(totalCount)) {
+                    totalCount = 0;
+                }
             }
             var cell = {
                 title: title,
