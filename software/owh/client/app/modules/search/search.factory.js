@@ -1314,23 +1314,23 @@
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'year')
                         },
                         {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsSex')
                         },
                         {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsRace')
                         },
                         {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsGrade')
                         },
                         {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsState')
                         },
                         {
-                            filterGroup: false, collapse: true, allowGrouping: false,
+                            filterGroup: false, collapse: true, allowGrouping: false, dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'question')
                         }
                     ]
