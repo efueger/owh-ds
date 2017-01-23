@@ -187,7 +187,7 @@
                 {key: 'ethnicity', title: 'label.filter.hispanicOrigin', queryKey:"ethnicity_group",primary: false, defaultGroup:'row', groupBy: false,
                     autoCompleteOptions: angular.copy(censusHispanicOriginOptions), value:[]},
                 {key: 'state', title: 'label.filter.state', queryKey:"state",primary: false, value:[], defaultGroup:'row', groupBy: false,
-                    autoCompleteOptions: angular.copy(censusStateOptions), displaySearchBox:true}
+                    autoCompleteOptions: angular.copy(censusStateOptions), displaySearchBox:true, displaySelectedFirst:true}
             ];
 
             return bridgeDataFilters;

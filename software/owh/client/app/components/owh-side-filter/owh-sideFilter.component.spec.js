@@ -286,6 +286,16 @@ describe('OWH Side filter component: ', function() {
         expect(ctrl.isVisible(filter)).toEqual(true);
     });
 
+    it('should return boolean value based on filter option selection', function() {
+        var selectedFilterOptions = ['01', '04', '14'];
+        var bindings = {filters: [], showFilters: []};
+        var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
+        var filter = {filters: {key: 'year'}};
+        expect(ctrl.isOptionSelected({key:'04', 'title': 'Arizona'}, selectedFilterOptions)).toEqual(true);
+        expect(ctrl.isOptionSelected({key:'44', 'title': 'Arizona'}, selectedFilterOptions)).toEqual(false);
+        expect(ctrl.isOptionSelected({key:'44', 'title': 'Arizona'}, [])).toEqual(false);
+    });
+
     it('filterGroup should properly toggle group keys in value array', function() {
         var bindings = {filters: [], onFilter: angular.noop};
         var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
