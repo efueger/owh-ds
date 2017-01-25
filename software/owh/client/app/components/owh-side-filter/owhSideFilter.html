@@ -108,8 +108,7 @@
                     </li>
 
                     <li ng-repeat="option in group.autoCompleteOptions | filter:search as filteredOptions"
-                        ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'
-                        && group.filterType !== 'radio' && group.displaySelectedFirst"
+                        ng-if="group.displaySelectedFirst"
                         class="group-option">
                         <div ng-show="!option.group && sfc.isOptionSelected(option, group.value)">
                             <input id="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" type="checkbox"
