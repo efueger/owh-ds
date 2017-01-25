@@ -30,7 +30,6 @@ class NatalityETL (ETL):
                 if not record:
                     break
                 record_count += 1
-                self._check_blanks(record)
                 self.batchRepository.persist({"index": {"_index": self.config['elastic_search']['index'],
                                                         "_type": self.config['elastic_search']['type'],
                                                         "_id": record_count}})
@@ -41,11 +40,6 @@ class NatalityETL (ETL):
         self.metrics.insertCount = record_count
         logger.info("*** Processed %s records from all natality data files", self.metrics.insertCount)
 
-
-    def _check_blanks(self, record):
-        for key, value in record.iteritems():
-            if value == '':  # check for blank
-                record[key] = '-9'
 
     def validate_etl(self):
         """ Validate the ETL"""
