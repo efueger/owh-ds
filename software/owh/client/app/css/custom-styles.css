@@ -714,6 +714,10 @@ table thead {
 .custom-modal-body {
 	padding: 15px !important;
 }
+
+.thin-border-top {
+	border-top: 1px solid #e2e3e3 !important;
+}
 .action-button {
 	background-color: #833eb0;
 	border-radius: 4px;
