@@ -11,7 +11,7 @@
       "2": "Puerto Rican",
       "3": "Cuban",
       "4": "Central and South American",
-      "5": "Other and Unknown Hispanic origin",
+      "5": "Other and Unknown Hispanic Origin",
       "9": "Hispanic origin not stated"
     }
   },
@@ -42,8 +42,8 @@
     "mappings": {
       "1": "White",
       "2": "Black",
-      "3": "American Indian / Alaskan Native",
-      "4": "Asian / Pacific Islander"
+      "3": "American Indian or Alaska Native",
+      "4": "Asian or Pacific Islander"
     }
   },
   {
@@ -123,15 +123,15 @@
     }
   },
   {
-	"column":"sex",
-	"type":"map",
-	"start": 436,
-	"stop": 436,
-	"field": "Sex of Infant",
-	"mappings": {
-	  "M": "Male",
-	  "F": "Female"
-	}
+    "column":"sex",
+    "type":"map",
+    "start": 436,
+    "stop": 436,
+    "field": "Sex of Infant",
+    "mappings": {
+      "M": "Male",
+      "F": "Female"
+    }
   },
   {
     "column":"month_prenatal_care_began",

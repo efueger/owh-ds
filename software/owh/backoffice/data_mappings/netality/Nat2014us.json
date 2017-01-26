@@ -226,7 +226,7 @@
     "description": "Delivery Method Recode Combined",
     "mappings": {
       "1": "Vaginal",
-      "2": "C-Section",
+      "2": "Cesarean",
       "9": "Unknown"
     }
   },
