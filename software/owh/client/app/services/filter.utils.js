@@ -12,7 +12,8 @@
      */
     function filterUtils(utilService, $timeout) {
         return {
-            getBridgeDataFilters: getBridgeDataFilters
+            getBridgeDataFilters: getBridgeDataFilters,
+            getNatalityDataFilters: getNatalityDataFilters
         };
 
         function getBridgeDataFilters() {
@@ -191,6 +192,270 @@
             ];
 
             return bridgeDataFilters;
+        }
+
+        function getNatalityDataFilters() {
+            //bridge data filter options
+            var yearOptions = [
+                { "key": "2014", "title": "2014" },
+                { "key": "2013", "title": "2013" },
+                { "key": "2012", "title": "2012" },
+                { "key": "2011", "title": "2011" },
+                { "key": "2010", "title": "2010" },
+                { "key": "2009", "title": "2009" },
+                { "key": "2008", "title": "2008" },
+                { "key": "2007", "title": "2007" }
+            ];
+
+            var monthOptions = [
+                { "key": "January", "title": "January" },
+                { "key": "February", "title": "February" },
+                { "key": "March", "title": "March" },
+                { "key": "April", "title": "April" },
+                { "key": "May", "title": "May" },
+                { "key": "June", "title": "June" },
+                { "key": "July", "title": "July" },
+                { "key": "August", "title": "August" },
+                { "key": "September", "title": "September" },
+                { "key": "October", "title": "October" },
+                { "key": "November", "title": "November" },
+                { "key": "December", "title": "December" }
+            ];
+
+            var weekDayOptions = [
+                { "key": "Sunday", "title": "Sunday" },
+                { "key": "Monday", "title": "Monday" },
+                { "key": "Tuesday", "title": "Tuesday" },
+                { "key": "Wednesday", "title": "Wednesday" },
+                { "key": "Thursday", "title": "Thursday" },
+                { "key": "Friday", "title": "Friday" },
+                { "key": "Saturday", "title": "Saturday" }
+            ];
+
+            var prenatalCareMonthOptions = [
+                { "key": "No prenatal care", "title": "No prenatal care" },
+                { "key": "1st month", "title": "1st month" },
+                { "key": "2nd month", "title": "2nd month" },
+                { "key": "3rd month", "title": "3rd month" },
+                { "key": "4th month", "title": "4th month" },
+                { "key": "5th month", "title": "5th month" },
+                { "key": "6th month", "title": "6th month" },
+                { "key": "7th month", "title": "7th month" },
+                { "key": "8th month", "title": "8th month" },
+                { "key": "9th month", "title": "9th month" },
+                { "key": "10th month", "title": "10th month" },
+                { "key": "Unknown or not stated", "title": "Unknown or not stated" },
+                { "key": "Not on certificate", "title": "Not on certificate" }
+            ];
+
+            var genderOptions =  [
+                { "key": "Female", "title": "Female" },
+                { "key": "Male", "title": "Male" }
+            ];
+
+            var raceOptions =  [
+                { "key": "American Indian or Alaska Native", "title": "American Indian" },
+                { "key": "Asian or Pacific Islander", "title": "Asian or Pacific Islander" },
+                { "key": "Black", "title": "Black or African American" },
+                { "key": "White", "title": "White" }
+            ];
+
+            var hispanicOptions =  [
+                { "key": "Non-Hispanic", "title": "Non Hispanic" },
+                { "key": "Mexican", "title": "Mexican" },
+                { "key": "Puerto Rican", "title": "Puerto Rican" },
+                { "key": "Cuban", "title": "Cuban" },
+                { "key": "Central and South American", "title": "Central and South American" },
+                { "key": "Other and Unknown Hispanic Origin", "title": "Other and Unknown Hispanic Origin" },
+                { "key": "Other and Unknown Hispanic Origin", "title": "Other and Unknown Hispanic Origin" },
+                { "key": "Hispanic origin not stated", "title": "Hispanic origin not stated" }
+            ];
+
+            var ageOptions =  [
+                { "key": "Under 15 years", "title": "Under 15 years" },
+                { "key": "15-19 years", "title": "15-19 years" },
+                { "key": "20-24 years", "title": "20-24 years" },
+                { "key": "25-29 years", "title": "25-29 years" },
+                { "key": "30-34 years", "title": "30-34 years" },
+                { "key": "35-39 years", "title": "35-39 years" },
+                { "key": "40-44 year", "title": "40-44 year" },
+                { "key": "45-49 years", "title": "45-49 years" },
+                { "key": "50-54 years", "title": "50-54 years" }
+            ];
+
+            var maritalStatusOptions = [
+                {key:'Married', title:'Married'},
+                {key:'Unmarried', title:'Unmarried'},
+                {key:'Unknown or not Stated', title:'Unknown or not Stated'}
+            ];
+
+            var educationOptions = [
+                {key:'8th grade or less', title:'8th grade or less'},
+                {key:'9th through 12th grade with no diploma', title:'9th through 12th grade with no diploma'},
+                {key:'High school graduate or GED completed', title:'High school graduate or GED completed'},
+                {key:'Some college credit, but not a degree', title:'Some college credit, but not a degree'},
+                {key:'Associate degree (AA,AS)', title:'Associate degree (AA,AS)'},
+                {key:'Bachelor’s degree (BA, AB, BS)', title:'Bachelor’s degree (BA, AB, BS)'},
+                {key:'Master’s degree (MA, MS, MEng, MEd, MSW, MBA)', title:'Master’s degree (MA, MS, MEng, MEd, MSW, MBA)'},
+                {key:'Doctorate (PhD, EdD) or Professional Degree (MD, DDS, DVM, LLB, JD)', title:'Doctorate (PhD, EdD) or Professional Degree (MD, DDS, DVM, LLB, JD)'},
+                {key:'Unknown', title:'Unknown'},
+                {key:'Not on certificate', title:'Not on certificate'}
+            ];
+
+            var birthWeightOptions = [
+                {key:'499 grams or less', title:'499 grams or less'},
+                {key:'500 - 999 grams', title:'500 - 999 grams'},
+                {key:'1000 - 1499 grams', title:'1000 - 1499 grams'},
+                {key:'1500 - 1999 grams', title:'1500 - 1999 grams'},
+                {key:'2000 - 2499 grams', title:'2000 - 2499 grams'},
+                {key:'2500 - 2999 grams', title:'2500 - 2999 grams'},
+                {key:'3000 - 3499 grams', title:'3000 - 3499 grams'},
+                {key:'3500 - 3999 grams', title:'3500 - 3999 grams'},
+                {key:'4000 - 4499 grams', title:'4000 - 4499 grams'},
+                {key:'4500 - 4999 grams', title:'4500 - 4999 grams'},
+                {key:'5000 - 8165 grams', title:'5000 - 8165 grams'},
+                {key:'Not Stated', title:'Not Stated'}
+            ];
+            var birthPluralityOptions = [
+                {key:'Single', title:'Single'},
+                {key:'Twin', title:'Twin'},
+                {key:'Triplet', title:'Triplet'},
+                {key:'Quadruplet', title:'Quadruplet'},
+                {key:'Quintuplet or higher', title:'Quintuplet or higher'}
+            ];
+
+            var liveBirthOrderOptions = [
+                {key:'1st child born alive to mother', title:'1st child born alive to mother'},
+                {key:'2nd child born alive to mother', title:'2nd child born alive to mother'},
+                {key:'3rd child born alive to mother', title:'3rd child born alive to mother'},
+                {key:'4th child born alive to mother', title:'4th child born alive to mother'},
+                {key:'5th child born alive to mother', title:'5th child born alive to mother'},
+                {key:'6th child born alive to mother', title:'6th child born alive to mother'},
+                {key:'7th child born alive to mother', title:'7th child born alive to mother'},
+                {key:'8 or more live births', title:'8 or more live births'},
+                {key:'Unknown or not stated', title:'Unknown or not stated'}
+            ];
+
+            var birthPlaceOptions = [
+                {key:'In Hospital', title:'In Hospital'},
+                {key:'Not in Hospital', title:'Not in Hospital'},
+                {key:'Unknown or Not Stated', title:'Unknown or Not Stated'}
+            ];
+
+            var deliveryMethodOptions = [
+                {key:'Cesarean', title:'Cesarean'},
+                {key:'Vaginal', title:'Vaginal'},
+                {key:'Unknown', title:'Unknown'}
+            ];
+
+            var medicalAttendantOptions = [
+                {key:'Doctor of Medicine (MD)', title:'Doctor of Medicine (MD)'},
+                {key:'Doctor of Osteopathy (DO)', title:'Doctor of Osteopathy (DO)'},
+                {key:'Certified Nurse Midwife (CNM)', title:'Certified Nurse Midwife (CNM)'},
+                {key:'Other Midwifen', title:'Other Midwifen'},
+                {key:'Other', title:'Other'},
+                {key:'Unknown or not stated', title:'Unknown or not stated'}
+            ];
+            var chronicHypertensionOptions = [
+                {key:'Yes', title:'Yes'},
+                {key:'No', title:'No'},
+                {key:'Unknown', title:'Unknown'},
+                {key:'Not on certificate', title:'Not on certificate'}
+            ];
+            var pregnancyHypertensionOptions = [
+                {key:'Yes', title:'Yes'},
+                {key:'No', title:'No'},
+                {key:'Unknown', title:'Unknown'},
+                {key:'Not on certificate', title:'Not on certificate'}
+            ];
+
+            var diabetesOptions = [
+                {key:'Yes', title:'Yes'},
+                {key:'No', title:'No'},
+                {key:'Unknown', title:'Unknown'},
+                {key:'Not on certificate', title:'Not on certificate'}
+            ];
+
+            var eclampsiaOptions = [
+                {key:'Yes', title:'Yes'},
+                {key:'No', title:'No'},
+                {key:'Unknown', title:'Unknown'},
+                {key:'Not on certificate', title:'Not on certificate'}
+            ];
+
+            var tobaccoOptions = [
+                {key:'Yes', title:'Yes'},
+                {key:'No', title:'No'},
+                {key:'Unknown', title:'Unknown'},
+                {key:'Not on certificate', title:'Not on certificate'}
+            ];
+
+            //prepare filter definitions
+            var natalityFilters = [
+                {key: 'mother_hispanic_origin', title: 'label.filter.yearly.estimate', queryKey:"mother_hispanic_origin", primary: false, value: ['2015'], defaultGroup:'row', groupBy: false,
+                    autoCompleteOptions: angular.copy(hispanicOptions) },
+                {key: 'mother_age', title: 'label.filter.gender', queryKey:"mother_age", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(ageOptions)},
+
+                {key: 'mother_race', title: 'label.filter.gender', queryKey:"mother_race", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(raceOptions)},
+
+                {key: 'mother_marital_status', title: 'label.filter.gender', queryKey:"mother_marital_status", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(maritalStatusOptions)},
+
+                {key: 'mother_education', title: 'label.filter.gender', queryKey:"mother_education", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(educationOptions)},
+
+                {key: 'dob_yy', title: 'label.filter.gender', queryKey:"dob_yy", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(yearOptions)},
+
+                {key: 'dob_mm', title: 'label.filter.gender', queryKey:"dob_mm", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(monthOptions)},
+
+                {key: 'dob_wk', title: 'label.filter.gender', queryKey:"dob_wk", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(weekDayOptions)},
+
+                {key: 'sex', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(genderOptions)},
+
+                {key: 'month_prenatal_care_began', title: 'label.filter.gender', queryKey:"month_prenatal_care_began", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(prenatalCareMonthOptions)},
+
+                {key: 'birth_weight', title: 'label.filter.gender', queryKey:"birth_weight", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(birthWeightOptions)},
+
+                {key: 'birth_plurality', title: 'label.filter.gender', queryKey:"birth_plurality", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(birthPluralityOptions)},
+
+                {key: 'live_birth_order', title: 'label.filter.gender', queryKey:"live_birth_order", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(liveBirthOrderOptions)},
+
+                {key: 'birth_place', title: 'label.filter.gender', queryKey:"birth_place", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(birthPlaceOptions)},
+
+                {key: 'delivery_method', title: 'label.filter.gender', queryKey:"delivery_method", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(deliveryMethodOptions)},
+
+                {key: 'medical_attendant', title: 'label.filter.gender', queryKey:"medical_attendant", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(medicalAttendantOptions)},
+
+                {key: 'chronic_hypertension', title: 'label.filter.gender', queryKey:"chronic_hypertension", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(chronicHypertensionOptions)},
+
+                {key: 'diabetes', title: 'label.filter.gender', queryKey:"diabetes", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(diabetesOptions)},
+
+                {key: 'pregnancy_hypertension', title: 'label.filter.gender', queryKey:"pregnancy_hypertension", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(pregnancyHypertensionOptions)},
+
+                {key: 'eclampsia', title: 'label.filter.gender', queryKey:"eclampsia", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(eclampsiaOptions)},
+
+                {key: 'tobacco_use', title: 'label.filter.gender', queryKey:"tobacco_use", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                    autoCompleteOptions: angular.copy(eclampsiaOptions)}
+            ];
+
+            return natalityFilters;
         }
     }
 
