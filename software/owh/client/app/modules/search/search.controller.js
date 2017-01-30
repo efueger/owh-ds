@@ -27,6 +27,7 @@
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
         var mortalityFilter = null;
+        var bridgedRaceFilter = null;
 
         sc.sideMenu = {visible: true};
         //For intial search call
@@ -34,6 +35,7 @@
             sc.filters = searchFactory.getAllFilters();
             sc.filters.primaryFilters = utilService.findAllByKeyAndValue(sc.filters.search, 'primary', true);
             mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
+            bridgedRaceFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'bridge_race');
             sc.filters.selectedPrimaryFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', $stateParams.primaryFilterKey);
         }
         //If user change filter then we are re routing search call and setting 'selectedFilters' and 'allFilters' params at line
@@ -41,6 +43,7 @@
             sc.filters = $stateParams.allFilters;
             sc.filters.primaryFilters = utilService.findAllByKeyAndValue(sc.filters.search, 'primary', true);
             mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
+            bridgedRaceFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'bridge_race');
             sc.filters.selectedPrimaryFilter = $stateParams.selectedFilters;
         }
 
@@ -257,16 +260,18 @@
         }
         /**************************************************/
         //US-states map
-        angular.extend(mortalityFilter.mapData, {
+        var mapOptions = {
             usa: {
                 lat: 39,
-                lng: -100,
+                lng: -97,
                 zoom: 3
             },
             legend: {},
             defaults: {
                 tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
-                scrollWheelZoom: false
+                scrollWheelZoom: false,
+                minZoom: 2,
+                maxZoom: 6
             },
             markers: {},
             events: {
@@ -279,7 +284,10 @@
                 custom: [new mapExpandControl(), new mapShareControl()]
             },
             isMap:true
-        });
+        }
+        angular.extend(mortalityFilter.mapData, mapOptions);
+
+        angular.extend(bridgedRaceFilter.mapData, mapOptions);
 
         function getQueryResults(queryID) {
             return searchFactory.getQueryResults(queryID).then(function (response) {
@@ -506,6 +514,7 @@
             if (sc.filters.selectedPrimaryFilter.key === 'bridge_race') {
                 sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                 sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
+                updateStatesDeaths(sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
             }
             sc.filters.selectedPrimaryFilter.initiated = true;
         }
@@ -524,7 +533,12 @@
         }
 
         function getSelectedYears() {
-            var yearFilter = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters, 'key', 'year');
+            console.log(sc.filters.selectedPrimaryFilter.allFilters);
+            var yearKey = 'year';
+            if(sc.tableView === 'bridge_race') {
+                yearKey = 'current_year';
+            }
+            var yearFilter = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters, 'key', yearKey);
             if (yearFilter) {
                 return utilService.isValueNotEmpty(yearFilter.value) ? yearFilter.value : utilService.getValuesByKey(yearFilter.autoCompleteOptions, 'title');
             }
@@ -558,7 +572,6 @@
                     legend: generateLegend(minMaxValueObj.minValue, minMaxValueObj.maxValue)
                 });
             }
-
             angular.extend(sc.filters.selectedPrimaryFilter.mapData, {
                 geojson: {
                     data: $rootScope.states,
@@ -602,30 +615,48 @@
         function style(feature) {
             return {
                 fillColor: getColor(feature.properties.totalCount),
-                weight: 2,
+                weight: 0.5,
                 opacity: 1,
-                color: 'white',
+                color: 'black',
                 dashArray: '3',
                 fillOpacity: 0.7
             };
         }
 
         //builds marker popup.
-        function buildMarkerPopup(lat, lng, properties, map) {
+        sc.mapPopup = L.popup({autoPan: false});
+        sc.currentFeature = {};
+        function buildMarkerPopup(lat, lng, properties, map, tableView) {
             var childScope = $scope.$new();
             childScope.lat = lat;
             childScope.lng = lng;
             childScope.properties = properties;
+            childScope.tableView = tableView;
             var ele = angular.element('<div></div>');
             ele.html($templateCache.get('app/partials/marker-template.html'));
             var compileEle = $compile(ele.contents())(childScope);
-            L.popup()
-                .setContent(compileEle[0])
-                .setLatLng(L.latLng(lat, lng)).openOn(map)
+            if(sc.currentFeature.properties !== properties || !sc.mapPopup._isOpen) {
+                sc.mapPopup
+                    .setContent(compileEle[0])
+                    .setLatLng(L.latLng(lat, lng)).openOn(map);
+            } else {
+                sc.mapPopup
+                    .setLatLng(L.latLng(lat, lng));
+            }
+
         }
-        $scope.$on("leafletDirectiveGeoJson.click", function (event, args) {
+        $scope.$on("leafletDirectiveGeoJson.mouseover", function (event, args) {
             var leafEvent = args.leafletEvent;
-            buildMarkerPopup(leafEvent.latlng.lat, leafEvent.latlng.lng, leafEvent.target.feature.properties, args.leafletObject._map);
+            console.log(leafEvent.target.feature.properties);
+            buildMarkerPopup(leafEvent.latlng.lat, leafEvent.latlng.lng, leafEvent.target.feature.properties, args.leafletObject._map, sc.tableView);
+            sc.currentFeature = leafEvent.target.feature;
+
+        });
+        $scope.$on("leafletDirectiveGeoJson.mouseout", function (event, args) {
+            sc.mapPopup._close();
+        });
+        $scope.$on("leafletDirectiveMap.mouseout", function (event, args) {
+            sc.mapPopup._close();
         });
 
         /**

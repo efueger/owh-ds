@@ -735,6 +735,10 @@ body {
     cursor: pointer;
 }
 
+.leaflet-container {
+    background-color: #fff;
+}
+
 /*header*/
 .qh-header {
     background-color: #3b699b;
