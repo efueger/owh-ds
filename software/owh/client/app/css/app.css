@@ -815,6 +815,11 @@ body {
     font-weight: bold;
 }
 
+.marker-years {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 /*dashboard*/
 .side-filter-padding {
     margin-left: -10px;
