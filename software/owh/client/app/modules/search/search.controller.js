@@ -152,8 +152,14 @@
             }, true);
         };
 
+        function setDefaults() {
+            var yearFilter = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters, 'key', 'year');
+            yearFilter.value.push('2014');
+        }
+
         if(sc.queryID === '') {
             //queryID is empty, run the default query
+            setDefaults();
             search(true);
         } else if(sc.queryID) {
             // queryID is present, try to get the cached query

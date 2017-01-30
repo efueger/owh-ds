@@ -993,7 +993,23 @@
                 {key:'Male',title:'Male'}
             ];
 
-            filters.yearOptions = [];
+            filters.yearOptions = [
+                {key: '2014', title: '2014'},
+                {key: '2013', title: '2013'},
+                {key: '2012', title: '2012'},
+                {key: '2011', title: '2011'},
+                {key: '2010', title: '2010'},
+                {key: '2009', title: '2009'},
+                {key: '2008', title: '2008'},
+                {key: '2007', title: '2007'},
+                {key: '2006', title: '2006'},
+                {key: '2005', title: '2005'},
+                {key: '2004', title: '2004'},
+                {key: '2003', title: '2003'},
+                {key: '2002', title: '2002'},
+                {key: '2001', title: '2001'},
+                {key: '2000', title: '2000'}
+            ];
 
             filters.modOptions = [
                 {key:'January',title:'January'},
@@ -1198,7 +1214,7 @@
                 /*Year and Month*/
                 //TODO: consider setting default selected years elsewhere
                 {key: 'year', title: 'label.filter.year', queryKey:"current_year",primary: false, value: [],
-                    groupBy: false,type:"label.filter.group.year.month", defaultGroup:"row"},
+                    groupBy: false,type:"label.filter.group.year.month", autoCompleteOptions: angular.copy(filters.yearOptions),defaultGroup:"row"},
                 {key: 'month', title: 'label.filter.month', queryKey:"month_of_death", primary: false, value: [],
                     groupBy: false,type:"label.filter.group.year.month", defaultGroup:"row",
                     autoCompleteOptions: angular.copy(filters.modOptions)},
