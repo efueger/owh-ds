@@ -26,7 +26,6 @@ describe('OWH search component: ', function() {
         $httpBackend.whenGET('app/partials/owhSearch.html').respond( $templateCache.get('app/partials/owhSearch.html'));
     });
 
-
     it('Should have controller', inject(function ($httpBackend, $location) {
         var showMeOptions = [
             {key:'number_of_deaths',title:'Number of Deaths'}
@@ -123,4 +122,18 @@ describe('OWH search component: ', function() {
 
     }));
 
+
+    it("goForward", function () {
+        var fwd = spyOn(history, 'forward');
+        var ctrl = $componentController('owhSearch', null, {});
+        ctrl.goForward();
+        expect(fwd).toHaveBeenCalled();
+    });
+
+    it("goBackward", function () {
+        var back = spyOn(history, 'back');
+        var ctrl = $componentController('owhSearch', null, {});
+        ctrl.goBackward();
+        expect(back).toHaveBeenCalled();
+    });
 });

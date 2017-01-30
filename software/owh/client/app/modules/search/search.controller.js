@@ -139,6 +139,18 @@
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
         //this flags whether to cache the incoming filter query
         sc.cacheQuery = $stateParams.cacheQuery;
+        sc.selectedPrimaryFilterListener = watchSelectedPrimaryFilter();
+
+
+        function watchSelectedPrimaryFilter(){
+            return $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
+                if(newValue !== oldValue) {
+                    //update table view each time when filter changes
+                    sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
+                    search(true);
+                }
+            }, true);
+        };
 
         function setDefaults() {
             var yearFilter = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters, 'key', 'year');
@@ -146,28 +158,32 @@
         }
 
         if(sc.queryID === '') {
+            //queryID is empty, run the default query
             setDefaults();
-            //run default query
             search(true);
-        }
-
-        if(sc.queryID) {
-            //if queryID is present, check to see if query needs to be cached
-            if(sc.cacheQuery) {
-                //run a search and cache this query with the queryID
-                search(false);
-            } else {
-                //query is either already cached or not found
-                getQueryResults(sc.queryID).then(function(response) {
-                    //redirect if query was uncached
-                    if(!response.data) {
+        } else if(sc.queryID) {
+            // queryID is present, try to get the cached query
+            // Disable SelectedPrimaryFilter watch so that the dataset change events is not trigger
+            // while updating the view with the cached result
+            sc.selectedPrimaryFilterListener();
+            getQueryResults(sc.queryID).then(function(response) {
+                if (!response.data) {
+                   if (!sc.cacheQuery){
+                        // redirect to default query if we were tryint to retrieve a cached query
+                        // and was not found in the cache
                         $window.alert('Query ' + sc.queryID + ' could not be found');
                         $state.go('search', {
                             queryID: ''
                         });
+                    } else {
+                        //run a search, if user was not trying retrieve a cached query
+                        search(false);
                     }
-                });
-            }
+                }
+                // Enable the SelectedPrimaryFilter watch
+                sc.selectedPrimaryFilterListener = watchSelectedPrimaryFilter();
+            });
+
         }
 
         function search(isFilterChanged) {
@@ -314,7 +330,7 @@
                             }
                             //To show UCD & MCD selected values in mortality page
                             if(group.filterType == 'conditions') {
-                                sc.filters.selectedPrimaryFilter.sideFilters[i].filters.autoCompleteOptions =  group.autoCompleteOptions ;
+                                sc.filters.selectedPrimaryFilter.sideFilters[i].filters.selectedValues =  group.selectedValues ;
                             }
                         }
                     }
@@ -353,13 +369,6 @@
             });
         }
 
-        $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
-            if(newValue !== oldValue) {
-                //update table view each time when filter changes
-                sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
-                search(true);
-            }
-        }, true);
 
         function changeViewFilter(selectedFilter) {
             searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);

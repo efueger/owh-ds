@@ -825,6 +825,7 @@
             SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 deferred.resolve({
                     data : response.data.resultData.nested.table,
+                    queryJSON: response.data.queryJSON,
                     headers : response.data.resultData.headers,
                     sideFilterResults: response.data.sideFilterResults,
                     chartData: prepareChartData(response.data.resultData.headers, response.data.resultData.nested, primaryFilter),
@@ -871,7 +872,7 @@
                 primaryFilter.chartData = response.chartData;
                 //update total population count for side filters
                 updateSideFilterPopulationCount(primaryFilter, response.sideFilterResults.data.simple);
-                deferred.resolve({});
+                deferred.resolve(response);
             });
 
             return deferred.promise;
@@ -945,7 +946,7 @@
 
             filters.podOptions = [
                 {key:'Decedent’s home',title:'Decedent’s home'},
-                {key:'Hospital, clinic or Medical Center - Patient status unknown',title:'Hospital, clinic or Medical Center-  Patient status unknown'},
+                {key:'Hospital, Clinic or Medical Center - Patient status unknown',title:'Hospital, clinic or Medical Center-  Patient status unknown'},
                 {key:'Hospital, Clinic or Medical Center - Dead on Arrival',title:'Hospital, Clinic or Medical Center-  Dead on Arrival'},
                 {key:'Hospital, clinic or Medical Center - Inpatient',title:'Hospital, clinic or Medical Center-  Inpatient'},
                 {key:'Hospital, Clinic or Medical Center - Outpatient or admitted to Emergency Room',title:'Hospital, Clinic or Medical Center-  Outpatient or admitted to Emergency Room'},
@@ -1179,7 +1180,8 @@
                 { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"grade", primary: false, value: [], groupBy: false,
                      autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column" },
                 { key: 'yrbsState', title: 'label.yrbs.filter.state', queryKey:"sitecode", primary: false, value: [], groupBy: false,
-                    autoCompleteOptions: angular.copy(filters.yrbsStateFilters), defaultGroup:"column", displaySearchBox:true },
+                    autoCompleteOptions: angular.copy(filters.yrbsStateFilters), defaultGroup:"column",
+                    displaySearchBox:true, displaySelectedFirst:true },
                 { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race", primary: false, value: [], groupBy: 'column',
                    autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column"},
                 { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
@@ -1254,11 +1256,11 @@
             ];
 
             filters.ucdMcdFilters = [
-                {key: 'ucd-filters', title: 'label.filter.ucd', queryKey:"",
+                {key: 'ucd-filters', title: 'label.filter.ucd', selectTitle: 'select.label.filter.ucd', updateTitle: 'update.label.filter.ucd', queryKey:"",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.ucd",
                     filterType: 'conditions', groupOptions: filters.conditionGroupOptions,
                     autoCompleteOptions: utilService.findAllByKeyAndValue(filters.allMortalityFilters, 'key', 'ucd-chapter-10')},
-                {key: 'mcd-filters', title: 'label.filter.mcd', queryKey:"",
+                {key: 'mcd-filters', title: 'label.filter.mcd', selectTitle: 'select.label.filter.mcd', updateTitle: 'update.label.filter.mcd',  queryKey:"",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.mcd",
                     filterType: 'conditions', groupOptions: [],
                     autoCompleteOptions: utilService.findAllByKeyAndValue(filters.allMortalityFilters, 'key', 'mcd-chapter-10')}

@@ -1137,3 +1137,10 @@ body {
     max-height: 0;
     overflow: hidden;
 }
+
+.forward-back {
+    float: right;
+    width: 110px;
+    margin-right: 10px;
+
+}
