@@ -535,7 +535,6 @@
 
         function prepareChartData(headers, nestedData, primaryFilter) {
             var chartData = [];
-
             if(primaryFilter.showMap) {
                 chartData.push(primaryFilter.mapData);
             }
@@ -829,8 +828,9 @@
                     headers : response.data.resultData.headers,
                     sideFilterResults: response.data.sideFilterResults,
                     chartData: prepareChartData(response.data.resultData.headers, response.data.resultData.nested, primaryFilter),
-                    totalCount: response.pagination.total
-                })
+                    totalCount: response.pagination.total,
+                    maps: response.data.resultData.nested.maps
+                });
             });
             return deferred.promise;
         }
@@ -870,6 +870,7 @@
                 primaryFilter.data = response.data;
                 primaryFilter.headers = response.headers;
                 primaryFilter.chartData = response.chartData;
+                primaryFilter.maps = response.maps;
                 //update total population count for side filters
                 updateSideFilterPopulationCount(primaryFilter, response.sideFilterResults.data.simple);
                 deferred.resolve(response);
@@ -1354,8 +1355,8 @@
                 },
                 {
                     key: 'bridge_race', title: 'label.census.bridge.race.pop.estimate', primary: true, value:[], header:"Bridged-Race Population Estimates",
-                    allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true,
-                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop', tableView:'bridge_race',
+                    allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true, showMap: true,
+                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop', tableView:'bridge_race', mapData: {},
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
