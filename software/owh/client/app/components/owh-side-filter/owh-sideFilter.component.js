@@ -30,8 +30,6 @@
         sfc.isSubOptionSelected = isSubOptionSelected;
         sfc.filterGroup = filterGroup;
         sfc.isOptionDisabled = isOptionDisabled;
-        sfc.isOptionSelected = isOptionSelected;
-        sfc.getShowHideOptionCount = getShowHideOptionCount;
 
         function isOptionDisabled(group, option) {
             if(group.key === 'hispanicOrigin') {
@@ -112,7 +110,7 @@
                     clearSelection(eachFilter)
                 }
             });
-            var showTree = selectedFilter.key ==='ucd-filters' || selectedFilter.key === 'question';
+            var showTree = selectedFilter.key ==='ucd-chapter-10' || selectedFilter.key === 'question';
             if(!showTree) {
                 searchFactory.showPhaseTwoModal('label.mcd.impl.next');
             }else {
@@ -125,7 +123,7 @@
                         mc.codeKey = selectedFilter.key;
                         mc.entityName = selectedFilter.key === 'question' ? 'Question' : 'Disease';
                         mc.modelHeader = selectedFilter.key === 'question' ? 'label.select.question' : 'label.cause.death';
-                        mc.optionValues = selectedFilter.selectedNodes ? selectedFilter.selectedNodes : selectedFilter.selectedValues;
+                        mc.optionValues = selectedFilter.selectedNodes;
                         mc.close = close;
                     }
                 }).then(function (modal) {
@@ -135,7 +133,7 @@
                     modal.element.show();
                     modal.close.then(function (result) {
                         //remove all elements from array
-                        if(!selectedFilter.selectedValues || !selectedFilter.selectedNodes) {
+                        if(!selectedFilter.selectedValues) {
                             //selected nodes and their child nodes, which will be sent to backend for query
                             selectedFilter.selectedValues = [];
                             //selected nodes
@@ -196,25 +194,6 @@
                 return true;
             }
             return sfc.showFilters.indexOf(filter.filters.key) >= 0;
-        }
-
-        /**
-         * Check if option is vailable in selected option's list
-         * @param option
-         * @param selectedOptions
-         * @returns {boolean}
-         */
-        function isOptionSelected(option, selectedOptions) {
-            return selectedOptions.indexOf(option.key) != -1;
-        }
-
-        /**
-         * Calculate the count of number of option to be shown or hidden in 'show more/less link' in side filters
-         * If displaySelectedFirst flag is not set, display only first 3 options
-         * else display selected options + first 3 not selected options
-         */
-        function getShowHideOptionCount(optionGroup, options) {
-            return optionGroup.displaySelectedFirst? options.length - (3 + optionGroup.value.length) : (options.length - 3)
         }
     }
 }());

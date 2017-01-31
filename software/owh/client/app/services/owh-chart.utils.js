@@ -29,8 +29,8 @@
             return verticalChart(filter1, filter2, data, primaryFilter, true);
         }
 
-        function horizontalBar(filter1, filter2, data, primaryFilter, postFixToTooltip) {
-            return horizontalChart(filter1, filter2, data, primaryFilter, false, postFixToTooltip);
+        function horizontalBar(filter1, filter2, data, primaryFilter) {
+            return horizontalChart(filter1, filter2, data, primaryFilter, false);
         }
 
         function verticalBar(filter1, filter2, data, primaryFilter) {
@@ -83,11 +83,7 @@
                         },
                         valueFormat:function (n){
                             if(isNaN(n)){ return n; }
-                            else if (primaryFilter.key == 'mental_health') {
-                                return d3.format(',.1f')(n);(n);
-                            } else {
-                                return d3.format('d')(n);
-                            }
+                            return d3.format('d')(n);
                         },
                         useInteractiveGuideline: false,
                         interactive: false,
@@ -107,48 +103,9 @@
                     }
                 }
             };
+
             var multiChartBarData = [];
-
-            if (primaryFilter.key == 'mental_health') {
-
-                var getBarValues = function (barData, filter) {
-                    var barValues = [];
-                    angular.forEach(utilService.getSelectedAutoCompleteOptions(filter), function (option,index) {
-                        //get data for series
-                        var eachPrimaryData = utilService.findByKeyAndValue(barData, 'name', option.key);
-                        //set data to series values
-                        barValues.push({"label":option.title, "value":
-                            (eachPrimaryData &&  eachPrimaryData[primaryFilter.key]) ?
-                                parseFloat(eachPrimaryData[primaryFilter.key].mean) : 0});
-
-                    });
-                    return barValues;
-                };
-                //if primary and secondary filters are same i.e. Single filter
-                if (filter1.queryKey == filter2.queryKey) {
-                    var seriesDataObj = {};
-                    //series name
-                    seriesDataObj["key"] = primaryFilter.chartAxisLabel;
-                    //collect series values
-                    seriesDataObj["values"] = getBarValues(data.question[0][filter1.queryKey], filter1);
-                    multiChartBarData.push(seriesDataObj);
-                } else {//for two filters
-                    angular.forEach(utilService.getSelectedAutoCompleteOptions(filter1), function (primaryOption,index) {
-                        var seriesDataObj = {};
-                        var eachPrimaryData = utilService.findByKeyAndValue(data.question[0][filter1.queryKey], 'name', primaryOption.key);
-                        //Set name to series
-                        seriesDataObj["key"] = primaryOption.title;
-                        if(filter1.queryKey === 'sex') {
-                            seriesDataObj["color"] = primaryOption.key === 'Male' ?  "#009aff" : "#fe66ff";
-                        }
-
-                        //collect series values
-                        seriesDataObj["values"] = getBarValues(eachPrimaryData[filter2.queryKey], filter2);
-                        multiChartBarData.push(seriesDataObj);
-                    });
-                }
-
-            } else if(data && data[filter1.key]) {
+            if(data && data[filter1.key]){
                 angular.forEach(utilService.getSelectedAutoCompleteOptions(filter1), function (primaryOption,index) {
                     var primaryDataObj = {};
                     var eachPrimaryData = utilService.findByKeyAndValue(data[filter1.key], 'name', primaryOption.key);
@@ -178,7 +135,6 @@
                     }
                 });
             }
-
             chartData.data = multiChartBarData;
             return chartData;
         }
@@ -451,137 +407,94 @@
         }
 
         /*Show expanded graphs with whole set of features*/
-        function showExpandedGraph(chartData, graphTitle, graphSubTitle,
-                                   chartTypes, primaryFilters, selectedQuestion) {
+        function showExpandedGraph(chartData, graphTitle, graphSubTitle) {
+            var allExpandedChartDatas = [];
+            graphTitle = graphTitle ? graphTitle : (chartData.length > 1? 'label.graph.expanded': chartData[0].title);
+            angular.forEach(chartData, function(eachChartData) {
+                var expandedChartData = angular.copy(eachChartData);
+                /*Update chartData options*/
+                expandedChartData.options.chart.height = 500;
+                expandedChartData.options.chart.width = 750;
+                expandedChartData.options.chart.showLegend = true;
+                expandedChartData.options.chart.showControls = true;
+                expandedChartData.options.chart.showValues = true;
+                expandedChartData.options.chart.showXAxis = true;
+                expandedChartData.options.chart.showYAxis = true;
 
-            /**
-             * Update chart dimensions and data
-             */
-            var updateChart = function (chartData) {
-                var allExpandedChartDatas = [];
-                graphTitle = graphTitle ? graphTitle : (chartData.length > 1? 'label.graph.expanded': chartData[0].title);
-                angular.forEach(chartData, function(eachChartData) {
-                    var expandedChartData = angular.copy(eachChartData);
-                    /*Update chartData options*/
-                    expandedChartData.options.chart.height = 500;
-                    expandedChartData.options.chart.width = 750;
-                    expandedChartData.options.chart.showLegend = true;
-                    expandedChartData.options.chart.showControls = true;
-                    expandedChartData.options.chart.showValues = true;
-                    expandedChartData.options.chart.showXAxis = true;
-                    expandedChartData.options.chart.showYAxis = true;
-
-                    if (eachChartData.options.chart.type !== 'pieChart') {
-                        expandedChartData.options.chart.xAxis.tickFormat = function (d) {
-                            if (isNaN(d)) {
-                                return d;
-                            }
-                            return d3.format(',f')(d);
-                        };
-                        expandedChartData.options.chart.yAxis.tickFormat = function (d) {
-                            if (isNaN(d)) {
-                                return d;
-                            }
-                            return d3.format(',f')(d);
-                        };
-                        expandedChartData.options.chart.yAxis.axisLabelDistance = 10;
-                        expandedChartData.options.chart.xAxis.axisLabelDistance = 120;
+                if (eachChartData.options.chart.type !== 'pieChart') {
+                    expandedChartData.options.chart.xAxis.tickFormat = function (d) {
+                        if (isNaN(d)) {
+                            return d;
+                        }
+                        return d3.format(',f')(d);
+                    };
+                    expandedChartData.options.chart.yAxis.tickFormat = function (d) {
+                        if (isNaN(d)) {
+                            return d;
+                        }
+                        return d3.format(',f')(d);
+                    };
+                    expandedChartData.options.chart.yAxis.axisLabelDistance = 10;
+                    expandedChartData.options.chart.xAxis.axisLabelDistance = 120;
+                }
+                if(eachChartData.options.chart.type === 'multiBarHorizontalChart') {
+                    expandedChartData.options.chart.margin.top = 20;
+                    expandedChartData.options.chart.margin.right = 40;
+                    expandedChartData.options.chart.margin.bottom = 120;
+                    if(expandedChartData.title === 'label.title.agegroup.autopsy' ||
+                        expandedChartData.title === 'label.title.race.hispanicOrigin') {
+                        expandedChartData.options.chart.margin.left =
+                            (expandedChartData.title === 'label.title.race.hispanicOrigin')?160:100;
+                        expandedChartData.options.chart.height = 550;
+                        expandedChartData.options.chart.showValues = false;
+                    } if(expandedChartData.title === 'label.title.yrbsSex.yrbsRace' ) {
+                        expandedChartData.options.chart.margin.left = 210;
+                    } else {
+                        expandedChartData.options.chart.margin.left = 200;
                     }
-                    if(eachChartData.options.chart.type === 'multiBarHorizontalChart') {
-                        expandedChartData.options.chart.margin.top = 20;
-                        expandedChartData.options.chart.margin.right = 40;
-                        expandedChartData.options.chart.margin.bottom = 120;
-                        if(expandedChartData.title === 'label.title.agegroup.autopsy' ||
-                            expandedChartData.title === 'label.title.race.hispanicOrigin') {
-                            expandedChartData.options.chart.margin.left =
-                                (expandedChartData.title === 'label.title.race.hispanicOrigin')?160:100;
-                            expandedChartData.options.chart.height = 550;
-                            expandedChartData.options.chart.showValues = false;
-                        } if(expandedChartData.title === 'label.title.yrbsSex.yrbsRace' ) {
-                            expandedChartData.options.chart.margin.left = 210;
-                        } else {
-                            expandedChartData.options.chart.margin.left = 200;
-                        }
-                    } else if(eachChartData.options.chart.type === 'multiBarChart') {
-                        expandedChartData.options.chart.xAxis.axisLabelDistance = 70;
-                        expandedChartData.options.chart.margin.top = 20;
-                        expandedChartData.options.chart.margin.right = 20;
-                        expandedChartData.options.chart.margin.bottom = 120;
-                        expandedChartData.options.chart.margin.left = 120;
-                        if(expandedChartData.title === 'label.title.gender.placeofdeath') {
-                            expandedChartData.options.chart.wrapLabels=true;
-                            expandedChartData.options.chart.rotateLabels=0;
-                            expandedChartData.options.chart.margin.bottom = 110;
-                            expandedChartData.options.chart.staggerLabels = false;
-                        }else if (expandedChartData.title==='label.title.gender.hispanicOrigin' ||
-                            expandedChartData.title==='label.title.agegroup.hispanicOrigin' ) {
-                            expandedChartData.options.chart.yAxis.axisLabelDistance = 30;
-                            expandedChartData.options.chart.height = 600;
-                            expandedChartData.options.chart.margin.bottom = 200;
-                        }
-                    } else if (eachChartData.options.chart.type === 'pieChart') {
-                        if(expandedChartData.title === 'label.graph.yrbsGrade') {
-                            expandedChartData.options.chart.legend.margin.right = 130;
-                            expandedChartData.options.chart.legend.margin.top = 30;
-                        }
-                    } else if (eachChartData.options.chart.type === 'lineChart') {
-                        expandedChartData.options.chart.margin.left = 85;
-                        expandedChartData.options.chart.margin.bottom = 50;
-                        expandedChartData.options.chart.xAxis.axisLabelDistance = 5;
-                        expandedChartData.options.chart.yAxis.axisLabelDistance = 20;
+                } else if(eachChartData.options.chart.type === 'multiBarChart') {
+                    expandedChartData.options.chart.xAxis.axisLabelDistance = 70;
+                    expandedChartData.options.chart.margin.top = 20;
+                    expandedChartData.options.chart.margin.right = 20;
+                    expandedChartData.options.chart.margin.bottom = 120;
+                    expandedChartData.options.chart.margin.left = 120;
+                    if(expandedChartData.title === 'label.title.gender.placeofdeath') {
+                        expandedChartData.options.chart.wrapLabels=true;
+                        expandedChartData.options.chart.rotateLabels=0;
+                        expandedChartData.options.chart.margin.bottom = 110;
+                        expandedChartData.options.chart.staggerLabels = false;
+                    }else if (expandedChartData.title==='label.title.gender.hispanicOrigin' ||
+                        expandedChartData.title==='label.title.agegroup.hispanicOrigin' ) {
+                        expandedChartData.options.chart.yAxis.axisLabelDistance = 30;
+                        expandedChartData.options.chart.height = 600;
+                        expandedChartData.options.chart.margin.bottom = 200;
                     }
-                    allExpandedChartDatas.push(expandedChartData);
-                });
-                return allExpandedChartDatas;
-            };
+                } else if (eachChartData.options.chart.type === 'pieChart') {
+                    if(expandedChartData.title === 'label.graph.yrbsGrade') {
+                        expandedChartData.options.chart.legend.margin.right = 130;
+                        expandedChartData.options.chart.legend.margin.top = 30;
+                    }
+                } else if (eachChartData.options.chart.type === 'lineChart') {
+                    expandedChartData.options.chart.margin.left = 85;
+                    expandedChartData.options.chart.margin.bottom = 50;
+                    expandedChartData.options.chart.xAxis.axisLabelDistance = 5;
+                    expandedChartData.options.chart.yAxis.axisLabelDistance = 20;
+                }
+                allExpandedChartDatas.push(expandedChartData);
+            });
 
             // Just provide a template url, a controller and call 'showModal'.
             ModalService.showModal({
                 templateUrl: "app/partials/expandedGraphModal.html",
                 controllerAs: 'eg',
-                controller: function ($scope, close, shareUtilService, searchFactory) {
+                controller: function ($scope, close, shareUtilService) {
                     var eg = this;
-                    eg.chartData = updateChart(chartData);
+                    eg.chartData = allExpandedChartDatas;
                     eg.graphTitle = graphTitle;
                     eg.graphSubTitle = graphSubTitle;
-                    eg.chartTypes = chartTypes;
-                    eg.primaryFilters = primaryFilters;
-                    eg.selectedQuestion = selectedQuestion;
                     eg.close = close;
                     eg.showFbDialog = function(svgIndex, title, section, description) {
                         shareUtilService.shareOnFb(svgIndex, title, section, description);
-                    };
-
-                    /**
-                     * get the display name for chart
-                     * @param chartType
-                     * @returns {*}
-                     */
-                    eg.getChartName = function (chartType) {
-                        var chartNames = {'yrbsSex&yrbsRace':'Sex and Race',
-                            'yrbsSex&yrbsGrade':'Sex and Grade',
-                            'yrbsGrade&yrbsRace': 'Grade and Race',
-                            'yrbsRace': 'Race',
-                            'yrbsSex': 'Sex',
-                            'yrbsGrade': 'Grade'};
-
-                        if (chartType.length == 1) {
-                            return chartNames[chartType[0]];
-                        } else {
-                            return chartNames[chartType[0]+'&'+chartType[1]];
-                        }
-                    };
-
-                    /**
-                     * Get data for specified chart and update it
-                     * @param chartType
-                     */
-                    eg.getYrbsChartData = function (chartType) {
-                        searchFactory.prepareQuestionChart(eg.primaryFilters,
-                            eg.selectedQuestion, chartType).then(function (response) {
-                            eg.chartData = updateChart([response.chartData]);
-                            eg.activeTab = eg.getChartName(chartType);
-                        });
                     }
                 },
                 size:650

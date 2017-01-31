@@ -714,10 +714,6 @@ table thead {
 .custom-modal-body {
 	padding: 15px !important;
 }
-
-.thin-border-top {
-	border-top: 1px solid #e2e3e3 !important;
-}
 .action-button {
 	background-color: #833eb0;
 	border-radius: 4px;
@@ -864,78 +860,3 @@ and (-webkit-min-device-pixel-ratio: 1) {
 }
 
 /* End remove font-awesome icon in yrbs select questions popup*/
-
-/*Custom tab css*/
-.custom-nav-tabs {
-	border-bottom: 1px solid #ddd;
-}
-.custom-nav {
-	margin-top: 0;
-	padding-left: 0;
-	margin-bottom: 0;
-	list-style: none;
-}
-ul.custom-nav-tabs {
-	margin-top: 0 !important;
-	margin-bottom: 10px;
-}
-
-ul.custom-nav-tabs {
-	display: block;
-	list-style-type: disc;
-	-webkit-margin-before: 1em;
-	-webkit-margin-after: 1em;
-	-webkit-margin-start: 0px;
-	-webkit-margin-end: 0px;
-	-webkit-padding-start: 25px;
-}
-
-.custom-nav:after, .custom-nav:before,
-.custom-navbar:after, .custom-navbar:before {
-	display: table;
-	content: " ";
-}
-
-.custom-nav:after, .custom-navbar:after {
-	clear: both;
-}
-.custom-nav:after, .custom-nav:before,
-.custom-navbar:after,
-.custom-navbar:before{
-	display: table;
-	content: " ";
-}
-
-.custom-nav-tabs > li {
-	float: left;
-	margin-bottom: -9px;
-}
-
-.custom-nav > li {
-	position: relative;
-	display: block;
-}
-
-.custom-nav-tabs>li.active>a,
-.custom-nav-tabs>li.active>a:focus,
-.custom-nav-tabs>li.active>a:hover {
-	color: #555;
-	cursor: default;
-	background-color: #fff;
-	border: 1px solid #ddd;
-	border-bottom-color: transparent;
-}
-
-.custom-nav-tabs>li>a {
-	margin-right: 2px;
-	line-height: 1.42857143;
-	border: 1px solid transparent;
-	border-radius: 4px 4px 0 0;
-}
-
-.custom-nav>li>a {
-	position: relative;
-	display: block;
-	padding: 10px 15px;
-}
-/*Custom tab css*/

@@ -84,21 +84,13 @@ function search(q) {
         });
     } else if (preparedQuery.apiQuery.searchFor === "bridge_race") {
         var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
-
-        //build query for total counts that will be displyed in side filters
-        var sideFilterTotalCountQuery = queryBuilder.addCountsToAutoCompleteOptions(q);
-        sideFilterTotalCountQuery.countQueryKey = 'pop';
-        var sideFilterQuery = queryBuilder.buildSearchQuery(sideFilterTotalCountQuery, true);
-
-        new elasticSearch().aggregateCensusData(sideFilterQuery[0]).then(function (sideFilterResults) {
-            new elasticSearch().aggregateCensusData(finalQuery[0]).then(function (response) {
-                var resData = {};
-                resData.queryJSON = q;
-                resData.resultData = response.data;
-                resData.resultData.headers = preparedQuery.headers;
-                resData.sideFilterResults = sideFilterResults;
-                deferred.resolve(resData);
-            });
+        new elasticSearch().aggregateCensusData(finalQuery[0]).then(function (response) {
+            var resData = {};
+            resData.queryJSON = q;
+            resData.resultData = response.data;
+            resData.resultData.headers = preparedQuery.headers;
+            resData.sideFilterResults = [];
+            deferred.resolve(resData);
         });
     }
     return  deferred.promise;

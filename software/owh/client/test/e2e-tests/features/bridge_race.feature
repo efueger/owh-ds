@@ -14,9 +14,8 @@ Feature: Bridge race filters
 
   Scenario: Default filter state
     Then I see "Yearly July 1st Estimates" as first option in sidebar filters
-    And  filter "Yearly July 1st Estimates" and option "2015" selected
+    And  filter "Yearly July 1st Estimates" and option "All" selected
     And  I see the data table with race, female, male and total table headers
-    And I see population count for "2015" option
 
   Scenario: Side filter collapse
     Then user sees side filter

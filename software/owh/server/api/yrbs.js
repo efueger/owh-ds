@@ -26,7 +26,7 @@ yrbs.prototype.invokeYRBSService = function(apiQuery){
     var startTime = new Date().getTime();
     logger.info("Invoking YRBS service for "+yrbsquery.length+" questions");
     for (var q in yrbsquery){
-        queryPromises.push(invokeYRBS(yrbsquery[q]));
+        queryPromises.push(invokeYRBS(config.yrbs.queryUrl+ '?'+yrbsquery[q]));
     }
     Q.all(queryPromises).then(function(resp){
         var duration = new Date().getTime() - startTime;
@@ -46,7 +46,7 @@ yrbs.prototype.invokeYRBSService = function(apiQuery){
  */
 yrbs.prototype.buildYRBSQueries = function (apiQuery){
     var queries = [];
-    var useStateDataset = false;
+
     var aggrsKeys  = [];
     for (var i = 0; i<apiQuery.aggregations.nested.table.length; i++ ){
         var agg = apiQuery.aggregations.nested.table[i];
@@ -56,7 +56,7 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
     }
 
 
-    // Grouping needs to be always in the following order Sex (sex), Grade (grade), Race (race) and  Year (year), state (sitecode)
+    // Grouping needs to be always in the following order Sex (sex), Grade (grade), Race (race7) and  Year (year)
     var sortedKeys = [];
     if(aggrsKeys.indexOf('sex') >= 0){
         sortedKeys.push('sex');
@@ -70,10 +70,6 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
     if(aggrsKeys.indexOf('year') >= 0){
         sortedKeys.push('year');
     }
-    if(aggrsKeys.indexOf('sitecode') >= 0){
-        sortedKeys.push('sitecode');
-        useStateDataset = true;
-    }
     var v = null;
     if (sortedKeys.length > 0) {
        v = 'v=' + sortedKeys.join(',');
@@ -84,11 +80,9 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
         var f = '';
         for (q in apiQuery.query){
             if(q != 'question.path') {
-                if(q == 'sitecode'){
-                    useStateDataset = true;
-                }
                 f += (q + ':');
                 f += apiQuery.query[q].value.join(',') +';';
+                // f += ';';
             }
         }
         f = f.slice(0,f.length - 1);
@@ -96,11 +90,7 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
         if('question.path' in apiQuery.query) {
             var selectedQs = apiQuery.query['question.path'].value;
             for (var i = 0; i < selectedQs.length; i++) {
-                var qry = config.yrbs.queryUrl+ (useStateDataset?'/state':'/national') + '?'; //Base url
-                qry += 'q=' + selectedQs[i]; // Question param
-                qry += (v ? ('&' + v) : ''); // Group param
-                qry += (f ? ('&f=' + f) : ''); // Filter param
-                queries.push(qry);
+                queries.push('q=' + selectedQs[i] + (v ? ('&' + v) : '') + (f ? ('&f=' + f) : ''));
             }
         }
     }
@@ -156,9 +146,6 @@ yrbs.prototype.processQuestionResponse = function(response){
             }
             if ('year' in r) {
                 cell = getResultCell(cell, 'year', r.year);
-            }
-            if ('sitecode' in r) {
-                cell = getResultCell(cell, 'sitecode', r.sitecode);
             }
             cell['mental_health'] = resultCellObject(r);
         }

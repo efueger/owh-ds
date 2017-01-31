@@ -47,23 +47,30 @@
                     </li>
 
                     <!--Radio button filters (UCD & MCD)-->
-                    <li ng-if="group.filterType === 'conditions' && ( group.key === 'ucd-filters' || group.key === 'mcd-filters')"  class="group-option" >
-                       <label for="{{group.key}}" class="custom-label" style="margin-bottom: 0">
-                            <button class="action-button condition-option"
-                                    translate="{{group.selectedValues && group.selectedValues.length > 0 ? group.updateTitle : group.selectTitle}}"
-                                    ng-click="sfc.showModal(group, [group])"></button>
+                    <li ng-if="group.filterType === 'conditions'" ng-repeat="option in group.autoCompleteOptions" class="group-option" >
+                        <!--<input id="{{option.key}}" type="radio" ng-model="group.value" ng-value="option.key"
+                               ng-click="sfc.showModal(option.key, option.value, group.autoCompleteOptions)">-->
+                        <label for="{{option.key}}" class="custom-label" style="margin-bottom: 0">
+                            <button class="action-button condition-option" translate="select.{{option.title}}"
+                                    ng-click="group.value = option.key;sfc.showModal(option, group.autoCompleteOptions)"></button>
+                            <owh-toggle-switch class="pull-right" ng-show="option.selectedValues.length > 0 "
+                                               options="group.groupOptions"
+                                               model="option.groupBy" on-change="sfc.onFilter()"
+                                               tooltip="{{'label.group.by.tooltip' | translate}}">
+                            </owh-toggle-switch>
 
                         </label>
-                            <div ng-repeat="selectedValue in group.selectedValues" >
+                        <div ng-show="group.value===option.key">
+                            <div ng-repeat="selectedValue in option.selectedValues" >
                                 <span style="font-size: 13px" ng-bind="selectedValue.text"></span>
                             </div>
-                            <div ng-if="!group.selectedValues || group.selectedValues.length === 0" style="margin-bottom: 20px">
+                            <div ng-if="!option.selectedValues || option.selectedValues.length === 0" style="margin-bottom: 20px">
                                 <span style="font-size: 13px">All</span>
                             </div>
-
-                          <div class="ucd-clear" ng-show="group.selectedValues.length > 0 ">
+                        </div>
+                          <div class="ucd-clear" ng-show="option.selectedValues.length > 0 ">
                               <button class="action-button" translate="label.clear"
-                                      ng-click="sfc.clearSelection(group, true)"></button>
+                                      ng-click="sfc.clearSelection(option, true)"></button>
                             </div>
                     </li>
                     <!--Radio button filters (UCD & MCD)-->
@@ -107,24 +114,8 @@
                         <i ng-show="search.title" class="cursor-pointer clear-text-icon fa fa-remove" ng-click="search.title =''"></i>
                     </li>
 
-                    <li ng-repeat="option in group.autoCompleteOptions | filter:search as filteredOptions"
-                        ng-if="group.displaySelectedFirst"
-                        class="group-option">
-                        <div ng-show="!option.group && sfc.isOptionSelected(option, group.value)">
-                            <input id="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" type="checkbox"
-                                   checklist-model="group.value" checklist-value="option.key" ng-disabled="sfc.isOptionDisabled(group, option)" ng-click="sfc.onFilter()">
-                            <label for="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" class="custom-label"
-                                   ng-init="title = option.title == 'Nursing home/long term care' ? 'Nursing home/long term <br>care' : option.title">
-                                <span class="count-label" translate="{{title}}"></span>
-                                <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts" ng-bind="sfc.getOptionCount(option) | number"></span>
-                            </label>
-                        </div>
-                    </li>
-
                     <!--Fot all other filters-->
-                    <li class="group-option" ng-if="group.filterType !== 'tree' && group.filterType !== 'slider'
-                        && group.filterType !== 'conditions' && group.filterType !== 'radio' "
-                        ng-class="{'thin-border-top': (group.value.length > 0 && group.displaySelectedFirst)}">
+                    <li class="group-option" ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' ">
                         <input type="checkbox" id="{{group.queryKey}}_all" name="{{group.queryKey}}_all" ng-checked="group.value.length === 0"
                                ng-click="sfc.updateGroupValue(group);" ng-model="group.allChecked" ng-init="group.allChecked = group.value.length === 0">
                         <label for="{{group.queryKey}}_all" class="custom-label">
@@ -135,8 +126,8 @@
                     <li ng-repeat="option in group.autoCompleteOptions | filter:search as filteredOptions"
                         ng-init="$outerIndex = $index"
                         ng-if="group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions'  && group.filterType !== 'radio' "
-                        class="group-option" ng-show="$index < 3 || sideFilter.showAll || ($index < (3+ group.value.length) && group.displaySelectedFirst)">
-                        <div ng-if="!option.group && (group.displaySelectedFirst?!sfc.isOptionSelected(option, group.value):true)">
+                        class="group-option" ng-show="$index < 3 || sideFilter.showAll">
+                        <div ng-if="!option.group">
                             <input id="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" type="checkbox"
                                    checklist-model="group.value" checklist-value="option.key" ng-disabled="sfc.isOptionDisabled(group, option)" ng-click="sfc.onFilter()">
                             <label for="{{sfc.filters.selectedPrimaryFilter.key}}_{{group.key}}_{{option.key}}" class="custom-label"
@@ -180,10 +171,10 @@
                         group.filterType !== 'tree' && group.filterType !== 'slider' && group.filterType !== 'conditions' &&
                         group.filterType !== 'radio' " >
                         <a ng-show="!sideFilter.showAll" class="custom-link" translate="label.show.more"
-                           translate-values="{showLength: sfc.getShowHideOptionCount(group, filteredOptions)}"
+                           translate-values="{showLength: filteredOptions.length - 3}"
                            ng-click="sideFilter.showAll = !sideFilter.showAll" href="javascript:void(0)"></a>
                         <a ng-show="sideFilter.showAll" class="custom-link" translate="label.hide.more"
-                           translate-values="{hideLength: sfc.getShowHideOptionCount(group, filteredOptions)}"
+                           translate-values="{hideLength: filteredOptions.length - 3}"
                            ng-click="sideFilter.showAll = !sideFilter.showAll" href="javascript:void(0)"></a>
                     </li>
                 </ul>
@@ -201,13 +192,13 @@
                     <div class="owh-side-menu__utility-option" ng-repeat="option in util.options">
                         <div ng-if="option.type === 'toggle'">
                             <span>{{option.title}}</span>
+                            <br/>
                             <owh-toggle-switch class="pull-right"
                                                model="option.value"
                                                options="option.options"
                                                on-change="option.onChange(option.value)">
                             </owh-toggle-switch>
                         </div>
-                        <br ng-if="$index === 0" />
                     </div>
                 </ul>
             </span>

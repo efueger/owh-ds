@@ -46,7 +46,7 @@ var prepareAggregationQuery = function(aggregations, countQueryKey) {
     //build array for
     if(aggregations['simple']) {
         for (var i = 0; i < aggregations['simple'].length; i++) {
-            elasticQuery.aggregations = merge(elasticQuery.aggregations, generateAggregationQuery(aggregations['simple'][i], undefined, countQueryKey));
+            elasticQuery.aggregations = merge(elasticQuery.aggregations, generateAggregationQuery(aggregations['simple'][i]));
         }
     }
     if (aggregations['nested']) {

@@ -1031,7 +1031,7 @@ body {
 .owh-side-menu__utility-option {
     padding-left: 10px;
     padding-right: 5px;
-    min-height: 30px;
+    min-height: 50px;
 }
 
 .owh-side-menu__options-list {
@@ -1145,11 +1145,4 @@ body {
 .owh-question__question.ng-hide .owh-question__content {
     max-height: 0;
     overflow: hidden;
-}
-
-.forward-back {
-    float: right;
-    width: 110px;
-    margin-right: 10px;
-
 }

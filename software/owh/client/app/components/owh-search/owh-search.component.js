@@ -21,8 +21,7 @@
         var ots = this;
         ots.groupByFiltersUpdated = groupByFiltersUpdated;
         ots.phaseTwoImpl = phaseTwoImpl;
-        ots.goForward = goForward;
-        ots.goBackward = goBackward;
+
         ots.$onChanges = function() {
             angular.forEach(ots.showFilters, function(filter) {
                 if(filter.key === ots.tableView) {
@@ -53,14 +52,6 @@
                 ots.selectedShowFilter = ots.showFilters[0];
                 searchFactory.showPhaseTwoModal('label.show.impl.next');
             }
-        }
-
-        function goForward() {
-            window.history.forward();
-        }
-
-        function goBackward(){
-            window.history.back();
         }
 
     }
