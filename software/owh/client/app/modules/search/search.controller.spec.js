@@ -263,7 +263,7 @@ describe("Search controller: ", function () {
         spyOn(searchController, 'search');
 
         var ethnicityFilter = {
-            query_key: 'hispanicOrigin',
+            query_key: 'hispanic_origin',
             key: 'hispanicOrigin'
         };
 
@@ -290,7 +290,7 @@ describe("Search controller: ", function () {
 
         searchController.changeViewFilter({key: 'number_of_deaths'});
 
-        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].queryKey).toEqual('hispanicOrigin');
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].queryKey).toEqual('hispanic_origin');
         expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[0].key).toEqual('Cuban');
         expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[1].key).toEqual('Dominican');
     });
@@ -329,6 +329,25 @@ describe("Search controller: ", function () {
          expect(searchResultsResponse.data.queryJSON.key).toEqual('deaths');
          deferred.resolve(searchResultsResponse);
          $scope.$apply();
+    }));
+
+    it('should generate hashcode for the default query if no queryID found', inject(function(searchFactory) {
+        var stateParams = {
+            queryID: '',
+            primaryFilterKey: 'deaths'
+        };
+
+        spyOn(searchFactory, "generateHashCode").and.returnValue({
+            then: function(){}
+        });
+        var searchController= $controller('SearchController',
+            {
+                $scope:$scope,
+                searchFactory: searchFactory,
+                $stateParams: stateParams
+            });
+
+        expect(searchFactory.generateHashCode).toHaveBeenCalled();
     }));
 
 });

@@ -1,0 +1,73 @@
+{
+  "natality": {
+    "_source": {
+      "enabled": false
+    },
+    "include_in_all": false,
+    "properties": {
+      "mother_hispanic_origin":{
+        "type":"string", "index":"not_analyzed"
+      },
+      "mother_age":{
+        "type":"string", "index":"not_analyzed"
+      },
+      "mother_race":{
+        "type":"string", "index":"not_analyzed"
+      },
+      "mother_marital_status":{
+        "type":"string", "index":"not_analyzed"
+      },
+      "mother_education": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "dob_yy": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "dob_mm": {
+          "type":"string", "index":"not_analyzed"
+      },
+      "dob_wk": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "sex": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "month_prenatal_care_began": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "birth_weight": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "birth_plurality": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "live_birth_order": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "birth_place": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "delivery_method": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "medical_attendant": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "chronic_hypertension": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "diabetes": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "pregnancy_hypertension": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "eclampsia": {
+        "type":"string", "index":"not_analyzed"
+      },
+      "tobacco_use": {
+        "type":"string", "index":"not_analyzed"
+      }
+    }
+  }
+}

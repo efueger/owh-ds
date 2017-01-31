@@ -173,7 +173,7 @@
 
             //prepare filter definitions
             var bridgeDataFilters = [
-                {key: 'current_year', title: 'label.filter.yearly.estimate', queryKey:"current_year", primary: false, value: [], defaultGroup:'row', groupBy: false,
+                {key: 'current_year', title: 'label.filter.yearly.estimate', queryKey:"current_year", primary: false, value: ['2015'], defaultGroup:'row', groupBy: false,
                     autoCompleteOptions: angular.copy(censusYearsOptions) },
                 {key: 'sex', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
                     autoCompleteOptions: angular.copy(censusGenderOptions)},
@@ -187,7 +187,7 @@
                 {key: 'ethnicity', title: 'label.filter.hispanicOrigin', queryKey:"ethnicity_group",primary: false, defaultGroup:'row', groupBy: false,
                     autoCompleteOptions: angular.copy(censusHispanicOriginOptions), value:[]},
                 {key: 'state', title: 'label.filter.state', queryKey:"state",primary: false, value:[], defaultGroup:'row', groupBy: false,
-                    autoCompleteOptions: angular.copy(censusStateOptions), displaySearchBox:true}
+                    autoCompleteOptions: angular.copy(censusStateOptions), displaySearchBox:true, displaySelectedFirst:true}
             ];
 
             return bridgeDataFilters;

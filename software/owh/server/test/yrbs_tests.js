@@ -1,6 +1,7 @@
 var y = require("../api/yrbs");
 var supertest = require("supertest");
 var expect = require("expect.js");
+var config = require('../config/config');
 
 describe("YRBS API", function () {
     var yrbs;
@@ -13,7 +14,7 @@ describe("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000}]}},
                         'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( ['q=qn1&v=sex,race','q=qn2&v=sex,race','q=qn3&v=sex,race']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?q=qn1&v=sex,race',config.yrbs.queryUrl+'/national?q=qn2&v=sex,race',config.yrbs.queryUrl+'/national?q=qn3&v=sex,race']);
 
     });
 
@@ -21,7 +22,7 @@ describe("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsGrade","queryKey":"grade","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000}]}},
                         'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( ['q=qn1&v=sex,grade,race','q=qn2&v=sex,grade,race','q=qn3&v=sex,grade,race']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?q=qn1&v=sex,grade,race',config.yrbs.queryUrl+'/national?q=qn2&v=sex,grade,race',config.yrbs.queryUrl+'/national?q=qn3&v=sex,grade,race']);
 
     });
 
@@ -29,7 +30,7 @@ describe("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000}]}},
                         'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( ['q=qn1','q=qn2','q=qn3']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?q=qn1',config.yrbs.queryUrl+'/national?q=qn2',config.yrbs.queryUrl+'/national?q=qn3']);
 
     });
 
@@ -37,7 +38,7 @@ describe("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000}]}},
             'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'race':{value:['White', 'Black or African American']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( ['q=qn1&f=race:White,Black or African American','q=qn2&f=race:White,Black or African American','q=qn3&f=race:White,Black or African American']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?q=qn1&f=race:White,Black or African American',config.yrbs.queryUrl+'/national?q=qn2&f=race:White,Black or African American',config.yrbs.queryUrl+'/national?q=qn3&f=race:White,Black or African American']);
 
     });
 
@@ -46,7 +47,7 @@ describe("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000}]}},
         'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'race':{value:['White', 'Black or African American']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( ['q=qn1&v=race&f=race:White,Black or African American','q=qn2&v=race&f=race:White,Black or African American','q=qn3&v=race&f=race:White,Black or African American']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?q=qn1&v=race&f=race:White,Black or African American',config.yrbs.queryUrl+'/national?q=qn2&v=race&f=race:White,Black or African American',config.yrbs.queryUrl+'/national?q=qn3&v=race&f=race:White,Black or African American']);
 
     });
 
@@ -54,7 +55,31 @@ describe("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000}]}},
             'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'race':{value:['White', 'Black or African American']},'sex':{value:['Female']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( ['q=qn1&v=sex,race&f=race:White,Black or African American;sex:Female','q=qn2&v=sex,race&f=race:White,Black or African American;sex:Female','q=qn3&v=sex,race&f=race:White,Black or African American;sex:Female']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?q=qn1&v=sex,race&f=race:White,Black or African American;sex:Female',config.yrbs.queryUrl+'/national?q=qn2&v=sex,race&f=race:White,Black or African American;sex:Female',config.yrbs.queryUrl+'/national?q=qn3&v=sex,race&f=race:White,Black or African American;sex:Female']);
+
+    });
+
+    it("buildYRBSQueries with state grouping", function (){
+        var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000},{"key":"yrbsState","queryKey":"sitecode","size":100000}]}},
+            'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}}};
+        var result = yrbs.buildYRBSQueries(apiQuery);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/state?q=qn1&v=race,sitecode',config.yrbs.queryUrl+'/state?q=qn2&v=race,sitecode',config.yrbs.queryUrl+'/state?q=qn3&v=race,sitecode']);
+
+    });
+
+    it("buildYRBSQueries with state filtering", function (){
+        var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000}]}},
+            'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'sitecode':{'value':['AL', 'MN']}}};
+        var result = yrbs.buildYRBSQueries(apiQuery);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/state?q=qn1&v=race&f=sitecode:AL,MN',config.yrbs.queryUrl+'/state?q=qn2&v=race&f=sitecode:AL,MN',config.yrbs.queryUrl+'/state?q=qn3&v=race&f=sitecode:AL,MN']);
+
+    });
+
+    it("buildYRBSQueries with state filtering and groping", function (){
+        var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000},{"key":"yrbsState","queryKey":"sitecode","size":100000}]}},
+            'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'sitecode':{'value':['AL', 'MN']}}};
+        var result = yrbs.buildYRBSQueries(apiQuery);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/state?q=qn1&v=race,sitecode&f=sitecode:AL,MN',config.yrbs.queryUrl+'/state?q=qn2&v=race,sitecode&f=sitecode:AL,MN',config.yrbs.queryUrl+'/state?q=qn3&v=race,sitecode&f=sitecode:AL,MN']);
 
     });
 
@@ -503,6 +528,15 @@ describe("YRBS API", function () {
 
         return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
             expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health":{"mean":"86.1","ci_l":"84.9","ci_u":"87.3","count":35384},"sex":[{"name":"Female","race":[{"name":"Black or African American","mental_health":{"mean":"92.9","ci_l":"91.5","ci_u":"94.0","count":11670}},{"name":"White","mental_health":{"mean":"84.8","ci_l":"83.4","ci_u":"86.1","count":23714}}]}]}]}} );
+        });
+    });
+
+    it("invokeYRBS state service with grouping and filtering", function (){
+        var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000},{"key":"yrbsState","queryKey":"sitecode","size":100000}]}},
+            'query': {'question.path':{ 'value': ['qn8']}, 'race':{value:['White', 'Black or African American']},'sitecode':{value:['VA','MO']}}};
+
+        return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
+            expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health":{"mean":"86.4","ci_l":"84.7","ci_u":"87.9","count":16512},"race":[{"name":"Black or African American","sitecode":[{"name":"MO","mental_health":{"mean":"92.8","ci_l":"90.2","ci_u":"94.7","count":1395}},{"name":"VA","mental_health":{"mean":"91.1","ci_l":"88.7","ci_u":"93.1","count":2031}}]},{"name":"White","sitecode":[{"name":"MO","mental_health":{"mean":"87.8","ci_l":"85.1","ci_u":"90.1","count":8483}},{"name":"VA","mental_health":{"mean":"77.6","ci_l":"74.7","ci_u":"80.3","count":4603}}]}]}]}});
         });
     });
 

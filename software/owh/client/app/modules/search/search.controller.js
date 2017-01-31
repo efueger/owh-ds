@@ -55,30 +55,31 @@
         ];
         sc.sort = {
             "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
-            "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'question'],
+            "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'yrbsState', 'question'],
             "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'agegroup', 'race', 'ethnicity', 'state']
         };
 
         sc.optionsGroup = {
             "number_of_deaths": {
                 "hispanicOrigin": [
+                    'Non-Hispanic',
                     {
                         "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic'],
                         "title": "Hispanic",
                         "key": "Hispanic"
                     },
-                    'Non-Hispanic',
                     'Unknown'
                 ],
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1997','1995','1993','1991' ]
             },
             "crude_death_rates": {
-                "hispanicOrigin": ['Hispanic', 'Non-Hispanic', 'Unknown'],
+                "hispanicOrigin": ['Non-Hispanic', 'Hispanic', 'Unknown'],
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
             },
             "age-adjusted_death_rates": {
+                "hispanicOrigin": ['Non-Hispanic', 'Hispanic', 'Unknown'],
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
             },
@@ -141,29 +142,51 @@
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
         //this flags whether to cache the incoming filter query
         sc.cacheQuery = $stateParams.cacheQuery;
+        sc.selectedPrimaryFilterListener = watchSelectedPrimaryFilter();
 
-        if(sc.queryID === '') {
-            //run default query
-            search(true);
+
+        function watchSelectedPrimaryFilter(){
+            return $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
+                if(newValue !== oldValue) {
+                    //update table view each time when filter changes
+                    sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
+                    search(true);
+                }
+            }, true);
+        };
+
+        function setDefaults() {
+            var yearFilter = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters, 'key', 'year');
+            yearFilter.value.push('2014');
         }
 
-        if(sc.queryID) {
-            //if queryID is present, check to see if query needs to be cached
-            if(sc.cacheQuery) {
-                //run a search and cache this query with the queryID
-                search(false);
-            } else {
-                //query is either already cached or not found
-                getQueryResults(sc.queryID).then(function(response) {
-                    //redirect if query was uncached
-                    if(!response.data) {
+        if(sc.queryID === '') {
+            //queryID is empty, run the default query
+            setDefaults();
+            search(true);
+        } else if(sc.queryID) {
+            // queryID is present, try to get the cached query
+            // Disable SelectedPrimaryFilter watch so that the dataset change events is not trigger
+            // while updating the view with the cached result
+            sc.selectedPrimaryFilterListener();
+            getQueryResults(sc.queryID).then(function(response) {
+                if (!response.data) {
+                   if (!sc.cacheQuery){
+                        // redirect to default query if we were tryint to retrieve a cached query
+                        // and was not found in the cache
                         $window.alert('Query ' + sc.queryID + ' could not be found');
                         $state.go('search', {
                             queryID: ''
                         });
+                    } else {
+                        //run a search, if user was not trying retrieve a cached query
+                        search(false);
                     }
-                });
-            }
+                }
+                // Enable the SelectedPrimaryFilter watch
+                sc.selectedPrimaryFilterListener = watchSelectedPrimaryFilter();
+            });
+
         }
 
         function search(isFilterChanged) {
@@ -315,7 +338,7 @@
                             }
                             //To show UCD & MCD selected values in mortality page
                             if(group.filterType == 'conditions') {
-                                sc.filters.selectedPrimaryFilter.sideFilters[i].filters.autoCompleteOptions =  group.autoCompleteOptions ;
+                                sc.filters.selectedPrimaryFilter.sideFilters[i].filters.selectedValues =  group.selectedValues ;
                             }
                         }
                     }
@@ -354,13 +377,6 @@
             });
         }
 
-        $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
-            if(newValue !== oldValue) {
-                //update table view each time when filter changes
-                sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
-                search(true);
-            }
-        }, true);
 
         function changeViewFilter(selectedFilter) {
             searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);
@@ -370,7 +386,7 @@
                         filter.queryKey = 'ethnicity_group';
                         filter.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
                     } else {
-                        filter.queryKey = 'hispanicOrigin';
+                        filter.queryKey = 'hispanic_origin';
                         filter.autoCompleteOptions = sc.filters.hispanicOptions;
                     }
                 }
@@ -381,7 +397,7 @@
                         filter.filters.queryKey = 'ethnicity_group';
                         filter.filters.autoCompleteOptions = sc.filters.ethnicityGroupOptions;
                     } else {
-                        filter.filters.queryKey = 'hispanicOrigin';
+                        filter.filters.queryKey = 'hispanic_origin';
                         filter.filters.autoCompleteOptions = sc.filters.hispanicOptions;
                     }
                 }

@@ -375,7 +375,7 @@ describe('search factory ', function(){
             deferred.resolve(countsMortalityAutoCompletes);
             $scope.$apply();
             var yearFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
-            expect(yearFilter.autoCompleteOptions.length).toEqual(5);
+            expect(yearFilter.autoCompleteOptions.length).toEqual(15);
             expect(yearFilter.autoCompleteOptions[0].count).toEqual(2630800);
         });
 
@@ -483,23 +483,18 @@ describe('search factory ', function(){
     });
 
     describe('test with yrbs data', function () {
-        var yrbsResponse, raceNoValueHeaders, yrbsChart1Deferred, yrbsChart2Deferred, yrbsChart3Deferred,
-            yrbsGradePieChartResponse, yrbsRacePieChartResponse, yrbsGenderAndRaceBarChartResponse;
+        var yrbsResponse, raceNoValueHeaders, yrbsChartDeferred;
         beforeAll(function() {
             primaryFilter = filters.search[1];
             filters.selectedPrimaryFilter = primaryFilter;
             yrbsResponse = __fixtures__['app/modules/search/fixtures/search.factory/yrbsResponse'];
             raceNoValueHeaders = __fixtures__['app/modules/search/fixtures/search.factory/raceNoValueHeaders'];
-            yrbsGradePieChartResponse = __fixtures__['app/modules/search/fixtures/search.factory/yrbsGradePieChartResponse'];
-            yrbsRacePieChartResponse = __fixtures__['app/modules/search/fixtures/search.factory/yrbsRacePieChartResponse'];
-            yrbsGenderAndRaceBarChartResponse = __fixtures__['app/modules/search/fixtures/search.factory/yrbsGenderAndRaceBarChartResponse'];
         });
         beforeEach(function() {
             deferred = $q.defer();
-            yrbsChart1Deferred = $q.defer();
-            yrbsChart2Deferred = $q.defer();
-            yrbsChart3Deferred = $q.defer();
+            yrbsChartDeferred = $q.defer();
         });
+
         it('getAllFilters', function () {
             expect(primaryFilter.key).toEqual('mental_health');
         });
@@ -565,24 +560,57 @@ describe('search factory ', function(){
             raceFilter.value = ['2015'];
         });
 
-        it('searchYRBSResults with only one row and one column group with out all value', function () {
-            var index = 0;
+        it('should give me a chart data for single filter with question', function () {
             spyOn(searchService, 'searchResults').and.callFake(function(){
-                index++;
-                if(index === 1) {
-                    return yrbsChart1Deferred.promise
-                } else if(index === 2) {
-                    return yrbsChart2Deferred.promise
-                } else {
-                    return yrbsChart3Deferred.promise
-                }
+                return yrbsChartDeferred.promise
+            });
+            var deferred1 = $q.defer();
+            spyOn(searchService, 'generateHashCode').and.callFake(function() {
+                return deferred1.promise;
             });
 
+            var yrbsMockData = __fixtures__['app/modules/search/fixtures/search.factory/yrbsChartMockData'];
+            var selectedQuestion = yrbsMockData.selectedQuestion;
+            primaryFilter.value = yrbsMockData.selectedFilters1;
+
             var questionFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'question');
-            questionFilter.onIconClick(questionFilter.autoCompleteOptions[0].key);
-            yrbsChart1Deferred.resolve(yrbsGradePieChartResponse);
-            yrbsChart2Deferred.resolve(yrbsRacePieChartResponse);
-            yrbsChart3Deferred.resolve(yrbsGenderAndRaceBarChartResponse);
+
+            questionFilter.onIconClick(selectedQuestion);
+
+            deferred1.resolve('06c2b4848fbbc7f4e0ed60a399d1de21');
+
+            yrbsChartDeferred.resolve(yrbsMockData.chartData1);
+
+            $scope.$apply();
+
+        });
+
+
+        it('should give me a chart data for two filters with question', function () {
+            spyOn(searchService, 'searchResults').and.callFake(function(){
+                return yrbsChartDeferred.promise
+            });
+            var deferred1 = $q.defer();
+            spyOn(searchService, 'generateHashCode').and.callFake(function() {
+                return deferred1.promise;
+            });
+
+            var yrbsMockData = __fixtures__['app/modules/search/fixtures/search.factory/yrbsChartMockData'];
+            var selectedQuestion = yrbsMockData.selectedQuestion;
+            primaryFilter.value = yrbsMockData.selectedFilters2;           
+
+            searchFactory.prepareQuestionChart(primaryFilter,selectedQuestion,
+                ['yrbsSex', 'yrbsRace']).then(function (response) {
+                expect(response.chartTypes.length).toEqual(3);
+                expect(response.chartTypes[0].join()).toEqual('yrbsRace');
+                expect(response.chartTypes[1].join('&')).toEqual('yrbsSex&yrbsRace');
+                expect(response.chartTypes[2].join()).toEqual('yrbsSex');
+            });
+
+            deferred1.resolve('06c2b4848fbbc7f4e0ed60a399d1de21');
+
+            yrbsChartDeferred.resolve(yrbsMockData.chartData2);
+
             $scope.$apply();
 
         });
@@ -611,6 +639,19 @@ describe('search factory ', function(){
             primaryFilter.searchResults(primaryFilter).then(function() {
                 expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(response.data.resultData.nested.table));
                 expect(JSON.stringify(primaryFilter.chartData)).toEqual(JSON.stringify(response.data.resultData.chartData));
+            });
+            deferred.resolve(response);
+            $scope.$apply();
+        });
+
+        it('test searchCensusInfo for population counts in side filters', function () {
+            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
+            primaryFilter.searchResults(primaryFilter).then(function() {
+                primaryFilter.allFilters.forEach(function (eachFilter) {
+                    eachFilter.autoCompleteOptions.forEach(function (option) {
+                        expect(option.bridge_race).toBeDefined();
+                    });
+                });
             });
             deferred.resolve(response);
             $scope.$apply();

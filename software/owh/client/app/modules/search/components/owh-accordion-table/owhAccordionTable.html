@@ -21,19 +21,21 @@
             <td ng-repeat="eachColumn in eachRow" colspan="{{ eachColumn.colspan }}" rowspan="{{ eachColumn.rowspan }}">
                 <div class="owh-question__content" ng-class="{'text-right': $index > 0}">
                     <span ng-if="!eachColumn.title.mean" ng-bind-html="eachColumn.title"></span>
-                    <div ng-if="eachColumn.title.mean">
+                    <div ng-if="eachColumn.title.mean" title="% of Yes responses">
                         {{eachColumn.title.mean}}
-                        <div ng-if="oatc.showCi">
+                        <div ng-if="oatc.showCi" title="Confidence interval">
                             <br/><br/>
                             ({{eachColumn.title.ci_l}}-{{eachColumn.title.ci_u}})
                         </div>
-                        <div ng-if="oatc.showUf">
+                        <div ng-if="oatc.showUf" title="Number of responses">
                             <br/>
                             {{eachColumn.title.count}}
                         </div>
                     </div>
-                    <!--  Commenting the chart for now
-                    <i class="cursor-pointer {{eachColumn.iconClass}}" ng-if="eachColumn.iconClass" ng-click="eachColumn.onIconClick(eachColumn.key)"></i> -->
+
+                    <i class="cursor-pointer {{eachColumn.iconClass}}" id="{{eachColumn.qkey}}"
+                       ng-if="eachColumn.iconClass && oatc.showCharts"
+                       ng-click="eachColumn.onIconClick(eachColumn)"></i>
                 </div>
             </td>
         </tr>
