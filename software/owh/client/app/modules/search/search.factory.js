@@ -469,7 +469,6 @@
 
         function prepareChartData(headers, nestedData, primaryFilter) {
             var chartData = [];
-
             if(primaryFilter.showMap) {
                 chartData.push(primaryFilter.mapData);
             }
@@ -759,7 +758,6 @@
             var deferred = $q.defer();
             var apiQuery = buildAPIQuery(primaryFilter);
             var headers = apiQuery.headers;
-
             SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 deferred.resolve({
                     data : response.data.resultData.nested.table,
@@ -767,7 +765,7 @@
                     chartData: prepareChartData(response.data.resultData.headers, response.data.resultData.nested, primaryFilter),
                     totalCount: response.pagination.total,
                     maps: response.data.resultData.nested.maps
-                })
+                });
             });
             return deferred.promise;
         }
@@ -783,7 +781,7 @@
                 primaryFilter.headers = response.headers;
                 primaryFilter.chartData = response.chartData;
                 primaryFilter.maps = response.maps;
-                deferred.resolve({});
+                deferred.resolve(response);
             });
 
             return deferred.promise;

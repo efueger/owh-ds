@@ -514,8 +514,10 @@
             if (sc.filters.selectedPrimaryFilter.key === 'bridge_race') {
                 sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                 sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
+                sc.filters.selectedPrimaryFilter.chartData = response.chartData;
                 updateStatesDeaths(sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
             }
+
             sc.filters.selectedPrimaryFilter.initiated = true;
         }
 
@@ -533,7 +535,6 @@
         }
 
         function getSelectedYears() {
-            console.log(sc.filters.selectedPrimaryFilter.allFilters);
             var yearKey = 'year';
             if(sc.tableView === 'bridge_race') {
                 yearKey = 'current_year';
@@ -559,6 +560,7 @@
                     feature.properties.years = years;
                     feature.properties.totalCount = state['deaths']; /*+ (Math.floor((Math.random()*10)+1))*100000;*/
                     feature.properties.sex = state.sex;
+                    feature.properties['bridge_race'] = state['bridge_race'];
                 }
             });
             var minMaxValueObj = utilService.getMinAndMaxValue(stateDeathTotals);
@@ -647,7 +649,6 @@
         }
         $scope.$on("leafletDirectiveGeoJson.mouseover", function (event, args) {
             var leafEvent = args.leafletEvent;
-            console.log(leafEvent.target.feature.properties);
             buildMarkerPopup(leafEvent.latlng.lat, leafEvent.latlng.lng, leafEvent.target.feature.properties, args.leafletObject._map, sc.tableView);
             sc.currentFeature = leafEvent.target.feature;
 
