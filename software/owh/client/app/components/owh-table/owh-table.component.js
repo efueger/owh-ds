@@ -8,6 +8,7 @@
             controllerAs: 'otc',
             bindings: {
                 tableData: '<',
+                showPercentage: '<',
                 tableView: '@',
                 rowspanThreshold: '<'
             }
@@ -171,7 +172,7 @@
                                 cell += '<span>Suppressed</span>';
                             } else {
                                 cell += '<span class="count-value">' + $filter('number')(column.title) + '</span>';
-                                if(colIndex !== row.length - 1 && column.percentage  > 0) {
+                                if(colIndex !== row.length - 1 && column.percentage  > 0 && otc.showPercentage) {
                                     cell += '<span class="count-value"> (' + $filter('number')(column.percentage, 1) + '%)</span>';
                                 }
                             }
