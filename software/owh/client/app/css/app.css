@@ -739,6 +739,10 @@ body {
     background-color: #fff;
 }
 
+.leaflet-control-container .legend {
+    width: 130px;
+}
+
 /*header*/
 .qh-header {
     background-color: #3b699b;
