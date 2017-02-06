@@ -6,9 +6,9 @@
         .module('owh.search')
         .service('searchFactory', searchFactory);
 
-    searchFactory.$inject = ["utilService", "SearchService", "$q", "$translate", "chartUtilService", '$rootScope', '$timeout', 'ModalService', '$state', 'filterUtils'];
+    searchFactory.$inject = ["utilService", "SearchService", "$q", "$translate", "chartUtilService", '$rootScope', '$timeout', 'ModalService', '$state', 'filterUtils', 'mapService'];
 
-    function searchFactory( utilService, SearchService, $q, $translate, chartUtilService, $rootScope, $timeout, ModalService, $state, filterUtils){
+    function searchFactory( utilService, SearchService, $q, $translate, chartUtilService, $rootScope, $timeout, ModalService, $state, filterUtils, mapService){
         var service = {
             getAllFilters : getAllFilters,
             queryMortalityAPI: queryMortalityAPI,
@@ -27,11 +27,113 @@
             searchYRBSResults: searchYRBSResults,
             buildQueryForYRBS: buildQueryForYRBS,
             prepareMortalityResults: prepareMortalityResults,
-            prepareQuestionChart: prepareQuestionChart
+            prepareQuestionChart: prepareQuestionChart,
+            populateSideFilterTotals: populateSideFilterTotals,
+            updateFiltersAndData: updateFiltersAndData,
+            getMixedTable: getMixedTable
 
 
         };
         return service;
+
+        /**
+         * Using search results response update filters, table headers and data for search page
+         * @param response
+         */
+        function updateFiltersAndData(primaryFilters, response, groupOptions, mapOptions) {
+            //sets primary filter
+            var primaryFilter = utilService.findByKeyAndValue(primaryFilters, 'key', response.data.queryJSON.key);
+
+            //sets tableView
+            var tableView = response.data.queryJSON.tableView;
+
+            //populate side filters based on cached query filters
+            if (response.data.queryJSON) {
+                angular.forEach(response.data.queryJSON.sideFilters, function (filter, index) {
+                    primaryFilter.sideFilters[index].filters.value = filter.filters.value;
+                    primaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
+                });
+            }
+            updateFilterValues(primaryFilter);
+            //update table headers based on cached query
+            primaryFilter.headers = buildAPIQuery(primaryFilter).headers;
+            //make sure side filters are in proper order
+            angular.forEach(primaryFilter.sideFilters, function (filter) {
+                groupAutoCompleteOptions(filter.filters, groupOptions[tableView]);
+            });
+            var tableData = {};
+            if (primaryFilter.key === 'deaths') {
+                primaryFilter.data = response.data.resultData.nested.table;
+                primaryFilter.searchCount = response.pagination.total;
+                tableData = getMixedTable(primaryFilter, groupOptions, tableView);
+                populateSideFilterTotals(primaryFilter, response.data);
+                prepareMortalityResults(primaryFilter, response.data);
+                primaryFilter.chartData = prepareChartData(primaryFilter.headers, response.data.resultData.nested, primaryFilter);
+                mapService.updateStatesDeaths(primaryFilter, response.data.resultData.nested.maps, primaryFilter.searchCount, mapOptions);
+            }
+            if (primaryFilter.key === 'mental_health') {
+                primaryFilter.data = response.data.resultData.table;
+                tableData = getMixedTable(primaryFilter, groupOptions, tableView);
+                primaryFilter.headers = buildQueryForYRBS(primaryFilter, true).headers;
+                tableData.data = categorizeQuestions(tableData.data);
+            }
+            if (primaryFilter.key === 'bridge_race') {
+                primaryFilter.data = response.data.resultData.nested.table;
+                tableData = getMixedTable(primaryFilter, groupOptions, tableView);
+                populateSideFilterTotals(primaryFilter, response.data);
+                primaryFilter.headers = tableData.headers;
+                primaryFilter.data = tableData.data;
+                primaryFilter.chartData = prepareChartData(response.data.resultData.headers, response.data.resultData.nested, primaryFilter);
+                primaryFilter.maps = response.data.resultData.nested.maps;
+                mapService.updateStatesDeaths(primaryFilter, primaryFilter.maps, primaryFilter.searchCount, mapOptions);
+            }
+            primaryFilter.initiated = true;
+            return {
+                tableData: tableData,
+                tableView: tableView,
+                primaryFilter: primaryFilter
+            };
+        }
+
+        /*
+            Builds table based on primaryFilter and options
+         */
+        function getMixedTable(selectedFilter, groupOptions, tableView){
+            var file = selectedFilter.data ? selectedFilter.data : {};
+            var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
+            //make sure row/column headers are in proper order
+            angular.forEach(headers.rowHeaders, function(header) {
+                sortAutoCompleteOptions(header, groupOptions[tableView]);
+            });
+            angular.forEach(headers.columnHeaders, function(header) {
+                sortAutoCompleteOptions(header, groupOptions[tableView]);
+            });
+            var countKey = selectedFilter.key;
+            var countLabel = selectedFilter.countLabel;
+            var totalCount = selectedFilter.count;
+            var calculatePercentage = true;
+            var calculateRowTotal = selectedFilter.calculateRowTotal;
+            var secondaryCountKeys = ['pop', 'ageAdjustedRate', 'standardPop'];
+
+            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKeys);
+        }
+
+        //takes mixedTable and returns categories array for use with owhAccordionTable
+        function categorizeQuestions(data) {
+            var categories = [];
+            angular.forEach($rootScope.questions, function(questionCategory){
+                var category = {title: questionCategory.text, questions: [], hide: true};
+                angular.forEach(questionCategory.children, function(categoryChild) {
+                    angular.forEach(data, function(row) {
+                        if(row[0].qkey === categoryChild.id) {
+                            category.questions.push(row);
+                        }
+                    });
+                });
+                categories.push(category);
+            });
+            return categories;
+        }
 
         function removeDisabledFilters(selectedFilter, filterView, availableFilters) {
             if(availableFilters[filterView]) {
@@ -158,10 +260,6 @@
         function searchYRBSResults( primaryFilter, queryID ) {
             var deferred = $q.defer();
             queryYRBSAPI(primaryFilter, queryID ).then(function(response){
-                primaryFilter.data = response.data.table;
-                //primaryFilter.chartData = response.chartData;
-                primaryFilter.headers = response.headers;
-                //primaryFilter.dataPrepared = true;
                 deferred.resolve(response);
             });
             return deferred.promise;
@@ -228,11 +326,7 @@
                 if(!questionsFilter.autoCompleteOptions || questionsFilter.autoCompleteOptions.length === 0) {
                     questionsFilter.autoCompleteOptions = $rootScope.questionsList;
                 }*/
-                deferred.resolve({
-                    data: response.data.resultData,
-                    headers : headers,
-                    queryJSON: response.data.queryJSON
-                });
+                deferred.resolve(response);
             });
             return deferred.promise;
         }
@@ -364,8 +458,7 @@
             return deferred.promise;
         }
 
-
-        function prepareMortalityResults(primaryFilter, response) {
+        function populateSideFilterTotals(primaryFilter, response) {
             primaryFilter.count = response.sideFilterResults.pagination.total;
             angular.forEach(response.sideFilterResults.data.simple, function (eachFilterData, key) {
                 //fill auto-completer data with counts
@@ -400,17 +493,17 @@
                     //filter.sortedAutoCompleteOptions = utilService.sortByKey(angular.copy(filter.autoCompleteOptions), 'count', false);
                 }
             });
+        }
+
+
+        function prepareMortalityResults(primaryFilter, response) {
             var ucd10Filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'ucd-chapter-10');
             ucd10Filter.autoCompleteOptions = $rootScope.conditionsListICD10;
-            primaryFilter.data = response.data;
-            primaryFilter.headers = response.headers;
+            primaryFilter.data = response.resultData.nested.table;
             primaryFilter.calculatePercentage = true;
             primaryFilter.calculateRowTotal = true;
-            primaryFilter.chartDataFromAPI = response.chartDataFromAPI;
-            primaryFilter.chartData = response.chartData;
-            primaryFilter.dataPrepared = response.dataPrepared;
-            primaryFilter.maps = response.maps;
-            primaryFilter.searchCount = response.totalCount;
+            primaryFilter.chartDataFromAPI = response.resultData.simple;
+            primaryFilter.maps = response.resultData.nested.maps;
         }
 
         function removeSearchResults(ac){
@@ -458,7 +551,6 @@
         function searchMortalityResults(primaryFilter, queryID) {
             var deferred = $q.defer();
             queryMortalityAPI(primaryFilter, queryID).then(function(response){
-                prepareMortalityResults(primaryFilter, response);
                 deferred.resolve(response);
             });
             return deferred.promise;
@@ -518,17 +610,7 @@
                 if(response.data.queryJSON) {
                     headers = buildAPIQuery(response.data.queryJSON).headers;
                 }
-                deferred.resolve({
-                    data : response.data.resultData.nested.table,
-                    dataPrepared : false,
-                    headers : headers,
-                    chartDataFromAPI : response.data.resultData.simple,
-                    chartData: prepareChartData(headers, response.data.resultData.nested, primaryFilter),
-                    maps: response.data.resultData.nested.maps,
-                    totalCount: response.pagination.total,
-                    sideFilterResults: response.data.sideFilterResults,
-                    queryJSON: response.data.queryJSON
-                });
+                deferred.resolve(response);
             });
             return deferred.promise;
         }
@@ -822,15 +904,7 @@
         function queryCensusAPI( primaryFilter, queryID ) {
             var deferred = $q.defer();
             SearchService.searchResults(primaryFilter, queryID).then(function(response) {
-                deferred.resolve({
-                    data : response.data.resultData.nested.table,
-                    queryJSON: response.data.queryJSON,
-                    headers : response.data.resultData.headers,
-                    sideFilterResults: response.data.sideFilterResults,
-                    chartData: prepareChartData(response.data.resultData.headers, response.data.resultData.nested, primaryFilter),
-                    totalCount: response.pagination.total,
-                    maps: response.data.resultData.nested.maps
-                });
+                deferred.resolve(response);
             });
             return deferred.promise;
         }
@@ -866,13 +940,15 @@
         function searchCensusInfo(primaryFilter, queryID) {
             var deferred = $q.defer();
 
-            queryCensusAPI(primaryFilter, queryID).then(function(response){
-                primaryFilter.data = response.data;
-                primaryFilter.headers = response.headers;
-                primaryFilter.chartData = response.chartData;
-                primaryFilter.maps = response.maps;
+            //remove circular JSON
+            var query = angular.copy(primaryFilter);
+            delete query.mapData;
+            delete query.chartData;
+            queryCensusAPI(query, queryID).then(function(response){
+                primaryFilter.data = response.data.resultData.nested.table;
+                primaryFilter.headers = response.data.resultData.headers;
                 //update total population count for side filters
-                updateSideFilterPopulationCount(primaryFilter, response.sideFilterResults.data.simple);
+                updateSideFilterPopulationCount(primaryFilter, response.data.sideFilterResults.data.simple);
                 deferred.resolve(response);
             });
 

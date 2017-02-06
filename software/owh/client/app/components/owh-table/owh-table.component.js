@@ -190,7 +190,7 @@
             };
 
             var data = [];
-            if(table) {
+            if(table && table.data) {
                 //find out how long the first merge cell is
                 var maxRowspan = table.data[0][0].rowspan;
                 var newCells = [];
