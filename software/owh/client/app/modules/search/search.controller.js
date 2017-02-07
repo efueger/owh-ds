@@ -21,6 +21,7 @@
         sc.changeViewFilter = changeViewFilter;
         sc.getQueryResults = getQueryResults;
         sc.changePrimaryFilter = changePrimaryFilter;
+        sc.updateCharts = updateCharts;
         sc.skipRefresh = false;
 
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
@@ -314,6 +315,18 @@
         angular.extend(mortalityFilter.mapData, mapOptions);
 
         angular.extend(bridgedRaceFilter.mapData, mapOptions);
+
+        function updateCharts() {
+            angular.forEach(sc.filters.selectedPrimaryFilter.chartData, function (chartData) {
+                angular.forEach(chartData, function (chart) {
+                    if (!chart.isMap) {
+                        $timeout(function () {
+                            chart.api.update();
+                        }, 250);
+                    }
+                });
+            });
+        }
 
         //fit leaflet map to container
         $timeout(function(){
