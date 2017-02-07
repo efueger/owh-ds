@@ -315,6 +315,13 @@
 
         angular.extend(bridgedRaceFilter.mapData, mapOptions);
 
+        //fit leaflet map to container
+        $timeout(function(){
+            leafletData.getMap().then(function(map) {
+                map.invalidateSize()
+            });
+        }, 1000);
+
         function getQueryResults(queryID) {
             return searchFactory.getQueryResults(queryID).then(function (response) {
                //if queryID exists in owh_querycache index, then update data that are required to display search results
