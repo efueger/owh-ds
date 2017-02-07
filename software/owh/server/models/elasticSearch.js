@@ -196,7 +196,7 @@ ElasticClient.prototype.aggregateCensusData = function(query){
  * This method is used to fetch the natality data
  */
 ElasticClient.prototype.aggregateNatalityData = function(query){
-    //get tge elasic search client for census index
+    //get tge elastic search client for natality index
     var client = this.getClient(natality_index);
     var deferred = Q.defer();
     //execute the search query

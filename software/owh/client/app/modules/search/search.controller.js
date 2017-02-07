@@ -345,11 +345,6 @@
                         sc.filters.selectedPrimaryFilter.data = response.data.resultData.nested.table;
                         sc.filters.selectedPrimaryFilter.headers = response.data.resultData.headers;
                         sc.filters.selectedPrimaryFilter.chartData = searchFactory.prepareChartData(response.data.resultData.headers, response.data.resultData.nested, selectedPrimaryFilters);
-                    }//To update bridge race page
-                    else if (response.data.queryJSON.key == 'natality') {
-                        debugger;
-                        sc.filters.selectedPrimaryFilter.data = response.data.resultData.nested.table;
-                        sc.filters.selectedPrimaryFilter.headers = response.data.resultData.headers;
                     }
                     updateFiltersAndData(response);
                 }

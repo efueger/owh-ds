@@ -117,5 +117,16 @@ describe('owhTable component: ', function() {
 
         expect(window.Clusterize).toHaveBeenCalled();
     });
+
+    it('should compileTable for natality tableView', function() {
+        var bindings = {tableView: 'natality'};
+        var ctrl = $componentController('owhTable', { $scope: $scope }, bindings);
+
+        spyOn(window, "Clusterize");
+        var table = {"headers":[[{"colspan":1,"rowspan":1,"title":"Race"},{"title":"Female","colspan":1,"rowspan":1,"isData":true},{"title":"Male","colspan":1,"rowspan":1,"isData":true},{"title":"Number of Deaths","colspan":1,"rowspan":1,"isData":true}]],"data":[[{"title":"American Indian","isCount":false,"rowspan":1,"colspan":1,"key":"American Indian"},{"title":8179,"percentage":45.41870279875611,"isCount":true,"rowspan":1,"colspan":1,"pop":28544528,"ageAdjustedRate":"557.9","standardPop":32250198},{"title":9829,"percentage":54.58129720124389,"isCount":true,"rowspan":1,"colspan":1,"pop":28645741,"ageAdjustedRate":"754.4","standardPop":32369216},{"title":18008,"percentage":0.6856486667392624,"isCount":true,"rowspan":1,"colspan":1,"isBold":true,"pop":57190269,"ageAdjustedRate":"647.7","standardPop":64619414}],[{"title":"Asian or Pacific Islander","isCount":false,"rowspan":1,"colspan":1,"key":"Asian or Pacific Islander"},{"title":29884,"percentage":48.536624979697905,"isCount":true,"rowspan":1,"colspan":1,"pop":121309960,"ageAdjustedRate":"368.3","standardPop":137270512},{"title":31686,"percentage":51.463375020302095,"isCount":true,"rowspan":1,"colspan":1,"pop":112325576,"ageAdjustedRate":"524.1","standardPop":127115817},{"title":61570,"percentage":2.3442574639680354,"isCount":true,"rowspan":1,"colspan":1,"isBold":true,"pop":233635536,"ageAdjustedRate":"435.2","standardPop":264386329}]],"calculatePercentage":true};
+        ctrl.compileTable(table);
+
+        expect(window.Clusterize).toHaveBeenCalled();
+    });
 });
 
