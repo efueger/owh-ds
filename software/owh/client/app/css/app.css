@@ -735,6 +735,10 @@ body {
     cursor: pointer;
 }
 
+.leaflet-container {
+    background-color: #fff;
+}
+
 /*header*/
 .qh-header {
     background-color: #3b699b;
@@ -809,6 +813,11 @@ body {
 }
 .marker-label {
     font-weight: bold;
+}
+
+.marker-years {
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 /*dashboard*/
@@ -1136,4 +1145,11 @@ body {
 .owh-question__question.ng-hide .owh-question__content {
     max-height: 0;
     overflow: hidden;
+}
+
+.forward-back {
+    float: right;
+    width: 110px;
+    margin-right: 10px;
+
 }

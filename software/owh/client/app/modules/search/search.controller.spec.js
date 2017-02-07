@@ -331,4 +331,23 @@ describe("Search controller: ", function () {
          $scope.$apply();
     }));
 
+    it('should generate hashcode for the default query if no queryID found', inject(function(searchFactory) {
+        var stateParams = {
+            queryID: '',
+            primaryFilterKey: 'deaths'
+        };
+
+        spyOn(searchFactory, "generateHashCode").and.returnValue({
+            then: function(){}
+        });
+        var searchController= $controller('SearchController',
+            {
+                $scope:$scope,
+                searchFactory: searchFactory,
+                $stateParams: stateParams
+            });
+
+        expect(searchFactory.generateHashCode).toHaveBeenCalled();
+    }));
+
 });
