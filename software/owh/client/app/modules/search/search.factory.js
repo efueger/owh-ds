@@ -1404,7 +1404,7 @@
                     chartAxisLabel:'Population', countLabel: 'Total', tableView:'natality',
                     sideFilters:[
                         {
-                            filterGroup: false, collapse: false, allowGrouping: true,
+                            filterGroup: false, collapse: true, allowGrouping: true,
                             filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'hispanic_origin')
                         },
                         {
@@ -1424,7 +1424,7 @@
                             filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_education')
                         },
                         {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.groupOptions,
                             filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_yy')
                         },
                         {

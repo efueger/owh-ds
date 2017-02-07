@@ -54,7 +54,7 @@
             "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
             "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'yrbsState', 'question'],
             "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'agegroup', 'race', 'ethnicity', 'state'],
-            "label.filter.natality": ['dob_yy', 'sex', 'hispanic_origin', 'mother_race', 'marital_status',
+            "label.filter.natality": ['dob_yy', 'sex', 'mother_race', 'hispanic_origin', 'marital_status',
                 'mother_age', 'mother_education', 'dob_mm', 'dob_wk', 'prenatal_care',
                 'birth_weight', 'birth_plurality', 'live_birth', 'birth_place', 'delivery_method', 'medical_attendant',
                 'chronic_hypertension', 'diabetes', 'pregnancy_hypertension', 'eclampsia', 'tobacco_use']
