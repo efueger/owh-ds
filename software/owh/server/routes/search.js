@@ -57,9 +57,10 @@ var searchRouter = function(app, rConfig) {
 function search(q) {
     var deferred = Q.defer();
     var preparedQuery = queryBuilder.buildAPIQuery(q);
+    var finalQuery = '';
     logger.debug("Incoming query: ", JSON.stringify(preparedQuery));
     if (preparedQuery.apiQuery.searchFor === "deaths") {
-        var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
+        finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
         var sideFilterQuery = queryBuilder.buildSearchQuery(queryBuilder.addCountsToAutoCompleteOptions(q), true);
         finalQuery.wonderQuery = preparedQuery.apiQuery;
         new elasticSearch().aggregateDeaths(sideFilterQuery).then(function (sideFilterResults) {
@@ -83,7 +84,7 @@ function search(q) {
             deferred.resolve(resData);
         });
     } else if (preparedQuery.apiQuery.searchFor === "bridge_race") {
-        var finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
+        finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
 
         //build query for total counts that will be displyed in side filters
         var sideFilterTotalCountQuery = queryBuilder.addCountsToAutoCompleteOptions(q);
@@ -99,6 +100,16 @@ function search(q) {
                 resData.sideFilterResults = sideFilterResults;
                 deferred.resolve(resData);
             });
+        });
+    } else if (preparedQuery.apiQuery.searchFor === "natality") {
+        finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
+
+        new elasticSearch().aggregateNatalityData(finalQuery[0]).then(function (response) {
+            var resData = {};
+            resData.queryJSON = q;
+            resData.resultData = response.data;
+            resData.resultData.headers = preparedQuery.headers;
+            deferred.resolve(resData);
         });
     }
     return  deferred.promise;

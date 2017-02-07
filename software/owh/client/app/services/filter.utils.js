@@ -267,7 +267,6 @@
                 { "key": "Cuban", "title": "Cuban" },
                 { "key": "Central and South American", "title": "Central and South American" },
                 { "key": "Other and Unknown Hispanic Origin", "title": "Other and Unknown Hispanic Origin" },
-                { "key": "Other and Unknown Hispanic Origin", "title": "Other and Unknown Hispanic Origin" },
                 { "key": "Hispanic origin not stated", "title": "Hispanic origin not stated" }
             ];
 
@@ -392,67 +391,70 @@
 
             //prepare filter definitions
             var natalityFilters = [
-                {key: 'mother_hispanic_origin', title: 'label.filter.yearly.estimate', queryKey:"mother_hispanic_origin", primary: false, value: ['2015'], defaultGroup:'row', groupBy: false,
+                {key: 'hispanic_origin', title: 'label.filter.hispanicOrigin', queryKey:"hispanic_origin",
+                    primary: false, value: [], defaultGroup:'row', groupBy: false,
                     autoCompleteOptions: angular.copy(hispanicOptions) },
-                {key: 'mother_age', title: 'label.filter.gender', queryKey:"mother_age", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(ageOptions)},
 
-                {key: 'mother_race', title: 'label.filter.gender', queryKey:"mother_race", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(raceOptions)},
+                {key: 'mother_age', title: 'label.filter.gender', queryKey:"mother_age", primary: false, value: [],
+                    defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(ageOptions)},
 
-                {key: 'mother_marital_status', title: 'label.filter.gender', queryKey:"mother_marital_status", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(maritalStatusOptions)},
+                {key: 'mother_race', title: 'label.filter.race', queryKey:"mother_race", primary: false, value: [],
+                    defaultGroup:'column', groupBy: 'row', autoCompleteOptions: angular.copy(raceOptions)},
 
-                {key: 'mother_education', title: 'label.filter.gender', queryKey:"mother_education", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(educationOptions)},
+                {key: 'marital_status', title: 'label.filter.maritalStatus', queryKey:"marital_status", primary: false,
+                    value: [], defaultGroup:'column', groupBy:false, autoCompleteOptions: angular.copy(maritalStatusOptions)},
 
-                {key: 'dob_yy', title: 'label.filter.gender', queryKey:"dob_yy", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                {key: 'mother_education', title: 'label.filter.education', queryKey:"mother_education", primary: false,
+                    value: [], defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(educationOptions)},
+
+                {key: 'dob_yy', title: 'label.filter.year', queryKey:"dob_yy", primary: false, value: ["2014"], defaultGroup:'column', groupBy: false,
                     autoCompleteOptions: angular.copy(yearOptions)},
 
-                {key: 'dob_mm', title: 'label.filter.gender', queryKey:"dob_mm", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                {key: 'dob_mm', title: 'label.filter.month', queryKey:"dob_mm", primary: false, value: [], defaultGroup:'column', groupBy: false,
                     autoCompleteOptions: angular.copy(monthOptions)},
 
-                {key: 'dob_wk', title: 'label.filter.gender', queryKey:"dob_wk", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                {key: 'dob_wk', title: 'label.filter.weekday', queryKey:"dob_wk", primary: false, value: [], defaultGroup:'column', groupBy: false,
                     autoCompleteOptions: angular.copy(weekDayOptions)},
 
                 {key: 'sex', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
                     autoCompleteOptions: angular.copy(genderOptions)},
 
-                {key: 'month_prenatal_care_began', title: 'label.filter.gender', queryKey:"month_prenatal_care_began", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
+                {key: 'prenatal_care', title: 'label.filter.monthPrenatalCareBegan', queryKey:"prenatal_care",
+                    primary: false, value: [], defaultGroup:'column', groupBy: false,
                     autoCompleteOptions: angular.copy(prenatalCareMonthOptions)},
 
-                {key: 'birth_weight', title: 'label.filter.gender', queryKey:"birth_weight", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(birthWeightOptions)},
+                {key: 'birth_weight', title: 'label.filter.birthWeight', queryKey:"birth_weight", primary: false,
+                    value: [], defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(birthWeightOptions)},
 
-                {key: 'birth_plurality', title: 'label.filter.gender', queryKey:"birth_plurality", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(birthPluralityOptions)},
+                {key: 'birth_plurality', title: 'label.filter.plurality', queryKey:"birth_plurality", primary: false,
+                    value: [], defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(birthPluralityOptions)},
 
-                {key: 'live_birth_order', title: 'label.filter.gender', queryKey:"live_birth_order", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(liveBirthOrderOptions)},
+                {key: 'live_birth', title: 'label.filter.liveBirthOrder', queryKey:"live_birth", primary: false,
+                    value: [], defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(liveBirthOrderOptions)},
 
-                {key: 'birth_place', title: 'label.filter.gender', queryKey:"birth_place", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(birthPlaceOptions)},
+                {key: 'birth_place', title: 'label.filter.birthPlace', queryKey:"birth_place", primary: false,
+                    value: [], defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(birthPlaceOptions)},
 
-                {key: 'delivery_method', title: 'label.filter.gender', queryKey:"delivery_method", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(deliveryMethodOptions)},
+                {key: 'delivery_method', title: 'label.filter.deliveryMethod', queryKey:"delivery_method", primary: false,
+                    value: [], defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(deliveryMethodOptions)},
 
-                {key: 'medical_attendant', title: 'label.filter.gender', queryKey:"medical_attendant", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(medicalAttendantOptions)},
+                {key: 'medical_attendant', title: 'label.filter.medicalAttendant', queryKey:"medical_attendant", primary: false,
+                    value: [], defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(medicalAttendantOptions)},
 
-                {key: 'chronic_hypertension', title: 'label.filter.gender', queryKey:"chronic_hypertension", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(chronicHypertensionOptions)},
+                {key: 'chronic_hypertension', title: 'label.filter.chronicHypertension', queryKey:"chronic_hypertension", primary: false,
+                    value: [], defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(chronicHypertensionOptions)},
 
-                {key: 'diabetes', title: 'label.filter.gender', queryKey:"diabetes", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(diabetesOptions)},
+                {key: 'diabetes', title: 'label.filter.diabetes', queryKey:"diabetes", primary: false,
+                    value: [], defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(diabetesOptions)},
 
-                {key: 'pregnancy_hypertension', title: 'label.filter.gender', queryKey:"pregnancy_hypertension", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(pregnancyHypertensionOptions)},
+                {key: 'pregnancy_hypertension', title: 'label.filter.pregnancy.hypertension', queryKey:"pregnancy_hypertension", primary: false,
+                    value: [], defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(pregnancyHypertensionOptions)},
 
-                {key: 'eclampsia', title: 'label.filter.gender', queryKey:"eclampsia", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(eclampsiaOptions)},
+                {key: 'eclampsia', title: 'label.filter.eclampsia', queryKey:"eclampsia", primary: false, value: [],
+                    defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(eclampsiaOptions)},
 
-                {key: 'tobacco_use', title: 'label.filter.gender', queryKey:"tobacco_use", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(eclampsiaOptions)}
+                {key: 'tobacco_use', title: 'label.filter.tobacco.use', queryKey:"tobacco_use", primary: false,
+                    value: [], defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(tobaccoOptions)}
             ];
 
             return natalityFilters;

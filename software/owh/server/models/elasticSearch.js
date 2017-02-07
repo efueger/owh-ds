@@ -4,12 +4,14 @@ var elasticQueryBuilder = require('../api/elasticQueryBuilder');
 const util = require('util');
 var wonder = require("../api/wonder");
 var Q = require('q');
-var logger = require('../config/logging')
-var config = require('../config/config')
-var _host = config.elastic_search.url
-var _index= "owh"
+var logger = require('../config/logging');
+var config = require('../config/config');
+var _host = config.elastic_search.url;
+var _index= "owh";
 var mortality_index = "owh_mortality";
 var mortality_type = "mortality";
+var natality_index = "owh_natality";
+var natality_type = "natality";
 var census_index="owh_census";
 var census_type="census";
 //@TODO to work with my local ES DB I changed mapping name to 'queryResults1', revert before check in to 'queryResults'
@@ -183,6 +185,28 @@ ElasticClient.prototype.aggregateCensusData = function(query){
     }).then(function (resp) {
         //parse the search results
         deferred.resolve(searchUtils.populateDataWithMappings(resp, 'bridge_race', 'pop'))
+    }, function (err) {
+        logger.error(err.message);
+        deferred.reject(err);
+    });
+    return deferred.promise;
+};
+
+/**
+ * This method is used to fetch the natality data
+ */
+ElasticClient.prototype.aggregateNatalityData = function(query){
+    //get tge elasic search client for census index
+    var client = this.getClient(natality_index);
+    var deferred = Q.defer();
+    //execute the search query
+    client.search({
+        index:natality_type,
+        body:query,
+        request_cache:true
+    }).then(function (resp) {
+        //parse the search results
+        deferred.resolve(searchUtils.populateDataWithMappings(resp, 'natality'));
     }, function (err) {
         logger.error(err.message);
         deferred.reject(err);

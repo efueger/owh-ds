@@ -53,7 +53,11 @@
         sc.sort = {
             "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
             "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'yrbsState', 'question'],
-            "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'agegroup', 'race', 'ethnicity', 'state']
+            "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'agegroup', 'race', 'ethnicity', 'state'],
+            "label.filter.natality": ['dob_yy', 'sex', 'hispanic_origin', 'mother_race', 'marital_status',
+                'mother_age', 'mother_education', 'dob_mm', 'dob_wk', 'prenatal_care',
+                'birth_weight', 'birth_plurality', 'live_birth', 'birth_place', 'delivery_method', 'medical_attendant',
+                'chronic_hypertension', 'diabetes', 'pregnancy_hypertension', 'eclampsia', 'tobacco_use']
         };
 
         sc.optionsGroup = {
@@ -81,7 +85,8 @@
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
             },
             bridge_race:{},
-            mental_health:{}
+            mental_health:{},
+            natality:{}
         };
         //show certain filters for different table views
         sc.availableFilters = {
@@ -340,6 +345,11 @@
                         sc.filters.selectedPrimaryFilter.data = response.data.resultData.nested.table;
                         sc.filters.selectedPrimaryFilter.headers = response.data.resultData.headers;
                         sc.filters.selectedPrimaryFilter.chartData = searchFactory.prepareChartData(response.data.resultData.headers, response.data.resultData.nested, selectedPrimaryFilters);
+                    }//To update bridge race page
+                    else if (response.data.queryJSON.key == 'natality') {
+                        debugger;
+                        sc.filters.selectedPrimaryFilter.data = response.data.resultData.nested.table;
+                        sc.filters.selectedPrimaryFilter.headers = response.data.resultData.headers;
                     }
                     updateFiltersAndData(response);
                 }
