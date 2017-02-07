@@ -1348,7 +1348,7 @@
             filters.search = [
                 {
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
-                    allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, showMap:true,
+                    allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, showMap: false,
                     chartAxisLabel:'Deaths', countLabel: 'Number of Deaths', mapData:{}, tableView:'number_of_deaths',
                     sideFilters:[
                         {
