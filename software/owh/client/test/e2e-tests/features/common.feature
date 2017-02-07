@@ -39,3 +39,12 @@ Scenario: Browser forward button
   When I select the forward button in browser
   Then I should get search page with default filter type "Bridged-Race Population Estimates"
   And the results page (yrbs data table) should be refreshed to reflect "Ethnicity" filter with option "Non Hispanic"
+
+Scenario: In-application forward and backward buttons
+  Then I should see the forward and backward button in the application
+  When I select the back button in application
+  Then I should get search page with default filter type "Bridged-Race Population Estimates"
+  And the results page (yrbs data table) should be refreshed to reflect "Ethnicity" filter with option "All"
+  When I select the forward button in application
+  Then I should get search page with default filter type "Bridged-Race Population Estimates"
+  And the results page (yrbs data table) should be refreshed to reflect "Ethnicity" filter with option "Non Hispanic"

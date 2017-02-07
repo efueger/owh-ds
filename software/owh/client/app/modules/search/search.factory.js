@@ -535,7 +535,6 @@
 
         function prepareChartData(headers, nestedData, primaryFilter) {
             var chartData = [];
-
             if(primaryFilter.showMap) {
                 chartData.push(primaryFilter.mapData);
             }
@@ -829,8 +828,9 @@
                     headers : response.data.resultData.headers,
                     sideFilterResults: response.data.sideFilterResults,
                     chartData: prepareChartData(response.data.resultData.headers, response.data.resultData.nested, primaryFilter),
-                    totalCount: response.pagination.total
-                })
+                    totalCount: response.pagination.total,
+                    maps: response.data.resultData.nested.maps
+                });
             });
             return deferred.promise;
         }
@@ -870,6 +870,7 @@
                 primaryFilter.data = response.data;
                 primaryFilter.headers = response.headers;
                 primaryFilter.chartData = response.chartData;
+                primaryFilter.maps = response.maps;
                 //update total population count for side filters
                 updateSideFilterPopulationCount(primaryFilter, response.sideFilterResults.data.simple);
                 deferred.resolve(response);
@@ -1023,7 +1024,23 @@
                 {key:'Male',title:'Male'}
             ];
 
-            filters.yearOptions = [];
+            filters.yearOptions = [
+                {key: '2014', title: '2014'},
+                {key: '2013', title: '2013'},
+                {key: '2012', title: '2012'},
+                {key: '2011', title: '2011'},
+                {key: '2010', title: '2010'},
+                {key: '2009', title: '2009'},
+                {key: '2008', title: '2008'},
+                {key: '2007', title: '2007'},
+                {key: '2006', title: '2006'},
+                {key: '2005', title: '2005'},
+                {key: '2004', title: '2004'},
+                {key: '2003', title: '2003'},
+                {key: '2002', title: '2002'},
+                {key: '2001', title: '2001'},
+                {key: '2000', title: '2000'}
+            ];
 
             filters.modOptions = [
                 {key:'January',title:'January'},
@@ -1228,7 +1245,7 @@
                 /*Year and Month*/
                 //TODO: consider setting default selected years elsewhere
                 {key: 'year', title: 'label.filter.year', queryKey:"current_year",primary: false, value: [],
-                    groupBy: false,type:"label.filter.group.year.month", defaultGroup:"row"},
+                    groupBy: false,type:"label.filter.group.year.month", autoCompleteOptions: angular.copy(filters.yearOptions),defaultGroup:"row"},
                 {key: 'month', title: 'label.filter.month', queryKey:"month_of_death", primary: false, value: [],
                     groupBy: false,type:"label.filter.group.year.month", defaultGroup:"row",
                     autoCompleteOptions: angular.copy(filters.modOptions)},
@@ -1369,8 +1386,8 @@
                 },
                 {
                     key: 'bridge_race', title: 'label.census.bridge.race.pop.estimate', primary: true, value:[], header:"Bridged-Race Population Estimates",
-                    allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true,
-                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop', tableView:'bridge_race',
+                    allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true, showMap: true,
+                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop', tableView:'bridge_race', mapData: {},
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,

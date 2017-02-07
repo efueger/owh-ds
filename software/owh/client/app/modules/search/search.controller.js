@@ -27,6 +27,7 @@
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
         var mortalityFilter = null;
+        var bridgedRaceFilter = null;
 
         sc.sideMenu = {visible: true};
         //For intial search call
@@ -34,6 +35,7 @@
             sc.filters = searchFactory.getAllFilters();
             sc.filters.primaryFilters = utilService.findAllByKeyAndValue(sc.filters.search, 'primary', true);
             mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
+            bridgedRaceFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'bridge_race');
             sc.filters.selectedPrimaryFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', $stateParams.primaryFilterKey);
         }
         //If user change filter then we are re routing search call and setting 'selectedFilters' and 'allFilters' params at line
@@ -41,6 +43,7 @@
             sc.filters = $stateParams.allFilters;
             sc.filters.primaryFilters = utilService.findAllByKeyAndValue(sc.filters.search, 'primary', true);
             mortalityFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'deaths');
+            bridgedRaceFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'bridge_race');
             sc.filters.selectedPrimaryFilter = $stateParams.selectedFilters;
         }
 
@@ -144,29 +147,51 @@
         sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
         //this flags whether to cache the incoming filter query
         sc.cacheQuery = $stateParams.cacheQuery;
+        sc.selectedPrimaryFilterListener = watchSelectedPrimaryFilter();
 
-        if(sc.queryID === '') {
-            //run default query
-            search(true);
+
+        function watchSelectedPrimaryFilter(){
+            return $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
+                if(newValue !== oldValue) {
+                    //update table view each time when filter changes
+                    sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
+                    search(true);
+                }
+            }, true);
+        };
+
+        function setDefaults() {
+            var yearFilter = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters, 'key', 'year');
+            yearFilter.value.push('2014');
         }
 
-        if(sc.queryID) {
-            //if queryID is present, check to see if query needs to be cached
-            if(sc.cacheQuery) {
-                //run a search and cache this query with the queryID
-                search(false);
-            } else {
-                //query is either already cached or not found
-                getQueryResults(sc.queryID).then(function(response) {
-                    //redirect if query was uncached
-                    if(!response.data) {
+        if(sc.queryID === '') {
+            //queryID is empty, run the default query
+            setDefaults();
+            search(true);
+        } else if(sc.queryID) {
+            // queryID is present, try to get the cached query
+            // Disable SelectedPrimaryFilter watch so that the dataset change events is not trigger
+            // while updating the view with the cached result
+            sc.selectedPrimaryFilterListener();
+            getQueryResults(sc.queryID).then(function(response) {
+                if (!response.data) {
+                   if (!sc.cacheQuery){
+                        // redirect to default query if we were tryint to retrieve a cached query
+                        // and was not found in the cache
                         $window.alert('Query ' + sc.queryID + ' could not be found');
                         $state.go('search', {
                             queryID: ''
                         });
+                    } else {
+                        //run a search, if user was not trying retrieve a cached query
+                        search(false);
                     }
-                });
-            }
+                }
+                // Enable the SelectedPrimaryFilter watch
+                sc.selectedPrimaryFilterListener = watchSelectedPrimaryFilter();
+            });
+
         }
 
         function search(isFilterChanged) {
@@ -263,16 +288,18 @@
         }
         /**************************************************/
         //US-states map
-        angular.extend(mortalityFilter.mapData, {
+        var mapOptions = {
             usa: {
                 lat: 39,
-                lng: -100,
+                lng: -97,
                 zoom: 3
             },
             legend: {},
             defaults: {
                 tileLayer: "http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
-                scrollWheelZoom: false
+                scrollWheelZoom: false,
+                minZoom: 2,
+                maxZoom: 6
             },
             markers: {},
             events: {
@@ -285,7 +312,10 @@
                 custom: [new mapExpandControl(), new mapShareControl()]
             },
             isMap:true
-        });
+        }
+        angular.extend(mortalityFilter.mapData, mapOptions);
+
+        angular.extend(bridgedRaceFilter.mapData, mapOptions);
 
         function getQueryResults(queryID) {
             return searchFactory.getQueryResults(queryID).then(function (response) {
@@ -352,13 +382,6 @@
             });
         }
 
-        $scope.$watch('sc.filters.selectedPrimaryFilter.key', function (newValue, oldValue) {
-            if(newValue !== oldValue) {
-                //update table view each time when filter changes
-                sc.tableView = sc.filters.selectedPrimaryFilter.tableView;
-                search(true);
-            }
-        }, true);
 
         function changeViewFilter(selectedFilter) {
             searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);
@@ -512,11 +535,14 @@
             if (sc.filters.selectedPrimaryFilter.key === 'bridge_race') {
                 sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                 sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
+                sc.filters.selectedPrimaryFilter.chartData = response.chartData;
+                updateStatesDeaths(sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
             }
             if (sc.filters.selectedPrimaryFilter.key === 'natality') {
                 sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                 sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
             }
+
             sc.filters.selectedPrimaryFilter.initiated = true;
         }
 
@@ -534,7 +560,11 @@
         }
 
         function getSelectedYears() {
-            var yearFilter = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters, 'key', 'year');
+            var yearKey = 'year';
+            if(sc.tableView === 'bridge_race') {
+                yearKey = 'current_year';
+            }
+            var yearFilter = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters, 'key', yearKey);
             if (yearFilter) {
                 return utilService.isValueNotEmpty(yearFilter.value) ? yearFilter.value : utilService.getValuesByKey(yearFilter.autoCompleteOptions, 'title');
             }
@@ -555,6 +585,7 @@
                     feature.properties.years = years;
                     feature.properties.totalCount = state['deaths']; /*+ (Math.floor((Math.random()*10)+1))*100000;*/
                     feature.properties.sex = state.sex;
+                    feature.properties['bridge_race'] = state['bridge_race'];
                 }
             });
             var minMaxValueObj = utilService.getMinAndMaxValue(stateDeathTotals);
@@ -568,7 +599,6 @@
                     legend: generateLegend(minMaxValueObj.minValue, minMaxValueObj.maxValue)
                 });
             }
-
             angular.extend(sc.filters.selectedPrimaryFilter.mapData, {
                 geojson: {
                     data: $rootScope.states,
@@ -612,30 +642,47 @@
         function style(feature) {
             return {
                 fillColor: getColor(feature.properties.totalCount),
-                weight: 2,
+                weight: 0.5,
                 opacity: 1,
-                color: 'white',
+                color: 'black',
                 dashArray: '3',
                 fillOpacity: 0.7
             };
         }
 
         //builds marker popup.
-        function buildMarkerPopup(lat, lng, properties, map) {
+        sc.mapPopup = L.popup({autoPan: false});
+        sc.currentFeature = {};
+        function buildMarkerPopup(lat, lng, properties, map, tableView) {
             var childScope = $scope.$new();
             childScope.lat = lat;
             childScope.lng = lng;
             childScope.properties = properties;
+            childScope.tableView = tableView;
             var ele = angular.element('<div></div>');
             ele.html($templateCache.get('app/partials/marker-template.html'));
             var compileEle = $compile(ele.contents())(childScope);
-            L.popup()
-                .setContent(compileEle[0])
-                .setLatLng(L.latLng(lat, lng)).openOn(map)
+            if(sc.currentFeature.properties !== properties || !sc.mapPopup._isOpen) {
+                sc.mapPopup
+                    .setContent(compileEle[0])
+                    .setLatLng(L.latLng(lat, lng)).openOn(map);
+            } else {
+                sc.mapPopup
+                    .setLatLng(L.latLng(lat, lng));
+            }
+
         }
-        $scope.$on("leafletDirectiveGeoJson.click", function (event, args) {
+        $scope.$on("leafletDirectiveGeoJson.mouseover", function (event, args) {
             var leafEvent = args.leafletEvent;
-            buildMarkerPopup(leafEvent.latlng.lat, leafEvent.latlng.lng, leafEvent.target.feature.properties, args.leafletObject._map);
+            buildMarkerPopup(leafEvent.latlng.lat, leafEvent.latlng.lng, leafEvent.target.feature.properties, args.leafletObject._map, sc.tableView);
+            sc.currentFeature = leafEvent.target.feature;
+
+        });
+        $scope.$on("leafletDirectiveGeoJson.mouseout", function (event, args) {
+            sc.mapPopup._close();
+        });
+        $scope.$on("leafletDirectiveMap.mouseout", function (event, args) {
+            sc.mapPopup._close();
         });
 
         /**
