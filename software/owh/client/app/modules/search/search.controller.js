@@ -513,6 +513,10 @@
                 sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
                 sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
             }
+            if (sc.filters.selectedPrimaryFilter.key === 'natality') {
+                sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
+                sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
+            }
             sc.filters.selectedPrimaryFilter.initiated = true;
         }
 
