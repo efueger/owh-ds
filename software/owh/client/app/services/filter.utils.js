@@ -395,7 +395,7 @@
                     primary: false, value: [], defaultGroup:'row', groupBy: false,
                     autoCompleteOptions: angular.copy(hispanicOptions) },
 
-                {key: 'mother_age', title: 'label.filter.gender', queryKey:"mother_age", primary: false, value: [],
+                {key: 'mother_age', title: 'label.filter.ageOfMother', queryKey:"mother_age", primary: false, value: [],
                     defaultGroup:'column', groupBy: false, autoCompleteOptions: angular.copy(ageOptions)},
 
                 {key: 'mother_race', title: 'label.filter.race', queryKey:"mother_race", primary: false, value: [],

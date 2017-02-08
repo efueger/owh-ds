@@ -30,7 +30,7 @@
         },
         {
           "key": "mother_age",
-          "title": "label.filter.gender",
+          "title": "label.filter.ageOfMother",
           "queryKey": "mother_age",
           "primary": false,
           "value": [],
