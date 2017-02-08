@@ -840,7 +840,7 @@
          * @param primaryFilter
          * @param sideFilterData
          */
-        function updateSideFilterPopulationCount(primaryFilter, sideFilterData) {
+        function updateSideFilterCount(primaryFilter, sideFilterData) {
             angular.forEach(sideFilterData, function (eachFilterData, key) {
                 //get the filter
                 var filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', key);
@@ -872,7 +872,39 @@
                 primaryFilter.chartData = response.chartData;
                 primaryFilter.maps = response.maps;
                 //update total population count for side filters
-                updateSideFilterPopulationCount(primaryFilter, response.sideFilterResults.data.simple);
+                updateSideFilterCount(primaryFilter, response.sideFilterResults.data.simple);
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
+        }
+
+        function queryNatalityAPI( primaryFilter, queryID ) {
+            var deferred = $q.defer();
+            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
+                deferred.resolve({
+                    data : response.data.resultData.nested.table,
+                    queryJSON: response.data.queryJSON,
+                    headers : response.data.resultData.headers,
+                    sideFilterResults: response.data.sideFilterResults,
+                    totalCount: response.pagination.total
+                })
+            });
+
+            return deferred.promise;
+        }
+
+        /**
+         * Fetch natality data
+         */
+        function searchNatality(primaryFilter, queryID) {
+            var deferred = $q.defer();
+
+            queryNatalityAPI(primaryFilter, queryID).then(function(response){
+                primaryFilter.data = response.data;
+                primaryFilter.headers = response.headers;
+                //update total count for side filters
+                updateSideFilterCount(primaryFilter, response.sideFilterResults.data.simple);
                 deferred.resolve(response);
             });
 
@@ -1290,6 +1322,7 @@
             ];
 
             filters.censusFilters = filterUtils.getBridgeDataFilters();
+            filters.natalityFilters = filterUtils.getNatalityDataFilters();
 
             filters.search = [
                 {
@@ -1435,6 +1468,93 @@
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
                             filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'state')
+                        }
+                    ]
+                },
+                {
+                    key: 'natality', title: 'label.filter.natality', primary: true, value:[], header:"Natality",
+                    allFilters: filters.natalityFilters, searchResults: searchNatality, dontShowInlineCharting: true,
+                    chartAxisLabel:'Population', countLabel: 'Total', tableView:'natality',
+                    sideFilters:[
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'hispanic_origin')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_race')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'marital_status')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_age')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_education')
+                        },
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_yy')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_mm')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_wk')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'sex')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'prenatal_care')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'birth_weight')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'birth_plurality')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'live_birth')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'birth_place')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'delivery_method')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'medical_attendant')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'chronic_hypertension')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'diabetes')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'eclampsia')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'tobacco_use')
                         }
                     ]
                 }
