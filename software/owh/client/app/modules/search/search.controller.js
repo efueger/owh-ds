@@ -214,7 +214,8 @@
         * When we refresh search page, below listener populate autoCompleteOptions value with $rootScope.questionsList
          */
         $scope.$on('yrbsQuestionsLoadded', function() {
-            sc.filters.yrbsFilters[4].autoCompleteOptions = $rootScope.questionsList;
+            sc.filters.yrbsBasicFilters[4].autoCompleteOptions = $rootScope.questionsList;
+            sc.filters.yrbsAdvancedFilters[4].autoCompleteOptions = $rootScope.questionsList;
         });
 
 

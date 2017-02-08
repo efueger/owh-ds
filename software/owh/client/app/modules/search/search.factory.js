@@ -1386,19 +1386,19 @@
                             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'year')
                         },
                         {
-                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions,dontShowCounts: true,
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'yrbsSex')
                         },
                         {
-                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions,dontShowCounts: true,
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'yrbsRace')
                         },
                         {
-                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions,dontShowCounts: true,
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'yrbsGrade')
                         },
                         {
-                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions,dontShowCounts: true,
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'yrbsState')
                         },
                         {
