@@ -376,6 +376,10 @@
                         sc.filters.selectedPrimaryFilter.headers = response.data.resultData.headers;
                         sc.filters.selectedPrimaryFilter.chartData = searchFactory.prepareChartData(response.data.resultData.headers, response.data.resultData.nested, selectedPrimaryFilters);
                     }
+                    else if (response.data.queryJSON.key == 'natality') {
+                        sc.filters.selectedPrimaryFilter.data = response.data.resultData.nested.table;
+                        sc.filters.selectedPrimaryFilter.headers = response.data.resultData.headers;
+                    }
                     updateFiltersAndData(response);
                 }
                 return response;
@@ -537,10 +541,6 @@
                 sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
                 sc.filters.selectedPrimaryFilter.chartData = response.chartData;
                 updateStatesDeaths(sc.filters.selectedPrimaryFilter.maps, sc.filters.selectedPrimaryFilter.searchCount);
-            }
-            if (sc.filters.selectedPrimaryFilter.key === 'natality') {
-                sc.filters.selectedPrimaryFilter.headers = sc.tableData.headers;
-                sc.filters.selectedPrimaryFilter.data = sc.tableData.data;
             }
 
             sc.filters.selectedPrimaryFilter.initiated = true;

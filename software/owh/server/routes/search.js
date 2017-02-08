@@ -104,13 +104,18 @@ function search(q) {
     } else if (preparedQuery.apiQuery.searchFor === "natality") {
         finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
 
-        new elasticSearch().aggregateNatalityData(finalQuery[0]).then(function (response) {
-            var resData = {};
-            resData.queryJSON = q;
-            resData.resultData = response.data;
-            resData.resultData.headers = preparedQuery.headers;
-            deferred.resolve(resData);
+        var sideFilterQuery = queryBuilder.buildSearchQuery(queryBuilder.addCountsToAutoCompleteOptions(q), true);
+        new elasticSearch().aggregateNatalityData(sideFilterQuery[0]).then(function (sideFilterResults) {
+            new elasticSearch().aggregateNatalityData(finalQuery[0]).then(function (response) {
+                var resData = {};
+                resData.queryJSON = q;
+                resData.resultData = response.data;
+                resData.resultData.headers = preparedQuery.headers;
+                resData.sideFilterResults = sideFilterResults;
+                deferred.resolve(resData);
+            });
         });
+
     }
     return  deferred.promise;
 };

@@ -1417,6 +1417,52 @@
         ],
         "chartHeaders": []
       }
+    },
+    "sideFilterResults":{
+      "data":{
+        "simple":{
+          "dob_yy": [
+            {
+              "name": "2014",
+              "bridge_race": 282162411
+            },
+            {
+              "name": "2013",
+              "bridge_race": 284968955
+            }
+          ],
+          "sex": [
+            {
+              "name": "Male",
+              "bridge_race": 2045902
+            },
+            {
+              "name": "Female",
+              "bridge_race": 1952273
+            }
+          ],
+          "race": [
+            {
+              "name": "American Indian",
+              "bridge_race": 44962
+            },
+            {
+              "name": "Asian or Pacific Islander",
+              "bridge_race": 283111
+            }
+          ],
+          "ethnicity": [
+            {
+              "name": "Mexican",
+              "bridge_race": 553738
+            },
+            {
+              "name": "Non-Hispanic",
+              "bridge_race": 3045419
+            }
+          ]
+        }
+      }
     }
   },
   "pagination": {}

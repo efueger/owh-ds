@@ -840,7 +840,7 @@
          * @param primaryFilter
          * @param sideFilterData
          */
-        function updateSideFilterPopulationCount(primaryFilter, sideFilterData) {
+        function updateSideFilterCount(primaryFilter, sideFilterData) {
             angular.forEach(sideFilterData, function (eachFilterData, key) {
                 //get the filter
                 var filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', key);
@@ -872,7 +872,7 @@
                 primaryFilter.chartData = response.chartData;
                 primaryFilter.maps = response.maps;
                 //update total population count for side filters
-                updateSideFilterPopulationCount(primaryFilter, response.sideFilterResults.data.simple);
+                updateSideFilterCount(primaryFilter, response.sideFilterResults.data.simple);
                 deferred.resolve(response);
             });
 
@@ -903,6 +903,8 @@
             queryNatalityAPI(primaryFilter, queryID).then(function(response){
                 primaryFilter.data = response.data;
                 primaryFilter.headers = response.headers;
+                //update total count for side filters
+                updateSideFilterCount(primaryFilter, response.sideFilterResults.data.simple);
                 deferred.resolve(response);
             });
 
