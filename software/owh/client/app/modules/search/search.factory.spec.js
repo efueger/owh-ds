@@ -638,7 +638,7 @@ describe('search factory ', function(){
             spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
             primaryFilter.searchResults(primaryFilter).then(function() {
                 expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(response.data.resultData.nested.table));
-                expect(JSON.stringify(primaryFilter.chartData)).toEqual(JSON.stringify(response.data.resultData.chartData));
+                expect(JSON.stringify(primaryFilter.chartData[0][1])).toEqual(JSON.stringify(response.data.resultData.chartData[0][0]));
             });
             deferred.resolve(response);
             $scope.$apply();
