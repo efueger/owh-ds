@@ -5,11 +5,11 @@
 
     SearchController.$inject = ['$scope', 'ModalService', 'utilService', 'searchFactory', '$rootScope',
         '$templateCache', '$compile', '$q', '$filter', 'leafletData', '$timeout', 'chartUtilService', 'shareUtilService',
-        '$stateParams', '$state', 'xlsService', '$window'];
+        '$stateParams', '$state', 'xlsService', '$window', 'mapService'];
 
     function SearchController($scope, ModalService, utilService, searchFactory, $rootScope,
                                  $templateCache, $compile, $q, $filter, leafletData, $timeout, chartUtilService,
-                                 shareUtilService, $stateParams, $state, xlsService, $window) {
+                                 shareUtilService, $stateParams, $state, xlsService, $window, mapService) {
 
         var sc = this;
         sc.downloadCSV = downloadCSV;
@@ -17,7 +17,6 @@
         sc.showPhaseTwoGraphs = showPhaseTwoGraphs;
         sc.showExpandedGraph = showExpandedGraph;
         sc.search = search;
-        sc.showFbDialog = showFbDialog;
         sc.changeViewFilter = changeViewFilter;
         sc.getQueryResults = getQueryResults;
         sc.changePrimaryFilter = changePrimaryFilter;
@@ -215,76 +214,10 @@
 
 
         /**************************************************/
-        var mapExpandControl = addExpandControl();
+        var mapExpandControl = mapService.addExpandControl(sc.mapOptions, sc.filters.selectedPrimaryFilter);
 
-        function addExpandControl() {
-            return L.Control.extend({
-                options: {
-                    position: 'topright'
-                },
-                onAdd: function (map) {
-                    var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom fa fa-expand fa-2x purple-icon');
-                    container.onclick = function (event) {
-                        if (sc.mapOptions.selectedMapSize === "small") {
-                            sc.mapOptions.selectedMapSize = "big";
-                            resizeUSAMap(true);
-                            angular.element(container).removeClass('fa-expand');
-                            angular.element(container).addClass('fa-compress');
-                        } else if (sc.mapOptions.selectedMapSize === "big") {
-                            sc.mapOptions.selectedMapSize = "small";
-                            resizeUSAMap(false);
-                            angular.element(container).removeClass('fa-compress');
-                            angular.element(container).addClass('fa-expand');
-                        } else {
-                            sc.mapOptions.selectedMapSize = "small";
-                            resizeUSAMap(false);
-                            angular.element(container).removeClass('fa-compress');
-                            angular.element(container).addClass('fa-expand');
-                        }
-                    };
-                    return container;
-                }
-            });
-        }
+        var mapShareControl = mapService.addShareControl();
 
-        var mapShareControl = addShareControl();
-
-        function addShareControl() {
-            return L.Control.extend({
-                options: {
-                    position: 'topright'
-                },
-                onAdd: function (map) {
-                    var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom fa fa-share-alt fa-2x purple-icon');
-                    container.onclick = function (event) {
-                        angular.element(document.getElementById('spindiv')).removeClass('ng-hide');
-                        leafletData.getMap().then(function (map) {
-                            leafletImage(map, function (err, canvas) {
-                                sc.showFbDialog('chart_us_map', 'OWH - Map', canvas.toDataURL());
-                            });
-                        });
-
-                    };
-                    return container;
-                }
-            });
-        }
-
-        function resizeUSAMap(isZoomIn) {
-            leafletData.getMap().then(function(map) {
-                if(isZoomIn) {
-                    map.zoomIn();
-                    angular.extend(sc.filters.selectedPrimaryFilter.mapData, {
-                        legend: generateLegend(sc.filters.selectedPrimaryFilter.mapData.mapMinValue, sc.filters.selectedPrimaryFilter.mapData.mapMaxValue)
-                    });
-                } else {
-                    sc.filters.selectedPrimaryFilter.mapData.legend = undefined;
-                    map.zoomOut();
-                }
-                $timeout(function(){ map.invalidateSize()}, 1000);
-            });
-
-        }
         /**************************************************/
         //US-states map
         var mapOptions = {
@@ -333,7 +266,7 @@
             leafletData.getMap().then(function(map) {
                 map.invalidateSize()
             });
-        }, 1000);
+        }, 1500);
 
         function getQueryResults(queryID) {
             return searchFactory.getQueryResults(queryID).then(function (response) {
@@ -425,21 +358,6 @@
             searchFactory.showPhaseTwoModal(text);
         }
 
-        //generate labels for map legend labels
-        function getLabels(minValue, maxValue) {
-            return utilService.generateMapLegendLabels(minValue, maxValue);
-        }
-
-        //return legend configuration parameters
-        function generateLegend(minValue, maxValue){
-            return {
-                position: 'bottomleft',
-                colors: ['#00374d','#005b80','#006e99','#0080b3','#0092cc','#00a4e6','#00b7ff','#1abeff','#4dccff','#80dbff','#b3e9ff'],
-                labels: getLabels(minValue, maxValue)
-            }
-        }
-
-
         //builds marker popup.
         sc.mapPopup = L.popup({autoPan: false});
         sc.currentFeature = {};
@@ -474,13 +392,6 @@
         $scope.$on("leafletDirectiveMap.mouseout", function (event, args) {
             sc.mapPopup._close();
         });
-
-        /**
-         * Shows facebook share dialog box
-         */
-        function showFbDialog(svgIndex, title, data) {
-            shareUtilService.shareOnFb(svgIndex, title, undefined, undefined, data);
-        }
 
         /*Show expanded graphs with whole set of features*/
         function showExpandedGraph(chartData) {

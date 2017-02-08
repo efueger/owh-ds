@@ -4,12 +4,14 @@
         .module('owh')
         .service('mapService', mapService);
 
-    mapService.$inject = ['$rootScope', 'utilService'];
+    mapService.$inject = ['$rootScope', '$timeout', 'utilService', 'leafletData'];
 
     //service to provide utilities for leaflet geographical map
-    function mapService($rootScope, utilService) {
+    function mapService($rootScope, $timeout, utilService, leafletData) {
         var service = {
-            updateStatesDeaths: updateStatesDeaths
+            updateStatesDeaths: updateStatesDeaths,
+            addExpandControl: addExpandControl,
+            addShareControl: addShareControl
         };
         return service;
 
@@ -108,6 +110,74 @@
                     fillOpacity: 0.7
                 };
             }
+        }
+
+        function addExpandControl(mapOptions, primaryFilter) {
+            return L.Control.extend({
+                options: {
+                    position: 'topright'
+                },
+                onAdd: function (map) {
+                    var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom fa fa-expand fa-2x purple-icon');
+                    container.onclick = function (event) {
+                        if (mapOptions.selectedMapSize === "small") {
+                            mapOptions.selectedMapSize = "big";
+                            resizeUSAMap(true, primaryFilter);
+                            angular.element(container).removeClass('fa-expand');
+                            angular.element(container).addClass('fa-compress');
+                        } else if (mapOptions.selectedMapSize === "big") {
+                            mapOptions.selectedMapSize = "small";
+                            resizeUSAMap(false, primaryFilter);
+                            angular.element(container).removeClass('fa-compress');
+                            angular.element(container).addClass('fa-expand');
+                        } else {
+                            mapOptions.selectedMapSize = "small";
+                            resizeUSAMap(false, primaryFilter);
+                            angular.element(container).removeClass('fa-compress');
+                            angular.element(container).addClass('fa-expand');
+                        }
+                    };
+                    return container;
+                }
+            });
+        }
+
+        function resizeUSAMap(isZoomIn, primaryFilter) {
+            leafletData.getMap().then(function(map) {
+                if(isZoomIn) {
+                    map.zoomIn();
+                    angular.extend(primaryFilter.mapData, {
+                        legend: generateLegend(primaryFilter.mapData.mapMinValue, primaryFilter.mapData.mapMaxValue)
+                    });
+                } else {
+                    primaryFilter.mapData.legend = undefined;
+                    map.zoomOut();
+                }
+                $timeout(function(){ map.invalidateSize()}, 1000);
+            });
+
+        }
+
+        function addShareControl() {
+            return L.Control.extend({
+                options: {
+                    position: 'topright'
+                },
+                onAdd: function (map) {
+                    var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom fa fa-share-alt fa-2x purple-icon');
+                    container.onclick = function (event) {
+                        angular.element(document.getElementById('spindiv')).removeClass('ng-hide');
+                        leafletData.getMap().then(function (map) {
+                            leafletImage(map, function (err, canvas) {
+                                // sc.showFbDialog('chart_us_map', 'OWH - Map', canvas.toDataURL());
+                                shareUtilService.shareOnFb('chart_us_map', 'OWH - Map', undefined, undefined, canvas.toDataURL());
+                            });
+                        });
+
+                    };
+                    return container;
+                }
+            });
         }
 
     }
