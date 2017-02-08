@@ -36,14 +36,14 @@
         function isOptionDisabled(group, option) {
             if(group.key === 'hispanicOrigin') {
                 //check if unknown is selected
-                if(group.value.indexOf('Unknown') >= 0) {
+                if(group.value && group.value.indexOf('Unknown') >= 0) {
                     //if unknown is selected then disable all other hispanic options
                     if(option.key !== 'Unknown') {
                         return true;
                     }
                 } else {
                     //else, if other option is selected disable unknown
-                    if(group.value.length > 0 && option.key === 'Unknown') {
+                    if(group.value && group.value.length > 0 && option.key === 'Unknown') {
                         return true;
                     }
                 }
@@ -75,14 +75,18 @@
         }
 
         function isSubOptionSelected(group, option) {
-            for(var i = 0; i < group.value.length; i++) {
-                for(var j = 0; j < option.options.length; j++) {
-                    if(group.value[i] === option.options[j].key) {
-                        return true;
+            if(!group.value){
+                    return false;
+            }else {
+                   for(var i = 0; i < group.value.length; i++) {
+                        for(var j = 0; j < option.options.length; j++) {
+                            if(group.value[i] === option.options[j].key) {
+                                return true;
+                            }
+                        }
                     }
-                }
             }
-            return false;
+            
         }
 
         function getOptionCountPercentage(option) {
@@ -176,12 +180,22 @@
 
         //remove all elements from array for all select
         function updateGroupValue(group) {
-            if ( group.allChecked === false ) {
-                angular.forEach(group.autoCompleteOptions, function(option){
-                    group.value.push(option.key)
-                });
+            if(group.filterType === 'checkbox'){
+                if ( group.allChecked === false ) {
+                    angular.forEach(group.autoCompleteOptions, function(option){
+                        group.value.push(option.key)
+                    });
+                } else {
+                    group.value.length = 0;
+                }
             } else {
-                group.value.length = 0;
+                if ( group.allChecked === false ) {
+                    angular.forEach(group.autoCompleteOptions, function(option){
+                        group.value = option.key;
+                    });
+                } else {
+                    group.value = '';
+                }
             }
             sfc.onFilter();
         }
@@ -205,7 +219,7 @@
          * @returns {boolean}
          */
         function isOptionSelected(option, selectedOptions) {
-            return selectedOptions.indexOf(option.key) != -1;
+            return selectedOptions?selectedOptions.indexOf(option.key) != -1:false;
         }
 
         /**
@@ -214,7 +228,7 @@
          * else display selected options + first 3 not selected options
          */
         function getShowHideOptionCount(optionGroup, options) {
-            return optionGroup.displaySelectedFirst? options.length - (3 + optionGroup.value.length) : (options.length - 3)
+            return optionGroup.displaySelectedFirst? options.length - (3 + optionGroup.value?optionGroup.value.length:0) : (options.length - 3)
         }
     }
 }());

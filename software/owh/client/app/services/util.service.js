@@ -351,9 +351,7 @@
                     : filter.autoCompleteOptions
             } else {
                 var selectedOption = findByKeyAndValue(filter.autoCompleteOptions, 'key', filterValue);
-                return selectedOption.isAllOption
-                    ? findAllNotContainsKeyAndValue(filter.autoCompleteOptions, 'isAllOption', true)
-                    : [selectedOption];
+                return selectedOption ? [selectedOption]: filter.autoCompleteOptions;
             }
 
         }

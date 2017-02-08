@@ -174,20 +174,20 @@
             //prepare filter definitions
             var bridgeDataFilters = [
                 {key: 'current_year', title: 'label.filter.yearly.estimate', queryKey:"current_year", primary: false, value: ['2015'], defaultGroup:'row', groupBy: false,
-                    autoCompleteOptions: angular.copy(censusYearsOptions) },
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(censusYearsOptions) },
                 {key: 'sex', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    autoCompleteOptions: angular.copy(censusGenderOptions)},
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(censusGenderOptions)},
 
-                {key: 'agegroup', title: 'label.filter.agegroup', queryKey:"age_5_interval", primary: false, value:[],
-                    groupBy: false, filterType: 'slider', autoCompleteOptions: angular.copy(censusAgeOptions),
+                {key: 'agegroup', title: 'label.filter.agegroup', queryKey:"age_5_interval", primary: false, value:[], groupBy: false,
+                    filterType: 'slider', autoCompleteOptions: angular.copy(censusAgeOptions),
                     sliderOptions: ageSliderOptions, sliderValue: '-5;105', timer: undefined, defaultGroup:"row"},
 
                 {key: 'race', title: 'label.filter.race', queryKey:"race",primary: false, defaultGroup:'column', groupBy: 'row',
-                    autoCompleteOptions: angular.copy(censusRaceOptions), value:[]},
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(censusRaceOptions), value:[]},
                 {key: 'ethnicity', title: 'label.filter.hispanicOrigin', queryKey:"ethnicity_group",primary: false, defaultGroup:'row', groupBy: false,
-                    autoCompleteOptions: angular.copy(censusHispanicOriginOptions), value:[]},
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(censusHispanicOriginOptions), value:[]},
                 {key: 'state', title: 'label.filter.state', queryKey:"state",primary: false, value:[], defaultGroup:'row', groupBy: false,
-                    autoCompleteOptions: angular.copy(censusStateOptions), displaySearchBox:true, displaySelectedFirst:true}
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(censusStateOptions), displaySearchBox:true, displaySelectedFirst:true}
             ];
 
             return bridgeDataFilters;
