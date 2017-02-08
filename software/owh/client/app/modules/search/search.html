@@ -35,6 +35,16 @@
             <span>Show Filters &gt;&gt;</span>
         </a>
         <div class="usa-width-one-fourth side-pane-padding border-right-default owh-side-menu" ng-hide="!sc.sideMenu.visible">
+            <div ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'" class="yrbs_search_links">
+                <a class="owh-side-menu__handle cursor-pointer pull-left" ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'"
+                   ng-click="sc.showBasicSearchSideMenu.visible = true" ng-if="!sc.showBasicSearchSideMenu.visible">
+                    <span ng-bind="'label.yrbs.basic.search' | translate"></span>
+                </a>
+                <a class="owh-side-menu__handle cursor-pointer pull-left" ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'"
+                   ng-click="sc.showBasicSearchSideMenu.visible = false" ng-if="sc.showBasicSearchSideMenu.visible">
+                    <span ng-bind="'label.yrbs.advanced.search' | translate"></span>
+                </a>
+            </div>
             <a class="owh-side-menu__handle cursor-pointer" ng-click="sc.sideMenu.visible = false">
                 <span>&lt;&lt; Hide Filters</span>
             </a>
@@ -45,14 +55,6 @@
                     show-filters="sc.availableFilters[sc.tableView]"
                     utilities="sc.filterUtilities[sc.filters.selectedPrimaryFilter.key]"
                     ></owh-side-filter>
-                <div ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'">
-                    <a class="owh-side-menu__handle cursor-pointer basic-search" ng-click="sc.showBasicSearchSideMenu.visible = true" ng-hide="sc.showBasicSearchSideMenu.visible">
-                        << <span ng-bind="'label.yrbs.basic.search' | translate"></span>
-                    </a>
-                    <a class="owh-side-menu__handle cursor-pointer" ng-click="sc.showBasicSearchSideMenu.visible = false" ng-hide="!sc.showBasicSearchSideMenu.visible">
-                        <span ng-bind="'label.yrbs.advanced.search' | translate"></span> >>
-                    </a>
-                </div>
             </div>
         </div>
         <div class="owh-search-content usa-width-three-fourths" ng-class="{'owh-search-content--expanded': !sc.sideMenu.visible }">

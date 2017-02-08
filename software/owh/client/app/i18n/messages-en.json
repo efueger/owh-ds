@@ -160,6 +160,6 @@
   "label.graph.current_year":"Yearly July 1st Estimates",
   "label.graph.state":"State",
   "label.bookmark.search": "Bookmark this Search",
-  "label.yrbs.basic.search":"Basic Search",
-  "label.yrbs.advanced.search":"Advanced Search"
+  "label.yrbs.basic.search":"Switch to Basic Search",
+  "label.yrbs.advanced.search":"Switch to Advanced Search"
 }
