@@ -30,6 +30,20 @@
         var bridgedRaceFilter = null;
 
         sc.sideMenu = {visible: true};
+        sc.showBasicSearchSideMenu = {visible: false};
+        /**
+         * In YRBS page, when user switches between Basic and Advance search
+         * This watch gets called and updates side filters based on user selection
+         */
+        $scope.$watch('sc.showBasicSearchSideMenu.visible', function(value){
+            if(value){
+                sc.filters.selectedPrimaryFilter.sideFilters = searchFactory.getYRBSBasicSearchSideFilters();
+            }
+            else {
+                sc.filters.selectedPrimaryFilter.sideFilters = searchFactory.getYRBSAdvanceSearchSideFilters();
+            }
+        });
+
         //For intial search call
         if($stateParams.selectedFilters == null) {
             sc.filters = searchFactory.getAllFilters();

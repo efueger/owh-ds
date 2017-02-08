@@ -45,6 +45,14 @@
                     show-filters="sc.availableFilters[sc.tableView]"
                     utilities="sc.filterUtilities[sc.filters.selectedPrimaryFilter.key]"
                     ></owh-side-filter>
+                <div ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'">
+                    <a class="owh-side-menu__handle cursor-pointer basic-search" ng-click="sc.showBasicSearchSideMenu.visible = true" ng-hide="sc.showBasicSearchSideMenu.visible">
+                        << <span ng-bind="'label.yrbs.basic.search' | translate"></span>
+                    </a>
+                    <a class="owh-side-menu__handle cursor-pointer" ng-click="sc.showBasicSearchSideMenu.visible = false" ng-hide="!sc.showBasicSearchSideMenu.visible">
+                        <span ng-bind="'label.yrbs.advanced.search' | translate"></span> >>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="owh-search-content usa-width-three-fourths" ng-class="{'owh-search-content--expanded': !sc.sideMenu.visible }">

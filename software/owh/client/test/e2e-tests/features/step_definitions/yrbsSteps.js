@@ -369,5 +369,46 @@ var yrbsStepDefinitionsWrapper = function () {
         var raceParentElement2 = raceFilter2.element(by.xpath('..')).element(by.xpath('..')).element(by.xpath('..'));
         raceParentElement2.element(by.xpath('.//*[.="2015"]')).isSelected().to.eventually.equal(true);
     });
+
+    this.Then(/^I see a link "([^"]*)" at the bottom of the sidebar \(left\)$/, function (arg1) {
+        expect(element(by.cssContainingText('span', 'Basic Search')).isPresent()).to.eventually.equal(true);
+    });
+
+    this.Then(/^I see a link "([^"]*)" at the bottom of the sidebar \(right\)$/, function (arg1) {
+        expect(element(by.cssContainingText('span', 'Advanced Search')).isPresent()).to.eventually.equal(true);
+    });
+
+    this.When(/^I click on the "([^"]*)" link$/, function (arg1) {
+         if(arg1 == 'Basic Search'){
+             element(by.cssContainingText('span', 'Basic Search')).click();
+         }
+         else if(arg1 == 'Advanced Search'){
+             element(by.cssContainingText('span', 'Advanced Search')).click();
+         }
+    });
+
+    this.Then(/^the sidebar switches to an Advanced Search mode$/, function () {
+        /*Expand Sex to verify check boxes or radio buttons*/
+        element(by.partialLinkText('Sex')).click();
+        expect(element(by.id("mental_health_yrbsSex_Female")).getAttribute('type')).to.eventually.equal('checkbox')
+        expect(element(by.id("mental_health_yrbsSex_Male")).getAttribute('type')).to.eventually.equal('checkbox')
+    });
+
+    this.Then(/^the sidebar switches to an Basic Search mode$/, function () {
+        /*@Gopal here we need to verify new basic search filters are present or not
+        * Once your are done with adding basic search filters please add a condition to verify basic search filters
+        * */
+        /*element(by.partialLinkText('Sex')).click();
+        expect(element(by.id("mental_health_yrbsSex_Female")).getAttribute('type')).to.eventually.equal('radio')
+        expect(element(by.id("mental_health_yrbsSex_Male")).getAttribute('type')).to.eventually.equal('radio')*/
+    });
+
+    this.Then(/^the link below the sidebar changes to "([^"]*)"$/, function (arg1) {
+        expect(element(by.cssContainingText('span', arg1)).isPresent()).to.eventually.equal(true);
+    });
+
+    this.Then(/^the link "([^"]*)" should be disappear$/, function (arg1) {
+        expect(element(by.cssContainingText('span', arg1)).isDisplayed()).to.eventually.equal(false);
+    });
 };
 module.exports = yrbsStepDefinitionsWrapper;

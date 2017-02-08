@@ -938,4 +938,8 @@ ul.custom-nav-tabs {
 	display: block;
 	padding: 10px 15px;
 }
+
+.basic-search {
+	float: left;
+}
 /*Custom tab css*/

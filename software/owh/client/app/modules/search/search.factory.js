@@ -27,9 +27,9 @@
             searchYRBSResults: searchYRBSResults,
             buildQueryForYRBS: buildQueryForYRBS,
             prepareMortalityResults: prepareMortalityResults,
-            prepareQuestionChart: prepareQuestionChart
-
-
+            prepareQuestionChart: prepareQuestionChart,
+            getYRBSAdvanceSearchSideFilters: getYRBSAdvanceSearchSideFilters,
+            getYRBSBasicSearchSideFilters: getYRBSBasicSearchSideFilters
         };
         return service;
 
@@ -1351,6 +1351,28 @@
                             filterGroup: false, collapse: true, allowGrouping: false,
                             filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'question')
                         }
+                    ],
+                    basicSideFilters: [
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'year')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsSex')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsRace')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsGrade')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsState')
+                        }
                     ]
                 },
                 {
@@ -1419,6 +1441,22 @@
                 deferred.resolve(response.data);
             });
             return deferred.promise;
+        }
+
+        /**
+         * To get YRBS Advanced search side filters array
+         * @returns {Array|*}
+         */
+        function getYRBSAdvanceSearchSideFilters() {
+            return getAllFilters().search[1].sideFilters;
+        }
+
+        /**
+         * To get YRBS Basic search side filters array
+         * @returns {Array}
+         */
+        function getYRBSBasicSearchSideFilters() {
+           return getAllFilters().search[1].basicSideFilters;
         }
     }
 
