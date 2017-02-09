@@ -686,20 +686,20 @@ table thead {
 	border: 1px solid #ddd;
 }
 
-.data-table th {
+.owh-data-table th {
 	color: #696969;
 }
 
-.data-table th, #clusterize-table table td{
+.owh-data-table th, #clusterize-table table td{
 	line-height: 17px;
 	min-width: 187px;
 }
 
-.data-table th, td {
+.owh-data-table th, td {
 	border-right: 1px solid #dddddd !important;
 }
 
-.data-table th:first-child, td:first-child {
+.owh-data-table th:first-child, td:first-child {
 	border-left: 1px solid #dddddd;
 }
 

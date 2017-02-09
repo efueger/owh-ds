@@ -1,7 +1,7 @@
 <!--<owh-nested-accordion accordion-data="otc.dataToAccordion"></owh-nested-accordion>-->
 <div class="clusterize">
     <div class="clusterize-headers">
-        <table id="headers-table" class="data-table">
+        <table id="headers-table" class="owh-data-table">
             <thead>
             <tr ng-repeat="eachHeaderRow in otc.tableData.headers">
                 <th ng-repeat="eachHeader in eachHeaderRow" ng-bind="eachHeader.title" colspan="{{eachHeader.colspan}}" rowspan="{{eachHeader.rowspan}}" ng-class="{'text-right': eachHeader.isCount && eachHeader.colspan <= 3}"></th>
