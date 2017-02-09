@@ -636,12 +636,8 @@ describe('search factory ', function(){
         });
 
         it('searchNatality', function () {
-            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
-            primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(response.data.resultData.nested.table));
-            });
-            deferred.resolve(response);
-            $scope.$apply();
+            var result = searchFactory.updateFiltersAndData([primaryFilter], response, {'natality': {}}, 'natality');
+            expect(JSON.stringify(result.primaryFilter.data)).toEqual(JSON.stringify(response.data.resultData.nested.table));
         });
     });
     
