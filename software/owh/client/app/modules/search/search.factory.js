@@ -1216,9 +1216,9 @@
                     filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsStateFilters), defaultGroup:"column",
                     displaySearchBox:true, displaySelectedFirst:true },
                 { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race", primary: false, value: [], groupBy: 'column',
-                    autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column"},
-                { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: null, groupBy: 'row',
-                    filterType: 'checkbox',filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column"},
+                { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
+                    filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
                     selectTitle: 'select.label.yrbs.filter.question', updateTitle: 'update.label.yrbs.filter.question',  iconClass: 'fa fa-pie-chart purple-text',
                     onIconClick: function(question) {
                         showChartForQuestion(filters.selectedPrimaryFilter, question);
@@ -1228,7 +1228,7 @@
 
             filters.yrbsBasicFilters = [
                 {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: '2015', groupBy: false,
-                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
+                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), doNotShowAll: true, donotshowOnSearch:true },
                 { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: '', groupBy: false,
                     filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
                 { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"grade", primary: false, value: '', groupBy: false,
@@ -1323,7 +1323,6 @@
 
             filters.censusFilters = filterUtils.getBridgeDataFilters();
             filters.natalityFilters = filterUtils.getNatalityDataFilters();
-
             filters.search = [
                 {
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
@@ -1376,43 +1375,39 @@
                         }
                     ]
                 },
-                // {
-                //     key: 'mental_health_adv', title: 'label.risk.behavior', primary: true, value:[], header:"Youth risk behavior-Advanced",
-                //     allFilters: filters.yrbsFilters, searchResults: searchYRBSResults, dontShowInlineCharting: true,
-                //     additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total', tableView:'mental_health',
-                //     chartAxisLabel:'Percentage',
-                //     sideFilters:[
-                //         {
-                //             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
-                //             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'year')
-                //         },
-                //         {
-                //             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
-                //             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'yrbsSex')
-                //         },
-                //         {
-                //             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
-                //             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'yrbsRace')
-                //         },
-                //         {
-                //             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
-                //             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'yrbsGrade')
-                //         },
-                //         {
-                //             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
-                //             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'yrbsState')
-                //         },
-                //         {
-                //             filterGroup: false, collapse: true, allowGrouping: false,
-                //             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'question')
-                //         }
-                //     ]
-                // },
                 {
                     key: 'mental_health', title: 'label.risk.behavior', primary: true, value:[], header:"Youth risk behavior",
                     allFilters: filters.yrbsBasicFilters, searchResults: searchYRBSResults, dontShowInlineCharting: true,
                     additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total', tableView:'mental_health',
                     chartAxisLabel:'Percentage',
+                    //sideFilters: this.basicSideFilters, // Default to basic filter
+
+                    advancedSideFilters: [
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'year')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'yrbsSex')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'yrbsRace')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'yrbsGrade')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'yrbsState')
+                        },
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: false,
+                            filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'question')
+                        }
+                    ],
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
@@ -1437,28 +1432,6 @@
                         {
                             filterGroup: false, collapse: false, allowGrouping: false,
                             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'question')
-                        }
-                    ],
-                    basicSideFilters: [
-                        {
-                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
-                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'year')
-                        },
-                        {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
-                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsSex')
-                        },
-                        {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
-                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsRace')
-                        },
-                        {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
-                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsGrade')
-                        },
-                        {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
-                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsState')
                         }
                     ]
                 },
@@ -1622,7 +1595,7 @@
          * @returns {Array|*}
          */
         function getYRBSAdvanceSearchSideFilters() {
-            return getAllFilters().search[1].sideFilters;
+            return getAllFilters().search[1].advancedSideFilters;
         }
 
         /**
@@ -1630,7 +1603,7 @@
          * @returns {Array}
          */
         function getYRBSBasicSearchSideFilters() {
-           return getAllFilters().search[1].basicSideFilters;
+           return getAllFilters().search[1].sideFilters;
         }
     }
 

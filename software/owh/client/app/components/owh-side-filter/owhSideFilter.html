@@ -92,22 +92,6 @@
                     </li>
                     <!--Tree filter-->
 
-                    <!--Radio button filters
-                    <li class="group-option" ng-if="group.filterType === 'radio'"
-                          ng-class="{'thin-border-top': (group.value.length > 0 && group.displaySelectedFirst)}">
-                        <input type="radio" id="{{group.queryKey}}_all" name="{{group.queryKey}}_all" ng-checked="!group.value"
-                               ng-model="group.allChecked" ng-init="group.allChecked = !group.value">
-                        <label for="{{group.queryKey}}_all" class="custom-label">
-                            <span>All</span>
-                        </label>
-                    </li>
-                    <li ng-if="group.filterType === 'radio'" ng-repeat="option in group.autoCompleteOptions" class="group-option" >
-                        <input id="{{option.key}}" type="radio" ng-model="group.value" ng-value="option.key" ng-click="sfc.onFilter()" >
-                        <label for="{{option.key}}" class="custom-label" style="margin-bottom: 0">
-                            <span translate="{{option.title}}"></span>
-                        </label>
-                    </li>-->
-                    <!--Radio button filters -->
 
                     <!--search box for side filter options-->
                     <!--Check box/radio filter type-->
@@ -117,7 +101,7 @@
                         <i ng-show="search.title" class="cursor-pointer clear-text-icon fa fa-remove" ng-click="search.title =''"></i>
                     </li>
                     <!-- show All --->
-                    <li class="group-option" ng-if="group.filterType === 'radio' || group.filterType === 'checkbox'"
+                    <li class="group-option" ng-if="group.filterType === 'radio' || group.filterType === 'checkbox' && !group.doNotShowAll"
                         ng-class="{'thin-border-top': (group.value.length > 0 && group.displaySelectedFirst)}">
                         <input type="checkbox" id="{{group.queryKey}}_all" name="{{group.queryKey}}_all" ng-checked="group.value.length === 0"
                             ng-click="sfc.updateGroupValue(group);" ng-model="group.allChecked" ng-init="group.allChecked = group.value.length === 0"
