@@ -1,6 +1,6 @@
 [
   {
-    "column":"mother_hispanic_origin",
+    "column":"hispanic_origin",
     "type":"map",
     "start": 148,
     "stop": 148,
@@ -47,7 +47,7 @@
     }
   },
   {
-    "column":"mother_marital_status",
+    "column":"marital_status",
     "type":"map",
     "start": 153,
     "stop": 153,
@@ -123,18 +123,18 @@
     }
   },
   {
-    "column":"sex",
-    "type":"map",
-    "start": 436,
-    "stop": 436,
-    "field": "Sex of Infant",
-    "mappings": {
-      "M": "Male",
-      "F": "Female"
-    }
+	"column":"sex",
+	"type":"map",
+	"start": 436,
+	"stop": 436,
+	"field": "Sex of Infant",
+	"mappings": {
+	  "M": "Male",
+	  "F": "Female"
+	}
   },
   {
-    "column":"month_prenatal_care_began",
+    "column":"prenatal_care",
     "type": "map",
     "start": 245,
     "stop": 246,
@@ -191,7 +191,7 @@
     }
   },
   {
-    "column":"live_birth_order",
+    "column":"live_birth",
     "type": "map",
     "start": 212,
     "stop": 212,

@@ -132,7 +132,8 @@
                     <p id="death-rate-disclaimer" ng-show="sc.tableView === 'crude_death_rates'" ng-bind=" 'label.crude.death.rates.statement' | translate"></p>
                     <owh-table table-data="sc.tableData"
                                ng-if="(sc.filters.selectedPrimaryFilter.headers && sc.filters.selectedPrimaryFilter.key === 'deaths' ||
-                               sc.filters.selectedPrimaryFilter.key === 'bridge_race')"
+                               sc.filters.selectedPrimaryFilter.key === 'bridge_race' ||
+                               sc.filters.selectedPrimaryFilter.key === 'natality')"
                                table-view="{{sc.tableView}}"
                                rowspan-threshold="50"></owh-table>
                     <owh-accordion-table headers="sc.filters.selectedPrimaryFilter.headers" data="sc.filters.selectedPrimaryFilter.data"

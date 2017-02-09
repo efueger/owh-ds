@@ -1,6 +1,6 @@
 [
   {
-    "column":"mother_hispanic_origin",
+    "column":"hispanic_origin",
     "type":"map",
     "start": 115,
     "stop": 115,
@@ -11,7 +11,7 @@
       "2": "Puerto Rican",
       "3": "Cuban",
       "4": "Central and South American",
-      "5": "Other and Unknown Hispanic origin",
+      "5": "Other and Unknown Hispanic Origin",
       "9": "Hispanic origin not stated"
     }
   },
@@ -42,12 +42,12 @@
     "mappings": {
       "1": "White",
       "2": "Black",
-      "3": "American Indian or Alaskan Native",
+      "3": "American Indian or Alaska Native",
       "4": "Asian or Pacific Islander"
     }
   },
   {
-    "column":"mother_marital_status",
+    "column":"marital_status",
     "type":"map",
     "start": 120,
     "stop": 120,
@@ -131,7 +131,7 @@
   }
 },
   {
-    "column":"month_prenatal_care_began",
+    "column":"prenatal_care",
     "type": "map",
     "start": 224,
     "stop": 225,
@@ -148,8 +148,7 @@
       "08": "8th month",
       "09": "9th month",
       "10": "10th month",
-      "99": "Unknown or not stated",
-      "": "Not on certificate"
+      "99": "Unknown or not stated"
     }
   },
   {
@@ -188,7 +187,7 @@
     }
   },
   {
-    "column":"live_birth_order",
+    "column":"live_birth",
     "type": "map",
     "start": 179,
     "stop": 179,
@@ -306,8 +305,7 @@
     "mappings": {
       "Y": "Yes",
       "N": "No",
-      "U": "Unknown or not stated",
-      "": "Not on certificate"
+      "U": "Unknown or not stated"
     }
   }
 ]
