@@ -30,4 +30,15 @@ describe('filterUtils', function(){
             expect(ageGroupFilter.value).toEqual(['5-9 years', '10-14 years', '15-19 years']);
         });
     });
+
+    describe('test natality filters', function() {
+        it('when I call getNatalityDataFilters, I should get natality filters', function () {
+            var bridgeRaceFilters = filterUtils.getNatalityDataFilters();
+            expect(bridgeRaceFilters[0].key).toEqual('hispanic_origin');
+            expect(bridgeRaceFilters[1].key).toEqual('mother_age');
+            expect(bridgeRaceFilters[2].key).toEqual('mother_race');
+            expect(bridgeRaceFilters[3].key).toEqual('marital_status');
+            expect(bridgeRaceFilters[4].key).toEqual('mother_education');
+        });
+    });
 });

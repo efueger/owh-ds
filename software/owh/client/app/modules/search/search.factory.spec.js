@@ -616,5 +616,33 @@ describe('search factory ', function(){
             deferred.resolve(response);
         });
     });
+
+    describe('test with natality data', function () {
+        var response;
+        beforeAll(function() {
+            //get the filters
+            primaryFilter = filters.search[3];
+            filters.selectedPrimaryFilter = primaryFilter;
+            //prepare mock response
+            response = __fixtures__['app/modules/search/fixtures/search.factory/natalityResponse'];
+        });
+
+        beforeEach(function() {
+            deferred = $q.defer();
+        });
+
+        it('getAllFilters', function () {
+            expect(primaryFilter.key).toEqual('natality');
+        });
+
+        it('searchNatality', function () {
+            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
+            primaryFilter.searchResults(primaryFilter).then(function() {
+                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(response.data.resultData.nested.table));
+            });
+            deferred.resolve(response);
+            $scope.$apply();
+        });
+    });
     
 });

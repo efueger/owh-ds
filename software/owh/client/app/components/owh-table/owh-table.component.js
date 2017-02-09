@@ -178,6 +178,8 @@
                             }
                         } else if(otc.tableView === 'bridge_race') {
                             cell += '<span class="count-value">' + $filter('number')(column.title) + '</span>';
+                        } else if(otc.tableView === 'natality') {
+                            cell += '<span class="count-value">' + $filter('number')(column.title) + '</span>';
                         }
 
                             cell+= '</div>';
