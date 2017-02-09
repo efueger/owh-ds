@@ -1,6 +1,8 @@
 {
   "status": "OK",
-  "data":{"resultData": {
+  "data":{
+    "queryJSON": {"key": "mental_health", "tableView": "mental_health"},
+    "resultData": {
     "table": {
       "question": [
         {

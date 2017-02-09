@@ -31,14 +31,6 @@ describe("Search controller: ", function () {
         });
     });
 
-    it("Should execute showFbDialog",function() {
-        var shareUtilService= {
-            shareOnFb: function(){}
-        };
-        var searchController= $controller('SearchController',{$scope:$scope, shareUtilService:shareUtilService});
-        searchController.showFbDialog([],"graphTitle","graph subtitle");
-    });
-
     it("Should execute showExpandedGraph",function() {
         var chartUtilService= {
             showExpandedGraph: function(){}

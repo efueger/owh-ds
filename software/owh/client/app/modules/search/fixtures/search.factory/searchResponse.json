@@ -1,6 +1,10 @@
 {
   "status": "OK",
   "data": {
+    "queryJSON" : {
+      "key": "deaths",
+      "tableView": "number_of_deaths"
+    },
     "sideFilterResults": {
       "data": {
         "simple": {

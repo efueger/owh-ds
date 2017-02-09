@@ -20,6 +20,7 @@
                 <owh-search filters="sc.filters" show-filters="sc.showMeOptions"
                             search-results="sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter)"
                             on-view-filter="sc.changeViewFilter(selectedFilter)"
+                            on-primary-filter="sc.changePrimaryFilter(newFilter)"
                             table-view="{{ sc.tableView }}"></owh-search>
             </div>
         </div>
@@ -31,10 +32,11 @@
 
 <div class="usa-grid border-top-default" ng-class="{'allow-inline-charting': sc.filters.allowInlineCharting}">
     <div class="usa-width-one-whole bottom-pane">
-        <a class="owh-side-menu__handle--collapsed cursor-pointer" ng-hide="sc.sideMenu.visible" ng-click="sc.sideMenu.visible = !sc.sideMenu.visible">
+        <a class="owh-side-menu__handle--collapsed cursor-pointer" ng-hide="sc.sideMenu.visible" ng-click="sc.sideMenu.visible = !sc.sideMenu.visible; sc.updateCharts()">
             <span>Show Filters &gt;&gt;</span>
         </a>
         <div class="usa-width-one-fourth side-pane-padding border-right-default owh-side-menu" ng-hide="!sc.sideMenu.visible">
+            <a class="owh-side-menu__handle cursor-pointer" ng-click="sc.sideMenu.visible = false; sc.updateCharts()">
             <div ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'" class="yrbs_search_links">
                 <a class="owh-side-menu__handle cursor-pointer pull-left" ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'"
                    ng-click="sc.switchToYRBSBasic();" ng-if="!sc.showBasicSearchSideMenu.visible">
@@ -63,12 +65,12 @@
                 <div class="usa-width-one-whole">
                     <div ng-repeat="startChartData in sc.filters.selectedPrimaryFilter.chartData" ng-init="parentIndex = $index">
                         <div ng-repeat="chartData in startChartData"
-                             ng-class="!chartData.isMap || sc.selectedMapSize==='small'?'usa-width-one-third graph-box':'usa-width-one-whole margin-bottom-20'">
+                             ng-class="!chartData.isMap || sc.mapOptions.selectedMapSize==='small'?'usa-width-one-third graph-box':'usa-width-one-whole margin-bottom-20'">
                             <!-- Map -->
                             <div id="chart_us_map" ng-if="chartData.isMap && sc.filters.selectedPrimaryFilter.showMap && sc.filters.selectedPrimaryFilter.maps">
                                 <leaflet  lf-center="chartData.usa" markers="chartData.markers" events="chartData.events" geojson="chartData.geojson"
                                           legend="chartData.legend" controls="chartData.controls" defaults="chartData.defaults" tiles=""
-                                          height="{{sc.selectedMapSize==='small'?'277px':'300px'}}" width="{{sc.selectedMapSize==='small'?'300px':'100%'}}"></leaflet>
+                                          height="{{sc.mapOptions.selectedMapSize==='small'?'277px':'300px'}}" width="{{sc.mapOptions.selectedMapSize==='small'?'auto':'100%'}}"></leaflet>
                             </div>
                             <!-- Map -->
 
@@ -84,7 +86,7 @@
                                         &nbsp; <i class="fa fa-share-alt" title="Share on facebook"></i>
                                     </a>
                                 </div>
-                                <nvd3 id="chart_{{parentIndex}}_{{$index}}" options='chartData.options' data='chartData.data'></nvd3>
+                                <nvd3 id="chart_{{parentIndex}}_{{$index}}" options='chartData.options' data='chartData.data' api="chartData.api" on-ready="sc.updateCharts()"></nvd3>
                             </div>
                             <!-- Graphs -->
                         </div>
@@ -109,13 +111,13 @@
                     <hr />
                     <!-- show hide percentage -->
                     <div id="togglePercentage" class="togglePercentage pull-left" ng-show="sc.filters.selectedPrimaryFilter.title === 'label.filter.mortality' && sc.tableView === 'number_of_deaths'">
-                        <a id="showPercentage" class="active-link custom-link " ng-class="{'selected': sc.filters.selectedPrimaryFilter.calculatePercentage === true}" ng-click="sc.filters.selectedPrimaryFilter.calculatePercentage = true; sc.tableData = sc.getMixedTable(sc.filters.selectedPrimaryFilter);" title="Show percentage">
-                            <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === false" ng-bind="'label.mortality.search.table.show.percentage.button' | translate"></span>
-                            <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === true" ng-bind="'label.mortality.search.table.showing.percentage.button' | translate"></span>
+                        <a id="showPercentage" class="active-link custom-link " ng-class="{'selected': sc.tableData.calculatePercentage === true}" ng-click="sc.tableData.calculatePercentage = true;" title="Show percentage">
+                            <span ng-show="sc.tableData.calculatePercentage === false" ng-bind="'label.mortality.search.table.show.percentage.button' | translate"></span>
+                            <span ng-show="sc.tableData.calculatePercentage === true" ng-bind="'label.mortality.search.table.showing.percentage.button' | translate"></span>
                         </a>
-                        <a id="hidePercentage" class="active-link custom-link" ng-class="{'selected': sc.filters.selectedPrimaryFilter.calculatePercentage === false}" ng-click="sc.filters.selectedPrimaryFilter.calculatePercentage = false; sc.tableData = sc.getMixedTable(sc.filters.selectedPrimaryFilter);" title="Hide percentage">
-                            <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === true" ng-bind="'label.mortality.search.table.hide.percentage.button' | translate"></span>
-                            <span ng-show="sc.filters.selectedPrimaryFilter.calculatePercentage === false" ng-bind="'label.mortality.search.table.hidden.percentage.button' | translate"></span>
+                        <a id="hidePercentage" class="active-link custom-link" ng-class="{'selected': sc.tableData.calculatePercentage === false}" ng-click="sc.tableData.calculatePercentage = false;" title="Hide percentage">
+                            <span ng-show="sc.tableData.calculatePercentage === true" ng-bind="'label.mortality.search.table.hide.percentage.button' | translate"></span>
+                            <span ng-show="sc.tableData.calculatePercentage === false" ng-bind="'label.mortality.search.table.hidden.percentage.button' | translate"></span>
                         </a>
                     </div>
 
@@ -131,12 +133,13 @@
                     </div>
                     <p id="death-rate-disclaimer" ng-show="sc.tableView === 'crude_death_rates'" ng-bind=" 'label.crude.death.rates.statement' | translate"></p>
                     <owh-table table-data="sc.tableData"
+                               show-percentage="sc.tableData.calculatePercentage"
                                ng-if="(sc.filters.selectedPrimaryFilter.headers && sc.filters.selectedPrimaryFilter.key === 'deaths' ||
                                sc.filters.selectedPrimaryFilter.key === 'bridge_race' ||
                                sc.filters.selectedPrimaryFilter.key === 'natality')"
                                table-view="{{sc.tableView}}"
                                rowspan-threshold="50"></owh-table>
-                    <owh-accordion-table headers="sc.filters.selectedPrimaryFilter.headers" data="sc.filters.selectedPrimaryFilter.data"
+                    <owh-accordion-table headers="sc.tableData.headers" data="sc.tableData.data"
                                 ng-if="sc.filters.selectedPrimaryFilter.key === 'mental_health'"
                                 show-ci="sc.showConfidenceIntervals"
                                 show-uf="sc.showUnweightedFrequency"
