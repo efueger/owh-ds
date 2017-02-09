@@ -34,7 +34,6 @@
             getYRBSAdvanceSearchSideFilters: getYRBSAdvanceSearchSideFilters,
             getYRBSBasicSearchSideFilters: getYRBSBasicSearchSideFilters
 
-
         };
         return service;
 
