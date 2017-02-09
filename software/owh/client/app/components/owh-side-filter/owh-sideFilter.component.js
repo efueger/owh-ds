@@ -228,7 +228,8 @@
          * else display selected options + first 3 not selected options
          */
         function getShowHideOptionCount(optionGroup, options) {
-            return optionGroup.displaySelectedFirst? options.length - (3 + optionGroup.value?optionGroup.value.length:0) : (options.length - 3)
+            var cnt =  optionGroup.displaySelectedFirst? options.length - (3 + optionGroup.value?optionGroup.value.length:0) : (options.length - 3)
+            return cnt?cnt:0;
         }
     }
 }());

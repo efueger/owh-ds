@@ -716,11 +716,17 @@
             chartUtilService.showExpandedGraph([chartData]);
         }
 
+        /**
+         * Switch to YRBS basic filter
+         */
         function switchToYRBSBasic(){
             sc.showBasicSearchSideMenu = true;
             sc.filters.selectedPrimaryFilter.sideFilters = searchFactory.getYRBSBasicSearchSideFilters();
         }
 
+        /**
+         * Switch to YRBS advanced filter
+         */
         function switchToYRBSAdvanced(){
             sc.showBasicSearchSideMenu = false;
             sc.filters.selectedPrimaryFilter.sideFilters = searchFactory.getYRBSAdvanceSearchSideFilters();
