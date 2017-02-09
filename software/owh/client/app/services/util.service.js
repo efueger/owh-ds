@@ -340,6 +340,7 @@
             };
             tableData.data = prepareMixedTableRowData(headers.rowHeaders, headers.columnHeaders, data, countKey,
                 totalCount, calculatePercentage, calculateRowTotal, secondaryCountKeys);
+            tableData.calculatePercentage = calculatePercentage;
             return tableData;
         }
 

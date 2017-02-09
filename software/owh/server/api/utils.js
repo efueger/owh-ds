@@ -74,6 +74,14 @@ var populateAggregatedData = function(buckets, countKey, splitIndex, map, countQ
 
                 }
             }
+            if(countKey === 'bridge_race') {
+                aggregation = {name: buckets[index]['key']};
+                if(buckets[index]['group_count_pop']) {
+                    aggregation[countKey] = applySuppressionRules('pop', buckets[index]['group_count_pop'].value);
+                } else {
+                    aggregation[countKey] = applySuppressionRules('pop', sumBucketProperty(buckets[index][innerObjKey], 'group_count_pop'));
+                }
+            }
             if( innerObjKey ) {
                 //if you want to split group key by regex
                 if (regex && (regex.test('group_table_') || regex.test('group_chart_'))) {
