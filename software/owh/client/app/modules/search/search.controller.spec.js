@@ -328,7 +328,6 @@ describe("Search controller: ", function () {
          expect(searchController.filters.selectedPrimaryFilter.headers).toEqual(searchResultsResponse.data.resultData.headers);
          expect(searchResultsResponse.data.queryJSON.key).toEqual('deaths');
          deferred.resolve(searchResultsResponse);
-         $scope.$apply();
     }));
 
     it('should generate hashcode for the default query if no queryID found', inject(function(searchFactory) {
