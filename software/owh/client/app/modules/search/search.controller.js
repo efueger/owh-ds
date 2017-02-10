@@ -414,6 +414,7 @@
         function switchToYRBSBasic(){
             sc.showBasicSearchSideMenu = true;
             sc.filters.selectedPrimaryFilter.sideFilters = searchFactory.getYRBSBasicSearchSideFilters();
+            sc.search(true);
         }
 
         /**
@@ -422,8 +423,7 @@
         function switchToYRBSAdvanced(){
             sc.showBasicSearchSideMenu = false;
             sc.filters.selectedPrimaryFilter.sideFilters = searchFactory.getYRBSAdvanceSearchSideFilters();
+            sc.search(true);
         }
-
-
     }
 }());

@@ -349,10 +349,12 @@ describe("Search controller: ", function () {
                 searchFactory: searchFactory,
 
             });
+        spyOn(searchController, 'search');
         searchController.filters = {selectedPrimaryFilter:{sideFilters:null}}
         searchController.switchToYRBSBasic();
         expect(searchController.showBasicSearchSideMenu).toEqual(true);
         expect(searchController.filters.selectedPrimaryFilter.sideFilters[0].filters.filterType).toEqual('radio');
+        expect(searchController.search).toHaveBeenCalledWith('true');
 
     }));
 
@@ -364,10 +366,12 @@ describe("Search controller: ", function () {
                 searchFactory: searchFactory,
 
             });
+        spyOn(searchController, 'search');
         searchController.filters = {selectedPrimaryFilter:{sideFilters:null}}
         searchController.switchToYRBSAdvanced();
         expect(searchController.showBasicSearchSideMenu).toEqual(false);
         expect(searchController.filters.selectedPrimaryFilter.sideFilters[0].filters.filterType).toEqual('checkbox');
+        expect(searchController.search).toHaveBeenCalledWith('true');
 
     }));
 });
