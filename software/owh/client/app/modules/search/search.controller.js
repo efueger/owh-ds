@@ -49,22 +49,8 @@
             sc.filters.selectedPrimaryFilter = $stateParams.selectedFilters;
         }
 
-        sc.showBasicSearchSideMenu = {visible: true};
-        /**
-         * In YRBS page, when user switches between Basic and Advance search
-         * This watch gets called and updates side filters based on user selection
-         */
-        // $scope.$watch('sc.showBasicSearchSideMenu.visible', function(value){
-        //     /*To make sure sideFilters changes only for YRBS page*/
-        //     if(sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior') {
-        //         if(value){
-        //             sc.filters.selectedPrimaryFilter.sideFilters = searchFactory.getYRBSBasicSearchSideFilters();
-        //         }
-        //         else {
-        //             sc.filters.selectedPrimaryFilter.sideFilters = searchFactory.getYRBSAdvanceSearchSideFilters();
-        //         }
-        //     }
-        // });
+        // Default YRBS filter to Basic
+        sc.showBasicSearchSideMenu = true;
         sc.selectedMapSize = 'small';
         sc.showMeOptions = [
             {key: 'number_of_deaths', title: 'Number of Deaths'},
