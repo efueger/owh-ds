@@ -7,10 +7,11 @@
             controller: OWHSearchController,
             controllerAs: 'ots',
             bindings: {
-                filters : '=',
+                filters : '<',
                 showFilters : '=',
                 searchResults : '&',
                 onViewFilter: '&',
+                onPrimaryFilter: '&',
                 tableView: '@'
             }
         });

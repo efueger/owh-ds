@@ -1419,6 +1419,7 @@
       }
     },
     "sideFilterResults":{
+      "pagination": {},
       "data":{
         "simple":{
           "dob_yy": [

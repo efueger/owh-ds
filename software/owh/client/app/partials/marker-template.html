@@ -3,7 +3,7 @@
 
         <div class="usa-width-one-whole">
             <div class="usa-width-two-thirds marker-label">Year(s)</div>
-            <div class="usa-width-one-third marker-years">{{properties.years().join();}}</div>
+            <div class="usa-width-one-third marker-years">{{properties.years.join();}}</div>
         </div>
         <div class="usa-width-one-whole" ng-repeat="eachCat in properties.sex">
             <div class="usa-width-two-thirds marker-label" ng-bind="eachCat.name | GenderTitle"></div>

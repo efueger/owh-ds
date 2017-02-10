@@ -60,7 +60,7 @@ var prepareAggregationQuery = function(aggregations, countQueryKey) {
         }
         if (aggregations['nested']['maps']) {
             for(var index in aggregations['nested']['maps']) {
-                elasticQuery.aggregations = merge(elasticQuery.aggregations, generateNestedAggQuery(aggregations['nested']['maps'][index], 'group_maps_' + index + '_'));
+                elasticQuery.aggregations = merge(elasticQuery.aggregations, generateNestedAggQuery(aggregations['nested']['maps'][index], 'group_maps_' + index + '_', countQueryKey, true));
             }
         }
     }
