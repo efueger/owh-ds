@@ -354,7 +354,7 @@ describe("Search controller: ", function () {
         searchController.switchToYRBSBasic();
         expect(searchController.showBasicSearchSideMenu).toEqual(true);
         expect(searchController.filters.selectedPrimaryFilter.sideFilters[0].filters.filterType).toEqual('radio');
-        expect(searchController.search).toHaveBeenCalledWith('true');
+        expect(searchController.search).toHaveBeenCalledWith(true);
 
     }));
 
@@ -371,7 +371,7 @@ describe("Search controller: ", function () {
         searchController.switchToYRBSAdvanced();
         expect(searchController.showBasicSearchSideMenu).toEqual(false);
         expect(searchController.filters.selectedPrimaryFilter.sideFilters[0].filters.filterType).toEqual('checkbox');
-        expect(searchController.search).toHaveBeenCalledWith('true');
+        expect(searchController.search).toHaveBeenCalledWith(true);
 
     }));
 });
