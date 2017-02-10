@@ -182,18 +182,16 @@
         function updateGroupValue(group) {
             if(group.filterType === 'checkbox'){
                 if ( group.allChecked === false ) {
+                    // When All is unchecked, select all other values
                     angular.forEach(group.autoCompleteOptions, function(option){
                         group.value.push(option.key)
                     });
                 } else {
+                    // When All is selected, unselect individual values
                     group.value.length = 0;
                 }
-            } else {
-                if ( group.allChecked === false ) {
-                    angular.forEach(group.autoCompleteOptions, function(option){
-                        group.value = option.key;
-                    });
-                } else {
+            }else {
+                if (group.allChecked === true) {
                     group.value = '';
                 }
             }
@@ -228,7 +226,14 @@
          * else display selected options + first 3 not selected options
          */
         function getShowHideOptionCount(optionGroup, options) {
-            var cnt =  optionGroup.displaySelectedFirst? options.length - (3 + optionGroup.value?optionGroup.value.length:0) : (options.length - 3)
+            var cnt =  options.length - 3;
+            if(optionGroup.displaySelectedFirst){
+                if(optionGroup.filterType === 'checkbox'){
+                    cnt -= optionGroup.value.length;
+                }else if (optionGroup.value){ // if radio and non- all option is selected
+                    cnt -= 1;
+                }
+            }
             return cnt?cnt:0;
         }
     }

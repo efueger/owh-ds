@@ -576,6 +576,16 @@ describe('search factory ', function(){
             yrbsChartDeferred.resolve(yrbsMockData.chartData2);
         });
 
+        it ("get advanced YRBS filter ", function () {
+           var yrbsFilter = searchFactory.getYRBSAdvanceSearchSideFilters();
+            expect(yrbsFilter[0].filters.filterType).toEqual ('checkbox');
+        });
+
+        it ("get basic YRBS filter ", function () {
+            var yrbsFilter = searchFactory.getYRBSBasicSearchSideFilters();
+            expect(yrbsFilter[0].filters.filterType).toEqual ('radio');
+        });
+
     });
     
     describe('test with bridge race data', function () {

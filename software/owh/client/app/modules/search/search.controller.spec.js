@@ -341,4 +341,33 @@ describe("Search controller: ", function () {
         expect(searchFactory.generateHashCode).toHaveBeenCalled();
     }));
 
+    it('switch to YRBS Basic filter', inject(function(searchFactory) {
+
+        var searchController= $controller('SearchController',
+            {
+                $scope:$scope,
+                searchFactory: searchFactory,
+
+            });
+        searchController.filters = {selectedPrimaryFilter:{sideFilters:null}}
+        searchController.switchToYRBSBasic();
+        expect(searchController.showBasicSearchSideMenu).toEqual(true);
+        expect(searchController.filters.selectedPrimaryFilter.sideFilters[0].filters.filterType).toEqual('radio');
+
+    }));
+
+    it('switch to YRBS advanced filter', inject(function(searchFactory) {
+
+        var searchController= $controller('SearchController',
+            {
+                $scope:$scope,
+                searchFactory: searchFactory,
+
+            });
+        searchController.filters = {selectedPrimaryFilter:{sideFilters:null}}
+        searchController.switchToYRBSAdvanced();
+        expect(searchController.showBasicSearchSideMenu).toEqual(false);
+        expect(searchController.filters.selectedPrimaryFilter.sideFilters[0].filters.filterType).toEqual('checkbox');
+
+    }));
 });

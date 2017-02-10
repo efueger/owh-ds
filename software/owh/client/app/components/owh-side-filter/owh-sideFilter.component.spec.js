@@ -239,11 +239,11 @@ describe('OWH Side filter component: ', function() {
         expect(optionCount).toEqual(426);
     });
 
-    it('updateGroupValue should properly update the value array with the selected options', function() {
+    it('updateGroupValue should properly update the value array with the selected options for checkbox filter', function() {
         var bindings = {onFilter: function(){}};
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
 
-        var group = {autoCompleteOptions: [{key: '2013'}, {key: '2014'}], value: [], allChecked: false};
+        var group = {filterType: 'checkbox', autoCompleteOptions: [{key: '2013'}, {key: '2014'}], value: [], allChecked: false};
 
         ctrl.updateGroupValue(group);
 
@@ -296,9 +296,9 @@ describe('OWH Side filter component: ', function() {
         expect(ctrl.isOptionSelected({key:'44', 'title': 'Arizona'}, [])).toEqual(false);
     });
 
-    it('should return count display count for show/hide more options link', function() {
+    it('should return count display count for show/hide more options link for checkbox', function() {
         var options = ["01","02","05","04", '10', '20', '35', '39', '56'];
-        var optionGroup = {"key":"state","value":["01","02","05"], "displaySelectedFirst":true};
+        var optionGroup = {filterType: "checkbox", "key":"state","value":["01","02","05"], "displaySelectedFirst":true};
 
         var bindings = {filters: [], showFilters: []};
         var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
@@ -311,7 +311,28 @@ describe('OWH Side filter component: ', function() {
 
         //When displaySelectedFirst = false
         //count= total options- 3
-        optionGroup = {"key":"state","value":["01","02"], "displaySelectedFirst":false};
+        optionGroup.displaySelectedFirst = false;
+        optionGroup.value = ["01","02"];
+        expect(ctrl.getShowHideOptionCount(optionGroup, options)).toEqual(6);
+        optionGroup.value = [];
+        expect(ctrl.getShowHideOptionCount(optionGroup, options)).toEqual(6);
+    });
+
+
+    it('should return count display count for show/hide more options link for radio', function() {
+        var options = ["01","02","05","04", '10', '20', '35', '39', '56'];
+        var optionGroup = {filterType: "radio", "key":"state","value":"01", "displaySelectedFirst":true};
+        var bindings = {filters: [], showFilters: []};
+        var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
+        //When displaySelectedFirst = true and and a non all option is selected
+        //count= total options-(3+selected options)
+        expect(ctrl.getShowHideOptionCount(optionGroup, options)).toEqual(5);
+        optionGroup.value = '';
+        expect(ctrl.getShowHideOptionCount(optionGroup, options)).toEqual(6);
+
+        //When displaySelectedFirst = false
+        //count= total options- 3
+        optionGroup = {"key":"state","value":"01", "displaySelectedFirst":false};
         expect(ctrl.getShowHideOptionCount(optionGroup, options)).toEqual(6);
     });
 
