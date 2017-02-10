@@ -162,5 +162,7 @@
   "label.graph.state":"State",
   "label.bookmark.search": "Bookmark this Search",
   "label.yrbs.basic.search":"Switch to Basic Search",
-  "label.yrbs.advanced.search":"Switch to Advanced Search"
+  "label.yrbs.advanced.search":"Switch to Advanced Search",
+  "label.run.query": "Run Query",
+  "label.run.query.title": "Click to Run Query"
 }

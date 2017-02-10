@@ -38,11 +38,11 @@
         <div class="usa-width-one-fourth side-pane-padding border-right-default owh-side-menu" ng-hide="!sc.sideMenu.visible">
             <div ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'" class="yrbs_search_links">
                 <a class="owh-side-menu__handle cursor-pointer pull-left" ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'"
-                   ng-click="sc.switchToYRBSBasic();" ng-if="!sc.showBasicSearchSideMenu">
+                   ng-click="sc.switchToYRBSBasic();" ng-if="!sc.filters.selectedPrimaryFilter.showBasicSearchSideMenu">
                     <span ng-bind="'label.yrbs.basic.search' | translate"></span>
                 </a>
                 <a class="owh-side-menu__handle cursor-pointer pull-left" ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'"
-                   ng-click="sc.switchToYRBSAdvanced();" ng-if="sc.showBasicSearchSideMenu">
+                   ng-click="sc.switchToYRBSAdvanced();" ng-if="sc.filters.selectedPrimaryFilter.showBasicSearchSideMenu">
                     <span ng-bind="'label.yrbs.advanced.search' | translate"></span>
                 </a>
             </div>

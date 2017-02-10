@@ -1437,6 +1437,7 @@
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
                     allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, showMap: false,
                     chartAxisLabel:'Deaths', countLabel: 'Number of Deaths', mapData:{}, tableView:'number_of_deaths',
+                    runOnFilterChange: true,
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
@@ -1489,7 +1490,7 @@
                     allFilters: filters.yrbsBasicFilters, searchResults: searchYRBSResults, dontShowInlineCharting: true,
                     additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total', tableView:'mental_health',
                     chartAxisLabel:'Percentage',
-
+                    showBasicSearchSideMenu: true, runOnFilterChange: true, // Default to basic filter
                     advancedSideFilters: [
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
@@ -1547,6 +1548,7 @@
                     key: 'bridge_race', title: 'label.census.bridge.race.pop.estimate', primary: true, value:[], header:"Bridged-Race Population Estimates",
                     allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true, showMap: true,
                     chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop', tableView:'bridge_race', mapData: {},
+                    runOnFilterChange: true,
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
@@ -1578,6 +1580,7 @@
                     key: 'natality', title: 'label.filter.natality', primary: true, value:[], header:"Natality",
                     allFilters: filters.natalityFilters, searchResults: searchNatality, dontShowInlineCharting: true,
                     chartAxisLabel:'Population', countLabel: 'Total', tableView:'natality',
+                    runOnFilterChange: true,
                     sideFilters:[
                         {
                             filterGroup: false, collapse: true, allowGrouping: true,

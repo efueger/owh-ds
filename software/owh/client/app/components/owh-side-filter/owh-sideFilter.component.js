@@ -32,6 +32,7 @@
         sfc.isOptionDisabled = isOptionDisabled;
         sfc.isOptionSelected = isOptionSelected;
         sfc.getShowHideOptionCount = getShowHideOptionCount;
+        sfc.runOnFilterChange = sfc.filters.selectedPrimaryFilter.runOnFilterChange;
 
         function isOptionDisabled(group, option) {
             if(group.key === 'hispanicOrigin') {
@@ -63,7 +64,11 @@
                 //else, clear group options
                 clearGroupOptions(option, group);
             }
-            sfc.onFilter();
+
+            //  Run the filter call back only if runOnFilterChange is true
+            if(sfc.runOnFilterChange) {
+                sfc.onFilter();
+            }
         }
 
         function clearGroupOptions(option, group) {
@@ -161,7 +166,10 @@
                         });
                         selectedFilter.value = utilService.getValuesByKey(selectedFilter.selectedValues, 'id');
                         modal.element.hide();
-                        sfc.onFilter();
+                        //  Run the filter call back only if runOnFilterChange is true
+                        if(sfc.runOnFilterChange) {
+                            sfc.onFilter();
+                        }
                     });
                 });
             }
@@ -175,7 +183,10 @@
             filter.selectedNodes.length = 0;
             filter.selectedValues.length = 0;
             filter.value.length = 0;
-            sfc.onFilter();
+            //  Run the filter call back only if runOnFilterChange is true
+            if(sfc.runOnFilterChange) {
+                sfc.onFilter();
+            }
         }
 
         //remove all elements from array for all select
@@ -195,7 +206,10 @@
                     group.value = '';
                 }
             }
-            sfc.onFilter();
+            //  Run the filter call back only if runOnFilterChange is true
+            if(sfc.runOnFilterChange) {
+                sfc.onFilter();
+            }
         }
 
         //called to determine order of side filters, looks at sort array passed in

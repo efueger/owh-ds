@@ -49,8 +49,6 @@
             sc.filters.selectedPrimaryFilter = $stateParams.selectedFilters;
         }
 
-        // Default YRBS filter to Basic
-        sc.showBasicSearchSideMenu = true;
         sc.selectedMapSize = 'small';
         sc.showMeOptions = [
             {key: 'number_of_deaths', title: 'Number of Deaths'},
@@ -412,7 +410,8 @@
          * Switch to YRBS basic filter
          */
         function switchToYRBSBasic(){
-            sc.showBasicSearchSideMenu = true;
+            sc.filters.selectedPrimaryFilter.showBasicSearchSideMenu = true;
+            sc.filters.selectedPrimaryFilter.runOnFilterChange = true;
             sc.filters.selectedPrimaryFilter.sideFilters = searchFactory.getYRBSBasicSearchSideFilters();
             sc.search(true);
         }
@@ -421,7 +420,8 @@
          * Switch to YRBS advanced filter
          */
         function switchToYRBSAdvanced(){
-            sc.showBasicSearchSideMenu = false;
+            sc.filters.selectedPrimaryFilter.showBasicSearchSideMenu = false;
+            sc.filters.selectedPrimaryFilter.runOnFilterChange = false;
             sc.filters.selectedPrimaryFilter.sideFilters = searchFactory.getYRBSAdvanceSearchSideFilters();
             sc.search(true);
         }
