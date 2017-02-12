@@ -412,7 +412,8 @@
         function switchToYRBSBasic(){
             sc.filters.selectedPrimaryFilter.showBasicSearchSideMenu = true;
             sc.filters.selectedPrimaryFilter.runOnFilterChange = true;
-            sc.filters.selectedPrimaryFilter.sideFilters = searchFactory.getYRBSBasicSearchSideFilters();
+            sc.filters.selectedPrimaryFilter.allFilters = sc.filters.yrbsBasicFilters;
+            sc.filters.selectedPrimaryFilter.sideFilters = sc.filters.search[1].basicSideFilters;
             sc.search(true);
         }
 
@@ -422,7 +423,8 @@
         function switchToYRBSAdvanced(){
             sc.filters.selectedPrimaryFilter.showBasicSearchSideMenu = false;
             sc.filters.selectedPrimaryFilter.runOnFilterChange = false;
-            sc.filters.selectedPrimaryFilter.sideFilters = searchFactory.getYRBSAdvanceSearchSideFilters();
+            sc.filters.selectedPrimaryFilter.allFilters = sc.filters.yrbsAdvancedFilters;
+            sc.filters.selectedPrimaryFilter.sideFilters = sc.filters.search[1].advancedSideFilters;
             sc.search(true);
         }
     }

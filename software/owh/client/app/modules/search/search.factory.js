@@ -30,10 +30,7 @@
             prepareQuestionChart: prepareQuestionChart,
             populateSideFilterTotals: populateSideFilterTotals,
             updateFiltersAndData: updateFiltersAndData,
-            getMixedTable: getMixedTable,
-            getYRBSAdvanceSearchSideFilters: getYRBSAdvanceSearchSideFilters,
-            getYRBSBasicSearchSideFilters: getYRBSBasicSearchSideFilters
-
+            getMixedTable: getMixedTable
         };
         return service;
 
@@ -1487,10 +1484,10 @@
                 },
                 {
                     key: 'mental_health', title: 'label.risk.behavior', primary: true, value:[], header:"Youth risk behavior",
-                    allFilters: filters.yrbsBasicFilters, searchResults: searchYRBSResults, dontShowInlineCharting: true,
+                    searchResults: searchYRBSResults, dontShowInlineCharting: true,
                     additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total', tableView:'mental_health',
                     chartAxisLabel:'Percentage',
-                    showBasicSearchSideMenu: true, runOnFilterChange: true, // Default to basic filter
+                    showBasicSearchSideMenu: true, runOnFilterChange: true, allFilters: filters.yrbsBasicFilters, // Default to basic filter
                     advancedSideFilters: [
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
@@ -1517,7 +1514,7 @@
                             filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'question')
                         }
                     ],
-                    sideFilters:[
+                    basicSideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
                             filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'year')
@@ -1665,6 +1662,8 @@
                     ]
                 }
             ];
+
+            filters.search[1].sideFilters = filters.search[1].basicSideFilters; //Set the default side filters for YRBS to basic
             return filters;
         }
 
@@ -1699,22 +1698,6 @@
                 deferred.resolve(response.data);
             });
             return deferred.promise;
-        }
-
-        /**
-         * To get YRBS Advanced search side filters array
-         * @returns {Array|*}
-         */
-        function getYRBSAdvanceSearchSideFilters() {
-            return getAllFilters().search[1].advancedSideFilters;
-        }
-
-        /**
-         * To get YRBS Basic search side filters array
-         * @returns {Array}
-         */
-        function getYRBSBasicSearchSideFilters() {
-           return getAllFilters().search[1].sideFilters;
         }
     }
 

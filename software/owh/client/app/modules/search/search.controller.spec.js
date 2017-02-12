@@ -350,7 +350,7 @@ describe("Search controller: ", function () {
 
             });
         spyOn(searchController, 'search');
-        searchController.filters = {selectedPrimaryFilter:{sideFilters:null}}
+        searchController.filters.selectedPrimaryFilter = searchController.filters.search[1]; //select YRBS
         searchController.switchToYRBSBasic();
         expect(searchController.filters.selectedPrimaryFilter.showBasicSearchSideMenu).toEqual(true);
         expect(searchController.filters.selectedPrimaryFilter.sideFilters[0].filters.filterType).toEqual('radio');
@@ -367,7 +367,7 @@ describe("Search controller: ", function () {
 
             });
         spyOn(searchController, 'search');
-        searchController.filters = {selectedPrimaryFilter:{sideFilters:null}}
+        searchController.filters.selectedPrimaryFilter = searchController.filters.search[1]; //select YRBS
         searchController.switchToYRBSAdvanced();
         expect(searchController.filters.selectedPrimaryFilter.showBasicSearchSideMenu).toEqual(false);
         expect(searchController.filters.selectedPrimaryFilter.sideFilters[0].filters.filterType).toEqual('checkbox');
