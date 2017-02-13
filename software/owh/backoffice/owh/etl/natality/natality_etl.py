@@ -29,9 +29,9 @@ class NatalityETL (ETL):
                 config_file = os.path.join(self.dataDirectory, 'data_mapping', 'nat_2000_2002.json')
             elif year >= 2003 and year <= 2006:   # data file for year 2003 to 2006
                 config_file =  os.path.join(self.dataDirectory, 'data_mapping', 'nat_2003_2006.json')
-            elif year <= 2007 and year >= 2013:
+            elif year <= 2007 and year >= 2013: # data file for year 2007 to 2013
                 config_file =  os.path.join(self.dataDirectory, 'data_mapping', 'nat_2007_2013.json')
-            elif year == 2014:
+            elif year == 2014: # data file for year 2014
                 config_file =  os.path.join(self.dataDirectory, 'data_mapping', 'nat_2014.json')
             else:
                 logger.warn("No mapping available for data file %s, skipping", file_path)
