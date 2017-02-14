@@ -21,6 +21,7 @@
         sc.getQueryResults = getQueryResults;
         sc.changePrimaryFilter = changePrimaryFilter;
         sc.updateCharts = updateCharts;
+        sc.getChartTitle = getChartTitle;
         sc.skipRefresh = false;
         sc.switchToYRBSBasic = switchToYRBSBasic;
         sc.switchToYRBSAdvanced = switchToYRBSAdvanced;
@@ -404,6 +405,16 @@
         /*Show expanded graphs with whole set of features*/
         function showExpandedGraph(chartData) {
             chartUtilService.showExpandedGraph([chartData]);
+        }
+
+        function getChartTitle(title) {
+            var filters = title.split('.');
+            filters = filters.slice(2);
+            if (filters.length > 1) {
+                return $filter('translate')('label.chart.' + filters[0]) + ' and ' + $filter('translate')('label.chart.' + filters[1]);
+            } else {
+                return $filter('translate')('label.chart.' + filters[0]);
+            }
         }
 
         /**
