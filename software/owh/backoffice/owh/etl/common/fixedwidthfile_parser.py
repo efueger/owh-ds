@@ -47,16 +47,6 @@ class FixedWidthFileParser:
                 row[config['column']] = self._map_value(config)
             elif (config['type'] == 'range'):
                  row[config['column']] = self._get_range_value(config)
-            elif (config['type'] == 'list'):
-                for field in config['fields']:
-                    if field['data_year'] == row['current_year']:
-                        if field['type'] == 'map':
-                            row[config['column']] = self._map_value(field)
-                            break
-                        else:
-                            row[config['column']] = self._simple_value(field)
-                    else:
-                        continue
             elif (config['type'] == 'split'):
                 for col in config['columns']:
                     value = self._get_value(config['start'], config['stop'])

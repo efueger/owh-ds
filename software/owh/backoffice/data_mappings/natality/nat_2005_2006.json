@@ -1,13 +1,5 @@
 [
   {
-    "column":"current_year",
-    "type":"simple",
-    "start": 15,
-    "stop": 18,
-    "field": "Birth Year",
-    "mappings": {}
-  },
-  {
     "column":"hispanic_origin",
     "type":"map",
     "start": 148,
@@ -415,65 +407,18 @@
   },
   {
     "column":"medical_attendant",
-    "type":"list",
-    "fields":[
-      {
-        "start":408,
-        "stop":408,
-        "data_year":"2003",
-        "type":"map",
-        "mappings":{
-          "1": "Doctor of Medicine (MD)",
-          "2": "Doctor of Osteopathy (DO)",
-          "3": "Certified Nurse Midwife (CNM)",
-          "4": "Other Midwife",
-          "5": "Other",
-          "9": "Unknown or not stated"
-        }
-      },
-      {
-        "start":408,
-        "stop":408,
-        "data_year":"2004",
-        "type":"map",
-        "mappings":{
-          "1": "Doctor of Medicine (MD)",
-          "2": "Doctor of Osteopathy (DO)",
-          "3": "Certified Nurse Midwife (CNM)",
-          "4": "Other Midwife",
-          "5": "Other",
-          "9": "Unknown or not stated"
-        }
-      },
-      {
-        "start":410,
-        "stop":410,
-        "data_year":"2005",
-        "type":"map",
-        "mappings":{
-          "1": "Doctor of Medicine (MD)",
-          "2": "Doctor of Osteopathy (DO)",
-          "3": "Certified Nurse Midwife (CNM)",
-          "4": "Other Midwife",
-          "5": "Other",
-          "9": "Unknown or not stated"
-        }
-      },
-      {
-        "start":410,
-        "stop":410,
-        "data_year":"2006",
-        "type":"map",
-        "mappings":{
-          "1": "Doctor of Medicine (MD)",
-          "2": "Doctor of Osteopathy (DO)",
-          "3": "Certified Nurse Midwife (CNM)",
-          "4": "Other Midwife",
-          "5": "Other",
-          "9": "Unknown or not stated"
-        }
-      }
-    ]
+    "type": "map",
+    "start": 410,
+    "stop": 410,
+    "field": "Medical Attendant",
+    "mappings": {
+      "1": "Doctor of Medicine (MD)",
+      "2": "Doctor of Osteopathy (DO)",
+      "3": "Certified Nurse Midwife (CNM)",
+      "4": "Other Midwife",
+      "5": "Other",
+      "9": "Unknown or not stated"
+    }
   },
   {
     "column":"anemia",
