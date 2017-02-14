@@ -21,6 +21,7 @@
         sc.getQueryResults = getQueryResults;
         sc.changePrimaryFilter = changePrimaryFilter;
         sc.updateCharts = updateCharts;
+        sc.getChartTitle = getChartTitle;
         sc.skipRefresh = false;
 
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
@@ -401,6 +402,17 @@
         /*Show expanded graphs with whole set of features*/
         function showExpandedGraph(chartData) {
             chartUtilService.showExpandedGraph([chartData]);
+        }
+
+        function getChartTitle(title) {
+            var filters = title.split('.');
+            filters = filters.slice(2);
+            if(filters.length > 1) {
+                return $filter('translate')(filters[0]) + ' and ' + $filter('translate')(filters[1]);
+            } else {
+                return $filter('translate')(filters[0]);
+            }
+
         }
     }
 }());

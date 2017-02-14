@@ -88,7 +88,8 @@ var populateAggregatedData = function(buckets, countKey, splitIndex, map, countQ
                     aggregation[innerObjKey.split(regex)[1]] =  populateAggregatedData(buckets[index][innerObjKey].buckets,
                         countKey, splitIndex, map, countQueryKey, regex);
                 } else {//by default split group key by underscore and retrieve key based on index
-                    aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex, map, countQueryKey);
+                    //adding slice and join because some keys are delimited by underscore so need to be reconstructed
+                    aggregation[innerObjKey.split("_").slice(splitIndex).join('_')] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex, map, countQueryKey);
                 }
                 //check if total should be suppressed
                 if(countKey === 'deaths' && isMortalityTotalSuppressed(buckets[index][innerObjKey].buckets)) {

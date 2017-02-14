@@ -89,8 +89,8 @@
             }
             else if (response.data.queryJSON.key == 'natality') {
                 primaryFilter.data = response.data.resultData.nested.table;
-                primaryFilter.headers = response.data.resultData.headers;
                 populateSideFilterTotals(primaryFilter, response.data);
+                primaryFilter.chartData = prepareChartData(primaryFilter.headers, response.data.resultData.nested, primaryFilter);
                 tableData = getMixedTable(primaryFilter, groupOptions, tableView);
             }
             primaryFilter.initiated = true;
