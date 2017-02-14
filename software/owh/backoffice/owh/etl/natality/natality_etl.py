@@ -25,15 +25,15 @@ class NatalityETL (ETL):
             logger.info("Processing file: %s", f)
             #extract the year from file name
             year = int(f[3:7])
-            if year >= 2000 and year <= 2002:  # data file for year 2000 to 2002
+            if year >= 2000 and year <= 2002:  # for year 2000 to 2002
                 config_file = os.path.join(self.dataDirectory, 'data_mapping', 'nat_2000_2002.json')
-            elif year == 2003 or year == 2004:   # data file for year 2003 to 2006
+            elif year == 2003 or year == 2004:   # for year 2003 & 2004
                 config_file =  os.path.join(self.dataDirectory, 'data_mapping', 'nat_2003_2004.json')
-            elif year == 2005 or year == 2006:   # data file for year 2003 to 2006
+            elif year == 2005 or year == 2006:   # for year 2005 & 2006
                 config_file =  os.path.join(self.dataDirectory, 'data_mapping', 'nat_2005_2006.json')
             elif year >= 2007 and year <= 2013:  # data file for year 2007 to 2013
                 config_file =  os.path.join(self.dataDirectory, 'data_mapping', 'nat_2007_2013.json')
-            elif year == 2014: # data file for year 2014
+            elif year == 2014: # for year 2014
                 config_file =  os.path.join(self.dataDirectory, 'data_mapping', 'nat_2014.json')
             else:
                 logger.warn("No mapping available for data file %s, skipping", file_path)
