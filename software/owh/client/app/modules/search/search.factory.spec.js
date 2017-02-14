@@ -474,6 +474,9 @@ describe('search factory ', function(){
 
         it('getAllFilters', function () {
             expect(primaryFilter.key).toEqual('mental_health');
+            expect(primaryFilter.sideFilters).toBeDefined();
+            expect(primaryFilter.sideFilters).toEqual(primaryFilter.basicSideFilters);
+            expect(primaryFilter.allFilters).toEqual(filters.yrbsBasicFilters);
         });
 
         it('searchYRBSResults', function () {
@@ -575,7 +578,6 @@ describe('search factory ', function(){
 
             yrbsChartDeferred.resolve(yrbsMockData.chartData2);
         });
-
     });
     
     describe('test with bridge race data', function () {

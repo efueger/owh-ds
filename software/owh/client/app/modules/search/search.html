@@ -36,6 +36,16 @@
             <span>Show Filters &gt;&gt;</span>
         </a>
         <div class="usa-width-one-fourth side-pane-padding border-right-default owh-side-menu" ng-hide="!sc.sideMenu.visible">
+            <div ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'" class="yrbs_search_links">
+                <a class="owh-side-menu__handle cursor-pointer pull-left" ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'"
+                   ng-click="sc.switchToYRBSBasic();" ng-if="!sc.filters.selectedPrimaryFilter.showBasicSearchSideMenu">
+                    <span ng-bind="'label.yrbs.basic.search' | translate"></span>
+                </a>
+                <a class="owh-side-menu__handle cursor-pointer pull-left" ng-show="sc.filters.selectedPrimaryFilter.title === 'label.risk.behavior'"
+                   ng-click="sc.switchToYRBSAdvanced();" ng-if="sc.filters.selectedPrimaryFilter.showBasicSearchSideMenu">
+                    <span ng-bind="'label.yrbs.advanced.search' | translate"></span>
+                </a>
+            </div>
             <a class="owh-side-menu__handle cursor-pointer" ng-click="sc.sideMenu.visible = false; sc.updateCharts()">
                 <span>&lt;&lt; Hide Filters</span>
             </a>
@@ -66,7 +76,7 @@
                             <!-- Graphs -->
                             <div ng-if="!chartData.isMap">
                                 <div class="text-center margin-top-5" >
-                                    <span ng-bind="chartData.title | translate" class="graph-title"></span>
+                                    <span ng-bind="sc.getChartTitle(chartData.title)" class="graph-title"></span>
                                     <a name="expand_graph" ng-click="sc.showExpandedGraph(chartData)" class="cursor-pointer">
                                         &nbsp;<i class="fa fa-expand" title="Expand graph"></i>
                                     </a>

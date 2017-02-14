@@ -83,13 +83,13 @@ button {
 text-align: center;
 
 	}
-	
+
 .row-general-health.data-boxes-container .section {
 	float: none;
 	display: inline-block;
     vertical-align: top;
-	}	
-	
+	}
+
 @media screen and (min-width: 1170px) {
 .usa-width-one-whole.qh-header .usa-width-one-half.qh-box {
 	width: 40%;
@@ -123,7 +123,7 @@ text-align: center;
 .qh-header:before {
 	animation: 7s .5s zoom backwards ease-in-out;
 	transform:scale(1.15);
-	
+
 }
  @-webkit-keyframes zoom {
 from {
@@ -956,4 +956,8 @@ ul.custom-nav-tabs {
 	display: block;
 	padding: 10px 15px;
 }
+.yrbs_search_links {
+	margin-left: 10px;
+}
+
 /*Custom tab css*/

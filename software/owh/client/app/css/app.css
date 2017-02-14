@@ -389,6 +389,21 @@ ul li::before {
     opacity: .8;
 }
 
+.ie-loading {
+    font-size: 48px;
+    position: fixed;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+}
+
+.loading-message {
+    display: inline-block;
+    background-color: #ddd;
+    border-radius: 13px;
+    padding: 10px;
+}
+
 /*Accordion style*/
 .usa-accordion-custom + .usa-accordion-custom,
 .usa-accordion-custom + .usa-accordion-custom-bordered,

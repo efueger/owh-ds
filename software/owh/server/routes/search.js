@@ -25,7 +25,7 @@ var searchRouter = function(app, rConfig) {
                     resData.sideFilterResults = JSON.parse(r._source.sideFilterResults);
                     res.send(new result('OK', resData, "success"));
                 }else{
-                    logger.info("Query with ID " + queryId + " not in cache, executing query");
+                     logger.info("Query with ID " + queryId + " not in cache, executing query");
                     if (q) {
                         res.connection.setTimeout(0); // To avoid the post callback being called multiple times when the search method takes long time
                         search(q).then(function (resp) {
