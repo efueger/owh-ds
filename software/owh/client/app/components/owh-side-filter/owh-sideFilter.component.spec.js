@@ -63,6 +63,7 @@ describe('OWH Side filter component: ', function() {
             key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
             allFilters: [], searchResults: searchResultsFn, showMap:true,
             countLabel: 'Number of Deaths', mapData:{}, initiated:true,
+            runOnFilterChange:true,
             sideFilters:[
                 {
                     filterGroup: false, collapse: false, allowGrouping: true, groupBy:false,
@@ -87,7 +88,8 @@ describe('OWH Side filter component: ', function() {
 
 
     it('Should have the controller', inject(function ($httpBackend, $location) {
-        var ctrl = $componentController('owhSideFilter', null, null);
+        var bindings = { filters : filters };
+        var ctrl = $componentController('owhSideFilter', null, bindings);
         expect(ctrl).toBeDefined();//<aside>
     }));
 
@@ -203,7 +205,7 @@ describe('OWH Side filter component: ', function() {
     });
 
     it('getOptionCount should return correct total for given option', function() {
-        var bindings = {};
+        var bindings = { filters : filters };
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
 
         ctrl.filters = {selectedPrimaryFilter: {key: 'deaths'}};
@@ -218,7 +220,7 @@ describe('OWH Side filter component: ', function() {
     });
 
     it('getOptionCount should return correct total for given group option', function() {
-        var bindings = {};
+        var bindings = { filters : filters };
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
 
         ctrl.filters = {selectedPrimaryFilter: {key: 'deaths'}};
@@ -239,11 +241,11 @@ describe('OWH Side filter component: ', function() {
         expect(optionCount).toEqual(426);
     });
 
-    it('updateGroupValue should properly update the value array with the selected options', function() {
-        var bindings = {onFilter: function(){}};
+    it('updateGroupValue should properly update the value array with the selected options for checkbox filter', function() {
+        var bindings = { filters : filters, onFilter: function(){}};
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
 
-        var group = {autoCompleteOptions: [{key: '2013'}, {key: '2014'}], value: [], allChecked: false};
+        var group = {filterType: 'checkbox', autoCompleteOptions: [{key: '2013'}, {key: '2014'}], value: [], allChecked: false};
 
         ctrl.updateGroupValue(group);
 
@@ -259,7 +261,7 @@ describe('OWH Side filter component: ', function() {
     });
 
     it('updateGroupValue should call onFilter', function() {
-        var bindings = {onFilter: function(){}};
+        var bindings = {filters : filters, onFilter: function(){}};
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
         spyOn(ctrl, 'onFilter');
 
@@ -271,7 +273,7 @@ describe('OWH Side filter component: ', function() {
 
     it('Should getFilterOrder based on sort binding', function() {
         var sort = ['gender', 'race', 'height'];
-        var bindings = {filters: [], sort: sort};
+        var bindings = {filters : filters, sort: sort};
         var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
         expect(ctrl.getFilterOrder({filters: {key: 'race'}})).toEqual(1);
         expect(ctrl.getFilterOrder({filters: {key: 'height'}})).toEqual(2);
@@ -280,7 +282,7 @@ describe('OWH Side filter component: ', function() {
 
     it('should get visibility based on showFilters', function() {
         var showFilters = ['year', 'gender'];
-        var bindings = {filters: [], showFilters: showFilters};
+        var bindings = {filters: filters, showFilters: showFilters};
         var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
         var filter = {filters: {key: 'year'}};
         expect(ctrl.isVisible(filter)).toEqual(true);
@@ -288,7 +290,7 @@ describe('OWH Side filter component: ', function() {
 
     it('should return boolean value based on filter option selection', function() {
         var selectedFilterOptions = ['01', '04', '14'];
-        var bindings = {filters: [], showFilters: []};
+        var bindings = {filters: filters, showFilters: []};
         var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
         var filter = {filters: {key: 'year'}};
         expect(ctrl.isOptionSelected({key:'04', 'title': 'Arizona'}, selectedFilterOptions)).toEqual(true);
@@ -296,11 +298,11 @@ describe('OWH Side filter component: ', function() {
         expect(ctrl.isOptionSelected({key:'44', 'title': 'Arizona'}, [])).toEqual(false);
     });
 
-    it('should return count display count for show/hide more options link', function() {
+    it('should return count display count for show/hide more options link for checkbox', function() {
         var options = ["01","02","05","04", '10', '20', '35', '39', '56'];
-        var optionGroup = {"key":"state","value":["01","02","05"], "displaySelectedFirst":true};
+        var optionGroup = {filterType: "checkbox", "key":"state","value":["01","02","05"], "displaySelectedFirst":true};
 
-        var bindings = {filters: [], showFilters: []};
+        var bindings = {filters: filters, showFilters: []};
         var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
         var filter = {filters: {key: 'year'}};
         //When displaySelectedFirst = true
@@ -311,12 +313,33 @@ describe('OWH Side filter component: ', function() {
 
         //When displaySelectedFirst = false
         //count= total options- 3
-        optionGroup = {"key":"state","value":["01","02"], "displaySelectedFirst":false};
+        optionGroup.displaySelectedFirst = false;
+        optionGroup.value = ["01","02"];
+        expect(ctrl.getShowHideOptionCount(optionGroup, options)).toEqual(6);
+        optionGroup.value = [];
+        expect(ctrl.getShowHideOptionCount(optionGroup, options)).toEqual(6);
+    });
+
+
+    it('should return count display count for show/hide more options link for radio', function() {
+        var options = ["01","02","05","04", '10', '20', '35', '39', '56'];
+        var optionGroup = {filterType: "radio", "key":"state","value":"01", "displaySelectedFirst":true};
+        var bindings = {filters: filters, showFilters: []};
+        var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
+        //When displaySelectedFirst = true and and a non all option is selected
+        //count= total options-(3+selected options)
+        expect(ctrl.getShowHideOptionCount(optionGroup, options)).toEqual(5);
+        optionGroup.value = '';
+        expect(ctrl.getShowHideOptionCount(optionGroup, options)).toEqual(6);
+
+        //When displaySelectedFirst = false
+        //count= total options- 3
+        optionGroup = {"key":"state","value":"01", "displaySelectedFirst":false};
         expect(ctrl.getShowHideOptionCount(optionGroup, options)).toEqual(6);
     });
 
     it('filterGroup should properly toggle group keys in value array', function() {
-        var bindings = {filters: [], onFilter: angular.noop};
+        var bindings = {filters: filters, onFilter: angular.noop};
         var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
         var option = {
             key: 'hispanic',
@@ -354,7 +377,7 @@ describe('OWH Side filter component: ', function() {
     });
 
     it('isSubOptionSelected should check if group child option is included in value', function() {
-        var bindings = {filters: []};
+        var bindings = {filters: filters};
         var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
 
         var option = {
@@ -384,7 +407,7 @@ describe('OWH Side filter component: ', function() {
     });
 
     it('isOptionDisabled should make sure Unknown and other ethnicity options are mutually exclusive', function() {
-        var bindings = {filters: []};
+        var bindings = {filters: filters};
         var ctrl = $componentController('owhSideFilter', {$scope: $scope}, bindings);
 
         var hispanicOption = {
@@ -415,5 +438,17 @@ describe('OWH Side filter component: ', function() {
         group.value = ['Unknown'];
 
         expect(ctrl.isOptionDisabled(group, hispanicOption)).toBeTruthy();
+    });
+
+    it('updateGroupValue should not call onFilter when runOnFilterUpdate is false', function() {
+        var bindings = {filters : filters, onFilter: function(){}};
+        bindings.filters.selectedPrimaryFilter.runOnFilterChange = false;
+        var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
+        spyOn(ctrl, 'onFilter');
+
+        ctrl.updateGroupValue({value: []});
+
+        expect(ctrl.onFilter).not.toHaveBeenCalled();
+
     });
 });

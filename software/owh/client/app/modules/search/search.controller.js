@@ -23,6 +23,8 @@
         sc.updateCharts = updateCharts;
         sc.getChartTitle = getChartTitle;
         sc.skipRefresh = false;
+        sc.switchToYRBSBasic = switchToYRBSBasic;
+        sc.switchToYRBSAdvanced = switchToYRBSAdvanced;
 
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
@@ -215,7 +217,8 @@
         * When we refresh search page, below listener populate autoCompleteOptions value with $rootScope.questionsList
          */
         $scope.$on('yrbsQuestionsLoadded', function() {
-            sc.filters.yrbsFilters[4].autoCompleteOptions = $rootScope.questionsList;
+            sc.filters.yrbsBasicFilters[4].autoCompleteOptions = $rootScope.questionsList;
+            sc.filters.yrbsAdvancedFilters[4].autoCompleteOptions = $rootScope.questionsList;
         });
 
 
@@ -407,12 +410,33 @@
         function getChartTitle(title) {
             var filters = title.split('.');
             filters = filters.slice(2);
-            if(filters.length > 1) {
+            if (filters.length > 1) {
                 return $filter('translate')('label.chart.' + filters[0]) + ' and ' + $filter('translate')('label.chart.' + filters[1]);
             } else {
                 return $filter('translate')('label.chart.' + filters[0]);
             }
+        }
 
+        /**
+         * Switch to YRBS basic filter
+         */
+        function switchToYRBSBasic(){
+            sc.filters.selectedPrimaryFilter.showBasicSearchSideMenu = true;
+            sc.filters.selectedPrimaryFilter.runOnFilterChange = true;
+            sc.filters.selectedPrimaryFilter.allFilters = sc.filters.yrbsBasicFilters;
+            sc.filters.selectedPrimaryFilter.sideFilters = sc.filters.search[1].basicSideFilters;
+            sc.search(true);
+        }
+
+        /**
+         * Switch to YRBS advanced filter
+         */
+        function switchToYRBSAdvanced(){
+            sc.filters.selectedPrimaryFilter.showBasicSearchSideMenu = false;
+            sc.filters.selectedPrimaryFilter.runOnFilterChange = false;
+            sc.filters.selectedPrimaryFilter.allFilters = sc.filters.yrbsAdvancedFilters;
+            sc.filters.selectedPrimaryFilter.sideFilters = sc.filters.search[1].advancedSideFilters;
+            sc.search(true);
         }
     }
 }());

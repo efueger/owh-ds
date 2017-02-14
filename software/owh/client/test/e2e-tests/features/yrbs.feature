@@ -163,3 +163,17 @@ Feature: As a User
     When I select the forward button in browser
     Then I should get search page with default filter type "Youth Risk Behavior"
     And the results page (yrbs data table) should be refreshed to reflect "Race/Ethnicity" filter with option "Asian"
+
+  Scenario: YRBS Basic Search
+    When I see a link "Basic Search" at the bottom of the sidebar (left)
+    When I click on the "Basic Search" link
+    Then the sidebar switches to an Basic Search mode
+    And the link below the sidebar changes to "Advanced Search"
+    And the link "Basic Search" should be disappear
+
+  Scenario: Advanced Search button
+    When I see a link "Advanced Search" at the bottom of the sidebar (right)
+    And I click on the "Advanced Search" link
+    Then the sidebar switches to an Advanced Search mode
+    And the link below the sidebar changes to "Basic Search"
+    And the link "Advanced Search" should be disappear
