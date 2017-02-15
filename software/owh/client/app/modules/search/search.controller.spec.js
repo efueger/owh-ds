@@ -320,7 +320,6 @@ describe("Search controller: ", function () {
          expect(searchController.filters.selectedPrimaryFilter.headers).toEqual(searchResultsResponse.data.resultData.headers);
          expect(searchResultsResponse.data.queryJSON.key).toEqual('deaths');
          deferred.resolve(searchResultsResponse);
-         $scope.$apply();
     }));
 
     it('should generate hashcode for the default query if no queryID found', inject(function(searchFactory) {
@@ -342,4 +341,37 @@ describe("Search controller: ", function () {
         expect(searchFactory.generateHashCode).toHaveBeenCalled();
     }));
 
+    it('switch to YRBS Basic filter', inject(function(searchFactory) {
+
+        var searchController= $controller('SearchController',
+            {
+                $scope:$scope,
+                searchFactory: searchFactory,
+
+            });
+        spyOn(searchController, 'search');
+        searchController.filters.selectedPrimaryFilter = searchController.filters.search[1]; //select YRBS
+        searchController.switchToYRBSBasic();
+        expect(searchController.filters.selectedPrimaryFilter.showBasicSearchSideMenu).toEqual(true);
+        expect(searchController.filters.selectedPrimaryFilter.sideFilters[0].filters.filterType).toEqual('radio');
+        expect(searchController.search).toHaveBeenCalledWith(true);
+
+    }));
+
+    it('switch to YRBS advanced filter', inject(function(searchFactory) {
+
+        var searchController= $controller('SearchController',
+            {
+                $scope:$scope,
+                searchFactory: searchFactory,
+
+            });
+        spyOn(searchController, 'search');
+        searchController.filters.selectedPrimaryFilter = searchController.filters.search[1]; //select YRBS
+        searchController.switchToYRBSAdvanced();
+        expect(searchController.filters.selectedPrimaryFilter.showBasicSearchSideMenu).toEqual(false);
+        expect(searchController.filters.selectedPrimaryFilter.sideFilters[0].filters.filterType).toEqual('checkbox');
+        expect(searchController.search).toHaveBeenCalledWith(true);
+
+    }));
 });

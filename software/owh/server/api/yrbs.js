@@ -83,12 +83,16 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
         // Build filter params
         var f = '';
         for (q in apiQuery.query){
-            if(q != 'question.path') {
+            if(q != 'question.path' && 'value' in  apiQuery.query[q] && apiQuery.query[q].value) {
                 if(q == 'sitecode'){
                     useStateDataset = true;
                 }
                 f += (q + ':');
-                f += apiQuery.query[q].value.join(',') +';';
+                if(apiQuery.query[q].value instanceof  Array) {
+                    f += apiQuery.query[q].value.join(',') + ';';
+                }else {
+                    f += apiQuery.query[q].value + ';';
+                }
             }
         }
         f = f.slice(0,f.length - 1);
