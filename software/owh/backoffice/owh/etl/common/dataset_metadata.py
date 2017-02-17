@@ -1,43 +1,21 @@
-import yaml
 import logging
 import datetime
 import logging.config
 import os
-import boto
 import json
-from zipfile import ZipFile
 
 logging.config.fileConfig(os.path.join(os.path.dirname(__file__),'logging.conf'))
 
-from owh.etl.common.elasticsearch_repository import ElasticSearchRepository
-from owh.etl.common.repositories import BatchRepository
 
-logger = logging.getLogger('etl')
+logger = logging.getLogger('dataset-metadata')
 
-class ETLMetrics:
-    def __init__(self):
-        self.status = None
-        self.startTime  = 0
-        self.endTime  = 0
-        self.duration = 0
-        self.insertCount = 0
-        self.updateCount=0
-        self.deleteCount=0
-        self.message=None
-
-class ETL :
-    """Base ETL implemetation class that provides the common framework for the ETL implementation.
-       All dataset specific ETL implementation class should extend from this class and implement the following abstract methods
-        perform_etl() - dataset specific ETL implementation
-        validate_etl() - validation of a completed ETL
-       The contrete ETL implemetation should also instatiate the ETL impl and invoke the execute() method to
-       trigger the execution of the ETL
+class DataSetMetadata :
     """
-    def __init__(self, configFile):
-        """Initialize the ETL"""
-        self.metrics = ETLMetrics()
-        self.config = yaml.safe_load(configFile)
-        logger.debug("Loaded configuration: %s", yaml.dump(self.config))
+        Perssits dataset metadata
+    """
+    def __init__(self, datasetName):
+        """Initialize the dataset metadata"""
+        self.datasetName = datasetName
         if 'elastic_search' in self.config and 'bulk_load_size' in self.config['elastic_search']:
             self.esRepository = ElasticSearchRepository(self.config['elastic_search'])
             self.batchRepository = BatchRepository(self.config['elastic_search']['bulk_load_size'], self.esRepository)
@@ -132,40 +110,6 @@ class ETL :
             2. Validation of a random record by checking that all mandatory attributes are set have valid values in the expected range
         """
         raise NotImplementedError("ETL.valuidateETL must be implemented by dataset specific ETL subclass")
-
-    def insertDsMetadataRecord(self, datasetname, year, filter, pvs):
-        self.batchRepository.persist({"index": {"_index": 'owh_dsmetadata', "_type": 'dsmetadata'}})
-        self.batchRepository.persist({'dataset':datasetname, 'year': year, 'filter_name':filter, 'permissible_values':pvs})
-
-    def loadDataSetMetaData(self, datasetname, year, datamapping):
-         """
-            Load the dataset metadata for the specified year and dataset
-         """
-         metadataESConfig = {'host': self.config['elastic_search']['host'], 'port': self.config['elastic_search']['port'],
-                             'index': 'owh_dsmetadata', 'type': 'dsmetadata'}
-         esRepository = ElasticSearchRepository(metadataESConfig)
-         esRepository.create_index(datamapping) # Create owh_dsmetadata index and mapping if doesn't exist
-
-         batchRepository = BatchRepository(100, self.esRepository)
-
-         # Delete existing mapping for the given dataset and year
-         esRepository.delete_records_by_query({"query": {"bool" : {"must" : [{"term": {"dataset":datasetname }},{"term": {"year":year}}]}}})
-
-         with open(datamapping) as datamap:
-             metadata = json.load(datamap)
-
-         for config in metadata :
-             if(config['type'] == 'simple'):
-                 self.insertDsMetadataRecord(datasetname, year,config['column'],None)
-             elif (config['type'] == 'map' or  config['type'] == 'range'):
-                 self.insertDsMetadataRecord(datasetname, year,config['column'],config['mappings'].values())
-             elif (config['type'] == 'split'):
-                 for col in config['columns']:
-                     self.insertDsMetadataRecord(datasetname, year,col,list(set(m[col] for m in config['mappings'].values())))
-
-         self.batchRepository.flush()
-         self.refresh_index()
-
 
     def execute(self):
         """Execute the ETL process"""

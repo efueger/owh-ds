@@ -38,7 +38,7 @@ class NatalityETL (ETL):
             else:
                 logger.warn("No mapping available for data file %s, skipping", file_path)
                 continue
-
+            self.loadDataSetMetaData('deaths', str(year), config_file)
             natality_parser = FixedWidthFileParser(file_path, config_file)
             while True:
                 record  = natality_parser.parseNextLine()
