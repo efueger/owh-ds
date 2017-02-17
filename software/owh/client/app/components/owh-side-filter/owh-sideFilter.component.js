@@ -8,7 +8,7 @@
             controllerAs: 'sfc',
             bindings:{
                 //TODO: change to one-way binding and bubble filter changes up with event bindings
-                filters : "=",
+                filters : "<",
                 onFilter: '&',
                 sort: '<',
                 showFilters: '<',
