@@ -74,6 +74,22 @@
                 tableData = getMixedTable(primaryFilter, groupOptions, tableView);
                 primaryFilter.headers = buildQueryForYRBS(primaryFilter, true).headers;
                 tableData.data = categorizeQuestions(tableData.data);
+                primaryFilter.showBasicSearchSideMenu = response.data.queryJSON.showBasicSearchSideMenu;
+                primaryFilter.runOnFilterChange = response.data.queryJSON.runOnFilterChange;
+                //primaryFilter.allFilters = response.data.queryJSON.allFilters;
+                if(primaryFilter.showBasicSearchSideMenu) {
+                   // primaryFilter.allFilters = response.data.queryJSON. sc.filters.yrbsBasicFilters;
+                    primaryFilter.sideFilters = response.data.queryJSON.basicSideFilters;
+                }
+                else {
+                   // primaryFilter.allFilters = response.data.queryJSON.  sc.filters.yrbsAdvancedFilters;
+                    primaryFilter.sideFilters = response.data.queryJSON.advancedSideFilters;
+                }
+
+                angular.forEach(response.data.queryJSON.sideFilters, function (filter, index) {
+                    primaryFilter.sideFilters[index].filters.value = filter.filters.value;
+                    primaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
+                });
             }
             if (primaryFilter.key === 'bridge_race') {
                 primaryFilter.data = response.data.resultData.nested.table;
