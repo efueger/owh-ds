@@ -155,14 +155,21 @@ Feature: As a User
     Then I should get search page with default filter type "Youth Risk Behavior"
     When I expand "Race/Ethnicity" filter section
     And  filter "Race/Ethnicity" and option "Asian" selected
+    When I click on "Select Questions" button
+    And I select a few questions and clicks on the Add Selected Question(s) button
+    Then the "Select Questions" button should be renamed to "Update Questions"
     When I select the back button in browser
     Then I should get search page with default filter type "Youth Risk Behavior"
     And the results page (yrbs data table) should be refreshed to reflect "Race/Ethnicity" filter with option "All"
+    Then the "Update Questions" button should be renamed to "Select Questions"
+    And Questions selected value should be "All"
 
   Scenario: Browser forward button
     When I select the forward button in browser
     Then I should get search page with default filter type "Youth Risk Behavior"
     And the results page (yrbs data table) should be refreshed to reflect "Race/Ethnicity" filter with option "Asian"
+    Then the "Select Questions" button should be renamed to "Update Questions"
+    And Questions selected value should be "Dietary Behaviors"
 
   Scenario: YRBS Basic Search
     When I see a link "Basic Search" at the bottom of the sidebar (left)
