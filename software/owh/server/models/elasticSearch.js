@@ -4,12 +4,14 @@ var elasticQueryBuilder = require('../api/elasticQueryBuilder');
 const util = require('util');
 var wonder = require("../api/wonder");
 var Q = require('q');
-var logger = require('../config/logging')
-var config = require('../config/config')
-var _host = config.elastic_search.url
-var _index= "owh"
+var logger = require('../config/logging');
+var config = require('../config/config');
+var _host = config.elastic_search.url;
+var _index= "owh";
 var mortality_index = "owh_mortality";
 var mortality_type = "mortality";
+var natality_index = "owh_natality";
+var natality_type = "natality";
 var census_index="owh_census";
 var census_type="census";
 //@TODO to work with my local ES DB I changed mapping name to 'queryResults1', revert before check in to 'queryResults'
@@ -168,24 +170,6 @@ ElasticClient.prototype.aggregateDeaths = function(query){
     return deferred.promise;
 };
 
-
-
-ElasticClient.prototype.aggregateMentalHealth = function(query, headers, aggregations){
-    var client = this.getClient(_index);
-    var deferred = Q.defer();
-    client.search({
-        index:mental_health_type,
-        body:query,
-        request_cache:true
-    }).then(function (resp) {
-        deferred.resolve(searchUtils.populateYRBSData(resp.hits.hits, headers, aggregations))
-    }, function (err) {
-        logger.error(err.message);
-        deferred.reject(err);
-    });
-    return deferred.promise;
-};
-
 /**
  * This method is used to get the bridge race data(census) based on passed in query
  */
@@ -208,7 +192,29 @@ ElasticClient.prototype.aggregateCensusData = function(query){
     return deferred.promise;
 };
 
-ElasticClient.prototype.getQueryResults = function(query){
+/**
+ * This method is used to fetch the natality data
+ */
+ElasticClient.prototype.aggregateNatalityData = function(query){
+    //get tge elastic search client for natality index
+    var client = this.getClient(natality_index);
+    var deferred = Q.defer();
+    //execute the search query
+    client.search({
+        index:natality_type,
+        body:query,
+        request_cache:true
+    }).then(function (resp) {
+        //parse the search results
+        deferred.resolve(searchUtils.populateDataWithMappings(resp, 'natality'));
+    }, function (err) {
+        logger.error(err.message);
+        deferred.reject(err);
+    });
+    return deferred.promise;
+};
+
+ElasticClient.prototype.getQueryCache = function(query){
     var client = this.getClient(_queryIndex);
     var deferred = Q.defer();
 
@@ -217,8 +223,11 @@ ElasticClient.prototype.getQueryResults = function(query){
        body: query,
        request_cache:true
     }).then(function (resp){
-        var results = resp.hits.hits.length > 0 ? resp.hits.hits[0]:null ;
-        deferred.resolve(results);
+        if(resp.hits.hits.length > 0) {
+            deferred.resolve(resp.hits.hits[0])
+        }else{
+            deferred.resolve(null);
+        }
     }, function(err){
         logger.error("While searching for queryData object ", err.message);
         deferred.reject(err);
@@ -240,7 +249,6 @@ ElasticClient.prototype.insertQueryData = function (query) {
         type: _queryType,
         body: query
     }).then(function (resp){
-
         deferred.resolve(resp);
     }, function(err){
         logger.error("Failed to insert record in queryResults ", err.message);

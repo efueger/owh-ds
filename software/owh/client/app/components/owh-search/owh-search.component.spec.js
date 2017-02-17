@@ -26,7 +26,6 @@ describe('OWH search component: ', function() {
         $httpBackend.whenGET('app/partials/owhSearch.html').respond( $templateCache.get('app/partials/owhSearch.html'));
     });
 
-
     it('Should have controller', inject(function ($httpBackend, $location) {
         var showMeOptions = [
             {key:'number_of_deaths',title:'Number of Deaths'}
@@ -42,6 +41,7 @@ describe('OWH search component: ', function() {
         ];
         var bindings = {showFilters:showMeOptions, tableView: 'crude_death_rates'};
         var ctrl = $componentController('owhSearch', null, bindings);
+        ctrl.$onChanges();
         expect(ctrl).toBeDefined();
         ctrl.phaseTwoImpl();
         expect(ctrl.selectedShowFilter.key).toEqual("crude_death_rates");
@@ -53,6 +53,7 @@ describe('OWH search component: ', function() {
         ];
         var bindings = {showFilters:showMeOptions, tableView: 'number_of_deaths'};
         var ctrl = $componentController('owhSearch', null, bindings);
+        ctrl.$onChanges();
         expect(ctrl).toBeDefined();
         ctrl.phaseTwoImpl();
         expect(ctrl.selectedShowFilter.key).toEqual("number_of_deaths");
@@ -83,6 +84,7 @@ describe('OWH search component: ', function() {
 
         var bindings = {showFilters:showMeOptions, filters:filters, searchResults:searchResults, tableView: 'crude_death_rates' };
         var ctrl = $componentController('owhSearch', null, bindings);
+        ctrl.$onChanges();
         expect(ctrl).toBeDefined();
         ctrl.groupByFiltersUpdated(true);
         expect(searchResults).toHaveBeenCalled();
@@ -113,10 +115,25 @@ describe('OWH search component: ', function() {
 
         var bindings = {showFilters:showMeOptions, filters:filters, searchResults:searchResults, tableView: 'crude_death_rates' };
         var ctrl = $componentController('owhSearch', null, bindings);
+        ctrl.$onChanges();
         expect(ctrl).toBeDefined();
         ctrl.groupByFiltersUpdated(false);
         expect(ctrl.selectedShowFilter.key).toEqual("crude_death_rates");
 
     }));
 
+
+    it("goForward", function () {
+        var fwd = spyOn(history, 'forward');
+        var ctrl = $componentController('owhSearch', null, {});
+        ctrl.goForward();
+        expect(fwd).toHaveBeenCalled();
+    });
+
+    it("goBackward", function () {
+        var back = spyOn(history, 'back');
+        var ctrl = $componentController('owhSearch', null, {});
+        ctrl.goBackward();
+        expect(back).toHaveBeenCalled();
+    });
 });

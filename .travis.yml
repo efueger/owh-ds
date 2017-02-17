@@ -1,6 +1,7 @@
 language: node_js
 node_js:
   - '4.4'
+  
 services:
   - docker
 
@@ -23,8 +24,9 @@ env:
     - NODE_ENV=test
 
 before_install:
-  - docker info
-  - openssl aes-256-cbc -K $encrypted_515f2799f321_key -iv $encrypted_515f2799f321_iv -in .owh/owh-config.yaml.enc -out .owh/owh-config.yaml -d
+  - docker info  
+  - mkdir -p .owh/logs
+  - openssl aes-256-cbc -K $encrypted_24a8a70e72ba_key -iv $encrypted_24a8a70e72ba_iv -in .owh/owh-config.yaml.enc -out .owh/owh-config.yaml -d
   - pip install awscli
   - export PATH=$PATH:$HOME/.local/bin
 
@@ -42,7 +44,10 @@ install:
 
 before_script:
   - sleep 10
-  - curl http://54.242.94.197/esdev  # To verify ElasticSearch running
+  - curl http://54.242.94.197/esdev  # To verify ElasticSearch running 
+  - curl  http://54.210.220.254:7777/national?q=qn8 # check connection to YRBS service 
+  - java -version
+  - echo $JAVA_HOME
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - npm start > /dev/null &
@@ -63,7 +68,8 @@ script:
   - npm start > /dev/null &
   - sleep 10
   - cd ../client
-  - ./node_modules/.bin/protractor test/e2e-tests/protractor.conf.js --browser=firefox
+  # Disabling E2E tests for now
+  # - ./node_modules/.bin/protractor test/e2e-tests/protractor.conf.js --browser=firefox
 
 after_success:
   - cd ..
@@ -77,6 +83,7 @@ before_deploy:
   - cp -R $TRAVIS_BUILD_DIR/deployment/* $TRAVIS_BUILD_DIR/software/owh
   # End the nasty bit.
   - aws s3 sync s3://owh-config-dev $TRAVIS_BUILD_DIR/software/owh
+  - mkdir -p $TRAVIS_BUILD_DIR/software/owh/.owh/logs
   - docker-compose up -d
   - docker-compose build
   - docker images

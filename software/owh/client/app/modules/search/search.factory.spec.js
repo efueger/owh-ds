@@ -5,7 +5,7 @@ describe('search factory ', function(){
     var searchFactory, utils, $rootScope, $scope, controllerProvider, searchService, deferred, $q,
         primaryFilter, $httpBackend, $templateCache, filters, countsMortalityAutoCompletes,
         searchResponse, groupGenderResponse, genderGroupHeaders, fourGroupsResponse,
-        ModalService, givenModalDefaults, elementVisible, thenFunction, closeDeferred, uploadImageDeferred, $timeout, filterUtils;
+        ModalService, givenModalDefaults, elementVisible, thenFunction, closeDeferred, uploadImageDeferred, $timeout, filterUtils, questionsTreeJson;
     module.sharedInjector();
 
     beforeAll(module('owh'));
@@ -35,7 +35,10 @@ describe('search factory ', function(){
 
         $httpBackend.whenGET('app/i18n/messages-en.json').respond({ hello: 'World' });
         $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
-
+        $httpBackend.whenGET('/getFBAppID').respond({data: { fbAppID: 1111111111111111}});
+        questionsTreeJson = __fixtures__['app/modules/search/fixtures/search.factory/questionsTree'];
+        $httpBackend.whenGET('/yrbsQuestionsTree/2015').respond(questionsTreeJson);
+        $rootScope.questionsList = questionsTreeJson.questionsList;
         filters = searchFactory.getAllFilters();
 
         countsMortalityAutoCompletes = __fixtures__['app/modules/search/fixtures/search.factory/countsMortalityAutoCompletes'];
@@ -246,6 +249,104 @@ describe('search factory ', function(){
         expect(ethnicityFilter.autoCompleteOptions.length).toEqual(3);
     });
 
+    it('removeDisabledFilters should remove values and groupBy for filters not available', function() {
+        var allFilters = [
+            {
+                key: 'year',
+                value: ['2014', '2013'],
+                groupBy: 'row'
+            },
+            {
+                key: 'agegroup',
+                value: ['10', '25'],
+                groupBy: 'column'
+            }
+        ];
+
+        var sideFilters = [
+            {
+                filters: {
+                    key: 'year',
+                    value: ['2014', '2013'],
+                    groupBy: 'row'
+                }
+            },
+            {
+                filters: {
+                    key: 'agegroup',
+                    value: ['10', '25'],
+                    groupBy: 'column'
+                }
+            }
+        ];
+
+        var availableFilters = {
+            'crude_death_rates': ['year', 'gender', 'race'],
+            'age-adjusted_death_rates': ['year', 'gender', 'race']
+        };
+
+        var selectedFilter = {allFilters: allFilters, sideFilters: sideFilters};
+
+        searchFactory.removeDisabledFilters(selectedFilter, 'age-adjusted_death_rates', availableFilters);
+
+        expect(selectedFilter.allFilters[0].value.length).toEqual(2);
+        expect(selectedFilter.allFilters[0].groupBy).toEqual('row');
+        expect(selectedFilter.allFilters[1].value.length).toEqual(0);
+        expect(selectedFilter.allFilters[1].groupBy).toEqual(false);
+
+        expect(selectedFilter.sideFilters[0].filters.value.length).toEqual(2);
+        expect(selectedFilter.sideFilters[0].filters.groupBy).toEqual('row');
+        expect(selectedFilter.sideFilters[1].filters.value.length).toEqual(0);
+        expect(selectedFilter.sideFilters[1].filters.groupBy).toEqual(false);
+    });
+    
+    it('generateHashCode should call out to search service with a normalized hashQuery', function() {
+        spyOn(searchService, "generateHashCode").and.callFake(function() {
+            return {
+                then: function(){
+
+                }
+            };
+        });
+
+        var primaryFilter = {
+            key: 'deaths',
+            tableView: 'number_of_deaths',
+            sideFilters: [
+                {
+                    filters: {
+                        key: 'race',
+                        groupBy: false,
+                        value: ['White', 'Black']
+                    }
+                },
+                {
+                    filters: {
+                        key: 'gender',
+                        groupBy: 'row',
+                        value: ['Male']
+                    }
+                }
+            ]
+        }
+
+        searchFactory.generateHashCode(primaryFilter);
+
+        expect(searchService.generateHashCode).toHaveBeenCalled();
+
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].primaryKey).toEqual('deaths');
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].tableView).toEqual('number_of_deaths');
+
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[0].key).toEqual('race');
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[0].groupBy).toEqual(false);
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[0].value).toEqual(['Black', 'White']);
+
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[1].key).toEqual('gender');
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[1].groupBy).toEqual('row');
+        expect(searchService.generateHashCode.calls.argsFor(0)[0].filters[1].value).toEqual(['Male']);
+
+    });
+
     describe('test with mortality data', function () {
         beforeAll(function() {
             primaryFilter = filters.search[0];
@@ -255,13 +356,9 @@ describe('search factory ', function(){
             deferred = $q.defer();
         });
 
-        it('searchMortalityResults without year autocompleters', function () {
-            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
-            primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.table));
-            });
-            deferred.resolve(searchResponse);
-            $scope.$apply();
+        it('updateFiltersAndData without year autocompleters', function () {
+            var result = searchFactory.updateFiltersAndData([primaryFilter], searchResponse, {'number_of_deaths': {}}, {});
+            expect(JSON.stringify(result.primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.table));
         });
 
         it('getAllFilters', function () {
@@ -274,29 +371,21 @@ describe('search factory ', function(){
             deferred.resolve(countsMortalityAutoCompletes);
             $scope.$apply();
             var yearFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
-            expect(yearFilter.autoCompleteOptions.length).toEqual(5);
+            expect(yearFilter.autoCompleteOptions.length).toEqual(15);
             expect(yearFilter.autoCompleteOptions[0].count).toEqual(2630800);
         });
 
         it('searchMortalityResults', function () {
-            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
-            primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.table));
-            });
-            deferred.resolve(searchResponse);
-            $scope.$apply();
+            var result = searchFactory.updateFiltersAndData([primaryFilter], searchResponse, {'number_of_deaths': {}}, {});
+            expect(JSON.stringify(result.primaryFilter.data)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.table));
         });
 
         it('searchMortalityResults with only one row group', function () {
             var genderFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'gender');
             genderFilter.groupBy = false;
 
-            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
-            primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.chartDataFromAPI)).toEqual(JSON.stringify(searchResponse.data.resultData.simple));
-            });
-            deferred.resolve(searchResponse);
-            $scope.$apply();
+            var result = searchFactory.updateFiltersAndData([primaryFilter], searchResponse, {'number_of_deaths': {}}, {});
+            expect(JSON.stringify(result.primaryFilter.chartDataFromAPI)).toEqual(JSON.stringify(searchResponse.data.resultData.simple));
 
             genderFilter.groupBy = 'column';
         });
@@ -305,12 +394,8 @@ describe('search factory ', function(){
             var raceFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'race');
             raceFilter.groupBy = false;
 
-            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
-            primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.headers)).toEqual(JSON.stringify(genderGroupHeaders));
-            });
-            deferred.resolve(groupGenderResponse);
-            $scope.$apply();
+            var result = searchFactory.updateFiltersAndData([primaryFilter], groupGenderResponse, {'number_of_deaths': {}}, {});
+            expect(JSON.stringify(result.primaryFilter.headers)).toEqual(JSON.stringify(genderGroupHeaders));
 
             raceFilter.groupBy = 'row';
         });
@@ -322,12 +407,9 @@ describe('search factory ', function(){
             var raceFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'race');
             raceFilter.groupBy = 'other';
 
-            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
-            primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.maps)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.maps));
-            });
-            deferred.resolve(searchResponse);
-            $scope.$apply();
+            var result = searchFactory.updateFiltersAndData([primaryFilter], searchResponse, {'number_of_deaths': {}}, {});
+            expect(JSON.stringify(result.primaryFilter.maps)).toEqual(JSON.stringify(searchResponse.data.resultData.nested.maps));
+
 
             primaryFilter.showMap = true;
             genderFilter.groupBy = 'column';
@@ -340,12 +422,8 @@ describe('search factory ', function(){
             var yearFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
             autopsyFilter.groupBy = 'column';
 
-            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
-            primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(primaryFilter.searchCount).toEqual(fourGroupsResponse.pagination.total);
-            });
-            deferred.resolve(fourGroupsResponse);
-            $scope.$apply();
+            var result = searchFactory.updateFiltersAndData([primaryFilter], fourGroupsResponse, {'number_of_deaths': {}}, {});
+            expect(JSON.stringify(result.primaryFilter.searchCount)).toEqual(JSON.stringify(fourGroupsResponse.pagination.total));
 
             autopsyFilter.groupBy = false;
             yearFilter.groupBy = false;
@@ -367,37 +445,43 @@ describe('search factory ', function(){
             expect(agegroupFilter.timer).toBeUndefined();
             filters.selectedPrimaryFilter.initiated = false;
         });
+
+        it('getqueryResults', function(){
+            var searchResultsResponse = __fixtures__['app/modules/search/fixtures/search.factory/searchResultsResponse'];
+            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
+            searchFactory.getQueryResults("ae38fb09ec8b6020a9478edc62a271ca").then(function(response) {
+                expect(JSON.stringify(response.data.resultData.nested.table)).toEqual(JSON.stringify(searchResultsResponse.data.resultData.nested.table));
+                expect(JSON.stringify(response.data.resultData.chartData)).toEqual(JSON.stringify(searchResultsResponse.data.resultData.chartData));
+            });
+            deferred.resolve(searchResultsResponse);
+            $scope.$apply();
+        });
+
     });
 
     describe('test with yrbs data', function () {
-        var yrbsResponse, raceNoValueHeaders, yrbsChart1Deferred, yrbsChart2Deferred, yrbsChart3Deferred,
-            yrbsGradePieChartResponse, yrbsRacePieChartResponse, yrbsGenderAndRaceBarChartResponse;
+        var yrbsResponse, raceNoValueHeaders, yrbsChartDeferred;
         beforeAll(function() {
             primaryFilter = filters.search[1];
             filters.selectedPrimaryFilter = primaryFilter;
             yrbsResponse = __fixtures__['app/modules/search/fixtures/search.factory/yrbsResponse'];
             raceNoValueHeaders = __fixtures__['app/modules/search/fixtures/search.factory/raceNoValueHeaders'];
-            yrbsGradePieChartResponse = __fixtures__['app/modules/search/fixtures/search.factory/yrbsGradePieChartResponse'];
-            yrbsRacePieChartResponse = __fixtures__['app/modules/search/fixtures/search.factory/yrbsRacePieChartResponse'];
-            yrbsGenderAndRaceBarChartResponse = __fixtures__['app/modules/search/fixtures/search.factory/yrbsGenderAndRaceBarChartResponse'];
         });
         beforeEach(function() {
             deferred = $q.defer();
-            yrbsChart1Deferred = $q.defer();
-            yrbsChart2Deferred = $q.defer();
-            yrbsChart3Deferred = $q.defer();
+            yrbsChartDeferred = $q.defer();
         });
+
         it('getAllFilters', function () {
             expect(primaryFilter.key).toEqual('mental_health');
+            expect(primaryFilter.sideFilters).toBeDefined();
+            expect(primaryFilter.sideFilters).toEqual(primaryFilter.basicSideFilters);
+            expect(primaryFilter.allFilters).toEqual(filters.yrbsBasicFilters);
         });
 
         it('searchYRBSResults', function () {
-            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
-            primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.data)).toEqual(JSON.stringify(yrbsResponse.data.table));
-            });
-            deferred.resolve(yrbsResponse);
-            $scope.$apply();
+            var result = searchFactory.updateFiltersAndData([primaryFilter], yrbsResponse, {'mental_health': {}}, 'mental_health');
+            expect(JSON.stringify(result.primaryFilter.data)).toEqual(JSON.stringify(yrbsResponse.data.resultData.table));
         });
 
         it('searchYRBSResults with only one row group having no value', function () {
@@ -405,27 +489,19 @@ describe('search factory ', function(){
             raceFilter.groupBy = 'row';
             raceFilter.value = '';
 
-            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
-            primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(JSON.stringify(primaryFilter.headers)).toEqual(JSON.stringify(raceNoValueHeaders));
-            });
-            deferred.resolve(yrbsResponse);
-            $scope.$apply();
+            var result = searchFactory.updateFiltersAndData([primaryFilter], yrbsResponse, {'mental_health': {}}, 'mental_health');
+            expect(JSON.stringify(result.primaryFilter.headers)).toEqual(JSON.stringify(raceNoValueHeaders));
 
             raceFilter.groupBy = 'column';
-            raceFilter.value = 'all-races-ethnicities';
+            raceFilter.value = ['all-races-ethnicities'];
         });
 
         it('searchYRBSResults with only one row and one column group', function () {
             var genderFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'yrbsSex');
             genderFilter.groupBy = 'column';
 
-            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
-            primaryFilter.searchResults(primaryFilter).then(function() {
-                expect(primaryFilter.headers.columnHeaders.length).toEqual(2);
-            });
-            deferred.resolve(yrbsResponse);
-            $scope.$apply();
+            var result = searchFactory.updateFiltersAndData([primaryFilter], yrbsResponse, {'mental_health': {}}, 'mental_health');
+            expect(result.primaryFilter.headers.columnHeaders.length).toEqual(2);
 
             genderFilter.groupBy = false;
         });
@@ -435,7 +511,7 @@ describe('search factory ', function(){
             genderFilter.groupBy = 'column';
 
             var raceFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'yrbsRace');
-            raceFilter.value = 'ai_an';
+            raceFilter.value = ['ai_an'];
 
             var yearFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
             yearFilter.value = ['2015', '2013'];
@@ -445,35 +521,63 @@ describe('search factory ', function(){
                 expect(primaryFilter.headers.columnHeaders[0].key).toEqual('yrbsSex');
             });
             deferred.resolve(yrbsResponse);
-            $scope.$apply();
 
             genderFilter.groupBy = false;
             raceFilter.value = 'all-races-ethnicities';
             raceFilter.value = ['2015'];
         });
 
-        it('searchYRBSResults with only one row and one column group with out all value', function () {
-            var index = 0;
+        it('should give me a chart data for single filter with question', function () {
             spyOn(searchService, 'searchResults').and.callFake(function(){
-                index++;
-                if(index === 1) {
-                    return yrbsChart1Deferred.promise
-                } else if(index === 2) {
-                    return yrbsChart2Deferred.promise
-                } else {
-                    return yrbsChart3Deferred.promise
-                }
+                return yrbsChartDeferred.promise
+            });
+            var deferred1 = $q.defer();
+            spyOn(searchService, 'generateHashCode').and.callFake(function() {
+                return deferred1.promise;
             });
 
+            var yrbsMockData = __fixtures__['app/modules/search/fixtures/search.factory/yrbsChartMockData'];
+            var selectedQuestion = yrbsMockData.selectedQuestion;
+            primaryFilter.value = yrbsMockData.selectedFilters1;
+
             var questionFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'question');
-            questionFilter.onIconClick(questionFilter.autoCompleteOptions[0].title);
-            yrbsChart1Deferred.resolve(yrbsGradePieChartResponse);
-            yrbsChart2Deferred.resolve(yrbsRacePieChartResponse);
-            yrbsChart3Deferred.resolve(yrbsGenderAndRaceBarChartResponse);
+
+            questionFilter.onIconClick(selectedQuestion);
+
+            deferred1.resolve('06c2b4848fbbc7f4e0ed60a399d1de21');
+
+            yrbsChartDeferred.resolve(yrbsMockData.chartData1);
+
             $scope.$apply();
 
         });
 
+
+        it('should give me a chart data for two filters with question', function () {
+            spyOn(searchService, 'searchResults').and.callFake(function(){
+                return yrbsChartDeferred.promise
+            });
+            var deferred1 = $q.defer();
+            spyOn(searchService, 'generateHashCode').and.callFake(function() {
+                return deferred1.promise;
+            });
+
+            var yrbsMockData = __fixtures__['app/modules/search/fixtures/search.factory/yrbsChartMockData'];
+            var selectedQuestion = yrbsMockData.selectedQuestion;
+            primaryFilter.value = yrbsMockData.selectedFilters2;           
+
+            searchFactory.prepareQuestionChart(primaryFilter,selectedQuestion,
+                ['yrbsSex', 'yrbsRace']).then(function (response) {
+                expect(response.chartTypes.length).toEqual(3);
+                expect(response.chartTypes[0].join()).toEqual('yrbsRace');
+                expect(response.chartTypes[1].join('&')).toEqual('yrbsSex&yrbsRace');
+                expect(response.chartTypes[2].join()).toEqual('yrbsSex');
+            });
+
+            deferred1.resolve('06c2b4848fbbc7f4e0ed60a399d1de21');
+
+            yrbsChartDeferred.resolve(yrbsMockData.chartData2);
+        });
     });
     
     describe('test with bridge race data', function () {
@@ -500,7 +604,43 @@ describe('search factory ', function(){
                 expect(JSON.stringify(primaryFilter.chartData)).toEqual(JSON.stringify(response.data.resultData.chartData));
             });
             deferred.resolve(response);
-            $scope.$apply();
         });
-    })
+
+        it('test searchCensusInfo for population counts in side filters', function () {
+            spyOn(searchService, 'searchResults').and.returnValue(deferred.promise);
+            primaryFilter.searchResults(primaryFilter).then(function() {
+                primaryFilter.allFilters.forEach(function (eachFilter) {
+                    eachFilter.autoCompleteOptions.forEach(function (option) {
+                        expect(option.bridge_race).toBeDefined();
+                    });
+                });
+            });
+            deferred.resolve(response);
+        });
+    });
+
+    describe('test with natality data', function () {
+        var response;
+        beforeAll(function() {
+            //get the filters
+            primaryFilter = filters.search[3];
+            filters.selectedPrimaryFilter = primaryFilter;
+            //prepare mock response
+            response = __fixtures__['app/modules/search/fixtures/search.factory/natalityResponse'];
+        });
+
+        beforeEach(function() {
+            deferred = $q.defer();
+        });
+
+        it('getAllFilters', function () {
+            expect(primaryFilter.key).toEqual('natality');
+        });
+
+        it('searchNatality', function () {
+            var result = searchFactory.updateFiltersAndData([primaryFilter], response, {'natality': {}}, 'natality');
+            expect(JSON.stringify(result.primaryFilter.data)).toEqual(JSON.stringify(response.data.resultData.nested.table));
+        });
+    });
+    
 });

@@ -143,6 +143,7 @@ td .inline-bar {
 .padding-left-10 { padding-left: 10px; }
 .padding-left-20 { padding-left: 20px; }
 .padding-left-30 { padding-left: 30px; }
+.padding-right-10 { padding-right: 10px; }
 .margin-top-0 { margin-top: 0; }
 .margin-top-5 { margin-top: 5px; }
 .margin-top-10 { margin-top: 10px; }
@@ -386,6 +387,21 @@ ul li::before {
     height:100%;
     z-index:999999;
     opacity: .8;
+}
+
+.ie-loading {
+    font-size: 48px;
+    position: fixed;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+}
+
+.loading-message {
+    display: inline-block;
+    background-color: #ddd;
+    border-radius: 13px;
+    padding: 10px;
 }
 
 /*Accordion style*/
@@ -734,6 +750,14 @@ body {
     cursor: pointer;
 }
 
+.leaflet-container {
+    background-color: #fff;
+}
+
+.leaflet-control-container .legend {
+    width: 130px;
+}
+
 /*header*/
 .qh-header {
     background-color: #3b699b;
@@ -808,6 +832,11 @@ body {
 }
 .marker-label {
     font-weight: bold;
+}
+
+.marker-years {
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 /*dashboard*/
@@ -1018,6 +1047,16 @@ body {
     margin-bottom: 0;
 }
 
+.owh-side-menu__utility-option {
+    padding-left: 10px;
+    padding-right: 5px;
+    min-height: 30px;
+}
+
+.owh-side-menu__options-list {
+    padding-bottom: 10px;
+}
+
 /* To increase visualization(charts) axis label size*/
 .nv-axislabel {
     font-size: 13px !important;
@@ -1057,6 +1096,18 @@ body {
 .owh-table__left-col {
     margin-top: 6%;
     font-weight: bold;
+}
+
+#headers-table {
+    margin-bottom: 0;
+}
+
+#clusterize-table {
+    max-height: 900px;
+}
+
+#clusterize-table table {
+    margin-top: 0;
 }
 
 #death-rate-disclaimer {
@@ -1113,4 +1164,11 @@ body {
 .owh-question__question.ng-hide .owh-question__content {
     max-height: 0;
     overflow: hidden;
+}
+
+.forward-back {
+    float: right;
+    width: 110px;
+    margin-right: 10px;
+
 }

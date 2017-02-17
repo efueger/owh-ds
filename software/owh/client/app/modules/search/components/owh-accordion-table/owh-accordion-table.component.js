@@ -8,7 +8,10 @@
             controllerAs: 'oatc',
             bindings: {
                 data: '<',
-                headers: '<'
+                headers: '<',
+                showCi: '<',
+                showUf: '<',
+                showCharts:'<'
             }
         });
     OWHAccordionTableController.$inject = ['$scope', 'utilService', '$rootScope'];

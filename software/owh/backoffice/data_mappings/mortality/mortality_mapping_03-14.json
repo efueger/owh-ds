@@ -132,7 +132,7 @@
       "1": "Hospital, clinic or Medical Center - Inpatient",
       "2": "Hospital, Clinic or Medical Center - Outpatient or admitted to Emergency Room",
       "3": "Hospital, Clinic or Medical Center - Dead on Arrival",
-      "4": "Decedent's home",
+      "4": "Decedent’s home",
       "5": "Hospice facility",
       "6": "Nursing home/long term care",
       "7": "Other",
@@ -557,7 +557,7 @@
     "field": "Hispanic Origin",
     "mappings": {
       "220":"Central and South American",
-      "100-199":"Non–Hispanic",
+      "100-199":"Non-Hispanic",
       "200-209":"Spaniard",
       "210-219":"Mexican",
       "260-269":"Puerto Rican",

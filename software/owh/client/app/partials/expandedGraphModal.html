@@ -12,6 +12,15 @@
             <div ng-bind="eg.graphSubTitle"></div>
         </div>
         <div class="custom-modal-body usa-grid">
+
+            <ul class="custom-nav custom-nav-tabs" ng-show="eg.chartTypes.length>1">
+                <li ng-repeat="chartType in eg.chartTypes"
+                    ng-class="{'active':eg.activeTab? eg.activeTab == eg.getChartName(chartType): $index==0}">
+                    <a href="#" ng-click="eg.getYrbsChartData(chartType);"
+                       ng-bind="eg.getChartName(chartType);"></a>
+                </li>
+            </ul>
+
             <div class="usa-grid">
                 <div class="usa-width-one-whole" ng-repeat="eachChartData in eg.chartData">
                     <div class="text-center margin-top-5" ng-if="eg.chartData.length > 1">

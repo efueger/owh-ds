@@ -7,6 +7,7 @@ module.exports = function(config){
       'vendor/uswds-0.9.1/js/uswds.min.js',
       'bower_components/spin.js/spin.js',
       'bower_components/jquery/dist/jquery.js',
+      'bower_components/clusterize/clusterize.js',
       'bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-route/angular-route.js',

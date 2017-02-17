@@ -25,6 +25,9 @@ var MortalitySearchPage = function() {
     msp.ethnicitySpaniardOption = element(by.id('deaths_hispanicOrigin_Spaniard')).element(by.xpath('..'));
     msp.showMoreYears = element(by.cssContainingText('a', '+ 12 more'));
     msp.expandEthnicity = element(by.cssContainingText('a', 'Ethnicity'));
+    msp.ethnicityUnknownOption = element(by.id('deaths_hispanicOrigin_Unknown')).element(by.xpath('..'));
+    msp.ethnicityNonHispanicOption = element(by.id('deaths_hispanicOrigin_Non-Hispanic')).element(by.xpath('..'));
+    msp.bookmarkButton = element(by.cssContainingText('a', 'Bookmark this Search'));
 
     msp.getSelectedFilterType = function() {
        return msp.interestedInSelectBox.$('option:checked').getText();
@@ -61,11 +64,11 @@ var MortalitySearchPage = function() {
 
     };
     msp.getTableRowData = function(rowNumber) {
-        return msp.owhTable.element(by.tagName('table')).element(by.tagName('tbody')).all(by.tagName('tr')).get(rowNumber).all(by.tagName('td')).getText();
+        return msp.owhTable.element(by.id('clusterize-table')).element(by.tagName('tbody')).all(by.tagName('tr')).get(rowNumber).all(by.tagName('td')).getText();
     };
 
     msp.getTableRowDataCells = function(rowNumber) {
-        return msp.owhTable.element(by.tagName('table')).element(by.tagName('tbody')).all(by.tagName('tr')).get(rowNumber).all(by.tagName('td'));
+        return msp.owhTable.element(by.id('clusterize-table')).element(by.tagName('tbody')).all(by.tagName('tr')).get(rowNumber).all(by.tagName('td'));
     };
     //FilterType ex: Race, Sex, Autopsy...
     //viewType ex: Column, Row, Off

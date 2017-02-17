@@ -139,14 +139,14 @@
     }
   },
   {
-    "column":"hispanic_origin",
+    "column":"ethnicity_group",
     "type":"map",
     "start": 17,
     "stop": 17,
     "field": "Hispanic origin",
     "mappings": {
-      "1":"Non Hispanic",
-      "2":"Hispanic or Latino"
+      "1":"Non-Hispanic",
+      "2":"Hispanic"
     }
   },
   {

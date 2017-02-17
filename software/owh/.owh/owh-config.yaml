@@ -7,19 +7,29 @@ default:
     port : 6311
     user : ''
     password : ''
+  yrbs:
+    queryUrl: ''
+    questionsUrl: ''
   logging:
     level: 'debug'
+  fb:
+    appID :
+    appURL:
+
 # Dev configuration
 dev:
-    
-# Test environment configuration    
+
+# Test environment configuration
 test:
- 
-# Production configuration    
-production: 
+
+# Production configuration
+production:
   elastic_search:
-    url: 
+    url:
   rserve:
     host:
       user:
       password:
+  fb:
+    appID :
+    appURL:

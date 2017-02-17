@@ -7,10 +7,11 @@
             controller: OWHSearchController,
             controllerAs: 'ots',
             bindings: {
-                filters : '=',
+                filters : '<',
                 showFilters : '=',
                 searchResults : '&',
                 onViewFilter: '&',
+                onPrimaryFilter: '&',
                 tableView: '@'
             }
         });
@@ -21,11 +22,15 @@
         var ots = this;
         ots.groupByFiltersUpdated = groupByFiltersUpdated;
         ots.phaseTwoImpl = phaseTwoImpl;
-        angular.forEach(ots.showFilters, function(filter) {
-            if(filter.key === ots.tableView) {
-                ots.selectedShowFilter = filter;
-            }
-        });
+        ots.goForward = goForward;
+        ots.goBackward = goBackward;
+        ots.$onChanges = function() {
+            angular.forEach(ots.showFilters, function(filter) {
+                if(filter.key === ots.tableView) {
+                    ots.selectedShowFilter = filter;
+                }
+            });
+        }
 
         function groupByFiltersUpdated(added) {
             var selectedFilterKeys = utilService.getValuesByKey(ots.filters.selectedPrimaryFilter.value, 'key');
@@ -50,6 +55,15 @@
                 searchFactory.showPhaseTwoModal('label.show.impl.next');
             }
         }
+
+        function goForward() {
+            window.history.forward();
+        }
+
+        function goBackward(){
+            window.history.back();
+        }
+
     }
 
 }());

@@ -134,7 +134,7 @@
       "3": "Hospital, Clinic or Medical Center - Dead on Arrival",
       "4": "Hospital, Clinic or Medical Center - Patient status unknown",
       "5": "Nursing home/long term care",
-      "6": "Decedent's home",
+      "6": "Decedent’s home",
       "7": "Other",
       "9": "Place of death unknown"
     }
@@ -542,7 +542,7 @@
     "stop": 81,
     "field": "Hispanic Origin",
     "mappings": {
-      "00": "Non–Hispanic",
+      "00": "Non-Hispanic",
       "01": "Mexican",
       "02": "Puerto Rican",
       "03": "Cuban",

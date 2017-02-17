@@ -11,6 +11,7 @@
       "type": "label.filter.group.demographics",
       "groupByDefault": "column",
       "showChart": true,
+      "filterType":"checkbox",
       "autoCompleteOptions": [
         {
           "key": "Female",

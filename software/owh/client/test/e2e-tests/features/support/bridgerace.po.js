@@ -9,6 +9,7 @@ var BridgeRaceSearchPage = function() {
     brs.sexOptionsLink = element(by.partialLinkText('Sex'));
     brs.expandGraphLink = element(by.css('a[name=expand_graph]'));
     brs.collapseGraphLink = element(by.name('close'));
+    brs.stateOptionsLink = element(by.partialLinkText('State'));
 
     brs.getSelectedFilterOptions = function() {
         return element(by.css('.ui-select-match')).all(by.css('.ui-select-match-item')).getText();
@@ -75,6 +76,10 @@ var BridgeRaceSearchPage = function() {
 
     brs.collapseGraph = function () {
         return brs.collapseGraphLink.click();
+    };
+
+    brs.selectFilterSwitch = function(filter, switchType) {
+        return element(by.cssContainingText('a', filter)).element(By.xpath('following-sibling::owh-toggle-switch')).element(by.cssContainingText('a', switchType));
     };
 };
 

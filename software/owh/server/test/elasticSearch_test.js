@@ -24,6 +24,20 @@ describe("Elastic Search", function () {
             expect(resp.aggregations.group_year.buckets[4].doc_count).to.be(2468435);
             expect(resp.aggregations.group_year.buckets[14].doc_count).to.be(2403351);
         })
-    })
+    });
 
-})
+    it("Check aggregate natality data", function (){
+        var query = {"size":0,"aggregations":{"group_table_mother_race":{"terms":{"field":"mother_race","size":100000},"aggregations":{"group_table_sex":{"terms":{"field":"sex","size":100000}}}},"group_maps_0_states":{"terms":{"field":"state","size":100000},"aggregations":{"group_maps_0_sex":{"terms":{"field":"sex","size":100000}}}}},"query":{"filtered":{"query":{"bool":{"must":[]}},"filter":{"bool":{"must":[{"bool":{"should":[{"term":{"dob_yy":"2014"}}]}}]}}}}};
+        new elasticSearch().aggregateNatalityData(query).then(function (resp) {
+            console.log(JSON.stringify(resp));
+            var  data = resp.data.nested.table.mother_race;
+            expect(data[0].name).equal('White');
+            expect(data[0].natality).greaterThan(0);
+            var  nestedData = data[0].sex;
+            expect(nestedData[0].name).equal('Male');
+            expect(nestedData[0].natality).greaterThan(0);
+            expect(nestedData[1].name).equal('Female');
+            expect(nestedData[1].natality).greaterThan(0);
+        })
+    });
+});

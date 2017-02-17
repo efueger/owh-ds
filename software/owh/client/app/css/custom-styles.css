@@ -83,13 +83,13 @@ button {
 text-align: center;
 
 	}
-	
+
 .row-general-health.data-boxes-container .section {
 	float: none;
 	display: inline-block;
     vertical-align: top;
-	}	
-	
+	}
+
 @media screen and (min-width: 1170px) {
 .usa-width-one-whole.qh-header .usa-width-one-half.qh-box {
 	width: 40%;
@@ -123,7 +123,7 @@ text-align: center;
 .qh-header:before {
 	animation: 7s .5s zoom backwards ease-in-out;
 	transform:scale(1.15);
-	
+
 }
  @-webkit-keyframes zoom {
 from {
@@ -685,6 +685,24 @@ table th, table td {
 table thead {
 	border: 1px solid #ddd;
 }
+
+.owh-data-table th {
+	color: #696969;
+}
+
+.owh-data-table th, #clusterize-table table td{
+	line-height: 17px;
+	min-width: 187px;
+}
+
+.owh-data-table th, td {
+	border-right: 1px solid #dddddd !important;
+}
+
+.owh-data-table th:first-child, td:first-child {
+	border-left: 1px solid #dddddd;
+}
+
 .footer {
 	color: #777;
 	border-top: 1px solid #ddd;
@@ -713,6 +731,10 @@ table thead {
 }
 .custom-modal-body {
 	padding: 15px !important;
+}
+
+.thin-border-top {
+	border-top: 1px solid #e2e3e3 !important;
 }
 .action-button {
 	background-color: #833eb0;
@@ -785,3 +807,157 @@ label.common-label {
 	.usa-width-one-half.footer-sign-up {margin-bottom: 20px;}
 	.home-child-header {padding: 5%;}
 }
+
+.nvd3-dashed-line {
+	stroke-dasharray: 5,5;
+}
+
+/*Media queries*/
+
+/*css for iPad starts*/
+@media only screen
+and (min-device-width: 768px)
+and (max-device-width: 1024px)
+and (-webkit-min-device-pixel-ratio: 1) {
+	.graph-box {
+		width: 45% !important;
+        margin-right: 0px !important;
+        margin-left: 29px;
+	}
+	.nv-axislabel, .graph-title {
+		font-size: 12px;
+	}
+}
+/*css for iPad ends*/
+
+/* css for bookmark button */
+.bookmark-div {
+	margin-top: 11px !important;
+}
+.bookmark-button {
+
+	border-radius: 4px;
+	color: #222 !important;
+	box-shadow: 0 0 0 1px #ccc !important;
+	font-weight: normal;
+	padding: 10px;
+	cursor: pointer;
+
+}
+/* End of css for bookmark button */
+
+/* remove font-awesome icon in yrbs select questions popup*/
+.remove-question {
+	cursor: pointer;
+	color: #9da0a4;
+}
+.remove-question:hover{
+	color:red;
+}
+
+.filter-search-box {
+	height:32px;
+	padding: 0rem 0.7em !important;
+}
+
+.clear-text-icon {
+	position: absolute;
+	margin-top: -28px;
+	right: 25px;
+	background-color: #833eb0;
+	border-color: #833eb0;
+	color: white;
+	padding-bottom: 1px;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.disabled-filter {
+	pointer-events: none;
+}
+
+.cursor-not-allowed {
+	cursor: not-allowed;
+	opacity: 0.4;
+}
+
+/* End remove font-awesome icon in yrbs select questions popup*/
+
+/*Custom tab css*/
+.custom-nav-tabs {
+	border-bottom: 1px solid #ddd;
+}
+.custom-nav {
+	margin-top: 0;
+	padding-left: 0;
+	margin-bottom: 0;
+	list-style: none;
+}
+ul.custom-nav-tabs {
+	margin-top: 0 !important;
+	margin-bottom: 10px;
+}
+
+ul.custom-nav-tabs {
+	display: block;
+	list-style-type: disc;
+	-webkit-margin-before: 1em;
+	-webkit-margin-after: 1em;
+	-webkit-margin-start: 0px;
+	-webkit-margin-end: 0px;
+	-webkit-padding-start: 25px;
+}
+
+.custom-nav:after, .custom-nav:before,
+.custom-navbar:after, .custom-navbar:before {
+	display: table;
+	content: " ";
+}
+
+.custom-nav:after, .custom-navbar:after {
+	clear: both;
+}
+.custom-nav:after, .custom-nav:before,
+.custom-navbar:after,
+.custom-navbar:before{
+	display: table;
+	content: " ";
+}
+
+.custom-nav-tabs > li {
+	float: left;
+	margin-bottom: -9px;
+}
+
+.custom-nav > li {
+	position: relative;
+	display: block;
+}
+
+.custom-nav-tabs>li.active>a,
+.custom-nav-tabs>li.active>a:focus,
+.custom-nav-tabs>li.active>a:hover {
+	color: #555;
+	cursor: default;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-bottom-color: transparent;
+}
+
+.custom-nav-tabs>li>a {
+	margin-right: 2px;
+	line-height: 1.42857143;
+	border: 1px solid transparent;
+	border-radius: 4px 4px 0 0;
+}
+
+.custom-nav>li>a {
+	position: relative;
+	display: block;
+	padding: 10px 15px;
+}
+.yrbs_search_links {
+	margin-left: 10px;
+}
+
+/*Custom tab css*/

@@ -35,7 +35,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^user sees side filter$/, function () {
-        browser.sleep(30000);
+        browser.sleep(300);
         expect(mortalityPage.sideMenu.isDisplayed()).to.eventually.equal(true);
     });
 
@@ -94,6 +94,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the percentages get re\-calculated based on all the information displayed in a given row$/, function () {
+        browser.sleep(300);
         browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
         mortalityPage.getTableRowData(0).then(function(value){
             expect(value[2]).to.equal('985 (14.3%)');
@@ -210,6 +211,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^I should be redirected to YRBS page$/, function () {
+        browser.sleep(60000); // yrbs page takes around a min to load
         var text = mortalityPage.sideMenu.getText();
         expect(text).to.eventually.contains("Question");
         //expect(text).to.eventually.contains("Select Questions");
@@ -248,7 +250,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the age adjusted rates are shown for each row$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[1]).to.equal('Rate\n562.5\nDeaths\n98,769\nPopulation\n29,970,935');
+            expect(value[1]).to.equal('Rate\n557.9\nDeaths\n98,769\nPopulation\n32,250,198');
         });
     });
 
@@ -298,7 +300,7 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the age filter should be hidden$/, function () {
-        expect(mortalityPage.selectSideFilter('Age Groups', 'Row').isDisplayed()).to.eventually.equal(false);
+        expect(mortalityPage.selectSideFilter('Age Groups', 'Row').isPresent()).to.eventually.equal(false);
     });
 
     this.Then(/^years should be in descending order$/, function () {
@@ -451,5 +453,110 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^Rates, Deaths and Population shouldn't be overlap$/, function () {
         expect(element(by.id('crudeRateDiv')).getAttribute('class')).to.eventually.include('usa-width-one-half');
     });
+
+    this.Then(/^I should see total for Non\-Hispanic$/, function () {
+        mortalityPage.getSideFilterTotals().then(function(elements) {
+            expect(elements[34].getInnerHtml()).to.eventually.equal('34,926,053');
+        });
+    });
+
+    this.Then(/^Unknown is disabled\- grayed out$/, function () {
+        expect(mortalityPage.ethnicityUnknownOption.element(by.tagName('input')).isEnabled()).to.eventually.equal(false);
+    });
+
+    this.When(/^the user selects Unknown$/, function () {
+        mortalityPage.ethnicityUnknownOption.click();
+    });
+
+    this.Then(/^the rest of the options are disabled\- grayed out$/, function () {
+        expect(mortalityPage.ethnicityHispanicOption.element(by.tagName('input')).isEnabled()).to.eventually.equal(false);
+        expect(mortalityPage.ethnicityNonHispanicOption.element(by.tagName('input')).isEnabled()).to.eventually.equal(false);
+    });
+
+    this.Then(/^zero cells should not have percentage$/, function () {
+        mortalityPage.getTableRowDataCells(1).then(function (elements) {
+            expect(elements[12].getText()).to.eventually.equal('0');
+        });
+    });
+
+    this.Then(/^table should not include age groups$/, function () {
+        mortalityPage.getTableRowDataCells(0).then(function (elements) {
+            expect(elements.length).to.equal(4);
+        });
+    });
+
+    this.When(/^I select the "([^"]*)" link in application$/, function (bookmarkbtn) {
+        mortalityPage.bookmarkButton.click();
+    });
+
+    this.Then(/^browser's bookmarking window should be displayed to save the link to Browser$/, function () {
+        //verify 'New Bookmark' text appears on bookmark window
+        var alertDialog = browser.switchTo().alert();
+        expect(alertDialog.getText()).to.eventually.include('HIG Search');
+    });
+
+    this.When(/^I hovers on the bookmark link$/, function () {
+        browser.actions().mouseMove(mortalityPage.bookmarkButton).perform();
+    });
+
+    this.Then(/^the link gets a background box so that I feel it like a button\/action$/, function () {
+        //Verify bookmarkbutton css
+        expect(mortalityPage.bookmarkButton.getAttribute('class')).to.eventually.include('bookmark-button');
+    });
+
+    this.When(/^I selects a saved bookmark$/, function () {
+        //Need to find out a way to select saved bookmark
+    });
+
+    this.Then(/^all the search parameters should be autopopulated and search results should be displayed$/, function () {
+        mortalityPage.isVisualizationDisplayed().then(function(value) {
+            expect(value).to.equal(true);
+        });
+        var labelArray = mortalityPage.getAxisLabelsForMinimizedVisualization();
+        expect(labelArray[0].getText()).to.eventually.equal('Race');
+        expect(labelArray[1].getText()).to.eventually.equal('Deaths');
+        //Verify autocompleted filters and table data also.
+
+    });
+
+    this.Then(/^table should display Hispanic groups only$/, function () {
+        mortalityPage.getTableRowDataCells(0).then(function (elements) {
+            expect(elements[0].getText()).to.eventually.equal('Hispanic');
+        });
+        mortalityPage.getTableRowDataCells(5).then(function (elements) {
+            expect(elements[0].getText()).to.eventually.equal('Non-Hispanic');
+        });
+    });
+
+    this.When(/^I choose the option Crude Death Rates$/, function () {
+        browser.sleep(3000);
+        mortalityPage.deathRatesOption.click();
+    });
+
+    this.Then(/^I see Age Groups, Autopsy, Place of Death, Weekday, Month, Underlying Cause of Death, Multiple Causes of Death disabled$/, function () {
+        var allElements = element.all(by.css('.cursor-not-allowed')).all(By.css('.filter-display-name'));
+        allElements.getText().then(function (filters) {
+            filters.forEach(function (filter) {
+                expect(['Age Groups','Autopsy','Place of Death', 'Weekday', 'Month',
+                    'Underlying Cause of Death', 'Multiple Causes of Death']).to.include(filter);
+            });
+        });
+    });
+
+    this.When(/^I choose the option Age Adjusted Death Rates$/, function () {
+        mortalityPage.ageRatesOption.click();
+    });
+
+    this.Then(/^I see Ethnicity, Age Groups, Autopsy, Place of Death, Weekday, Month, Underlying Cause of Death, Multiple Causes of Death disabled$/, function () {
+        var allElements = element.all(by.css('.cursor-not-allowed')).all(By.css('.filter-display-name'));
+        allElements.getText().then(function (filters) {
+            filters.forEach(function (filter) {
+                expect(['Ethnicity', 'Age Groups','Autopsy','Place of Death', 'Weekday', 'Month',
+                    'Underlying Cause of Death', 'Multiple Causes of Death']).to.include(filter);
+            })
+        });
+    });
+
+
 };
 module.exports = mortalityStepDefinitionsWrapper;

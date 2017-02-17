@@ -11,7 +11,8 @@
                 filters : "=",
                 onFilter: '&',
                 sort: '<',
-                showFilters: '<'
+                showFilters: '<',
+                utilities: '<'
             }
         });
 
@@ -28,6 +29,28 @@
         sfc.isVisible = isVisible;
         sfc.isSubOptionSelected = isSubOptionSelected;
         sfc.filterGroup = filterGroup;
+        sfc.isOptionDisabled = isOptionDisabled;
+        sfc.isOptionSelected = isOptionSelected;
+        sfc.getShowHideOptionCount = getShowHideOptionCount;
+        sfc.runOnFilterChange = sfc.filters.selectedPrimaryFilter.runOnFilterChange;
+
+        function isOptionDisabled(group, option) {
+            if(group.key === 'hispanicOrigin') {
+                //check if unknown is selected
+                if(group.value && group.value.indexOf('Unknown') >= 0) {
+                    //if unknown is selected then disable all other hispanic options
+                    if(option.key !== 'Unknown') {
+                        return true;
+                    }
+                } else {
+                    //else, if other option is selected disable unknown
+                    if(group.value && group.value.length > 0 && option.key === 'Unknown') {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         function filterGroup(option, group) {
             //check if group option is added
@@ -41,7 +64,11 @@
                 //else, clear group options
                 clearGroupOptions(option, group);
             }
-            sfc.onFilter();
+
+            //  Run the filter call back only if runOnFilterChange is true
+            if(sfc.runOnFilterChange) {
+                sfc.onFilter();
+            }
         }
 
         function clearGroupOptions(option, group) {
@@ -53,14 +80,18 @@
         }
 
         function isSubOptionSelected(group, option) {
-            for(var i = 0; i < group.value.length; i++) {
-                for(var j = 0; j < option.options.length; j++) {
-                    if(group.value[i] === option.options[j].key) {
-                        return true;
+            if(!group.value){
+                    return false;
+            }else {
+                   for(var i = 0; i < group.value.length; i++) {
+                        for(var j = 0; j < option.options.length; j++) {
+                            if(group.value[i] === option.options[j].key) {
+                                return true;
+                            }
+                        }
                     }
-                }
             }
-            return false;
+            
         }
 
         function getOptionCountPercentage(option) {
@@ -90,7 +121,7 @@
                     clearSelection(eachFilter)
                 }
             });
-            var showTree = selectedFilter.key ==='ucd-chapter-10' || selectedFilter.key === 'question';
+            var showTree = selectedFilter.key ==='ucd-filters' || selectedFilter.key === 'question';
             if(!showTree) {
                 searchFactory.showPhaseTwoModal('label.mcd.impl.next');
             }else {
@@ -103,7 +134,7 @@
                         mc.codeKey = selectedFilter.key;
                         mc.entityName = selectedFilter.key === 'question' ? 'Question' : 'Disease';
                         mc.modelHeader = selectedFilter.key === 'question' ? 'label.select.question' : 'label.cause.death';
-                        mc.optionValues = selectedFilter.selectedValues;
+                        mc.optionValues = selectedFilter.selectedNodes ? selectedFilter.selectedNodes : selectedFilter.selectedValues;
                         mc.close = close;
                     }
                 }).then(function (modal) {
@@ -113,17 +144,32 @@
                     modal.element.show();
                     modal.close.then(function (result) {
                         //remove all elements from array
-                        if(!selectedFilter.selectedValues) {
+                        if(!selectedFilter.selectedValues || !selectedFilter.selectedNodes) {
+                            //selected nodes and their child nodes, which will be sent to backend for query
                             selectedFilter.selectedValues = [];
+                            //selected nodes
+                            selectedFilter.selectedNodes = [];
                         }
                         selectedFilter.selectedValues.length = 0;
+                        selectedFilter.selectedNodes.length = 0;
                         //To reflect the selected causes
                         angular.forEach(modal.controller.optionValues, function (eachOption, index) {
-                            selectedFilter.selectedValues.push(eachOption);
+                            //get child nodes, if any and add to selected values
+                            if (eachOption.childNodes && eachOption.childNodes.length > 0) {
+                                angular.forEach(eachOption.childNodes, function (childNode, index) {
+                                    selectedFilter.selectedValues.push(childNode);
+                                });
+                            } else {
+                                selectedFilter.selectedValues.push(eachOption);
+                            }
+                            selectedFilter.selectedNodes.push(eachOption);
                         });
                         selectedFilter.value = utilService.getValuesByKey(selectedFilter.selectedValues, 'id');
                         modal.element.hide();
-                        sfc.onFilter();
+                        //  Run the filter call back only if runOnFilterChange is true
+                        if(sfc.runOnFilterChange) {
+                            sfc.onFilter();
+                        }
                     });
                 });
             }
@@ -134,21 +180,36 @@
                 filter.groupBy = false;
             }
             //remove all elements from array
+            filter.selectedNodes.length = 0;
             filter.selectedValues.length = 0;
             filter.value.length = 0;
-            sfc.onFilter();
+            //  Run the filter call back only if runOnFilterChange is true
+            if(sfc.runOnFilterChange) {
+                sfc.onFilter();
+            }
         }
 
         //remove all elements from array for all select
         function updateGroupValue(group) {
-            if ( group.allChecked === false ) {
-                angular.forEach(group.autoCompleteOptions, function(option){
-                    group.value.push(option.key)
-                });
-            } else {
-                group.value.length = 0;
+            if(group.filterType === 'checkbox'){
+                if ( group.allChecked === false ) {
+                    // When All is unchecked, select all other values
+                    angular.forEach(group.autoCompleteOptions, function(option){
+                        group.value.push(option.key)
+                    });
+                } else {
+                    // When All is selected, unselect individual values
+                    group.value.length = 0;
+                }
+            }else {
+                if (group.allChecked === true) {
+                    group.value = '';
+                }
             }
-            sfc.onFilter();
+            //  Run the filter call back only if runOnFilterChange is true
+            if(sfc.runOnFilterChange) {
+                sfc.onFilter();
+            }
         }
 
         //called to determine order of side filters, looks at sort array passed in
@@ -161,6 +222,33 @@
                 return true;
             }
             return sfc.showFilters.indexOf(filter.filters.key) >= 0;
+        }
+
+        /**
+         * Check if option is vailable in selected option's list
+         * @param option
+         * @param selectedOptions
+         * @returns {boolean}
+         */
+        function isOptionSelected(option, selectedOptions) {
+            return selectedOptions?selectedOptions.indexOf(option.key) != -1:false;
+        }
+
+        /**
+         * Calculate the count of number of option to be shown or hidden in 'show more/less link' in side filters
+         * If displaySelectedFirst flag is not set, display only first 3 options
+         * else display selected options + first 3 not selected options
+         */
+        function getShowHideOptionCount(optionGroup, options) {
+            var cnt =  options.length - 3;
+            if(optionGroup.displaySelectedFirst){
+                if(optionGroup.filterType === 'checkbox'){
+                    cnt -= optionGroup.value.length;
+                }else if (optionGroup.value){ // if radio and non- all option is selected
+                    cnt -= 1;
+                }
+            }
+            return cnt?cnt:0;
         }
     }
 }());

@@ -1,0 +1,103 @@
+{
+  "natality": {
+    "include_in_all": false,
+    "_source": {
+      "enabled": false
+    },
+    "properties": {
+      "current_year": {
+        "type": "string", "index": "no"
+      },
+      "birth_place": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "birth_plurality": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "birth_weight": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "birth_weight_r4": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "birth_weight_r12": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "anemia": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "cardiac_disease": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "hydramnios_oligohydramnios": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "incompetent_cervix": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "lung_disease": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "diabetes": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "chronic_hypertension": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "delivery_method": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "dob_mm": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "dob_wk": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "dob_yy": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "eclampsia": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "hispanic_origin": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "live_birth": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "marital_status": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "medical_attendant": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "mother_age": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "mother_age_r9": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "mother_age_r14": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "mother_education": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "mother_race": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "pregnancy_hypertension": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "prenatal_care": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "sex": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "tobacco_use": {
+        "type": "string", "index": "not_analyzed"
+      }
+    }
+  }
+}

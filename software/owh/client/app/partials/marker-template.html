@@ -1,19 +1,31 @@
 <div class="usa-grid-full" style="width: 250px">
     <div class="usa-width-one-whole">
-        <div class="usa-width-two-thirds" style="display: table">
-            <div class="usa-width-one-whole">
-                <div class="usa-width-two-thirds marker-label">Year(s)</div>
-                <div class="usa-width-one-third">{{properties.years().join();}}</div>
+
+        <div class="usa-width-one-whole">
+            <div class="usa-width-two-thirds marker-label">Year(s)</div>
+            <div class="usa-width-one-third marker-years">{{properties.years.join();}}</div>
+        </div>
+        <div class="usa-width-one-whole" ng-repeat="eachCat in properties.sex">
+            <div class="usa-width-two-thirds marker-label" ng-bind="eachCat.name | GenderTitle"></div>
+            <div ng-if="tableView === 'number_of_deaths'" class="usa-width-one-third">
+                <span ng-if="eachCat.deaths !== 'suppressed'" ng-bind="eachCat.deaths | number"></span>
+                <span ng-if="eachCat.deaths === 'suppressed'">Suppressed</span>
             </div>
-            <div class="usa-width-one-whole" ng-repeat="eachCat in properties.sex">
-                <div class="usa-width-two-thirds marker-label" ng-bind="eachCat.name | GenderTitle"></div>
-                <div ng-if="eachCat.deaths !== 'suppressed'" class="usa-width-one-third" ng-bind="eachCat.deaths | number"></div>
-                <div ng-if="eachCat.deaths === 'suppressed'" class="usa-width-one-third">Suppressed</div>
+            <div ng-if="tableView === 'bridge_race'" class="usa-width-one-third">
+                <span ng-bind="eachCat.bridge_race | number"></span>
             </div>
-            <div class="usa-width-one-whole">
-                <div class="usa-width-two-thirds marker-label">Total Deaths</div>
-                <div ng-if="properties.totalCount !== 'suppressed'" class="usa-width-one-third">{{properties.totalCount | number}}</div>
-                <div ng-if="properties.totalCount === 'suppressed'" class="usa-width-one-third">Suppressed</div>
+        </div>
+        <div class="usa-width-one-whole">
+            <div class="usa-width-two-thirds marker-label">
+                <span ng-if="tableView === 'number_of_deaths'">Total Deaths</span>
+                <span ng-if="tableView === 'bridge_race'">Total</span>
+            </div>
+            <div ng-if="tableView === 'number_of_deaths'" class="usa-width-one-third">
+                <span ng-if="properties.totalCount !== 'suppressed'">{{properties.totalCount | number}}</span>
+                <span ng-if="properties.totalCount === 'suppressed'">Suppressed</span>
+            </div>
+            <div ng-if="tableView === 'bridge_race'" class="usa-width-one-third">
+                <span>{{properties.bridge_race | number}}</span>
             </div>
         </div>
     </div>

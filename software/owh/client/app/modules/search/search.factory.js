@@ -6,9 +6,9 @@
         .module('owh.search')
         .service('searchFactory', searchFactory);
 
-    searchFactory.$inject = ["utilService", "SearchService", "$q", "$translate", "chartUtilService", '$rootScope', '$timeout', 'ModalService', '$state', 'filterUtils'];
+    searchFactory.$inject = ["utilService", "SearchService", "$q", "$translate", "chartUtilService", '$rootScope', '$timeout', 'ModalService', '$state', 'filterUtils', 'mapService'];
 
-    function searchFactory( utilService, SearchService, $q, $translate, chartUtilService, $rootScope, $timeout, ModalService, $state, filterUtils){
+    function searchFactory( utilService, SearchService, $q, $translate, chartUtilService, $rootScope, $timeout, ModalService, $state, filterUtils, mapService){
         var service = {
             getAllFilters : getAllFilters,
             queryMortalityAPI: queryMortalityAPI,
@@ -20,9 +20,141 @@
             generateHashCode: generateHashCode,
             buildAPIQuery: buildAPIQuery,
             sortAutoCompleteOptions: sortAutoCompleteOptions,
-            groupAutoCompleteOptions: groupAutoCompleteOptions
+            groupAutoCompleteOptions: groupAutoCompleteOptions,
+            removeDisabledFilters: removeDisabledFilters,
+            getQueryResults: getQueryResults,
+            prepareChartData: prepareChartData,
+            searchYRBSResults: searchYRBSResults,
+            buildQueryForYRBS: buildQueryForYRBS,
+            prepareMortalityResults: prepareMortalityResults,
+            prepareQuestionChart: prepareQuestionChart,
+            populateSideFilterTotals: populateSideFilterTotals,
+            updateFiltersAndData: updateFiltersAndData,
+            getMixedTable: getMixedTable
         };
         return service;
+
+        /**
+         * Using search results response update filters, table headers and data for search page
+         * @param response
+         */
+        function updateFiltersAndData(primaryFilters, response, groupOptions, mapOptions) {
+            //sets primary filter
+            var primaryFilter = utilService.findByKeyAndValue(primaryFilters, 'key', response.data.queryJSON.key);
+
+            //sets tableView
+            var tableView = response.data.queryJSON.tableView;
+
+            //populate side filters based on cached query filters
+            if (response.data.queryJSON) {
+                angular.forEach(response.data.queryJSON.sideFilters, function (filter, index) {
+                    primaryFilter.sideFilters[index].filters.value = filter.filters.value;
+                    primaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
+                });
+            }
+            updateFilterValues(primaryFilter);
+            //update table headers based on cached query
+            primaryFilter.headers = buildAPIQuery(primaryFilter).headers;
+            //make sure side filters are in proper order
+            angular.forEach(primaryFilter.sideFilters, function (filter) {
+                groupAutoCompleteOptions(filter.filters, groupOptions[tableView]);
+            });
+            var tableData = {};
+            if (primaryFilter.key === 'deaths') {
+                primaryFilter.data = response.data.resultData.nested.table;
+                primaryFilter.searchCount = response.pagination.total;
+                tableData = getMixedTable(primaryFilter, groupOptions, tableView);
+                populateSideFilterTotals(primaryFilter, response.data);
+                prepareMortalityResults(primaryFilter, response.data);
+                primaryFilter.chartData = prepareChartData(primaryFilter.headers, response.data.resultData.nested, primaryFilter);
+                mapService.updateStatesDeaths(primaryFilter, response.data.resultData.nested.maps, primaryFilter.searchCount, mapOptions);
+            }
+            if (primaryFilter.key === 'mental_health') {
+                primaryFilter.data = response.data.resultData.table;
+                tableData = getMixedTable(primaryFilter, groupOptions, tableView);
+                primaryFilter.headers = buildQueryForYRBS(primaryFilter, true).headers;
+                tableData.data = categorizeQuestions(tableData.data);
+            }
+            if (primaryFilter.key === 'bridge_race') {
+                primaryFilter.data = response.data.resultData.nested.table;
+                tableData = getMixedTable(primaryFilter, groupOptions, tableView);
+                populateSideFilterTotals(primaryFilter, response.data);
+                primaryFilter.headers = tableData.headers;
+                primaryFilter.data = tableData.data;
+                primaryFilter.chartData = prepareChartData(response.data.resultData.headers, response.data.resultData.nested, primaryFilter);
+                primaryFilter.maps = response.data.resultData.nested.maps;
+                mapService.updateStatesDeaths(primaryFilter, primaryFilter.maps, primaryFilter.searchCount, mapOptions);
+            }
+            else if (response.data.queryJSON.key == 'natality') {
+                primaryFilter.data = response.data.resultData.nested.table;
+                populateSideFilterTotals(primaryFilter, response.data);
+                primaryFilter.chartData = prepareChartData(primaryFilter.headers, response.data.resultData.nested, primaryFilter);
+                tableData = getMixedTable(primaryFilter, groupOptions, tableView);
+            }
+            primaryFilter.initiated = true;
+            return {
+                tableData: tableData,
+                tableView: tableView,
+                primaryFilter: primaryFilter
+            };
+        }
+
+        /*
+            Builds table based on primaryFilter and options
+         */
+        function getMixedTable(selectedFilter, groupOptions, tableView){
+            var file = selectedFilter.data ? selectedFilter.data : {};
+            var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
+            //make sure row/column headers are in proper order
+            angular.forEach(headers.rowHeaders, function(header) {
+                sortAutoCompleteOptions(header, groupOptions[tableView]);
+            });
+            angular.forEach(headers.columnHeaders, function(header) {
+                sortAutoCompleteOptions(header, groupOptions[tableView]);
+            });
+            var countKey = selectedFilter.key;
+            var countLabel = selectedFilter.countLabel;
+            var totalCount = selectedFilter.count;
+            var calculatePercentage = true;
+            var calculateRowTotal = selectedFilter.calculateRowTotal;
+            var secondaryCountKeys = ['pop', 'ageAdjustedRate', 'standardPop'];
+
+            return utilService.prepareMixedTableData(headers, file, countKey, totalCount, countLabel, calculatePercentage, calculateRowTotal, secondaryCountKeys);
+        }
+
+        //takes mixedTable and returns categories array for use with owhAccordionTable
+        function categorizeQuestions(data) {
+            var categories = [];
+            angular.forEach($rootScope.questions, function(questionCategory){
+                var category = {title: questionCategory.text, questions: [], hide: true};
+                angular.forEach(questionCategory.children, function(categoryChild) {
+                    angular.forEach(data, function(row) {
+                        if(row[0].qkey === categoryChild.id) {
+                            category.questions.push(row);
+                        }
+                    });
+                });
+                categories.push(category);
+            });
+            return categories;
+        }
+
+        function removeDisabledFilters(selectedFilter, filterView, availableFilters) {
+            if(availableFilters[filterView]) {
+                angular.forEach(selectedFilter.allFilters, function(filter, index) {
+                    if(availableFilters[filterView].indexOf(filter.key) < 0) {
+                        filter.value = [];
+                        filter.groupBy = false;
+                    }
+                });
+                angular.forEach(selectedFilter.sideFilters, function(filter, index) {
+                    if(availableFilters[filterView].indexOf(filter.filters.key) < 0) {
+                        filter.filters.value = [];
+                        filter.filters.groupBy = false;
+                    }
+                });
+            }
+        }
 
         function groupAutoCompleteOptions(filter, sort) {
             var groupedOptions = [];
@@ -100,7 +232,7 @@
                 for(var i = 0; i < sort[filter.key].length; i++) {
                     angular.forEach(filter.autoCompleteOptions, function(option) {
                         //if type string, then just a regular option
-                        if(typeof sort[filter.key][i] === 'string') {
+                        if(typeof sort[filter.key][i] === 'string' && !option.options) {
                             //not group option
                             if(sort[filter.key][i] === option.key) {
                                 filterLength++;
@@ -109,12 +241,16 @@
                         } else {
                             //else, group option
                             //is same parent group option
-                            if(sort[filter.key][i].key === option.key) {
-                                angular.forEach(option.options, function(subOption) {
-                                    if(sort[filter.key][i].options.indexOf(subOption.key) >= 0) {
+                            if(option.options) {
+                                angular.forEach(option.options, function (subOption) {
+                                    if (sort[filter.key][i].options && sort[filter.key][i].options.indexOf(subOption.key) >= 0) {
                                         sortedOptions.push(subOption);
                                     }
                                 });
+                            } else {
+                                if (sort[filter.key][i].options && sort[filter.key][i].options.indexOf(option.key) >= 0) {
+                                    sortedOptions.push(option);
+                                }
                             }
                         }
                     });
@@ -125,24 +261,20 @@
         }
 
         //Search for YRBS data
-        function searchYRBSResults( primaryFilter ) {
+        function searchYRBSResults( primaryFilter, queryID ) {
             var deferred = $q.defer();
-            queryYRBSAPI(primaryFilter).then(function(response){
-                primaryFilter.data = response.data.table;
-                //primaryFilter.chartData = response.chartData;
-                primaryFilter.headers = response.headers;
-                //primaryFilter.dataPrepared = true;
-                deferred.resolve({});
+            queryYRBSAPI(primaryFilter, queryID ).then(function(response){
+                deferred.resolve(response);
             });
             return deferred.promise;
         }
 
         //Query YRBS API
-        function queryYRBSAPI( primaryFilter ) {
+        function queryYRBSAPI( primaryFilter, queryID ) {
             var deferred = $q.defer();
-            var apiQuery = buildQueryForYRBS(primaryFilter);
+            var apiQuery = buildQueryForYRBS(primaryFilter, true);
             var headers = apiQuery.headers;
-            SearchService.searchResults(primaryFilter).then(function(response) {
+            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
                 /*var yearsFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
                 if(!yearsFilter.autoCompleteOptions[0][primaryFilter.key]) {
                     var total = 0;
@@ -198,10 +330,7 @@
                 if(!questionsFilter.autoCompleteOptions || questionsFilter.autoCompleteOptions.length === 0) {
                     questionsFilter.autoCompleteOptions = $rootScope.questionsList;
                 }*/
-                deferred.resolve({
-                    data: response.data,
-                    headers : headers
-                });
+                deferred.resolve(response);
             });
             return deferred.promise;
         }
@@ -229,44 +358,157 @@
             }
         }
 
+        /**
+         * Display chart for Selected YRBS Question
+         * @param primaryFilter
+         * @param question
+         */
         function showChartForQuestion(primaryFilter, question) {
+
+            prepareQuestionChart(primaryFilter, question).then(function (response) {
+                chartUtilService.showExpandedGraph([response.chartData], question.title,
+                    null, response.chartTypes, primaryFilter, question);
+            });
+
+        }
+
+        /**
+         * This function is used to build visualization data based on selected filters
+         * If chart type is specified, visualization will be built for selected chart type
+         * Otherwise visualizations will be decided with different combinations of selected filter
+         * @param primaryFilter -> YRBS side filters
+         * @param question -> Seleted question for which visualizations needs to be built
+         * @param chartType -> Array of keys of selected combination e.g. ['yrbsSex', 'yrbsRace']
+         */
+        function prepareQuestionChart(primaryFilter, question, chartType ) {
+            //make copy of side filters
             var copiedPrimaryFilter = angular.copy(primaryFilter);
-            var pieChartFilterKeys = ['yrbsGrade', 'yrbsRace'];
-            var barChartFilterKeys = ['yrbsSex', 'yrbsRace'];
-            var promises = [];
-            var pieChartFilters = [];
-            var barChartFilters = [];
-            utilService.updateAllByKeyAndValue(copiedPrimaryFilter.allFilters, 'groupBy', false);
-            var questionFilter = utilService.findByKeyAndValue(copiedPrimaryFilter.allFilters, 'key', 'question');
-            questionFilter.value = [question];
 
-            angular.forEach(pieChartFilterKeys, function(eachKey) {
-                var eachChartPrimaryFilter = angular.copy(copiedPrimaryFilter);
-                var eachFilter = utilService.findByKeyAndValue(eachChartPrimaryFilter.allFilters, 'key', eachKey);
-                eachFilter.groupBy = 'column';
-                eachFilter.getPercent = true;
-                pieChartFilters.push(eachFilter);
-                promises.push(SearchService.searchResults(eachChartPrimaryFilter));
+            //get the selected side filters
+            var selectedFilters = copiedPrimaryFilter.value;
 
-            });
-            var barChartPrimaryFilter = angular.copy(copiedPrimaryFilter);
-            angular.forEach(barChartFilterKeys, function(eachKey) {
-                var eachFilter = utilService.findByKeyAndValue(barChartPrimaryFilter.allFilters, 'key', eachKey);
-                eachFilter.groupBy = 'column';
-                eachFilter.getPercent = true;
-                barChartFilters.push(eachFilter);
-            });
-            promises.push(SearchService.searchResults(barChartPrimaryFilter));
-            $q.all(promises).then(function(values) {
-                var chartData = [];
-                angular.forEach(values.slice(0, 2), function(eachValue, index) {
-                    chartData.push(chartUtilService.pieChart(eachValue.data.table[pieChartFilters[index].key], pieChartFilters[index], primaryFilter, '%'));
+            //possible chart combinations
+            var chartMappings = {
+                "yrbsSex&yrbsRace": "horizontalBar",
+                "yrbsSex&yrbsGrade": "horizontalBar",
+                "yrbsGrade&yrbsRace": "horizontalBar",
+                "yrbsSex": "horizontalBar",
+                "yrbsRace": "horizontalBar",
+                "yrbsGrade": "horizontalBar"
+            };
+
+            var chartTypes = [];
+
+            //collect all chart combinations
+            selectedFilters.forEach( function(selectedPrimaryFilter) {
+                selectedFilters.forEach( function(selectedSecondaryFilter) {
+                    var chartType;
+                    //for single filter
+                    if (selectedPrimaryFilter === selectedSecondaryFilter) {
+                        chartType = chartMappings[selectedPrimaryFilter.key];
+                        if(chartType) {
+                            chartTypes.push([selectedPrimaryFilter.key]);
+                        }
+                    } else {//for combinations of two filters
+                        chartType = chartMappings[selectedPrimaryFilter.key + '&' + selectedSecondaryFilter.key];
+                        if(chartType) {
+                            chartTypes.push([selectedPrimaryFilter.key, selectedSecondaryFilter.key]);
+                        }
+                    }
                 });
-                chartData.push(chartUtilService.horizontalStack(barChartFilters[0], barChartFilters[1], values[2].data.table, primaryFilter, '%'));
-                var selectedQuestion = utilService.findByKeyAndValue(questionFilter.autoCompleteOptions, 'key', question);
-                chartUtilService.showExpandedGraph(chartData, selectedQuestion.title);
             });
-        };
+
+            //reset all grouping combinations
+            utilService.updateAllByKeyAndValue(copiedPrimaryFilter.allFilters, 'groupBy', false);
+
+            //get the question filter and update question filter with selected question
+            var questionFilter = utilService.findByKeyAndValue(copiedPrimaryFilter.allFilters, 'key', 'question');
+            questionFilter.value = [question.qkey];
+
+            //if chart type is not specified, select first from possible combinations
+            if(!chartType) {
+                chartType = chartTypes[0];
+            }
+
+            var chartFilters = [];
+            //set column groupings on selected chart
+            angular.forEach(chartType, function(eachKey) {
+                var eachFilter = utilService.findByKeyAndValue(copiedPrimaryFilter.allFilters, 'key', eachKey);
+                eachFilter.groupBy = 'column';
+                eachFilter.getPercent = true;
+                chartFilters.push(eachFilter);
+            });
+
+            var deferred = $q.defer();
+            //calculate query hash
+            generateHashCode(copiedPrimaryFilter).then(function (hash) {
+                //get the chart data
+                SearchService.searchResults(copiedPrimaryFilter, hash).then(function(response) {
+                    var chartData;
+                    //chart data for single filter
+                    if (chartFilters.length == 1) {
+                        chartData = chartUtilService.horizontalBar(chartFilters[0],
+                            chartFilters[0], response.data.resultData.table, copiedPrimaryFilter, '%');
+                    } else {//chart data for two filters
+                        chartData = chartUtilService.horizontalBar(chartFilters[0],
+                            chartFilters[1], response.data.resultData.table, copiedPrimaryFilter, '%');
+                    }
+                    deferred.resolve({
+                        chartData: chartData,
+                        chartTypes : chartTypes
+                    });
+                });
+            });
+            return deferred.promise;
+        }
+
+        function populateSideFilterTotals(primaryFilter, response) {
+            primaryFilter.count = response.sideFilterResults.pagination.total;
+            angular.forEach(response.sideFilterResults.data.simple, function (eachFilterData, key) {
+                //fill auto-completer data with counts
+                var filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', key);
+                if (filter) {
+                    if (filter.autoCompleteOptions) {
+                        angular.forEach(filter.autoCompleteOptions, function (option) {
+                            var optionData = utilService.findByKeyAndValue(eachFilterData, 'name', option.key);
+                            if (optionData) {
+                                option[primaryFilter.key] = optionData[primaryFilter.key];
+                                option['count'] = optionData[primaryFilter.key];
+                                option[primaryFilter.key + 'Percentage'] = 0;
+                                option[primaryFilter.key + 'Percentage'] = Number(((optionData[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
+                            } else {
+                                option[primaryFilter.key] = 0;
+                                option['count'] = 0;
+                                option[primaryFilter.key + 'Percentage'] = 0;
+                            }
+                        });
+                    } else {
+                        var autoCompleteOptions = [];
+                        angular.forEach(eachFilterData, function (eachData) {
+                            var eachOption = {key: eachData.name, title: eachData.name};
+                            eachOption[primaryFilter.key] = eachData[primaryFilter.key];
+                            eachOption['count'] = eachData[primaryFilter.key];
+                            eachOption[primaryFilter.key + 'Percentage'] = Number(((eachData[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
+                            autoCompleteOptions.push(eachOption);
+                        });
+                        filter.autoCompleteOptions = autoCompleteOptions;
+                    }
+                    //sort on primary filter key.. so that it will rendered in desc order in side filter
+                    //filter.sortedAutoCompleteOptions = utilService.sortByKey(angular.copy(filter.autoCompleteOptions), 'count', false);
+                }
+            });
+        }
+
+
+        function prepareMortalityResults(primaryFilter, response) {
+            var ucd10Filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'ucd-chapter-10');
+            ucd10Filter.autoCompleteOptions = $rootScope.conditionsListICD10;
+            primaryFilter.data = response.resultData.nested.table;
+            primaryFilter.calculatePercentage = true;
+            primaryFilter.calculateRowTotal = true;
+            primaryFilter.chartDataFromAPI = response.resultData.simple;
+            primaryFilter.maps = response.resultData.nested.maps;
+        }
 
         function removeSearchResults(ac){
             if(ac){
@@ -281,6 +523,7 @@
             var req = {};
             req.key= pFilter.key;
             req.searchFor = pFilter.searchFor;
+            req.tableView = pFilter.tableView;
             req.allFilters = []
             for (var i = 0; i< pFilter.allFilters.length; i++){
                 var filter = utilService.clone(pFilter.allFilters[i]);
@@ -308,56 +551,10 @@
             return req;
         }
 
+
         function searchMortalityResults(primaryFilter, queryID) {
             var deferred = $q.defer();
             queryMortalityAPI(primaryFilter, queryID).then(function(response){
-               //@TODO: @Joe here I am getting sideFilters from ES 'response.sideFilterResults'
-                primaryFilter.count = response.sideFilterResults.pagination.total;
-                angular.forEach(response.sideFilterResults.data.simple, function(eachFilterData, key) {
-                    //fill auto-completer data with counts
-                    var filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', key);
-                    if(filter) {
-                        if(filter.autoCompleteOptions) {
-                            angular.forEach(filter.autoCompleteOptions, function (option) {
-                                var optionData = utilService.findByKeyAndValue(eachFilterData, 'name', option.key);
-                                if (optionData) {
-                                    option[primaryFilter.key] = optionData[primaryFilter.key];
-                                    option['count'] = optionData[primaryFilter.key];
-                                    option[primaryFilter.key + 'Percentage'] = 0;
-                                    option[primaryFilter.key + 'Percentage'] = Number(((optionData[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
-                                } else {
-                                    option[primaryFilter.key] = 0;
-                                    option['count'] = 0;
-                                    option[primaryFilter.key + 'Percentage'] = 0;
-                                }
-                            });
-                        } else {
-                            var autoCompleteOptions = [];
-                            angular.forEach(eachFilterData, function(eachData) {
-                                var eachOption = {  key: eachData.name, title: eachData.name };
-                                eachOption[primaryFilter.key] = eachData[primaryFilter.key];
-                                eachOption['count'] = eachData[primaryFilter.key];
-                                eachOption[primaryFilter.key + 'Percentage'] = Number(((eachData[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
-                                autoCompleteOptions.push(eachOption);
-                            });
-                            filter.autoCompleteOptions = autoCompleteOptions;
-                        }
-                        //sort on primary filter key.. so that it will rendered in desc order in side filter
-                        //filter.sortedAutoCompleteOptions = utilService.sortByKey(angular.copy(filter.autoCompleteOptions), 'count', false);
-                    }
-                });
-                var ucd10Filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'ucd-chapter-10');
-                ucd10Filter.autoCompleteOptions = $rootScope.conditionsListICD10;
-
-                primaryFilter.data = response.data;
-                primaryFilter.headers = response.headers;
-                primaryFilter.calculatePercentage = true;
-                primaryFilter.calculateRowTotal = true;
-                primaryFilter.chartDataFromAPI = response.chartDataFromAPI;
-                primaryFilter.chartData = response.chartData;
-                primaryFilter.dataPrepared = response.dataPrepared;
-                primaryFilter.maps = response.maps;
-                primaryFilter.searchCount = response.totalCount;
                 deferred.resolve(response);
             });
             return deferred.promise;
@@ -365,39 +562,43 @@
 
         function generateHashCode(primaryFilter) {
             var deferred = $q.defer();
-            var apiQuery = buildAPIQuery(primaryFilter);
-            var query = apiQuery.apiQuery;
-            SearchService.generateHashCode(query).then(function(response) {
+            var hashQuery = buildHashcodeQuery(primaryFilter);
+            SearchService.generateHashCode(hashQuery).then(function(response) {
                 deferred.resolve(response.data);
             });
             return deferred.promise;
         }
 
-       /* function getResults(primaryFilter) {
-            var deferred = $q.defer();
-            var apiQuery = buildAPIQuery(primaryFilter);
-            var headers = apiQuery.headers;
-            SearchService.getResults(apiQuery.apiQuery).then(function(response){
-                console.log(" in search factory..... after service getResults call");
-                deferred.resolve({
-                    data : "",
-                    dataPrepared : false,
-                    headers : headers,
-                    chartDataFromAPI : "",
-                    chartData: "",
-                    maps: "",
-                    totalCount: ""
+        function buildHashcodeQuery(primaryFilter) {
+
+            var hashQuery = {
+                primaryKey: primaryFilter.key,
+                tableView: primaryFilter.tableView,
+                filters: []
+            };
+
+            angular.forEach(primaryFilter.sideFilters, function(filter){
+                hashQuery.filters.push({
+                    key: filter.filters.key,
+                    groupBy: filter.filters.groupBy,
+                    value: filter.filters.value instanceof Array?filter.filters.value.sort():filter.filters.value
                 });
+            });
+            return hashQuery;
+        }
+
+        /**
+         * Get owhquery_cache data using queryID
+         * @param queryId
+         * @returns {Function}
+         */
+        function getQueryResults(queryId) {
+            var deferred = $q.defer();
+            SearchService.searchResults(null,queryId).then(function(response) {
+                deferred.resolve(response);
             });
             return deferred.promise;
         }
-
-        function generateHashFromQueryJson(queryJson) {
-            var deferred = $q.defer();
-            var apiQuery = buildAPIQuery(queryJson);
-            //var headers = apiQuery.headers;
-            return SearchService.generateHashCode(apiQuery.apiQuery.query);
-        }*/
 
         //search results by grouping
         function queryMortalityAPI( primaryFilter, queryID) {
@@ -413,24 +614,13 @@
                 if(response.data.queryJSON) {
                     headers = buildAPIQuery(response.data.queryJSON).headers;
                 }
-                deferred.resolve({
-                    data : response.data.resultData.nested.table,
-                    dataPrepared : false,
-                    headers : headers,
-                    chartDataFromAPI : response.data.resultData.simple,
-                    chartData: prepareChartData(headers, response.data.resultData.nested, primaryFilter),
-                    maps: response.data.resultData.nested.maps,
-                    totalCount: response.pagination.total,
-                    sideFilterResults: response.data.sideFilterResults,
-                    queryJSON: response.data.queryJSON
-                });
+                deferred.resolve(response);
             });
             return deferred.promise;
         }
 
         function prepareChartData(headers, nestedData, primaryFilter) {
             var chartData = [];
-
             if(primaryFilter.showMap) {
                 chartData.push(primaryFilter.mapData);
             }
@@ -444,7 +634,12 @@
                 var data = nestedData.table;
                 var header = (headers.rowHeaders.length === 1) ? headers.rowHeaders[0] : headers.columnHeaders[0];
                 var pieData = data[header.key];
-                chartData.push(chartUtilService.pieChart(pieData,header,primaryFilter));
+                //for current_year dhow line graph
+                if (header.key == 'current_year') {
+                    chartData.push(chartUtilService.lineChart(pieData, header, primaryFilter));
+                } else {//for other single filters, show pie chart
+                    chartData.push(chartUtilService.pieChart(pieData, header, primaryFilter));
+                }
             }
 
             //prepare charts data to render three charts in a row
@@ -578,10 +773,10 @@
 
         function buildFilterQuery(filter) {
             //need to calculate value length for group options, as the parent option can count as extra value
-            var valueLength = filter.value.length;
+            var valueLength = filter.value?filter.value.length:0;
             angular.forEach(filter.autoCompleteOptions, function(option) {
                 if(option.options) {
-                    if(filter.value.indexOf(option.key) >= 0) {
+                    if(filter.value && filter.value.indexOf(option.key) >= 0) {
                         valueLength--;
                     }
                 }
@@ -608,7 +803,10 @@
             if(filter.autoCompleteOptions) {
                 angular.forEach(filter.autoCompleteOptions, function(option) {
                     if(option.options) {
-                        length--;
+                        //if value has group option, then don't subtract from calculated length
+                        if(filter.value && filter.value.indexOf(option.key) < 0) {
+                            length--;
+                        }
                         length += option.options.length;
                     }
                 });
@@ -707,34 +905,77 @@
             return deferred.promise;
         }
 
-        function queryCensusAPI( primaryFilter ) {
-
+        function queryCensusAPI( primaryFilter, queryID ) {
             var deferred = $q.defer();
-            var apiQuery = buildAPIQuery(primaryFilter);
-            var headers = apiQuery.headers;
-
-            SearchService.searchResults(primaryFilter).then(function(response) {
-                deferred.resolve({
-                    data : response.data.resultData.nested.table,
-                    headers : response.data.headers,
-                    chartData: prepareChartData(response.data.headers, response.data.resultData.nested, primaryFilter),
-                    totalCount: response.pagination.total
-                })
+            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
+                deferred.resolve(response);
             });
             return deferred.promise;
         }
 
         /**
+         * Update the total count in side filter options
+         * @param primaryFilter
+         * @param sideFilterData
+         */
+        function updateSideFilterCount(primaryFilter, sideFilterData) {
+            angular.forEach(sideFilterData, function (eachFilterData, key) {
+                //get the filter
+                var filter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', key);
+                if (filter) {
+                    //assign total count to all options
+                    if (filter.autoCompleteOptions) {
+                        angular.forEach(filter.autoCompleteOptions, function (option) {
+                            var optionData = utilService.findByKeyAndValue(eachFilterData, 'name', option.key);
+                            if (optionData) {
+                                option[primaryFilter.key] = optionData[primaryFilter.key];
+                            } else {
+                                option[primaryFilter.key] = 0;
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        /**
          * Search census bridge race population estmation
          */
-        function searchCensusInfo(primaryFilter) {
+        function searchCensusInfo(primaryFilter, queryID) {
             var deferred = $q.defer();
 
-            queryCensusAPI(primaryFilter).then(function(response){
-                primaryFilter.data = response.data;
-                primaryFilter.headers = response.headers;
-                primaryFilter.chartData = response.chartData;
-                deferred.resolve({});
+            //remove circular JSON
+            var query = angular.copy(primaryFilter);
+            delete query.mapData;
+            delete query.chartData;
+            queryCensusAPI(query, queryID).then(function(response){
+                //update total population count for side filters
+                updateSideFilterCount(primaryFilter, response.data.sideFilterResults.data.simple);
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
+        }
+
+        function queryNatalityAPI( primaryFilter, queryID ) {
+            var deferred = $q.defer();
+            SearchService.searchResults(primaryFilter, queryID).then(function(response) {
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
+        }
+
+        /**
+         * Fetch natality data
+         */
+        function searchNatality(primaryFilter, queryID) {
+            var deferred = $q.defer();
+
+            queryNatalityAPI(primaryFilter, queryID).then(function(response){
+                //update total count for side filters
+                updateSideFilterCount(primaryFilter, response.data.sideFilterResults.data.simple);
+                deferred.resolve(response);
             });
 
             return deferred.promise;
@@ -784,6 +1025,11 @@
                 {"key":"Unknown","title":"Unknown"}
             ];
 
+            filters.ethnicityGroupOptions = [
+                {"key": 'Hispanic', "title": 'Hispanic'},
+                {"key": 'Non-Hispanic', "title": "Non-Hispanic"}
+            ];
+
             filters.weekday = [
                 {key: 'Sunday', title: 'Sunday'},
                 {key: 'Monday', title: 'Monday'},
@@ -803,7 +1049,7 @@
 
             filters.podOptions = [
                 {key:'Decedent’s home',title:'Decedent’s home'},
-                {key:'Hospital, clinic or Medical Center - Patient status unknown',title:'Hospital, clinic or Medical Center-  Patient status unknown'},
+                {key:'Hospital, Clinic or Medical Center - Patient status unknown',title:'Hospital, clinic or Medical Center-  Patient status unknown'},
                 {key:'Hospital, Clinic or Medical Center - Dead on Arrival',title:'Hospital, Clinic or Medical Center-  Dead on Arrival'},
                 {key:'Hospital, clinic or Medical Center - Inpatient',title:'Hospital, clinic or Medical Center-  Inpatient'},
                 {key:'Hospital, Clinic or Medical Center - Outpatient or admitted to Emergency Room',title:'Hospital, Clinic or Medical Center-  Outpatient or admitted to Emergency Room'},
@@ -850,7 +1096,23 @@
                 {key:'Male',title:'Male'}
             ];
 
-            filters.yearOptions = [];
+            filters.yearOptions = [
+                {key: '2014', title: '2014'},
+                {key: '2013', title: '2013'},
+                {key: '2012', title: '2012'},
+                {key: '2011', title: '2011'},
+                {key: '2010', title: '2010'},
+                {key: '2009', title: '2009'},
+                {key: '2008', title: '2008'},
+                {key: '2007', title: '2007'},
+                {key: '2006', title: '2006'},
+                {key: '2005', title: '2005'},
+                {key: '2004', title: '2004'},
+                {key: '2003', title: '2003'},
+                {key: '2002', title: '2002'},
+                {key: '2001', title: '2001'},
+                {key: '2000', title: '2000'}
+            ];
 
             filters.modOptions = [
                 {key:'January',title:'January'},
@@ -917,18 +1179,18 @@
             };
 
             filters.yrbsGenderOptions =  [
-                { "key": "female", "title": "Female" },
-                { "key": "male", "title": "Male" }
+                { "key": "Female", "title": "Female" },
+                { "key": "Male", "title": "Male" }
             ];
 
             filters.yrbsRaceOptions =  [
-                { "key": "ai_an", "title": "American Indian or Alaska Native" },
-                { "key": "asian", "title": "Asian" },
-                { "key": "black_african_american", "title": "Black or African American" },
-                { "key": "hispanic", "title": "Hispanic or Latino" },
-                { "key": "nhopi", "title": "Native Hawaiian or Other Pacific Islander" },
-                { "key": "white", "title": "White" },
-                { "key": "multiple_race", "title": "Multiple Race" }
+                { "key": "Am Indian / Alaska Native", "title": "American Indian or Alaska Native" },
+                { "key": "Asian", "title": "Asian" },
+                { "key": "Black or African American", "title": "Black or African American" },
+                { "key": "Hispanic/Latino", "title": "Hispanic or Latino" },
+                { "key": "Native Hawaiian/other PI", "title": "Native Hawaiian or Other Pacific Islander" },
+                { "key": "White", "title": "White" },
+                { "key": "Multiple - Non-Hispanic", "title": "Multiple Race" }
             ];
 
             filters.yrbsGradeOptions = [
@@ -942,7 +1204,16 @@
                 { "key": "2015", "title": "2015" },
                 { "key": "2013", "title": "2013" },
                 { "key": "2011", "title": "2011" },
-                { "key": "2009", "title": "2009" }
+                { "key": "2009", "title": "2009" },
+                { "key": "2007", "title": "2007" },
+                { "key": "2005", "title": "2005" },
+                { "key": "2003", "title": "2003" },
+                { "key": "2001", "title": "2001" },
+                { "key": "1999", "title": "1999" },
+                { "key": "1997", "title": "1997" },
+                { "key": "1995", "title": "1995" },
+                { "key": "1993", "title": "1993" },
+                { "key": "1991", "title": "1991" }
             ];
 
             filters.yrbsAdditionalHeaders = [
@@ -950,18 +1221,133 @@
                 { "key": "count", "title": "Total" }
             ];
 
-            filters.yrbsFilters = [
+            filters.yrbsBasicStateFilters =  [
+                { "key": "AL", "title": "Alabama" },
+                { "key": "AK", "title": "Alaska" },
+                { "key": "AZB", "title": "Arizona" },
+                { "key": "AR", "title": "Arkansas" },
+                { "key": "CA", "title": "California" },
+                { "key": "CO", "title": "Colorado" },
+                { "key": "CT", "title": "Connecticut" },
+                { "key": "DE", "title": "Delaware" },
+                //{ "key": "", "title": "District of Columbia" },
+                { "key": "FL", "title": "Florida" },
+                { "key": "GA", "title": "Georgia" },
+                { "key": "HI", "title": "Hawaii" },
+                { "key": "ID", "title": "Idaho" },
+                { "key": "IL", "title": "Illinois" },
+                { "key": "IN", "title": "Indiana"},
+                { "key": "IA", "title": "Iowa" },
+                { "key": "KS", "title": "Kansas" },
+                { "key": "KY", "title": "Kentucky" },
+                { "key": "LA", "title": "Louisiana" },
+                { "key": "ME", "title": "Maine" },
+                { "key": "MD", "title": "Maryland" },
+                { "key": "MA", "title": "Massachusetts" },
+                { "key": "MI", "title": "Michigan" },
+                { "key": "MS", "title": "Mississippi" },
+                { "key": "MO", "title": "Missouri" },
+                { "key": "MT", "title": "Montana" },
+                { "key": "NE", "title": "Nebraska" },
+                { "key": "NV", "title": "Nevada" },
+                { "key": "NH", "title": "New Hampshire" },
+                { "key": "NJ", "title": "New Jersey" },
+                { "key": "NM", "title": "New Mexico" },
+                { "key": "NY", "title": "New York" },
+                { "key": "NC", "title": "North Carolina" },
+                { "key": "ND", "title": "North Dakota" },
+                { "key": "OH", "title": "Ohio" },
+                { "key": "OK", "title": "Oklahoma" },
+                { "key": "PA", "title": "Pennsylvania" },
+                { "key": "RI", "title": "Rhode Island" },
+                { "key": "SC", "title": "South Carolina" },
+                { "key": "SD", "title": "South Dakota" },
+                { "key": "TN", "title": "Tennessee" },
+                { "key": "TX", "title": "Texas" },
+                { "key": "UT", "title": "Utah" },
+                { "key": "VT", "title": "Vermont" },
+                { "key": "VA", "title": "Virginia" },
+                { "key": "WV", "title": "West Virginia" },
+                { "key": "WI", "title": "Wisconsin" },
+                { "key": "WY", "title": "Wyoming" }
+            ];
+
+            filters.yrbsAdvancedStateFilters =  [
+                { "key": "AL", "title": "Alabama" },
+                { "key": "AK", "title": "Alaska" },
+                { "key": "AZB", "title": "Arizona" },
+                { "key": "AR", "title": "Arkansas" },
+                { "key": "CA", "title": "California" },
+                { "key": "CT", "title": "Connecticut" },
+                { "key": "DE", "title": "Delaware" },
+                { "key": "FL", "title": "Florida" },
+                { "key": "ID", "title": "Idaho" },
+                { "key": "IL", "title": "Illinois" },
+                { "key": "IA", "title": "Iowa" },
+                { "key": "KS", "title": "Kansas" },
+                { "key": "KY", "title": "Kentucky" },
+                { "key": "ME", "title": "Maine" },
+                { "key": "MD", "title": "Maryland" },
+                { "key": "MI", "title": "Michigan" },
+                { "key": "MS", "title": "Mississippi" },
+                { "key": "MO", "title": "Missouri" },
+                { "key": "MT", "title": "Montana" },
+                { "key": "NE", "title": "Nebraska" },
+                { "key": "NV", "title": "Nevada" },
+                { "key": "NH", "title": "New Hampshire" },
+                { "key": "NJ", "title": "New Jersey" },
+                { "key": "NY", "title": "New York" },
+                { "key": "NC", "title": "North Carolina" },
+                { "key": "ND", "title": "North Dakota" },
+                { "key": "OK", "title": "Oklahoma" },
+                { "key": "RI", "title": "Rhode Island" },
+                { "key": "SC", "title": "South Carolina" },
+                { "key": "SD", "title": "South Dakota" },
+                { "key": "TN", "title": "Tennessee" },
+                { "key": "UT", "title": "Utah" },
+                { "key": "VA", "title": "Virginia" },
+                { "key": "WV", "title": "West Virginia" },
+                { "key": "WI", "title": "Wisconsin" },
+                { "key": "WY", "title": "Wyoming" }
+            ];
+
+            filters.yrbsAdvancedFilters = [
                 {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: ['2015'], groupBy: false,
-                   autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
+                    filterType: 'checkbox', autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
                 { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: [], groupBy: false,
-                    autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
                 { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"grade", primary: false, value: [], groupBy: false,
-                     autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column" },
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column" },
+                { key: 'yrbsState', title: 'label.yrbs.filter.state', queryKey:"sitecode", primary: false, value: [], groupBy: false,
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsAdvancedStateFilters), defaultGroup:"column",
+                    displaySearchBox:true, displaySelectedFirst:true },
                 { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race", primary: false, value: [], groupBy: 'column',
-                   autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column" },
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column"},
                 { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
                     filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
-                    selectTitle: 'select.label.yrbs.filter.question', iconClass: 'fa fa-pie-chart purple-text', onIconClick: function(question) {
+                    selectTitle: 'select.label.yrbs.filter.question', updateTitle: 'update.label.yrbs.filter.question',  iconClass: 'fa fa-pie-chart purple-text',
+                    onIconClick: function(question) {
+                        showChartForQuestion(filters.selectedPrimaryFilter, question);
+                    }
+                }
+            ];
+
+            filters.yrbsBasicFilters = [
+                {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: '2015', groupBy: false,
+                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), doNotShowAll: true, donotshowOnSearch:true },
+                { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: '', groupBy: false,
+                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
+                { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"grade", primary: false, value: '', groupBy: false,
+                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column" },
+                { key: 'yrbsState', title: 'label.yrbs.filter.state', queryKey:"sitecode", primary: false, value: '', groupBy: false,
+                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsBasicStateFilters), defaultGroup:"column",
+                    displaySearchBox:true, displaySelectedFirst:true },
+                { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race", primary: false, value:'', groupBy: 'column',
+                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column"},
+                { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
+                    filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
+                    selectTitle: 'select.label.yrbs.filter.question', updateTitle: 'update.label.yrbs.filter.question',  iconClass: 'fa fa-pie-chart purple-text',
+                    onIconClick: function(question) {
                         showChartForQuestion(filters.selectedPrimaryFilter, question);
                     }
                 }
@@ -976,34 +1362,35 @@
                     sliderOptions: filters.ageSliderOptions, sliderValue: '-5;105', timer: undefined, defaultGroup:"row"},
                 {key: 'hispanicOrigin', title: 'label.filter.hispanicOrigin', queryKey:"hispanic_origin",
                     primary: false, value: [], groupBy: false, type:"label.filter.group.demographics",
-                    autoCompleteOptions: angular.copy(filters.hispanicOptions), defaultGroup:"row"},
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.hispanicOptions), defaultGroup:"row"},
                 {key: 'race', title: 'label.filter.race', queryKey:"race", primary: false, value: [], groupBy: 'row',
                     type:"label.filter.group.demographics", showChart: true, defaultGroup:"column",
-                    autoCompleteOptions: angular.copy(filters.races)},
-                {key: 'gender', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], groupBy: 'column',
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.races)},
+                {key: 'gender', title: 'label.filter.gender', queryKey:"sex", primary: false, value:  [], groupBy: 'column',
                     type:"label.filter.group.demographics", groupByDefault: 'column', showChart: true,
-                    autoCompleteOptions: angular.copy(filters.genderOptions), defaultGroup:"column"},
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.genderOptions), defaultGroup:"column"},
 
 
                 /*Year and Month*/
                 //TODO: consider setting default selected years elsewhere
-                {key: 'year', title: 'label.filter.year', queryKey:"current_year",primary: false, value: [],
-                    groupBy: false,type:"label.filter.group.year.month", defaultGroup:"row"},
+                {key: 'year', title: 'label.filter.year', queryKey:"current_year",primary: false, value: ['2014'],
+                    groupBy: false,type:"label.filter.group.year.month",
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yearOptions),defaultGroup:"row"},
                 {key: 'month', title: 'label.filter.month', queryKey:"month_of_death", primary: false, value: [],
                     groupBy: false,type:"label.filter.group.year.month", defaultGroup:"row",
-                    autoCompleteOptions: angular.copy(filters.modOptions)},
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.modOptions)},
 
 
                 /*Weekday, Autopsy, Place of Death */
                 {key: 'weekday', title: 'label.filter.weekday', queryKey:"week_of_death",
-                    primary: false, value: [], groupBy: false,type:"label.filter.group.weekday.autopsy.pod",
-                    autoCompleteOptions: angular.copy(filters.weekday), defaultGroup:"row"},
+                    primary: false, value:  [], groupBy: false,type:"label.filter.group.weekday.autopsy.pod",
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.weekday), defaultGroup:"row"},
                 {key: 'autopsy', title: 'label.filter.autopsy', queryKey:"autopsy",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.weekday.autopsy.pod",
-                    autoCompleteOptions: angular.copy(filters.autopsy), defaultGroup:"row"},
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.autopsy), defaultGroup:"row"},
                 {key: 'placeofdeath', title: 'label.filter.pod', queryKey:"place_of_death",
-                    primary: false, value: [], groupBy: false,type:"label.filter.group.weekday.autopsy.pod",
-                    autoCompleteOptions: angular.copy(filters.podOptions), defaultGroup:"row"},
+                    primary: false, value:  [], groupBy: false,type:"label.filter.group.weekday.autopsy.pod",
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.podOptions), defaultGroup:"row"},
 
                 /*Underlying Cause of Death*/
                 {key: 'ucd-chapter-10', title: 'label.filter.ucd.icd.chapter', queryKey:"ICD_10_code.path",
@@ -1030,23 +1417,24 @@
             ];
 
             filters.ucdMcdFilters = [
-                {key: 'ucd-filters', title: 'label.filter.ucd', queryKey:"",
+                {key: 'ucd-filters', title: 'label.filter.ucd', selectTitle: 'select.label.filter.ucd', updateTitle: 'update.label.filter.ucd', queryKey:"",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.ucd",
                     filterType: 'conditions', groupOptions: filters.conditionGroupOptions,
                     autoCompleteOptions: utilService.findAllByKeyAndValue(filters.allMortalityFilters, 'key', 'ucd-chapter-10')},
-                {key: 'mcd-filters', title: 'label.filter.mcd', queryKey:"",
+                {key: 'mcd-filters', title: 'label.filter.mcd', selectTitle: 'select.label.filter.mcd', updateTitle: 'update.label.filter.mcd',  queryKey:"",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.mcd",
                     filterType: 'conditions', groupOptions: [],
                     autoCompleteOptions: utilService.findAllByKeyAndValue(filters.allMortalityFilters, 'key', 'mcd-chapter-10')}
             ];
 
             filters.censusFilters = filterUtils.getBridgeDataFilters();
-
+            filters.natalityFilters = filterUtils.getNatalityDataFilters();
             filters.search = [
                 {
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
-                    allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, showMap:true,
-                    chartAxisLabel:'Deaths', countLabel: 'Number of Deaths', mapData:{},
+                    allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, showMap: false,
+                    chartAxisLabel:'Deaths', countLabel: 'Number of Deaths', mapData:{}, tableView:'number_of_deaths',
+                    runOnFilterChange: true,
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
@@ -1096,63 +1484,186 @@
                 },
                 {
                     key: 'mental_health', title: 'label.risk.behavior', primary: true, value:[], header:"Youth risk behavior",
-                    allFilters: filters.yrbsFilters, searchResults: searchYRBSResults, dontShowInlineCharting: true,
-                    additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total',
-                    sideFilters:[
+                    searchResults: searchYRBSResults, dontShowInlineCharting: true,
+                    additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total', tableView:'mental_health',
+                    chartAxisLabel:'Percentage',
+                    showBasicSearchSideMenu: true, runOnFilterChange: true, allFilters: filters.yrbsBasicFilters, // Default to basic filter
+                    advancedSideFilters: [
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
-                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'year')
+                            filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'year')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
-                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsSex')
+                            filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'yrbsSex')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
-                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsRace')
+                            filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'yrbsRace')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
-                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'yrbsGrade')
+                            filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'yrbsGrade')
                         },
                         {
-                            filterGroup: false, collapse: true, allowGrouping: false,
-                            filters: utilService.findByKeyAndValue(filters.yrbsFilters, 'key', 'question')
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,
+                            filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'yrbsState')
+                        },
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: false,
+                            filters: utilService.findByKeyAndValue(filters.yrbsAdvancedFilters, 'key', 'question')
+                        }
+                    ],
+                    basicSideFilters:[
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'year')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'yrbsSex')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'yrbsRace')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'yrbsGrade')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.columnGroupOptions,dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'yrbsState')
+                        },
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: false,
+                            filters: utilService.findByKeyAndValue(filters.yrbsBasicFilters, 'key', 'question')
                         }
                     ]
                 },
                 {
                     key: 'bridge_race', title: 'label.census.bridge.race.pop.estimate', primary: true, value:[], header:"Bridged-Race Population Estimates",
-                    allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true,
-                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop',
+                    allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true, showMap: true,
+                    chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop', tableView:'bridge_race', mapData: {},
+                    runOnFilterChange: true,
                     sideFilters:[
                         {
-                            filterGroup: false, collapse: false, allowGrouping: true, dontShowCounts: true,
+                            filterGroup: false, collapse: false, allowGrouping: true,
                             filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'current_year')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'sex'), dontShowCounts: true
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'sex')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'agegroup'), dontShowCounts: true
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'agegroup')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'race'), dontShowCounts: true
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'race')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'ethnicity'), dontShowCounts: true
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'ethnicity')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'state'), dontShowCounts: true
+                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'state')
+                        }
+                    ]
+                },
+                {
+                    key: 'natality', title: 'label.filter.natality', primary: true, value:[], header:"Natality",
+                    allFilters: filters.natalityFilters, searchResults: searchNatality, dontShowInlineCharting: true,
+                    chartAxisLabel:'Population', countLabel: 'Total', tableView:'natality',
+                    runOnFilterChange: true,
+                    sideFilters:[
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'hispanic_origin')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_race')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'marital_status')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_age')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_education')
+                        },
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_yy')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_mm')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_wk')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'sex')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'prenatal_care')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'birth_weight')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'birth_plurality')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'live_birth')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'birth_place')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'delivery_method')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'medical_attendant')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'chronic_hypertension')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'diabetes')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'eclampsia')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'tobacco_use')
                         }
                     ]
                 }
             ];
+
+            filters.search[1].sideFilters = filters.search[1].basicSideFilters; //Set the default side filters for YRBS to basic
             return filters;
         }
 

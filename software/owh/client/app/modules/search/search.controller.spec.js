@@ -1,12 +1,13 @@
 'use strict';
 
 describe("Search controller: ", function () {
-    var searchController, $scope, $controller, $httpBackend, $injector, $templateCache, $rootScope;
+    var searchController, $scope, $controller, $httpBackend, $injector, $templateCache, $rootScope,
+        searchResultsResponse, $searchFactory, $q, filters;
 
     beforeEach(function() {
         module('owh');
 
-        inject(function (_$controller_, _$rootScope_, _$injector_, _$templateCache_) {
+        inject(function (_$controller_, _$rootScope_, _$injector_, _$templateCache_, _$q_, searchFactory) {
             // The injector unwraps the underscores (_) from around the parameter names when matching
             $rootScope = _$rootScope_;
             $controller = _$controller_;
@@ -14,22 +15,20 @@ describe("Search controller: ", function () {
             $scope= _$rootScope_.$new();
             $httpBackend = $injector.get('$httpBackend');
             $templateCache = _$templateCache_;
-
+            $q = _$q_;
 
             searchController= $controller('SearchController',{$scope:$scope});
             $httpBackend.whenGET('app/i18n/messages-en.json').respond({ hello: 'World' });
             $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
             $httpBackend.whenGET('app/partials/home/home.html').respond( $templateCache.get('app/partials/home/home.html'));
-            $httpBackend.whenPOST('/search').respond( $templateCache.get('app/partials/marker-template.html'))
+            $httpBackend.whenPOST('/search').respond( $templateCache.get('app/partials/marker-template.html'));
+            $httpBackend.whenGET('/getFBAppID').respond({data: { fbAppID: 11111}});
+            $httpBackend.whenGET('/yrbsQuestionsTree/2015').respond({});
+            $httpBackend.whenGET('app/modules/home/home.html').respond({});
+            searchResultsResponse = __fixtures__['app/modules/search/fixtures/search.factory/searchResultsResponse'];
+            $searchFactory = searchFactory;
+            filters = $searchFactory.getAllFilters();
         });
-    });
-
-    it("Should execute showFbDialog",function() {
-        var shareUtilService= {
-            shareOnFb: function(){}
-        };
-        var searchController= $controller('SearchController',{$scope:$scope, shareUtilService:shareUtilService});
-        searchController.showFbDialog([],"graphTitle","graph subtitle");
     });
 
     it("Should execute showExpandedGraph",function() {
@@ -241,4 +240,138 @@ describe("Search controller: ", function () {
         expect(utilService.prepareMixedTableData).toHaveBeenCalled();
     }));
 
+    it('changeViewFilter should set the tableView and call out to search', function() {
+        var searchController= $controller('SearchController',{$scope:$scope});
+        spyOn(searchController, 'search');
+        searchController.filters = {selectedPrimaryFilter: {data: {}, allFilters: [], sideFilters: []}};
+        searchController.changeViewFilter({key: 'number_of_deaths'});
+
+        expect(searchController.tableView).toEqual('number_of_deaths');
+        expect(searchController.search).toHaveBeenCalled();
+    });
+
+    it('changeViewFilter should replace ethnicity queryKey and options for crude_death_rates', function() {
+        var searchController= $controller('SearchController',{$scope:$scope});
+        spyOn(searchController, 'search');
+
+        var ethnicityFilter = {
+            query_key: 'hispanic_origin',
+            key: 'hispanicOrigin'
+        };
+
+        searchController.filters = {selectedPrimaryFilter: {data: {}, allFilters: [ethnicityFilter], sideFilters: [{filters: ethnicityFilter}]}};
+        searchController.filters.ethnicityGroupOptions = [
+            {"key": 'hispanic', "title": 'Hispanic'},
+            {"key": 'non', "title": "Non-Hispanic"}
+        ];
+        searchController.filters.hispanicOptions = [
+            {
+                key: 'Cuban'
+            },
+            {
+                key: 'Dominican'
+            }
+        ];
+
+        searchController.changeViewFilter({key: 'crude_death_rates'});
+
+        expect(searchController.tableView).toEqual('crude_death_rates');
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].queryKey).toEqual('ethnicity_group');
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[0].key).toEqual('hispanic');
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[1].key).toEqual('non');
+
+        searchController.changeViewFilter({key: 'number_of_deaths'});
+
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].queryKey).toEqual('hispanic_origin');
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[0].key).toEqual('Cuban');
+        expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[1].key).toEqual('Dominican');
+    });
+
+    it('filterUtilities for yrbs should perform proper functions', function() {
+        var searchController= $controller('SearchController',{$scope:$scope});
+
+        searchController.filterUtilities['mental_health'][0].options[0].onChange(true);
+
+        expect(searchController.showConfidenceIntervals).toBeTruthy();
+
+        searchController.filterUtilities['mental_health'][0].options[0].onChange(false);
+
+        expect(searchController.showConfidenceIntervals).toBeFalsy();
+
+        searchController.filterUtilities['mental_health'][0].options[1].onChange(true);
+
+        expect(searchController.showUnweightedFrequency).toBeTruthy();
+
+        searchController.filterUtilities['mental_health'][0].options[1].onChange(false);
+
+        expect(searchController.showUnweightedFrequency).toBeFalsy();
+    });
+
+    it("search results by queryID", inject(function(searchFactory) {
+         var searchController= $controller('SearchController',{$scope:$scope, searchFactory: searchFactory});
+         var utilService = $injector.get('utilService');
+         var deferred = $q.defer();
+         searchController.filters = filters;
+         filters.selectedPrimaryFilter = filters.search[0];
+         filters.primaryFilters = utilService.findAllByKeyAndValue(searchController.filters.search, 'primary', true);
+         spyOn(searchFactory, 'getQueryResults').and.returnValue(deferred.promise);
+         searchController.getQueryResults("ae38fb09ec8b6020a9478edc62a271ca");
+         expect(searchController.tableView).toEqual(searchResultsResponse.data.queryJSON.tableView);
+         expect(searchController.filters.selectedPrimaryFilter.headers).toEqual(searchResultsResponse.data.resultData.headers);
+         expect(searchResultsResponse.data.queryJSON.key).toEqual('deaths');
+         deferred.resolve(searchResultsResponse);
+    }));
+
+    it('should generate hashcode for the default query if no queryID found', inject(function(searchFactory) {
+        var stateParams = {
+            queryID: '',
+            primaryFilterKey: 'deaths'
+        };
+
+        spyOn(searchFactory, "generateHashCode").and.returnValue({
+            then: function(){}
+        });
+        var searchController= $controller('SearchController',
+            {
+                $scope:$scope,
+                searchFactory: searchFactory,
+                $stateParams: stateParams
+            });
+
+        expect(searchFactory.generateHashCode).toHaveBeenCalled();
+    }));
+
+    it('switch to YRBS Basic filter', inject(function(searchFactory) {
+
+        var searchController= $controller('SearchController',
+            {
+                $scope:$scope,
+                searchFactory: searchFactory,
+
+            });
+        spyOn(searchController, 'search');
+        searchController.filters.selectedPrimaryFilter = searchController.filters.search[1]; //select YRBS
+        searchController.switchToYRBSBasic();
+        expect(searchController.filters.selectedPrimaryFilter.showBasicSearchSideMenu).toEqual(true);
+        expect(searchController.filters.selectedPrimaryFilter.sideFilters[0].filters.filterType).toEqual('radio');
+        expect(searchController.search).toHaveBeenCalledWith(true);
+
+    }));
+
+    it('switch to YRBS advanced filter', inject(function(searchFactory) {
+
+        var searchController= $controller('SearchController',
+            {
+                $scope:$scope,
+                searchFactory: searchFactory,
+
+            });
+        spyOn(searchController, 'search');
+        searchController.filters.selectedPrimaryFilter = searchController.filters.search[1]; //select YRBS
+        searchController.switchToYRBSAdvanced();
+        expect(searchController.filters.selectedPrimaryFilter.showBasicSearchSideMenu).toEqual(false);
+        expect(searchController.filters.selectedPrimaryFilter.sideFilters[0].filters.filterType).toEqual('checkbox');
+        expect(searchController.search).toHaveBeenCalledWith(true);
+
+    }));
 });

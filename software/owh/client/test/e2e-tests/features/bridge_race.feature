@@ -14,8 +14,9 @@ Feature: Bridge race filters
 
   Scenario: Default filter state
     Then I see "Yearly July 1st Estimates" as first option in sidebar filters
-    And  filter "Yearly July 1st Estimates" and option "All" selected
+    And  filter "Yearly July 1st Estimates" and option "2015" selected
     And  I see the data table with race, female, male and total table headers
+    And I see population count for "2015" option
 
   Scenario: Side filter collapse
     Then user sees side filter
@@ -49,6 +50,16 @@ Feature: Bridge race filters
     Then I see expanded graph in modal dialog
     And  I see expand button is changed to collapse button
     When I click on collapse button
-    #TODO @Ashok fix this
-    #Then I see graph is collapsed
-    #And I see an Expand button on the top right corner
+    Then I see graph is collapsed
+    And I see an Expand button on the top right corner
+
+  Scenario: Show line graph
+    When I remove default filters
+    And I select year filter
+    Then I should see line graph
+
+  Scenario: State filter search box
+    When I expands the State filter
+    Then I see the search box
+    When I begins to type a state name "alas" in the search box
+    Then I see results dynamically populate with the states matching the "alas"

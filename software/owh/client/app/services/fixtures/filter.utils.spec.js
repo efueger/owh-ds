@@ -17,6 +17,8 @@ describe('filterUtils', function(){
             expect(bridgeRaceFilters[1].key).toEqual('sex');
             expect(bridgeRaceFilters[2].key).toEqual('agegroup');
             expect(bridgeRaceFilters[3].key).toEqual('race');
+            expect(bridgeRaceFilters[5].autoCompleteOptions[0].title).toEqual('Alabama');
+            expect(bridgeRaceFilters[5].autoCompleteOptions[1].title).toEqual('Alaska');
         });
 
         it('should provide me correct slider intervals', function () {
@@ -26,6 +28,17 @@ describe('filterUtils', function(){
 
             var ageGroupFilter = utilService.findByKeyAndValue(bridgeRaceFilters, 'key', 'agegroup');
             expect(ageGroupFilter.value).toEqual(['5-9 years', '10-14 years', '15-19 years']);
+        });
+    });
+
+    describe('test natality filters', function() {
+        it('when I call getNatalityDataFilters, I should get natality filters', function () {
+            var bridgeRaceFilters = filterUtils.getNatalityDataFilters();
+            expect(bridgeRaceFilters[0].key).toEqual('hispanic_origin');
+            expect(bridgeRaceFilters[1].key).toEqual('mother_age');
+            expect(bridgeRaceFilters[2].key).toEqual('mother_race');
+            expect(bridgeRaceFilters[3].key).toEqual('marital_status');
+            expect(bridgeRaceFilters[4].key).toEqual('mother_education');
         });
     });
 });

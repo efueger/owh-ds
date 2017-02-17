@@ -1,6 +1,115 @@
 {
   "data": {
     "resultData":{
+      "headers": {
+        "rowHeaders": [
+          {
+            "key": "race",
+            "title": "label.filter.race",
+            "queryKey": "race",
+            "primary": false,
+            "defaultGroup": "column",
+            "groupBy": "row",
+            "autoCompleteOptions": [
+              {
+                "key": "White",
+                "title": "White"
+              },
+              {
+                "key": "Black",
+                "title": "Black or African American"
+              },
+              {
+                "key": "American Indian",
+                "title": "American Indian"
+              },
+              {
+                "key": "Asian or Pacific Islander",
+                "title": "Asian or Pacific Islander"
+              }
+            ],
+            "value": [],
+            "allChecked": true
+          }
+        ],
+        "columnHeaders": [
+          {
+            "key": "sex",
+            "title": "label.filter.gender",
+            "queryKey": "sex",
+            "primary": false,
+            "value": [],
+            "defaultGroup": "column",
+            "groupBy": "column",
+            "autoCompleteOptions": [
+              {
+                "key": "Female",
+                "title": "Female"
+              },
+              {
+                "key": "Male",
+                "title": "Male"
+              }
+            ],
+            "allChecked": true
+          }
+        ],
+        "chartHeaders": [
+          {
+            "headers": [
+              {
+                "key": "sex",
+                "title": "label.filter.gender",
+                "queryKey": "sex",
+                "primary": false,
+                "value": [],
+                "defaultGroup": "column",
+                "groupBy": "column",
+                "autoCompleteOptions": [
+                  {
+                    "key": "Female",
+                    "title": "Female"
+                  },
+                  {
+                    "key": "Male",
+                    "title": "Male"
+                  }
+                ],
+                "allChecked": true
+              },
+              {
+                "key": "race",
+                "title": "label.filter.race",
+                "queryKey": "race",
+                "primary": false,
+                "defaultGroup": "column",
+                "groupBy": "row",
+                "autoCompleteOptions": [
+                  {
+                    "key": "White",
+                    "title": "White"
+                  },
+                  {
+                    "key": "Black",
+                    "title": "Black or African American"
+                  },
+                  {
+                    "key": "American Indian",
+                    "title": "American Indian"
+                  },
+                  {
+                    "key": "Asian or Pacific Islander",
+                    "title": "Asian or Pacific Islander"
+                  }
+                ],
+                "value": [],
+                "allChecked": true
+              }
+            ],
+            "chartType": "verticalBar"
+          }
+        ]
+      },
       "nested":{
         "table": {
           "race": [
@@ -116,6 +225,7 @@
       },
       "chartData":[
         [
+          {},
           {
             "data": [
               {
@@ -209,115 +319,93 @@
         ]
       ]
     },
-    "headers": {
-      "rowHeaders": [
-        {
-          "key": "race",
-          "title": "label.filter.race",
-          "queryKey": "race",
-          "primary": false,
-          "defaultGroup": "column",
-          "groupBy": "row",
-          "autoCompleteOptions": [
+    "sideFilterResults":{
+      "data":{
+        "simple":{
+          "current_year": [
             {
-              "key": "White",
-              "title": "White"
+              "name": "2000",
+              "bridge_race": 282162411
             },
             {
-              "key": "Black",
-              "title": "Black or African American"
+              "name": "2001",
+              "bridge_race": 284968955
             },
             {
-              "key": "American Indian",
-              "title": "American Indian"
+              "name": "2002",
+              "bridge_race": 287625193
             },
             {
-              "key": "Asian or Pacific Islander",
-              "title": "Asian or Pacific Islander"
+              "name": "2003",
+              "bridge_race": 290107933
             }
           ],
-          "value": [],
-          "allChecked": true
-        }
-      ],
-      "columnHeaders": [
-        {
-          "key": "sex",
-          "title": "label.filter.gender",
-          "queryKey": "sex",
-          "primary": false,
-          "value": [],
-          "defaultGroup": "column",
-          "groupBy": "column",
-          "autoCompleteOptions": [
+          "race": [
             {
-              "key": "Female",
-              "title": "Female"
+              "name": "American Indian",
+              "bridge_race": 61777509
             },
             {
-              "key": "Male",
-              "title": "Male"
+              "name": "Asian or Pacific Islander",
+              "bridge_race": 0
             }
           ],
-          "allChecked": true
-        }
-      ],
-      "chartHeaders": [
-        {
-          "headers": [
+          "ethnicity": [
             {
-              "key": "sex",
-              "title": "label.filter.gender",
-              "queryKey": "sex",
-              "primary": false,
-              "value": [],
-              "defaultGroup": "column",
-              "groupBy": "column",
-              "autoCompleteOptions": [
-                {
-                  "key": "Female",
-                  "title": "Female"
-                },
-                {
-                  "key": "Male",
-                  "title": "Male"
-                }
-              ],
-              "allChecked": true
+              "name": "Hispanic",
+              "bridge_race": 745898226
             },
             {
-              "key": "race",
-              "title": "label.filter.race",
-              "queryKey": "race",
-              "primary": false,
-              "defaultGroup": "column",
-              "groupBy": "row",
-              "autoCompleteOptions": [
-                {
-                  "key": "White",
-                  "title": "White"
-                },
-                {
-                  "key": "Black",
-                  "title": "Black or African American"
-                },
-                {
-                  "key": "American Indian",
-                  "title": "American Indian"
-                },
-                {
-                  "key": "Asian or Pacific Islander",
-                  "title": "Asian or Pacific Islander"
-                }
-              ],
-              "value": [],
-              "allChecked": true
+              "name": "Non-Hispanic",
+              "bridge_race": 4089686736
             }
           ],
-          "chartType": "verticalBar"
+          "sex": [
+            {
+              "name": "Female",
+              "bridge_race": 2458763697
+            },
+            {
+              "name": "Male",
+              "bridge_race": 2376821265
+            }
+          ],
+          "state": [
+            {
+              "name": "01",
+              "bridge_race": 74720167
+            },
+            {
+              "name": "02",
+              "bridge_race": 11001501
+            },
+            {
+              "name": "04",
+              "bridge_race": 97270350
+            },
+            {
+              "name": "05",
+              "bridge_race": 45486920
+            }
+          ],
+          "agegroup": [
+            {
+              "name": "0-4 years",
+              "bridge_race": 317711228
+            },
+            {
+              "name": "10-14 years",
+              "bridge_race": 334186315
+            },
+            {
+              "name": "15-19 years",
+              "bridge_race": 341427822
+            }
+          ]
         }
-      ]
+      }
     }
+
   },
   "pagination":{
     "total": 70176

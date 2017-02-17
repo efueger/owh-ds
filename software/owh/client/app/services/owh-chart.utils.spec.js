@@ -2,13 +2,13 @@
 
 /*group of common test goes here as describe*/
 describe('chart utils', function(){
-    var chartUtils, shareUtils, closeDeferred, givenModalDefaults, ModalService, $rootScope, $scope, controllerProvider,
+    var chartUtils, shareUtils, searchFactory, diferred, closeDeferred, givenModalDefaults, ModalService, $rootScope, $scope, controllerProvider,
         filter1, filter2, filter3, data1, data2, primaryFilter, postFixToTooltip,
         horizontalStackExpectedResult1, horizontalStackExpectedResult2,
         verticalStackExpectedResult, horizontalBarExpectedResult,
         verticalBarExpectedResult1, verticalBarExpectedResult2,
-        horizontalStackNoDataExpectedResult, verticalBarNoDataExpectedResult,
-        pieChartData, pieChartExpectedResult, pieChartWithpostFixToTooltipExpectedResult,
+        horizontalStackNoDataExpectedResult, verticalBarNoDataExpectedResult, lineChartFilter, lineChartExpectedResult,
+        lineChartData, pieChartData, pieChartExpectedResult, pieChartWithpostFixToTooltipExpectedResult,
         expandedGraphExpectedResult, elementVisible, thenFunction, $httpBackend, $templateCache;
 
     beforeEach(module('owh'));
@@ -39,12 +39,14 @@ describe('chart utils', function(){
 
     beforeEach(inject(function ($injector, _$rootScope_, $controller, _$q_, _$templateCache_) {
         closeDeferred = _$q_.defer();
+        diferred = _$q_.defer();
         controllerProvider = $controller;
         $rootScope  = _$rootScope_;
         $scope = $rootScope.$new();
         $templateCache = _$templateCache_;
         chartUtils = $injector.get('chartUtilService');
         shareUtils = $injector.get('shareUtilService');
+        searchFactory = $injector.get('searchFactory');
         $httpBackend = $injector.get('$httpBackend');
         filter1 = __fixtures__['app/services/fixtures/owh.chart.utils/filter1'];
         filter2 = __fixtures__['app/services/fixtures/owh.chart.utils/filter2'];
@@ -54,7 +56,12 @@ describe('chart utils', function(){
         data2 = __fixtures__['app/services/fixtures/owh.chart.utils/data2'];
 
         pieChartData = __fixtures__['app/services/fixtures/owh.chart.utils/pieChartData'];
+
         primaryFilter = {"key":"deaths", "chartAxisLabel":"Deaths"};
+
+        lineChartFilter =  __fixtures__['app/services/fixtures/owh.chart.utils/lineChartFilter'];
+        lineChartData = __fixtures__['app/services/fixtures/owh.chart.utils/lineChartData'];
+        lineChartExpectedResult = __fixtures__['app/services/fixtures/owh.chart.utils/lineChartExpectedResults'];
 
         horizontalStackExpectedResult1 = __fixtures__['app/services/fixtures/owh.chart.utils/horizontalStackExpectedResult1'];
         horizontalStackExpectedResult2 = __fixtures__['app/services/fixtures/owh.chart.utils/horizontalStackExpectedResult2'];
@@ -80,6 +87,8 @@ describe('chart utils', function(){
 
         $httpBackend.whenGET('app/i18n/messages-en.json').respond({ hello: 'World' });
         $httpBackend.whenGET('app/partials/marker-template.html').respond( $templateCache.get('app/partials/marker-template.html'));
+        $httpBackend.whenGET('/getFBAppID').respond({data: { fbAppID: 1111111111111111}});
+        $httpBackend.whenGET('/yrbsQuestionsTree/2015').respond({data: { }});
     }));
 
     it('test chart utils horizontalStack', function () {
@@ -145,6 +154,25 @@ describe('chart utils', function(){
     it('test chart utils verticalBar without gender filter', function () {
         var result = chartUtils.verticalBar(filter2, filter3, data2, primaryFilter);
         expect(JSON.stringify(result)).toEqual(JSON.stringify(verticalBarExpectedResult2));
+    });
+
+    it('test chart utils lineChart', function () {
+        var result = chartUtils.lineChart(lineChartData, lineChartFilter, {key:'current_year'});
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(lineChartExpectedResult));
+        result.data();
+        expect(result.options.chart.x({x: 'x label'})).toEqual('x label');
+        expect(result.options.chart.y({y: 'y value'})).toEqual('y value');
+
+        expect(result.options.chart.xAxis.tickFormat(1234)).toEqual(null);
+
+        expect(result.options.chart.yAxis.tickFormat(1234)).toEqual(null);
+        console.log(result.options.chart.tooltip.contentGenerator({value: 1234, series: [{color: 'red', value: 1234}]}));
+        expect(result.options.chart.tooltip.contentGenerator({value: 1234, series: [{color: 'red', value: 1234}]})).toEqual("<div class='usa-grid-full'<div class='usa-width-one-whole' style='padding: 10px; font-weight: bold'>1234</div><div class='usa-width-one-whole nvtooltip-value'><i class='fa fa-square' style='color:red'></i>&nbsp;&nbsp;&nbsp;undefined&nbsp;&nbsp;&nbsp;1,234</div></div>");
+
+    });
+
+    it('test showExpandedGraph for lineChart', function () {
+        chartUtils.showExpandedGraph([lineChartExpectedResult]);
     });
 
     it('test chart utils pieChart', function () {
@@ -218,6 +246,32 @@ describe('chart utils', function(){
         expect(ctrl.graphSubTitle).toEqual('graph sub title');
         ctrl.showFbDialog();
         expect(shareUtils.shareOnFb).toHaveBeenCalled();
+    });
+
+    it('test chart utils showExpandedGraph for getChartName', function () {
+        var ctrl = controllerProvider(givenModalDefaults.controller,
+            { $scope: $scope, close: closeDeferred.promise});
+        var chartName = ctrl.getChartName(['yrbsSex','yrbsGrade']);
+        expect(chartName).toEqual('Sex and Grade');
+
+        var chartName = ctrl.getChartName(['yrbsGrade']);
+        expect(chartName).toEqual('Grade');
+    });
+
+    it('test chart utils showExpandedGraph for getYrbsChartData', function () {
+
+        spyOn(searchFactory, 'prepareQuestionChart').and.returnValue(diferred.promise);
+
+        var ctrl = controllerProvider(givenModalDefaults.controller,
+            { $scope: $scope, close: closeDeferred.promise, shareUtilService: shareUtils, searchFactory: searchFactory});
+
+        ctrl.primaryFilters = {key:"mental health", value:[]};
+        ctrl.selectedQuestion = {key:'Currently smoked', qKey:'qbe23', 'title':"Currently smoked"};
+
+        ctrl.getYrbsChartData(['yrbsSex','yrbsGrade']);
+
+        diferred.resolve({chartData:horizontalBarExpectedResult});
+        $scope.$apply()
     });
 
 });

@@ -46,7 +46,7 @@ var populateDataWithMappings = function(resp, countKey, countQueryKey) {
                 result.data.nested.maps[dataKey]= aggData[dataKey];
                 // console.log("done");
             } else {
-                result.data.simple[key] = populateAggregatedData(data[key].buckets, countKey);
+                result.data.simple[key] = populateAggregatedData(data[key].buckets, countKey, undefined, undefined, countQueryKey);
             }
         });
     }
@@ -74,13 +74,22 @@ var populateAggregatedData = function(buckets, countKey, splitIndex, map, countQ
 
                 }
             }
+            if(countKey === 'bridge_race') {
+                aggregation = {name: buckets[index]['key']};
+                if(buckets[index]['group_count_pop']) {
+                    aggregation[countKey] = applySuppressionRules('pop', buckets[index]['group_count_pop'].value);
+                } else {
+                    aggregation[countKey] = applySuppressionRules('pop', sumBucketProperty(buckets[index][innerObjKey], 'group_count_pop'));
+                }
+            }
             if( innerObjKey ) {
                 //if you want to split group key by regex
                 if (regex && (regex.test('group_table_') || regex.test('group_chart_'))) {
                     aggregation[innerObjKey.split(regex)[1]] =  populateAggregatedData(buckets[index][innerObjKey].buckets,
                         countKey, splitIndex, map, countQueryKey, regex);
                 } else {//by default split group key by underscore and retrieve key based on index
-                    aggregation[innerObjKey.split("_")[splitIndex]] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex, map, countQueryKey);
+                    //adding slice and join because some keys are delimited by underscore so need to be reconstructed
+                    aggregation[innerObjKey.split("_").slice(splitIndex).join('_')] =  populateAggregatedData(buckets[index][innerObjKey].buckets, countKey, splitIndex, map, countQueryKey);
                 }
                 //check if total should be suppressed
                 if(countKey === 'deaths' && isMortalityTotalSuppressed(buckets[index][innerObjKey].buckets)) {
@@ -277,6 +286,8 @@ var mergeAgeAdjustedRates = function(mort, rates) {
     var keyMap = {
         'Black': 'Black or African American',
         'American Indian': 'American Indian or Alaska Native',
+        'Hispanic': 'Hispanic or Latino',
+        'Non-Hispanic': 'Not Hispanic or Latino'
     };
 
     for(var key in mort) {

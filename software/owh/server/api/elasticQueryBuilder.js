@@ -46,7 +46,7 @@ var prepareAggregationQuery = function(aggregations, countQueryKey) {
     //build array for
     if(aggregations['simple']) {
         for (var i = 0; i < aggregations['simple'].length; i++) {
-            elasticQuery.aggregations = merge(elasticQuery.aggregations, generateAggregationQuery(aggregations['simple'][i]));
+            elasticQuery.aggregations = merge(elasticQuery.aggregations, generateAggregationQuery(aggregations['simple'][i], undefined, countQueryKey));
         }
     }
     if (aggregations['nested']) {
@@ -60,7 +60,7 @@ var prepareAggregationQuery = function(aggregations, countQueryKey) {
         }
         if (aggregations['nested']['maps']) {
             for(var index in aggregations['nested']['maps']) {
-                elasticQuery.aggregations = merge(elasticQuery.aggregations, generateNestedAggQuery(aggregations['nested']['maps'][index], 'group_maps_' + index + '_'));
+                elasticQuery.aggregations = merge(elasticQuery.aggregations, generateNestedAggQuery(aggregations['nested']['maps'][index], 'group_maps_' + index + '_', countQueryKey, true));
             }
         }
     }
@@ -118,38 +118,6 @@ function getPopulationSumQuery() {
         }
     }
 }
-
-/**
- *
- * @param query
- * @param results
- * @param dataset
- * @param hashcode
- * @returns {{}}
- */
-var buildInsertQueryResultsQuery = function (query, results, dataset, hashcode, sideFilterResults) {
-    var insertQuery = {};
-    insertQuery.queryJSON = query;
-    insertQuery.resultJSON = results;
-    insertQuery.dataset = dataset;  //Find a way to get dataset value
-    //@TODO current data with yyy-mm-dd format
-    insertQuery.lastupdated = "2016-10-25";
-    insertQuery.queryID = hashcode;
-    insertQuery.sideFilterResults = sideFilterResults;
-    return insertQuery;
-};
-
-
-var buildSearchQueryResultsQuery = function(hashcode) {
-    var searchQuery = {
-        "query": {
-            "term": {
-                "queryID": hashcode
-            }
-        }
-    }
-    return searchQuery;
-};
 
 /**
  * Builds a search query
@@ -300,36 +268,37 @@ var isEmptyObject = function(obj) {
     return !Object.keys(obj).length;
 };
 
-function buildQueryForYRBS(primaryFilter, dontAddYearAgg) {
-    var result = buildAPIQuery(primaryFilter);
-    var apiQuery = result.apiQuery;
-    var headers = result.headers;
-    var resultFilter = headers.columnHeaders.length > 0 ? headers.columnHeaders[0] : headers.rowHeaders[0];
-    var resultAggregation = findByKeyAndValue(apiQuery.aggregations.nested.table, 'key', resultFilter.key);
-    resultAggregation.isPrimary = true;
-    apiQuery.dataKeys = findAllNotContainsKeyAndValue(resultFilter.autoCompleteOptions, 'isAllOption', true);
-    headers.columnHeaders.concat(headers.rowHeaders).forEach(function(eachFilter) {
-        var allValues = getValuesByKeyIncludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
-        if(eachFilter.key === resultFilter.key) {
-            if(apiQuery.query[eachFilter.queryKey]) {
-                apiQuery.query[eachFilter.queryKey].value = allValues;
-            }
-        } else if(eachFilter.key !== resultFilter.key && eachFilter.key !== 'question') {
-            if(!apiQuery.query[eachFilter.queryKey] || allValues.indexOf(apiQuery.query[eachFilter.queryKey].value) >= 0) {
-                apiQuery.query[eachFilter.queryKey] = getFilterQuery(eachFilter);
-                apiQuery.query[eachFilter.queryKey].value = getValuesByKeyExcludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
-            }
-        }
-    });
-    apiQuery.query.primary_filter = getFilterQuery({key: 'primary_filter', queryKey: 'primary_filter', value: resultFilter.queryKey, primary: false});
-    var yearFilter = findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
-    if(yearFilter.value.length != 1 && !dontAddYearAgg) {
-        headers.columnHeaders.push(yearFilter);
-        apiQuery.aggregations.nested.table.push(getGroupQuery(yearFilter));
-    }
-    result.resultFilter = resultFilter;
-    return result;
-}
+// Obsolete code
+// function buildQueryForYRBS(primaryFilter, dontAddYearAgg) {
+//     var result = buildAPIQuery(primaryFilter);
+//     var apiQuery = result.apiQuery;
+//     var headers = result.headers;
+//     var resultFilter = headers.columnHeaders.length > 0 ? headers.columnHeaders[0] : headers.rowHeaders[0];
+//     var resultAggregation = findByKeyAndValue(apiQuery.aggregations.nested.table, 'key', resultFilter.key);
+//     resultAggregation.isPrimary = true;
+//     apiQuery.dataKeys = findAllNotContainsKeyAndValue(resultFilter.autoCompleteOptions, 'isAllOption', true);
+//     headers.columnHeaders.concat(headers.rowHeaders).forEach(function(eachFilter) {
+//         var allValues = getValuesByKeyIncludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
+//         if(eachFilter.key === resultFilter.key) {
+//             if(apiQuery.query[eachFilter.queryKey]) {
+//                 apiQuery.query[eachFilter.queryKey].value = allValues;
+//             }
+//         } else if(eachFilter.key !== resultFilter.key && eachFilter.key !== 'question') {
+//             if(!apiQuery.query[eachFilter.queryKey] || allValues.indexOf(apiQuery.query[eachFilter.queryKey].value) >= 0) {
+//                 apiQuery.query[eachFilter.queryKey] = getFilterQuery(eachFilter);
+//                 apiQuery.query[eachFilter.queryKey].value = getValuesByKeyExcludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
+//             }
+//         }
+//     });
+//     apiQuery.query.primary_filter = getFilterQuery({key: 'primary_filter', queryKey: 'primary_filter', value: resultFilter.queryKey, primary: false});
+//     var yearFilter = findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
+//     if(yearFilter.value.length != 1 && !dontAddYearAgg) {
+//         headers.columnHeaders.push(yearFilter);
+//         apiQuery.aggregations.nested.table.push(getGroupQuery(yearFilter));
+//     }
+//     result.resultFilter = resultFilter;
+//     return result;
+// }
 
 /**
  * Finds and returns the first object in array of objects by using the key and value
@@ -485,7 +454,16 @@ function getGroupQuery(filter/*, isPrimary*/) {
 }
 
 function buildFilterQuery(filter) {
-    if( isValueNotEmpty(filter.value) && filter.value.length !== getAutoCompleteOptionsLength(filter)) {
+    if(filter.key === 'question' && filter.value.length == 0){
+        filter.value = [];
+        filter.autoCompleteOptions.forEach( function(q) {
+            if(q.qkey.startsWith('qn')) {
+                filter.value.push(q.qkey);
+            }
+        });
+        return getFilterQuery(filter);
+    }
+    else if( isValueNotEmpty(filter.value) && filter.value.length !== getAutoCompleteOptionsLength(filter)) {
         return getFilterQuery(filter);
     }
     return false;
@@ -512,7 +490,10 @@ function getAutoCompleteOptionsLength(filter) {
     if(filter.autoCompleteOptions) {
         filter.autoCompleteOptions.forEach(function(option) {
             if(option.options) {
-                length--;
+                //if value has group option, then don't subtract from calculated length
+                if(filter.value.indexOf(option.key) < 0) {
+                    length--;
+                }
                 length += option.options.length;
             }
         });
@@ -569,7 +550,203 @@ var chartMappings = {
     "current_year&ethnicity":"horizontalBar",
     "current_year&agegroup":"horizontalBar",
     "current_year&state":"horizontalBar",
-    "current_year&region":"verticalBar"
+    "current_year&region":"verticalBar",
+    //natality
+    "hispanic_origin&mother_race": "horizontalBar",
+    "sex&mother_race": "horizontalBar",
+    "hispanic_origin&marital_status": "horizontalBar",
+    "mother_race&marital_status": "horizontalBar",
+    "mother_race&mother_age": "horizontalBar",
+    "hispanic_origin&mother_age": "horizontalBar",
+    "marital_status&mother_age": "horizontalBar",
+    "mother_race&mother_education": "horizontalBar",
+    "hispanic_origin&mother_education": "horizontalBar",
+    "marital_status&mother_education": "horizontalBar",
+    "mother_age&mother_education": "horizontalBar",
+    "dob_yy&marital_status": "horizontalBar",
+    "dob_yy&hispanic_origin": "horizontalBar",
+    "dob_yy&mother_race": "horizontalBar",
+    "dob_yy&mother_age": "horizontalBar",
+    "dob_yy&mother_education": "horizontalBar",
+    "hispanic_origin&dob_mm": "horizontalBar",
+    "mother_race&dob_mm": "horizontalBar",
+    "marital_statuc&dob_mm": "horizontalStack",
+    "mother_age&dob_mm": "horizontalStack",
+    "mother_education&dob_mm": "horizontalStack",
+    "dob_yy&dob_mm": "horizontalBar",
+    "hispanic_origin&dob_wk": "horizontalStack",
+    "mother_race&dob_wk": "horizontalStack",
+    "marital_status&dob_wk": "horizontalStack",
+    "mother_age&dob_wk": "horizontalStack",
+    "mother_education&dob_wk": "horizontalStack",
+    "dob_yy&dob_wk": "horizontalStack",
+    "dob_mm&dob_wk": "horizontalStack",
+    "sex&hispanic_origin": "horizontalStack",
+    "sex&marital_status": "horizontalBar",
+    "sex&mother_age": "horizontalBar",
+    "sex&mother_education": "horizontalBar",
+    "dob_yy&sex": "horizontalBar",
+    "sex&dob_mm": "horizontalBar",
+    "sex&dob_wk": "horizontalBar",
+    //insert gestation age here
+    "hispanic_origin&prenatal_care": "lineChart",
+    "mother_race&prenatal_care": "horizontalBar",
+    "marital_status&prenatal_care": "horizontalBar",
+    "mother_age&prenatal_care": "horizontalBar",
+    "mother_education&prenatal_care": "horizontalBar",
+    "dob_yy&prenatal_care": "horizontalBar",
+    "dob_mm&prenatal_care": "horizontalBar",
+    "dob_wk&prenatal_care": "horizontalBar",
+    "sex&prenatal_care": "horizontalBar",
+
+    "hispanic_origin&birth_weight": "horizontalStack",
+    "mother_race&birth_weight": "horizontalStack",
+    "marital_status&birth_weight": "horizontalStack",
+    "mother_age&birth_weight": "horizontalStack",
+    "mother_education&birth_weight": "horizontalStack",
+    "dob_yy&birth_weight": "horizontalStack",
+    "dob_mm&birth_weight": "horizontalStack",
+    "dob_wk&birth_weight": "horizontalStack",
+    "sex&birth_weight": "horizontalStack",
+    "prenatal_care&birth_weight": "horizontalStack",
+
+    "hispanic_origin&birth_plurality": "horizontalStack",
+    "mother_race&birth_plurality": "horizontalStack",
+    "marital_status&birth_plurality": "horizontalStack",
+    "mother_age&birth_plurality": "horizontalStack",
+    "mother_education&birth_plurality": "horizontalStack",
+    "dob_yy&birth_plurality": "horizontalStack",
+    "dob_mm&birth_plurality": "horizontalStack",
+    "dob_wk&birth_plurality": "horizontalStack",
+    "sex&birth_plurality": "horizontalStack",
+    "prenatal_care&birth_plurality": "horizontalStack",
+    "birth_weight&birth_plurality": "horizontalStack",
+
+    "hispanic_origin&live_birth": "horizontalStack",
+    "mother_race&live_birth": "horizontalStack",
+    "marital_status&live_birth": "horizontalStack",
+    "mother_age&live_birth": "horizontalStack",
+    "mother_education&live_birth": "horizontalStack",
+    "dob_yy&live_birth": "horizontalStack",
+    "dob_mm&live_birth": "horizontalStack",
+    "dob_wk&live_birth": "horizontalStack",
+    "sex&live_birth": "horizontalStack",
+    "prenatal_care&live_birth": "horizontalStack",
+    "birth_weight&live_birth": "horizontalStack",
+    "birth_plurality&live_birth": "horizontalStack",
+
+    "hispanic_origin&birth_place": "horizontalStack",
+    "mother_race&birth_place": "horizontalStack",
+    "marital_status&birth_place": "horizontalStack",
+    "mother_age&birth_place": "horizontalStack",
+    "mother_education&birth_place": "horizontalStack",
+    "dob_yy&birth_place": "horizontalStack",
+    "dob_mm&birth_place": "horizontalStack",
+    "dob_wk&birth_place": "horizontalStack",
+    "sex&birth_place": "horizontalStack",
+    "prenatal_care&birth_place": "horizontalStack",
+    "birth_weight&birth_place": "horizontalStack",
+    "birth_plurality&birth_place": "horizontalStack",
+    "live_birth&birth_place": "horizontalStack",
+
+    "hispanic_origin&delivery_method": "horizontalStack",
+    "mother_race&delivery_method": "horizontalStack",
+    "marital_status&delivery_method": "horizontalStack",
+    "mother_age&delivery_method": "horizontalStack",
+    "mother_education&delivery_method": "horizontalStack",
+    "dob_yy&delivery_method": "horizontalStack",
+    "dob_mm&delivery_method": "horizontalStack",
+    "dob_wk&delivery_method": "horizontalStack",
+    "sex&delivery_method": "horizontalStack",
+    "prenatal_care&delivery_method": "horizontalStack",
+    "birth_weight&delivery_method": "horizontalStack",
+    "birth_plurality&delivery_method": "horizontalStack",
+    "birth_place&delivery_method": "horizontalStack",
+
+    "hispanic_origin&medical_attendant": "horizontalStack",
+    "mother_race&medical_attendant": "horizontalStack",
+    "marital_status&medical_attendant": "horizontalStack",
+    "mother_age&medical_attendant": "horizontalStack",
+    "mother_education&medical_attendant": "horizontalStack",
+    "dob_yy&medical_attendant": "horizontalStack",
+    "dob_mm&medical_attendant": "horizontalStack",
+    "dob_wk&medical_attendant": "horizontalStack",
+    "sex&medical_attendant": "horizontalStack",
+    "prenatal_care&medical_attendant": "horizontalStack",
+    "birth_weight&medical_attendant": "horizontalStack",
+    "birth_plurality&medical_attendant": "horizontalStack",
+    "birth_place&medical_attendant": "horizontalStack",
+    "delivery_method&medical_attendant": "horizontalStack",
+
+    "hispanic_origin&chronic_hypertension": "horizontalStack",
+    "mother_race&chronic_hypertension": "horizontalStack",
+    "marital_status&chronic_hypertension": "horizontalStack",
+    "mother_age&chronic_hypertension": "horizontalStack",
+    "mother_education&chronic_hypertension": "horizontalStack",
+    "dob_yy&chronic_hypertension": "horizontalStack",
+    "dob_mm&chronic_hypertension": "horizontalStack",
+    "dob_wk&chronic_hypertension": "horizontalStack",
+    "sex&chronic_hypertension": "horizontalStack",
+    "prenatal_care&chronic_hypertension": "horizontalStack",
+    "birth_weight&chronic_hypertension": "horizontalStack",
+    "birth_plurality&chronic_hypertension": "horizontalStack",
+    "birth_place&chronic_hypertension": "verticalStack",
+    "delivery_method&chronic_hypertension": "horizontalStack",
+    "medical_attendant&chronic_hypertension": "horizontalStack",
+
+    "hispanic_origin&diabetes": "horizontalStack",
+    "mother_race&diabetes": "horizontalStack",
+    "marital_status&diabetes": "horizontalStack",
+    "mother_age&diabetes": "horizontalStack",
+    "mother_education&diabetes": "horizontalStack",
+    "dob_yy&diabetes": "horizontalStack",
+    "dob_mm&diabetes": "horizontalStack",
+    "dob_wk&diabetes": "horizontalStack",
+    "sex&diabetes": "horizontalStack",
+    "prenatal_care&diabetes": "horizontalStack",
+    "birth_weight&diabetes": "horizontalStack",
+    "birth_plurality&diabetes": "horizontalStack",
+    "birth_place&diabetes": "horizontalStack",
+    "delivery_method&diabetes": "horizontalStack",
+    "medical_attendant&diabetes": "horizontalStack",
+    "chronic_hypertension&diabetes": "horizontalStack",
+
+    "hispanic_origin&eclampsia": "horizontalStack",
+    "mother_race&eclampsia": "horizontalStack",
+    "marital_status&eclampsia": "horizontalStack",
+    "mother_age&eclampsia": "horizontalStack",
+    "mother_education&eclampsia": "horizontalStack",
+    "dob_yy&eclampsia": "horizontalStack",
+    "dob_mm&eclampsia": "horizontalStack",
+    "dob_wk&eclampsia": "horizontalStack",
+    "sex&eclampsia": "horizontalStack",
+    "prenatal_care&eclampsia": "horizontalStack",
+    "birth_weight&eclampsia": "horizontalStack",
+    "birth_plurality&eclampsia": "horizontalStack",
+    "birth_place&eclampsia": "horizontalStack",
+    "delivery_method&eclampsia": "horizontalStack",
+    "medical_attendant&eclampsia": "horizontalStack",
+    "chronic_hypertension&eclampsia": "horizontalStack",
+    "diabetes&eclampsia": "horizontalStack",
+
+    "hispanic_origin&tobacco_use": "horizontalStack",
+    "mother_race&tobacco_use": "horizontalStack",
+    "marital_status&tobacco_use": "horizontalStack",
+    "mother_age&tobacco_use": "horizontalStack",
+    "mother_education&tobacco_use": "horizontalStack",
+    "dob_yy&tobacco_use": "horizontalStack",
+    "dob_mm&tobacco_use": "horizontalStack",
+    "dob_wk&tobacco_use": "horizontalStack",
+    "sex&tobacco_use": "horizontalStack",
+    "prenatal_care&tobacco_use": "horizontalStack",
+    "birth_weight&tobacco_use": "horizontalStack",
+    "birth_plurality&tobacco_use": "horizontalStack",
+    "birth_place&tobacco_use": "horizontalStack",
+    "delivery_method&tobacco_use": "horizontalStack",
+    "medical_attendant&tobacco_use": "horizontalStack",
+    "chronic_hypertension&tobacco_use": "horizontalStack",
+    "diabetes&tobacco_use": "horizontalStack",
+    "eclampsia&tobacco_use": "horizontalStack"
 };
 
 function prepareMapAggregations() {
@@ -606,11 +783,10 @@ function addCountsToAutoCompleteOptions(primaryFilter) {
     //}
     return apiQuery;
 }
+
 module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;
-module.exports.buildInsertQueryResultsQuery = buildInsertQueryResultsQuery;
-module.exports.buildSearchQueryResultsQuery = buildSearchQueryResultsQuery;
 module.exports.buildAPIQuery = buildAPIQuery;
-module.exports.buildQueryForYRBS = buildQueryForYRBS;
+// module.exports.buildQueryForYRBS = buildQueryForYRBS;
 module.exports.addCountsToAutoCompleteOptions = addCountsToAutoCompleteOptions;

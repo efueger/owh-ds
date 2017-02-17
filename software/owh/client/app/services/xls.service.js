@@ -13,7 +13,8 @@
             getSheetArrayFromMixedTable: getSheetArrayFromMixedTable,
             getCSVFromSheet: getCSVFromSheet,
             exportCSVFromMixedTable: exportCSVFromMixedTable,
-            exportXLSFromMixedTable: exportXLSFromMixedTable
+            exportXLSFromMixedTable: exportXLSFromMixedTable,
+            getFilename: getFilename
         };
         return service;
 
@@ -218,6 +219,37 @@
         function getCSVFromSheet(sheet, colHeaders, rowHeaders) {
             var csv = XLSX.utils.sheet_to_csv(padSheetForCSV(sheet, colHeaders, rowHeaders));
             return csv;
+        }
+
+        function getFilename(selectedFilter) {
+            //get year range
+            var yearRange = '';
+            angular.forEach(selectedFilter.allFilters, function(filter) {
+                if(filter.key === 'year') {
+                    if(filter.value.length > 1) {
+                        var minYear = parseInt(filter.value[0], 10);
+                        var maxYear = parseInt(filter.value[0], 10);
+                        angular.forEach(filter.value, function(year) {
+                            var yearInt = parseInt(year, 10);
+                            if(yearInt < minYear) {
+                                minYear = yearInt;
+                            }
+                            if(yearInt > maxYear) {
+                                maxYear = yearInt;
+                            }
+                        });
+                        yearRange = minYear + '-' + maxYear;
+                    } else if(filter.value.length === 1) {
+                        //only one year selected
+                        yearRange = filter.value[0];
+                    } else {
+                        //use all if none selected
+                        yearRange = 'All';
+                    }
+
+                }
+            });
+            return selectedFilter.header + '_' + yearRange + '_Filtered';
         }
 
     }
