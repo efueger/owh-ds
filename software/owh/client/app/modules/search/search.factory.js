@@ -1580,84 +1580,104 @@
                     runOnFilterChange: true,
                     sideFilters:[
                         {
-                            filterGroup: false, collapse: true, allowGrouping: true,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'hispanic_origin')
-                        },
-                        {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_race')
-                        },
-                        {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'marital_status')
-                        },
-                        {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_age')
-                        },
-                        {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_education')
-                        },
-                        {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_yy')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_yy'),
+                            category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_mm')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_mm'),
+                            category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_wk')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_wk'),
+                            category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'sex')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'sex'),
+                            category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'prenatal_care')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'prenatal_care'),
+                            category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'birth_weight')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'birth_weight'),
+                            category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'birth_plurality')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'birth_plurality'),
+                            category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'live_birth')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'live_birth'),
+                            category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'birth_place')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'birth_place'),
+                            category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'delivery_method')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'delivery_method'),
+                            category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'medical_attendant')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'medical_attendant'),
+                            category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'chronic_hypertension')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_race'),
+                            category: "Maternal Characteristics"
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'hispanic_origin'),
+                            category: "Maternal Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'diabetes')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'marital_status'),
+                            category: "Maternal Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'eclampsia')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_age'),
+                            category: "Maternal Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'tobacco_use')
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_education'),
+                            category: "Maternal Characteristics"
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'chronic_hypertension'),
+                            category: "Maternal Risk Factors"
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'diabetes'),
+                            category: "Maternal Risk Factors"
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'eclampsia'),
+                            category: "Maternal Risk Factors"
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'tobacco_use'),
+                            category: "Maternal Risk Factors"
                         }
                     ]
                 }

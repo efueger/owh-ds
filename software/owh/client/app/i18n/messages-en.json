@@ -8,6 +8,8 @@
   "label.group.by.tooltip": "Select if you want to see this information as table rows or columns",
   "label.show.more": "+ {{showLength}} more",
   "label.hide.more": "- {{hideLength}} less",
+  "label.show.more.filters": "+ {{showLength}} more filters",
+  "label.hide.more.filters": "- {{hideLength}} less filters",
   "label.project.title": "OWH-Quick Health Data Online",
   "label.app.title.description": "OWH-Quick Health Data Online",
   "label.app.title.qhdo": "Health Information Gateway",
