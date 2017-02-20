@@ -238,7 +238,7 @@
             </li>
 
             <!--show hide/more filters of a category-->
-            <div ng-if="sideFilters.length > 1 && category != 'undefined'"
+            <div ng-if="sideFilters.length > 2 && category != 'undefined'"
                  class="padding-top-10 toggle-filter-link">
                 <a ng-show="!sfc.filters.selectedPrimaryFilter['cat'+$index]" class="custom-link show-more-{{$index}}"
                    translate="label.show.more.filters"
