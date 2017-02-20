@@ -34,11 +34,6 @@
         sfc.isOptionSelected = isOptionSelected;
         sfc.getShowHideOptionCount = getShowHideOptionCount;
 
-        console.log("******************************************************************************");
-        console.log(sfc.runOnFilterChange);
-        console.log("******************************************************************************");
-        //sfc.runOnFilterChange = sfc.filters.selectedPrimaryFilter.runOnFilterChange;
-
         function isOptionDisabled(group, option) {
             if(group.key === 'hispanicOrigin') {
                 //check if unknown is selected
