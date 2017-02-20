@@ -13,7 +13,7 @@
                 sort: '<',
                 showFilters: '<',
                 utilities: '<',
-                runOnFilterChange : "="
+                runOnFilterChange : "<"
             }
         });
 
