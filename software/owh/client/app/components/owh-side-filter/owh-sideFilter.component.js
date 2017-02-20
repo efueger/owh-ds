@@ -12,7 +12,8 @@
                 onFilter: '&',
                 sort: '<',
                 showFilters: '<',
-                utilities: '<'
+                utilities: '<',
+                runOnFilterChange : "="
             }
         });
 
@@ -32,7 +33,11 @@
         sfc.isOptionDisabled = isOptionDisabled;
         sfc.isOptionSelected = isOptionSelected;
         sfc.getShowHideOptionCount = getShowHideOptionCount;
-        sfc.runOnFilterChange = sfc.filters.selectedPrimaryFilter.runOnFilterChange;
+
+        console.log("******************************************************************************");
+        console.log(sfc.runOnFilterChange);
+        console.log("******************************************************************************");
+        //sfc.runOnFilterChange = sfc.filters.selectedPrimaryFilter.runOnFilterChange;
 
         function isOptionDisabled(group, option) {
             if(group.key === 'hispanicOrigin') {
