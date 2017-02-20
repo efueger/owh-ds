@@ -50,8 +50,12 @@
                 angular.forEach(response.data.queryJSON.sideFilters, function (filter, index) {
                     primaryFilter.sideFilters[index].filters.value = filter.filters.value;
                     primaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
-                    if(primaryFilter.sideFilters[index].filters.selectedNodes != undefined || filter.filters.selectedNodes != undefined ) {
+                    if(filter.filters.selectedNodes != undefined ) {
                         primaryFilter.sideFilters[index].filters.selectedNodes = filter.filters.selectedNodes;
+                    }
+                    //To un-select selected nodes when user go back from current page
+                    else if(primaryFilter.sideFilters[index].filters.selectedNodes != undefined) {
+                        primaryFilter.sideFilters[index].filters.selectedNodes.length = 0;
                     }
                 });
             }
