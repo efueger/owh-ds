@@ -410,5 +410,14 @@ var yrbsStepDefinitionsWrapper = function () {
     this.Then(/^the link "([^"]*)" should be disappear$/, function (arg1) {
         expect(element(by.cssContainingText('span', arg1)).isDisplayed()).to.eventually.equal(false);
     });
+
+    this.Then(/^Questions selected value should be "([^"]*)"$/, function (arg1) {
+        if(arg1 == "All") {
+            expect(element(by.id("allNodes")).getText()).to.eventually.contains(arg1);
+        }
+        else {
+            expect(element(by.id("selectedNodes")).getText()).to.eventually.contains(arg1);
+        }
+    });
 };
 module.exports = yrbsStepDefinitionsWrapper;

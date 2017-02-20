@@ -82,10 +82,10 @@
                                     ng-click="sfc.showModal(group, [group])"></button>
                         </label>
                         <div class="">
-                            <div ng-repeat="selectedNode in group.selectedNodes" >
+                            <div id="selectedNodes" ng-repeat="selectedNode in group.selectedNodes" >
                                 <span style="font-size: 13px" ng-bind="selectedNode.text"></span>
                             </div>
-                            <div ng-if="!group.selectedNodes || group.selectedNodes.length === 0" style="margin-bottom: 20px">
+                            <div id="allNodes" ng-if="!group.selectedNodes || group.selectedNodes.length === 0" style="margin-bottom: 20px">
                                 <span style="font-size: 13px">All</span>
                             </div>
                         </div>
