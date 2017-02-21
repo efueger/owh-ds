@@ -74,7 +74,6 @@ class CensusETL (ETL):
         self.loadDataSetMetaData('bridge_race', '2003', os.path.join(self.dataDirectory, 'data_mapping', 'icen_2000_09_y0004.json'))
         self.loadDataSetMetaData('bridge_race', '2004', os.path.join(self.dataDirectory, 'data_mapping', 'icen_2000_09_y0004.json'))
         self.loadDataSetMetaData('bridge_race', '2005', os.path.join(self.dataDirectory, 'data_mapping', 'icen_2000_09_y0509.json'))
-        self.loadDataSetMetaData('bridge_race', '2005', os.path.join(self.dataDirectory, 'data_mapping', 'icen_2000_09_y0509.json'))
         self.loadDataSetMetaData('bridge_race', '2006', os.path.join(self.dataDirectory, 'data_mapping', 'icen_2000_09_y0509.json'))
         self.loadDataSetMetaData('bridge_race', '2007', os.path.join(self.dataDirectory, 'data_mapping', 'icen_2000_09_y0509.json'))
         self.loadDataSetMetaData('bridge_race', '2008', os.path.join(self.dataDirectory, 'data_mapping', 'icen_2000_09_y0509.json'))

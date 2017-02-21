@@ -144,7 +144,7 @@ class ETL :
          metadataESConfig = {'host': self.config['elastic_search']['host'], 'port': self.config['elastic_search']['port'],
                              'index': 'owh_dsmetadata', 'type': 'dsmetadata'}
          esRepository = ElasticSearchRepository(metadataESConfig)
-         esRepository.create_index(datamapping) # Create owh_dsmetadata index and mapping if doesn't exist
+         esRepository.create_index(json.load(open(os.path.join(os.path.dirname(__file__), 'es_mapping','dataset-metadata-mapping.json')))) # Create owh_dsmetadata index and mapping if doesn't exist
 
          batchRepository = BatchRepository(100, self.esRepository)
 
