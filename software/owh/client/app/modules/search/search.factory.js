@@ -50,6 +50,13 @@
                 angular.forEach(response.data.queryJSON.sideFilters, function (filter, index) {
                     primaryFilter.sideFilters[index].filters.value = filter.filters.value;
                     primaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
+                    if(filter.filters.selectedNodes != undefined ) {
+                        primaryFilter.sideFilters[index].filters.selectedNodes = filter.filters.selectedNodes;
+                    }
+                    //To un-select selected nodes when user go back from current page
+                    else if(primaryFilter.sideFilters[index].filters.selectedNodes != undefined) {
+                        primaryFilter.sideFilters[index].filters.selectedNodes.length = 0;
+                    }
                 });
             }
             updateFilterValues(primaryFilter);
@@ -74,6 +81,19 @@
                 tableData = getMixedTable(primaryFilter, groupOptions, tableView);
                 primaryFilter.headers = buildQueryForYRBS(primaryFilter, true).headers;
                 tableData.data = categorizeQuestions(tableData.data);
+                primaryFilter.showBasicSearchSideMenu = response.data.queryJSON.showBasicSearchSideMenu;
+                primaryFilter.runOnFilterChange = response.data.queryJSON.runOnFilterChange;
+                if(primaryFilter.showBasicSearchSideMenu) {
+                    primaryFilter.sideFilters = response.data.queryJSON.basicSideFilters;
+                }
+                else {
+                    primaryFilter.sideFilters = response.data.queryJSON.advancedSideFilters;
+                }
+
+                angular.forEach(response.data.queryJSON.sideFilters, function (filter, index) {
+                    primaryFilter.sideFilters[index].filters.value = filter.filters.value;
+                    primaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
+                });
             }
             if (primaryFilter.key === 'bridge_race') {
                 primaryFilter.data = response.data.resultData.nested.table;
