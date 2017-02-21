@@ -9,7 +9,7 @@ Feature: Natality filters
     And  I click on Explore button in Health Information Gateway section
     Then I should get search page with default filter type "Mortality"
     When I change 'I'm interested in' dropdown value to "Natality"
-    Then I should see Bridge race search page with filter type "Natality"
+    Then I should see filter type "Natality" selected
 
   Scenario: Default filter state
     Then I see "Year" as first option in sidebar filters

@@ -88,7 +88,7 @@ var commonStepDefinitionsWrapper = function () {
         done();
     });
 
-    this.Then(/^I should see Bridge race search page with filter type "([^"]*)"$/, function (arg) {
+    this.Then(/^I should see filter type "([^"]*)" selected$/, function (arg) {
         expect(commonPage.getSelectedFilterType()).to.eventually.equal(arg);
     });
 };
