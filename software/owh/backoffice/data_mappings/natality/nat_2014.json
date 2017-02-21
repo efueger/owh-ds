@@ -1,13 +1,5 @@
 [
   {
-    "column":"current_year",
-    "type":"simple",
-    "start": 15,
-    "stop": 18,
-    "field": "Birth Year",
-    "mappings": {}
-  },
-  {
     "column":"hispanic_origin",
     "type":"map",
     "start": 115,
