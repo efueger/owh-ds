@@ -402,13 +402,13 @@
     "stop": 401,
     "field": "Delivery method",
     "mappings": {
-      "1": "Vaginal (excludes vaginal after previous C-section)",
-      "2": "Vaginal after previous c-section",
-      "3": "Primary C-section",
-      "4": "Repeat C-section",
+      "1": "Vaginal",
+      "2": "Vaginal",
+      "3": "Cesarean",
+      "4": "Cesarean",
       "5": "Not stated",
-      "6": "Vaginal (unknown if previous c-section) (2003 Standard only)",
-      "7": "C-section (unknown if previous c-section) (2003 Standard only"
+      "6": "Vaginal",
+      "7": "Cesarean"
     }
   },
   {

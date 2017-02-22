@@ -272,7 +272,7 @@
   },
   {
     "column":"state",
-    "type":"simple",
+    "type":"map",
     "start": 42,
     "stop": 43,
     "field": "State",
