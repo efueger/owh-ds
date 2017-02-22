@@ -51,16 +51,16 @@
                     "chart": {
                         "type": "multiBarHorizontalChart",
                         "height": 250,
-                        "width": 0,
+                        "width": 350,
                         "margin": {
                             "top": 5,
                             "right": 5,
                             "bottom": 45,
                             "left": 45
                         },
-                        showLegend: false,
-                        showControls: false,
-                        showValues: false,
+                        showLegend: true,
+                        showControls: true,
+                        showValues: true,
                         showXAxis:true,
                         showYAxis:true,
                         stacked: stacked,
@@ -70,16 +70,11 @@
                         "xAxis": {
                             "axisLabelDistance": -20,
                             "axisLabel": $translate.instant(filter2.title),
-                            tickFormat:function () {
-                                return null;
-                            },
-                            "showMaxMin": false
+                            "showMaxMin": true
                         },
                         "yAxis": {
                             "axisLabel": primaryFilter.chartAxisLabel,
-                            tickFormat:function () {
-                                return null;
-                            }
+                            "showMaxMin": true
                         },
                         valueFormat:function (n){
                             if(isNaN(n)){ return n; }
@@ -199,10 +194,10 @@
                             "bottom": 45,
                             "left": 45
                         },
-                        showMaxMin: false,
-                        showLegend: false,
-                        showControls: false,
-                        showValues: false,
+                        showMaxMin: true,
+                        showLegend: true,
+                        showControls: true,
+                        showValues: true,
                         showXAxis:true,
                         showYAxis:true,
                         reduceXTicks:false,
@@ -223,17 +218,11 @@
                             "axisLabel": $translate.instant(filter2.title),
                             margin: {
                                 top:60
-                            },
-                            tickFormat:function () {
-                                return null;
                             }
                         },
                         "yAxis": {
                             "axisLabelDistance": -20,
-                            "axisLabel": primaryFilter.chartAxisLabel,
-                            tickFormat:function () {
-                               return null;
-                            }
+                            "axisLabel": primaryFilter.chartAxisLabel
                         },
                         valueFormat:function (n){
                             if(isNaN(n)){ return n; }
@@ -333,17 +322,11 @@
                         y: function(d){return d.y;},
                         "xAxis": {
                             "axisLabelDistance": -20,
-                            "axisLabel": "Year",
-                            tickFormat:function (d) {
-                                return null;
-                            }
+                            "axisLabel": "Year"
                         },
                         "yAxis": {
                             "axisLabelDistance": -20,
-                            "axisLabel": "Population",
-                            tickFormat:function (d) {
-                                return null;
-                            }
+                            "axisLabel": "Population"
                         },
                         tooltip: {
                             contentGenerator: function(d) {
@@ -404,10 +387,10 @@
                         },
                         x: function(d){ return d.label; },
                         y: function(d){ return d.value; },
-                        showValues: false,
-                        showLabels: false,
+                        showValues: true,
+                        showLabels: true,
                         transitionDuration: 250,
-                        showLegend: false,
+                        showLegend: true,
                         legend: {
                             margin:{}
                         },
