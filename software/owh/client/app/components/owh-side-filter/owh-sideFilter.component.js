@@ -32,6 +32,8 @@
         sfc.isOptionDisabled = isOptionDisabled;
         sfc.isOptionSelected = isOptionSelected;
         sfc.getShowHideOptionCount = getShowHideOptionCount;
+        sfc.refreshFilterOptions = refreshFilterOptions;
+        sfc.onFilterValueChange = onFilterValueChange;
         sfc.runOnFilterChange = sfc.filters.selectedPrimaryFilter.runOnFilterChange;
 
         function isOptionDisabled(group, option) {
@@ -207,16 +209,25 @@
                 }
             }
 
-            if (group.refreshFiltersOnChange){
-                refreshFilterOptions(group.key, group.value);
+            sfc.onFilterValueChange(group);
+        }
+
+
+        function onFilterValueChange(filter){
+            // Update the filter options if refreshFiltersOnChange is true
+            if (filter.refreshFiltersOnChange){
+                sfc.refreshFilterOptions(filter);
             }
-            //  Run the filter call back only if runOnFilterChange is true
+
+            // Run the filter call back only if runOnFilterChange is true
             if(sfc.runOnFilterChange) {
                 sfc.onFilter();
             }
         }
 
-        function refreshFilterOptions(filterName, filterValue) {
+        function refreshFilterOptions(filter) {
+            var filterName = filter.key;
+            var filterValue = filter.value;
             SearchService.getDsMetadata(sfc.filters.selectedPrimaryFilter.key, filterValue ? filterValue.join(',') : null).then(function (response) {
                 var newFilters = response.data;
                 var sideFilters = sfc.filters.selectedPrimaryFilter.sideFilters;
@@ -225,15 +236,15 @@
                     if (fkey !== filterName) {
                         if (fkey in newFilters) {
                             sideFilters[f].disabled = false;
-                            if(newFilters[fkey]){
-                                    var fopts = sideFilters[f].filters.autoCompleteOptions;
-                                    for (var opt in fopts) {
-                                        if (newFilters[fkey].indexOf(fopts[opt].key) >= 0) {
-                                            fopts[opt].disabled = false;
-                                        } else {
-                                            fopts[opt].disabled = true;
-                                        }
+                            if (newFilters[fkey]) {
+                                var fopts = sideFilters[f].filters.autoCompleteOptions;
+                                for (var opt in fopts) {
+                                    if (newFilters[fkey].indexOf(fopts[opt].key) >= 0) {
+                                        fopts[opt].disabled = false;
+                                    } else {
+                                        fopts[opt].disabled = true;
                                     }
+                                }
                             }
                         } else {
                             sideFilters[f].disabled = true;
