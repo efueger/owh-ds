@@ -51,7 +51,7 @@
                     }
                 }
             }
-            return false;
+            return false || option.disabled;
         }
 
         function filterGroup(option, group) {
