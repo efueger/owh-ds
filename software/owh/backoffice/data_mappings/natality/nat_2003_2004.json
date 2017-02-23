@@ -2,16 +2,18 @@
   {
     "column":"hispanic_origin",
     "type":"map",
-    "start": 148,
-    "stop": 148,
+    "start": 149,
+    "stop": 149,
     "field": "Mother’s Hispanic Origin",
     "mappings": {
-      "0": "Non-Hispanic",
       "1": "Mexican",
       "2": "Puerto Rican",
       "3": "Cuban",
       "4": "Central and South American",
-      "5": "Other and Unknown Hispanic Origin",
+      "5": "Other and Unknown Hispanic",
+      "6": "Non-Hispanic White",
+      "7": "Non-Hispanic Black",
+      "8": "Non-Hispanic Other Races",
       "9": "Origin unknown or not stated"
     }
   },
@@ -309,7 +311,7 @@
       "7800-7899": "7800 - 7899 grams",
       "7900-7999": "7900 - 7999 grams",
       "8000-8099": "8000 - 8099 grams",
-      "8100-8199": "8100 - 8165 grams"
+      "8100-8165": "8100 - 8165 grams"
     }
   },
   {
@@ -396,13 +398,17 @@
   {
     "column":"delivery_method",
     "type": "map",
-    "start": 403,
-    "stop": 403,
+    "start": 401,
+    "stop": 401,
     "field": "Delivery method",
     "mappings": {
       "1": "Vaginal",
-      "2": "Cesarean",
-      "9": "Unknown"
+      "2": "Vaginal",
+      "3": "Cesarean",
+      "4": "Cesarean",
+      "5": "Not stated",
+      "6": "Vaginal",
+      "7": "Cesarean"
     }
   },
   {
