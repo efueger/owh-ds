@@ -20,7 +20,8 @@
                 <span ng-init="group = (sideFilter.filterGroup ? sideFilter : sideFilter.filters)"
                       ng-class="{'disabled-filter': !sfc.isVisible(sideFilter)}">
                     <label class="side-pane-label custom-label">
-                        <a href="javascript:void(0)" ng-click="sideFilter.collapse = !sideFilter.collapse" class="custom-link">
+                        <a href="javascript:void(0)" ng-click="sideFilter.collapse = !sideFilter.collapse"
+                           class="custom-link" title="{{group.helpText | translate}}">
                             <i class="fa" ng-class="sideFilter.collapse?'fa-chevron-right':'fa-chevron-down'"></i>
                             <span translate="{{group.title}}" class="filter-display-name"></span>
                         </a>
