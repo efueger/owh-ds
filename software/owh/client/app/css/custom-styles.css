@@ -601,6 +601,16 @@ select.gray-border {
 	padding: 1px 4px 2px 4px;
 	box-shadow: none;
 }
+.grey-text {
+	color: #696969;
+}
+
+.toggle-filter-link {
+	text-align: center;
+	border-bottom: 1px solid #ccc;
+	color:#974bc2;
+}
+
 .ui-select-bootstrap input.ui-select-search {
 	margin-top: 3px;
 	padding: 5px;

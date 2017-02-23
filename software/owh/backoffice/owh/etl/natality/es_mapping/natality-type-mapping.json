@@ -14,13 +14,34 @@
       "birth_weight": {
         "type": "string", "index": "not_analyzed"
       },
+      "birth_weight_r4": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "birth_weight_r12": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "anemia": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "cardiac_disease": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "hydramnios_oligohydramnios": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "incompetent_cervix": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "lung_disease": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "diabetes": {
+        "type": "string", "index": "not_analyzed"
+      },
       "chronic_hypertension": {
         "type": "string", "index": "not_analyzed"
       },
       "delivery_method": {
-        "type": "string", "index": "not_analyzed"
-      },
-      "diabetes": {
         "type": "string", "index": "not_analyzed"
       },
       "dob_mm": {
@@ -48,6 +69,15 @@
         "type": "string", "index": "not_analyzed"
       },
       "mother_age": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "mother_age_r8": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "mother_age_r9": {
+        "type": "string", "index": "not_analyzed"
+      },
+      "mother_age_r14": {
         "type": "string", "index": "not_analyzed"
       },
       "mother_education": {

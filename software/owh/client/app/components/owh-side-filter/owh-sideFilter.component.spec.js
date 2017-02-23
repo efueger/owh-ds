@@ -261,7 +261,7 @@ describe('OWH Side filter component: ', function() {
     });
 
     it('updateGroupValue should call onFilter', function() {
-        var bindings = {filters : filters, runOnFilterChange: true, onFilter: function(){}};
+        var bindings = {filters : filters, onFilter: function(){}, runOnFilterChange: true};
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
         spyOn(ctrl, 'onFilter');
 

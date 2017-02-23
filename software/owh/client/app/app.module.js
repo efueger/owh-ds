@@ -15,6 +15,7 @@
     'checklist-model',
     'angularAwesomeSlider',
     'angularModalService',
+    'angular.filter',
     'owh.filters',
     'owh.services',
     'owh.home',
