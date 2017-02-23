@@ -112,8 +112,8 @@
             angular.forEach(primaryFilter.sideFilters, function (filter) {
                 groupAutoCompleteOptions(filter.filters, groupOptions[tableView]);
             });
-            //using copy to trigger $onChanges
-            primaryFilter.sideFilters = angular.copy(primaryFilter.sideFilters);
+            //using extend to trigger $onChanges
+            primaryFilter.sideFilters = angular.extend([], primaryFilter.sideFilters);
             primaryFilter.initiated = true;
             return {
                 tableData: tableData,
