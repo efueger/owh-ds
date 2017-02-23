@@ -16,9 +16,9 @@
             }
         });
 
-    sideFilterController.$inject=['ModalService', 'utilService', 'searchFactory'];
+    sideFilterController.$inject=['ModalService', 'utilService', 'searchFactory', 'SearchService'];
 
-    function sideFilterController(ModalService, utilService, searchFactory){
+    function sideFilterController(ModalService, utilService, searchFactory, SearchService){
         var sfc = this;
         sfc.getOptionCountPercentage = getOptionCountPercentage;
         sfc.getOptionCount = getOptionCount;
@@ -206,10 +206,44 @@
                     group.value = '';
                 }
             }
+
+            if (group.refreshFiltersOnChange){
+                refreshFilterOptions(group.key, group.value);
+            }
             //  Run the filter call back only if runOnFilterChange is true
             if(sfc.runOnFilterChange) {
                 sfc.onFilter();
             }
+        }
+
+        function refreshFilterOptions(filterName, filterValue) {
+            SearchService.getDsMetadata(sfc.filters.selectedPrimaryFilter.key, filterValue ? filterValue.join(',') : null).then(function (response) {
+                var newFilters = response.data;
+                var sideFilters = sfc.filters.selectedPrimaryFilter.sideFilters;
+                for (var f in sideFilters) {
+                    var fkey = sideFilters[f].filters.queryKey;
+                    if (fkey !== filterName) {
+                        if (fkey in newFilters) {
+                            sideFilters[f].disabled = false;
+                            if(newFilters[fkey]){
+                                    var fopts = sideFilters[f].filters.autoCompleteOptions;
+                                    for (var opt in fopts) {
+                                        if (newFilters[fkey].indexOf(fopts[opt].key) >= 0) {
+                                            fopts[opt].disabled = false;
+                                        } else {
+                                            fopts[opt].disabled = true;
+                                        }
+                                    }
+                            }
+                        } else {
+                            sideFilters[f].disabled = true;
+                        }
+                    }
+                }
+                console.log(sideFilters);
+            }, function (error) {
+                console.log(error);
+            });
         }
 
         //called to determine order of side filters, looks at sort array passed in

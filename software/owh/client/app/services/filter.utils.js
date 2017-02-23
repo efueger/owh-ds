@@ -175,7 +175,7 @@
             //prepare filter definitions
             var bridgeDataFilters = [
                 {key: 'current_year', title: 'label.filter.yearly.estimate', queryKey:"current_year", primary: false, value: ['2015'], defaultGroup:'row', groupBy: false,
-                    filterType: 'checkbox',autoCompleteOptions: angular.copy(censusYearsOptions) },
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(censusYearsOptions), refreshFiltersOnChange: true },
                 {key: 'sex', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
                     filterType: 'checkbox',autoCompleteOptions: angular.copy(censusGenderOptions)},
 

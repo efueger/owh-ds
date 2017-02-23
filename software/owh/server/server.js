@@ -27,6 +27,7 @@ app.set('view engine', 'html');
 require("./routes/search")(app);
 require("./routes/fb")(app);
 require("./routes/generateHashCode")(app);
+require("./routes/dsmetadata")(app);
 var allRoutes = require("./routes/route");
 //all routes goes in above section
 

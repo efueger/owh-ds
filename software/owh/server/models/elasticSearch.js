@@ -18,7 +18,8 @@ var census_type="census";
 var _queryIndex = "owh_querycache";
 var _queryType = "queryData";
 var mental_health_type = "yrbs";
-
+var dsmetadata_index = "owh_dsmetadata";
+var dsmetadata_type = "dsmetadata";
 
 var ElasticClient = function() {
 
@@ -256,4 +257,37 @@ ElasticClient.prototype.insertQueryData = function (query) {
     });
     return deferred.promise;
 };
+
+/**
+ * Retrieve data set metadata for the given dataset and year
+ * @param dataset
+ * @param years
+ * @returns {*|promise}
+ */
+ElasticClient.prototype.getDsMetadata = function (dataset, years) {
+    var query = {"size": 1000,"filter":{"and":{"filters":[{"term":{"dataset":dataset}}]}}};
+    if (years && years.length > 0){
+        var yearfilter = [];
+        for (var year in years) {
+            yearfilter.push({"term": {"year": years[year]}});
+        }
+        query.filter.and.filters.push({"or": yearfilter});
+    }
+
+    var client = this.getClient();
+    var deferred = Q.defer();
+    client.search({
+        index: dsmetadata_index,
+        type: dsmetadata_type,
+        body: query
+    }).then(function (resp){
+        deferred.resolve(resp);
+    }, function(err){
+        logger.error("Failed to retrieve ds metadata ", err.message);
+        deferred.reject(err);
+    });
+    return deferred.promise;
+};
+
+
 module.exports = ElasticClient;
