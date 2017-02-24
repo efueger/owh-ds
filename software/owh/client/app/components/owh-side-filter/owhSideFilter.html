@@ -12,7 +12,7 @@
                  ng-if="category != 'undefined'" ng-bind="category">
             </div>
             <!--iterate over filters of a category-->
-            <li class="accordion" ng-repeat="sideFilter in sfc.filters | orderBy: sfc.getFilterOrder"
+            <li class="accordion" ng-repeat="sideFilter in sideFilters | orderBy: sfc.getFilterOrder"
                 ng-class="{'cursor-not-allowed': !sfc.isVisible(sideFilter)}"
                 ng-init="group = (sideFilter.filterGroup ? sideFilter : sideFilter.filters)"
                 ng-if="category == 'undefined' || $index < 2 || sfc.filters.selectedPrimaryFilter['cat'+$parent.$index]">
@@ -21,7 +21,8 @@
                 <!-- slider filter -->
                 <span ng-class="{'disabled-filter': !sfc.isVisible(sideFilter)}" ng-if="group.filterType === 'slider'">
                     <label class="side-pane-label custom-label">
-                        <a href="javascript:void(0)" ng-click="sideFilter.collapse = !sideFilter.collapse" class="custom-link">
+                        <a href="javascript:void(0)" ng-click="sideFilter.collapse = !sideFilter.collapse"
+                           class="custom-link" title="{{group.helpText | translate}}">
                             <i class="fa" ng-class="sideFilter.collapse?'fa-chevron-right':'fa-chevron-down'"></i>
                             <span translate="{{group.title}}" class="filter-display-name"></span>
                         </a>
@@ -197,7 +198,8 @@
                 <!-- checkbox filter -->
                 <span ng-class="{'disabled-filter': !sfc.isVisible(sideFilter)}" ng-if="group.filterType === 'checkbox'">
                     <label class="side-pane-label custom-label">
-                        <a href="javascript:void(0)" ng-click="sideFilter.collapse = !sideFilter.collapse" class="custom-link">
+                        <a href="javascript:void(0)" ng-click="sideFilter.collapse = !sideFilter.collapse"
+                           title="{{group.helpText | translate}}" class="custom-link">
                             <i class="fa" ng-class="sideFilter.collapse?'fa-chevron-right':'fa-chevron-down'"></i>
                             <span translate="{{group.title}}" class="filter-display-name"></span>
                         </a>
@@ -389,7 +391,8 @@
                                        ng-init="title = option.title">
                                     <span class="count-label" translate="{{title}}"></span>
                                     <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts" ng-bind="option.count | number"></span>
-                            </label>
+                                </label>
+                            </div>
                         </li>
 
                         <!--show options-->
