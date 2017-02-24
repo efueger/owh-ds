@@ -635,7 +635,7 @@
                 {key: 'mother_age_r14', title: 'label.chart.mother_age.r12', queryKey:"mother_age_r14", primary: false, value: [],
                     defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(ageR14ptions)},
 
-                {key: 'mother_race', title: 'label.filter.race', queryKey:"mother_race", primary: false, value: [],
+                {key: 'race', title: 'label.filter.race', queryKey:"race", primary: false, value: [],
                     defaultGroup:'column', groupBy: 'row', filterType: "checkbox",
                     autoCompleteOptions: angular.copy(raceOptions), helpText:"label.help.text.race"},
 
@@ -647,13 +647,13 @@
                     value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox",
                     autoCompleteOptions: angular.copy(educationOptions), helpText:"label.help.text.mother.education"},
 
-                {key: 'dob_yy', title: 'label.filter.year', queryKey:"dob_yy", primary: false, value: ["2014"], defaultGroup:'column', groupBy: false,
+                {key: 'current_year', title: 'label.filter.year', queryKey:"current_year", primary: false, value: ["2014"], defaultGroup:'column', groupBy: false,
                     filterType: "checkbox", autoCompleteOptions: angular.copy(yearOptions), helpText:"label.help.text.year"},
 
-                {key: 'dob_mm', title: 'label.filter.month', queryKey:"dob_mm", primary: false, value: [], defaultGroup:'column', groupBy: false,
+                {key: 'month', title: 'label.filter.month', queryKey:"month", primary: false, value: [], defaultGroup:'column', groupBy: false,
                     filterType: "checkbox", autoCompleteOptions: angular.copy(monthOptions), helpText:"label.help.text.month"},
 
-                {key: 'dob_wk', title: 'label.filter.weekday', queryKey:"dob_wk", primary: false, value: [], defaultGroup:'column', groupBy: false,
+                {key: 'weekday', title: 'label.filter.weekday', queryKey:"weekday", primary: false, value: [], defaultGroup:'column', groupBy: false,
                     filterType: "checkbox", autoCompleteOptions: angular.copy(weekDayOptions), helpText:"label.help.text.week.day"},
 
                 {key: 'sex', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
