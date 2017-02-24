@@ -192,7 +192,8 @@
         }
 
         //remove all elements from array for all select
-        function updateGroupValue(group) {
+        function updateGroupValue(sideFilter) {
+            var group = sideFilter.filterGroup ? sideFilter : sideFilter.filters;
             if(group.filterType === 'checkbox'){
                 if ( group.allChecked === false ) {
                     // When All is unchecked, select all other values
@@ -209,14 +210,14 @@
                 }
             }
 
-            sfc.onFilterValueChange(group);
+            sfc.onFilterValueChange(sideFilter);
         }
 
 
         function onFilterValueChange(filter){
             // Update the filter options if refreshFiltersOnChange is true
             if (filter.refreshFiltersOnChange){
-                sfc.refreshFilterOptions(filter);
+                sfc.refreshFilterOptions(filter.filters);
             }
 
             // Run the filter call back only if runOnFilterChange is true
@@ -226,7 +227,7 @@
         }
 
         function refreshFilterOptions(filter) {
-            var filterName = filter.key;
+            var filterName = filter.queryKey;
             var filterValue = filter.value;
             SearchService.getDsMetadata(sfc.filters.selectedPrimaryFilter.key, filterValue ? filterValue.join(',') : null).then(function (response) {
                 var newFilters = response.data;
@@ -247,6 +248,8 @@
                                 }
                             }
                         } else {
+                            sideFilters[f].filters.value = [];
+                            sideFilters[f].filters.groupBy = false;
                             sideFilters[f].disabled = true;
                         }
                     }

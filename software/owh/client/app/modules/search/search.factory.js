@@ -1458,7 +1458,7 @@
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
-                            filters: utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'year')
+                            refreshFiltersOnChange: true, filters: utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'year')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true,
@@ -1569,7 +1569,7 @@
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'current_year')
+                            refreshFiltersOnChange: true, filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'current_year')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
@@ -1601,7 +1601,7 @@
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_yy'),
+                            refreshFiltersOnChange: true, filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_yy'),
                             category: "Birth Characteristics"
                         },
                         {
