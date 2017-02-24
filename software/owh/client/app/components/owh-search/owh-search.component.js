@@ -25,7 +25,14 @@
         ots.goForward = goForward;
         ots.goBackward = goBackward;
         ots.$onChanges = function() {
-            angular.forEach(ots.showFilters, function(filter) {
+            var filters = [];
+            if(['number_of_deaths', 'crude_death_rates', 'age-adjusted_death_rates'].indexOf(ots.tableView) !== -1) {
+                filters = ots.showFilters.deaths;
+            }
+            else {
+                filters = ots.showFilters.natality;
+            }
+            angular.forEach(filters, function(filter) {
                 if(filter.key === ots.tableView) {
                     ots.selectedShowFilter = filter;
                 }

@@ -105,8 +105,8 @@ function search(q) {
         finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
 
         var sideFilterQuery = queryBuilder.buildSearchQuery(queryBuilder.addCountsToAutoCompleteOptions(q), true);
-        new elasticSearch().aggregateNatalityData(sideFilterQuery[0]).then(function (sideFilterResults) {
-            new elasticSearch().aggregateNatalityData(finalQuery[0]).then(function (response) {
+        new elasticSearch().aggregateNatalityData(sideFilterQuery).then(function (sideFilterResults) {
+            new elasticSearch().aggregateNatalityData(finalQuery).then(function (response) {
                 var resData = {};
                 resData.queryJSON = q;
                 resData.resultData = response.data;

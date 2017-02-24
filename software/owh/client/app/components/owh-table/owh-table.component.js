@@ -103,13 +103,13 @@
                     if(column.isCount) {
                         cell += '<label class="custom-label owh-table__cell-content">';
                             cell += '<div>';
-                        if(otc.tableView === 'crude_death_rates' || otc.tableView === 'age-adjusted_death_rates') {
+                        if(otc.tableView === 'crude_death_rates' || otc.tableView === 'age-adjusted_death_rates' || otc.tableView === 'birth_rates') {
                             cell += '<div id="crudeRateDiv" class="owh-table__left-col ' + (row.length > 5 ? 'usa-width-one-half' : 'usa-width-one-third') + '">';
                             if(rowIndex === 0) {
                                 cell += '<label class="owh-table__label">Rate</label>';
                             }
                             var rateVisibility = getRateVisibility(column.title, column.pop);
-                            if(otc.tableView === 'crude_death_rates') {
+                            if(otc.tableView === 'crude_death_rates' || otc.tableView === 'birth_rates') {
                                 cell += '<span>'
                                 if(rateVisibility === 'visible') {
                                     cell += $filter('number')(column.title / column.pop * 100000, 1);
@@ -129,7 +129,12 @@
                             cell += '<div id="curdeDeathsPopuDiv" class="' + (row.length > 5 ? 'usa-width-one-half' : 'usa-width-one-third') + '">';
                             cell += '<div>';
                             if(rowIndex === 0) {
-                                cell += '<label class="owh-table__label">Deaths</label>';
+                                if(otc.tableView === 'birth_rates') {
+                                    cell += '<label class="owh-table__label">Births</label>';
+                                }
+                                else {
+                                    cell += '<label class="owh-table__label">Deaths</label>';
+                                }
                             }
                             cell += '<span>';
                             if(column.title === 'suppressed') {
@@ -140,7 +145,7 @@
                             cell += '</span>';
                             cell += '</div>';
                             cell += '<div>';
-                            if(otc.tableView === 'crude_death_rates') {
+                            if(otc.tableView === 'crude_death_rates' || otc.tableView === 'birth_rates') {
                                 if(rowIndex === 0) {
                                     cell += '<label class="owh-table__label">Population</label>';
                                 }
@@ -178,7 +183,7 @@
                             }
                         } else if(otc.tableView === 'bridge_race') {
                             cell += '<span class="count-value">' + $filter('number')(column.title) + '</span>';
-                        } else if(otc.tableView === 'natality') {
+                        } else if(otc.tableView === 'number_of_births') {
                             cell += '<span class="count-value">' + $filter('number')(column.title) + '</span>';
                         }
 
@@ -192,7 +197,7 @@
             };
 
             var data = [];
-            if(table && table.data) {
+            if(table && table.data && table.data.length > 0) {
                 //find out how long the first merge cell is
                 var maxRowspan = table.data[0][0].rowspan;
                 var newCells = [];

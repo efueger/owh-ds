@@ -51,11 +51,16 @@
         }
 
         sc.selectedMapSize = 'small';
-        sc.showMeOptions = [
-            {key: 'number_of_deaths', title: 'Number of Deaths'},
-            {key: 'crude_death_rates', title: 'Crude Death Rates'},
-            {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}
-        ];
+        sc.showMeOptions = {
+            'deaths': [
+                {key: 'number_of_deaths', title: 'Number of Deaths'},
+                {key: 'crude_death_rates', title: 'Crude Death Rates'},
+                {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}],
+            'natality': [
+                {key: 'number_of_births', title: 'Number of Births'},
+                {key: 'birth_rates', title: 'Birth Rates'},
+                {key: 'fertility_rates', title: 'Fertility Rates'}]
+        };
         sc.sort = {
             "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
             "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'yrbsState', 'question'],
@@ -89,11 +94,37 @@
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
             },
+            "number_of_births": {
+                "hispanicOrigin": [
+                    'Non-Hispanic',
+                    {
+                        "options": ['Central and South American', 'Central American', 'Cuban', 'Dominican', 'Latin American', 'Mexican', 'Puerto Rican', 'South American', 'Spaniard', 'Other Hispanic'],
+                        "title": "Hispanic",
+                        "key": "Hispanic"
+                    },
+                    'Unknown'
+                ],
+                "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
+                "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1997','1995','1993','1991' ]
+            },
+            "birth_rates": {
+                "hispanicOrigin": ['Non-Hispanic', 'Hispanic', 'Unknown'],
+                "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
+                "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
+            },
+            "fertility_rates": {
+                "hispanicOrigin": ['Non-Hispanic', 'Hispanic', 'Unknown'],
+                "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
+                "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
+            },
             bridge_race:{},
             mental_health:{},
-            natality:{}
+            natality:{
+
+            }
         };
         //show certain filters for different table views
+        //add availablefilter for birth_rates
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
             'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin']
@@ -281,6 +312,10 @@
                //if queryID exists in owh_querycache index, then update data that are required to display search results
                 if (response.data) {
                     var result = searchFactory.updateFiltersAndData(sc.filters.primaryFilters, response, sc.optionsGroup, sc.mapOptions);
+                    //Update this code
+                    if(result.tableView == 'natality'){
+                        sc.tableView = 'number_of_births';//result.tableView;
+                    }
                     sc.tableView = result.tableView;
                     sc.tableData = result.tableData;
                     sc.filters.selectedPrimaryFilter = result.primaryFilter;
@@ -315,6 +350,7 @@
                     }
                 }
             });
+            //we can change mapping here
             sc.filters.selectedPrimaryFilter.tableView = selectedFilter.key;
             sc.search(true);
             sc.tableView = selectedFilter.key;
