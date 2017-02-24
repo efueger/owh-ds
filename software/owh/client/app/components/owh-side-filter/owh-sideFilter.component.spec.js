@@ -245,19 +245,19 @@ describe('OWH Side filter component: ', function() {
         var bindings = { filters : filters, onFilter: function(){}};
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
 
-        var group = {filterType: 'checkbox', autoCompleteOptions: [{key: '2013'}, {key: '2014'}], value: [], allChecked: false};
+        var group = {filters:{filterType: 'checkbox', autoCompleteOptions: [{key: '2013'}, {key: '2014'}], value: [], allChecked: false}};
 
         ctrl.updateGroupValue(group);
 
-        expect(group.value.length).toEqual(2);
-        expect(group.value).toContain('2013');
-        expect(group.value).toContain('2014');
+        expect(group.filters.value.length).toEqual(2);
+        expect(group.filters.value).toContain('2013');
+        expect(group.filters.value).toContain('2014');
 
-        group.allChecked = true;
+        group.filters.allChecked = true;
 
         ctrl.updateGroupValue(group);
 
-        expect(group.value.length).toEqual(0);
+        expect(group.filters.value.length).toEqual(0);
     });
 
     it('updateGroupValue should call onFilter', function() {
@@ -265,7 +265,7 @@ describe('OWH Side filter component: ', function() {
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
         spyOn(ctrl, 'onFilter');
 
-        ctrl.updateGroupValue({value: []});
+        ctrl.updateGroupValue({filters:{value: []}});
 
         expect(ctrl.onFilter).toHaveBeenCalled();
 
@@ -446,7 +446,7 @@ describe('OWH Side filter component: ', function() {
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
         spyOn(ctrl, 'onFilter');
 
-        ctrl.updateGroupValue({value: []});
+        ctrl.updateGroupValue({filters:{value: []}});
 
         expect(ctrl.onFilter).not.toHaveBeenCalled();
 
