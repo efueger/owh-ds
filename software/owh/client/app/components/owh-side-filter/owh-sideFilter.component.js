@@ -49,6 +49,15 @@
                         }
                     });
                 });
+
+                //categorize filters
+                sfc.categories = {};
+                angular.forEach(changes.filters.currentValue, function(filter) {
+                    if(!sfc.categories[filter.category]) {
+                        sfc.categories[filter.category] = []
+                    }
+                    sfc.categories[filter.category].push(filter);
+                });
             }
         };
 

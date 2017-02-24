@@ -5,17 +5,17 @@
     </div>
     <ul class="usa-sidenav-list side-filters">
         <!--iterate over filter by category-->
-        <div ng-repeat="(category, sideFilters) in sfc.filters | groupBy: 'category'"
+        <div ng-repeat="(categoryKey, category) in sfc.categories"
              class="category-{{$index}}">
 
             <div class="padding-top-20 bold-class grey-text filter-category"
-                 ng-if="category != 'undefined'" ng-bind="category">
+                 ng-if="categoryKey != 'undefined'" ng-bind="categoryKey">
             </div>
             <!--iterate over filters of a category-->
-            <li class="accordion" ng-repeat="sideFilter in sideFilters | orderBy: sfc.getFilterOrder"
+            <li class="accordion" ng-repeat="sideFilter in category | orderBy: sfc.getFilterOrder"
                 ng-class="{'cursor-not-allowed': !sfc.isVisible(sideFilter)}"
                 ng-init="group = (sideFilter.filterGroup ? sideFilter : sideFilter.filters)"
-                ng-if="category == 'undefined' || $index < 2 || sfc.filters.selectedPrimaryFilter['cat'+$parent.$index]">
+                ng-if="categoryKey == 'undefined' || $index < 2 || sfc.filters.selectedPrimaryFilter['cat'+$parent.$index]">
 
 
                 <!-- slider filter -->
@@ -426,15 +426,15 @@
                 <!-- end radio filter -->
             </li>
             <!--show hide/more filters of a category-->
-            <div ng-if="sideFilters.length > 2 && category != 'undefined'"
+            <div ng-if="category.length > 2 && categoryKey != 'undefined'"
                  class="padding-top-10 toggle-filter-link">
                 <a ng-show="!sfc.filters.selectedPrimaryFilter['cat'+$index]" class="custom-link show-more-{{$index}}"
                    translate="label.show.more.filters"
-                   translate-values="{showLength: (sideFilters.length - 2)}"
+                   translate-values="{showLength: (category.length - 2)}"
                    ng-click="sfc.filters.selectedPrimaryFilter['cat'+$index] = !sfc.filters.selectedPrimaryFilter['cat'+$index]" href="javascript:void(0)"></a>
                 <a ng-show="sfc.filters.selectedPrimaryFilter['cat'+$index]" class="custom-link show-less-{{$index}}"
                    translate="label.hide.more.filters"
-                   translate-values="{hideLength: (sideFilters.length -2)}"
+                   translate-values="{hideLength: (category.length -2)}"
                    ng-click="sfc.filters.selectedPrimaryFilter['cat'+$index] = !sfc.filters.selectedPrimaryFilter['cat'+$index]" href="javascript:void(0)"></a>
             </div>
         </div>
