@@ -630,7 +630,7 @@
 
                 {key: 'mother_age_r8', title: 'label.filter.ageOfMother', queryKey:"mother_age_r8", primary: false, value: [],
                     defaultGroup:'column', groupBy: false, filterType: "checkbox",
-                    utoCompleteOptions: angular.copy(ageR8Options), helpText:"label.help.text.mother.age"},
+                    autoCompleteOptions: angular.copy(ageR8Options), helpText:"label.help.text.mother.age"},
 
                 {key: 'mother_age_r14', title: 'label.chart.mother_age.r12', queryKey:"mother_age_r14", primary: false, value: [],
                     defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(ageR14ptions)},
