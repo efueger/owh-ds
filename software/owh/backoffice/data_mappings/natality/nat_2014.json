@@ -104,7 +104,7 @@
     }
   },
   {
-    "column": "mother_race",
+    "column": "race",
     "type":"map",
     "start": 110,
     "stop": 110,
@@ -146,7 +146,7 @@
     }
   },
   {
-    "column":"dob_yy",
+    "column":"current_year",
     "type":"simple",
     "start": 9,
     "stop": 12,
@@ -154,7 +154,7 @@
     "mappings": {}
   },
   {
-    "column":"dob_mm",
+    "column":"month",
     "type":"map",
     "start": 13,
     "stop": 14,
@@ -175,7 +175,7 @@
     }
   },
   {
-    "column":"dob_wk",
+    "column":"weekday",
     "type":"map",
     "start": 23,
     "stop": 23,

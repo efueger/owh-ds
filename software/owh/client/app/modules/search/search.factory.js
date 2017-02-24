@@ -1604,17 +1604,17 @@
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_yy'),
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'current_year'),
                             category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_mm'),
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'month'),
                             category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_wk'),
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'weekday'),
                             category: "Birth Characteristics"
                         },
                         {
@@ -1674,7 +1674,7 @@
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_race'),
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'race'),
                             category: "Maternal Characteristics"
                         },
                         {
