@@ -25,21 +25,34 @@ var dsmetadata = function(app, rConfig) {
 function  processQueryResponse(esResp) {
     var hits = esResp.hits.hits;
     var result = {};
+    var filterByYear = {};
     for(var h in hits){
         var filter = hits[h]._source;
         var fname = filter.filter_name;
+        var year = filter.year;
         if(!(fname in result)){
             result[fname] = filter.permissible_values;
-        } else {
-            var currpvs = result[fname];
-            // merge the pvs on the filter to the current pvs
-            for (pv in filter.permissible_values) {
-                if (currpvs.indexOf(filter.permissible_values[pv]) < 0) {
-                    currpvs.push(filter.permissible_values[pv]);
-                }
+        } else if (result[fname]){
+            // get intersection of PVs
+            result[fname] = result[fname].filter(item => filter.permissible_values.indexOf(item) != -1);
+        }
+
+        if(!(year in filterByYear)) {
+            filterByYear[year] = [fname];
+        }else{
+            filterByYear[year].push(fname);
+        }
+    }
+
+    // Remove all filters that are not present in all years
+    for (f in result){
+        for(y in filterByYear){
+            if (filterByYear[y].indexOf(f) < 0){
+                delete result[f];
             }
         }
     }
+
     return result;
 }
 module.exports = dsmetadata;
