@@ -31,11 +31,6 @@ var generateNestedCensusAggQuery = function(aggregations, groupByKeyStart) {
 var generateCensusAggregationQuery = function( aggQuery, groupByKeyStart ) {
     groupByKeyStart = groupByKeyStart ? groupByKeyStart : '';
     var query = {};
-    if(aggQuery.key === 'mother_race') {
-        aggQuery.key = 'race';
-        aggQuery.queryKey = 'race';
-    }
-
     query[ groupByKeyStart + aggQuery.key] = {
         "terms": {
             "field": aggQuery.queryKey,
@@ -196,9 +191,6 @@ var buildBoolQuery = function(path, value, isQuery, isCaseChange, dataType) {
                 }
             }
         } else if(typeof path === 'string') {
-            if(path == 'dob_yy') {
-                path = 'current_year';
-            }
             if (dataType === 'date'){
                 boolQuery.bool['should'] = buildDateQuery(path, value, isCaseChange)
             } else if (isQuery){
