@@ -2,7 +2,7 @@
 
 describe("Search controller: ", function () {
     var searchController, $scope, $controller, $httpBackend, $injector, $templateCache, $rootScope,
-        searchResultsResponse, $searchFactory, $q, filters;
+        searchResultsResponse, $searchFactory, $q, filters, shareUtilService;
 
     beforeEach(function() {
         module('owh');
@@ -28,6 +28,7 @@ describe("Search controller: ", function () {
             searchResultsResponse = __fixtures__['app/modules/search/fixtures/search.factory/searchResultsResponse'];
             $searchFactory = searchFactory;
             filters = $searchFactory.getAllFilters();
+            shareUtilService = $injector.get('shareUtilService');
         });
     });
 
@@ -320,6 +321,14 @@ describe("Search controller: ", function () {
          expect(searchController.filters.selectedPrimaryFilter.headers).toEqual(searchResultsResponse.data.resultData.headers);
          expect(searchResultsResponse.data.queryJSON.key).toEqual('deaths');
          deferred.resolve(searchResultsResponse);
+    }));
+
+    it('should share image to fb', inject(function () {
+
+        var searchController= $controller('SearchController',{$scope:$scope, shareUtilService: shareUtilService});
+        spyOn(shareUtilService, 'shareOnFb');
+        searchController.showFbDialog('testIndex', 'Census race estimates', 'X$Tsdfdsf1324345');
+        $scope.$apply();
     }));
 
     it('should generate hashcode for the default query if no queryID found', inject(function(searchFactory) {
