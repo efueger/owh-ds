@@ -85,7 +85,7 @@
                                     </a>
                                     <a name="share_fb" ng-click="sc.showFbDialog('chart_'+parentIndex+'_'+$index, chartData.title)"
                                        class="cursor-pointer">
-                                        &nbsp; <i class="fa fa-share-alt" title="Share on facebook"></i>
+                                        &nbsp; <i class="fa fa-share-alt" title="{{'label.share.on.fb' | translate}}"></i>
                                     </a>
                                 </div>
                                 <nvd3 id="chart_{{parentIndex}}_{{$index}}" options='chartData.options' data='chartData.data' api="chartData.api" on-ready="sc.updateCharts()"></nvd3>

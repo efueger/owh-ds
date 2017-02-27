@@ -25,6 +25,7 @@
         sc.skipRefresh = false;
         sc.switchToYRBSBasic = switchToYRBSBasic;
         sc.switchToYRBSAdvanced = switchToYRBSAdvanced;
+        sc.showFbDialog = showFbDialog;
 
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
@@ -439,6 +440,13 @@
             sc.filters.selectedPrimaryFilter.allFilters = sc.filters.yrbsAdvancedFilters;
             sc.filters.selectedPrimaryFilter.sideFilters = sc.filters.search[1].advancedSideFilters;
             sc.search(true);
+        }
+
+        /**
+         * Shows facebook share dialog box
+         */
+        function showFbDialog(svgIndex, title, data) {
+            shareUtilService.shareOnFb(svgIndex, title, undefined, undefined, data);
         }
     }
 }());

@@ -5,7 +5,7 @@ describe('search factory ', function(){
     var searchFactory, utils, $rootScope, $scope, controllerProvider, searchService, deferred, $q,
         primaryFilter, $httpBackend, $templateCache, filters, countsMortalityAutoCompletes,
         searchResponse, groupGenderResponse, genderGroupHeaders, fourGroupsResponse,
-        ModalService, givenModalDefaults, elementVisible, thenFunction, closeDeferred, uploadImageDeferred, $timeout, filterUtils, questionsTreeJson;
+        ModalService, givenModalDefaults, elementVisible, thenFunction, closeDeferred, $timeout, filterUtils, questionsTreeJson;
     module.sharedInjector();
 
     beforeAll(module('owh'));
@@ -27,7 +27,6 @@ describe('search factory ', function(){
 
         $q = _$q_;
         closeDeferred = _$q_.defer();
-        uploadImageDeferred = _$q_.defer();
 
         $templateCache.put('app/partials/marker-template.html', 'app/partials/marker-template.html');
         $templateCache.put('app/modules/home/home.html', 'app/modules/home/home.html');
@@ -64,7 +63,6 @@ describe('search factory ', function(){
                 }
             };
         });
-        spyOn(searchService, 'uploadImage').and.returnValue(uploadImageDeferred.promise);
     }));
 
     it('showPhaseTwoModal', function () {
@@ -77,14 +75,6 @@ describe('search factory ', function(){
         closeDeferred.resolve({});
         $scope.$apply();
         expect(elementVisible).toBeFalsy();
-    });
-
-    it('uploadImage', function () {
-        searchFactory.uploadImage('Sample data').then(function(data) {
-            expect(data).toEqual('Response data')
-        });
-        uploadImageDeferred.resolve({data: 'Response data'});
-        $scope.$apply();
     });
 
     it('updateFilterValues should add proper values to the value array on primaryFilter', function () {

@@ -15,7 +15,6 @@
             addCountsToAutoCompleteOptions: addCountsToAutoCompleteOptions,
             searchMortalityResults: searchMortalityResults,
             showPhaseTwoModal: showPhaseTwoModal,
-            uploadImage: uploadImage,
             updateFilterValues: updateFilterValues,
             generateHashCode: generateHashCode,
             buildAPIQuery: buildAPIQuery,
@@ -1788,19 +1787,6 @@
                     modal.element.hide();
                 });
             });
-        }
-
-        /**
-         * Uploads png image to server
-         * @param data
-         * @returns {*}
-         */
-        function uploadImage(data) {
-            var deferred = $q.defer();
-            SearchService.uploadImage(data).then(function(response){
-                deferred.resolve(response.data);
-            });
-            return deferred.promise;
         }
     }
 
