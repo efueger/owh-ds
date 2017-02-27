@@ -207,7 +207,7 @@ ElasticClient.prototype.aggregateNatalityData = function(query){
         logger.debug("Census Rates ES Query: "+ JSON.stringify( query[1]));
         var promises = [
             this.executeMortilyAndNatalityQueries(query[0], natality_index, natality_type),
-            this.aggregateCensusDataForMortalityQuery(query[1], census_index, census_type)
+            this.aggregateCensusDataForMortalityQuery(query[1], census_rates_index, census_rates_type)
         ];
         Q.all(promises).then( function (resp) {
 
