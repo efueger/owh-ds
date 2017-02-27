@@ -89,9 +89,9 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
                 }
                 f += (q + ':');
                 if(apiQuery.query[q].value instanceof  Array) {
-                    f += apiQuery.query[q].value.join(',') + ';';
+                    f += apiQuery.query[q].value.join(',') + '|';
                 }else {
-                    f += apiQuery.query[q].value + ';';
+                    f += apiQuery.query[q].value + '|';
                 }
             }
         }
@@ -101,6 +101,8 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
             var selectedQs = apiQuery.query['question.path'].value;
             for (var i = 0; i < selectedQs.length; i++) {
                 var qry = config.yrbs.queryUrl+ (useStateDataset?'/state':'/national') + '?'; //Base url
+                qry += 'd=yrbss&' // yrbs dataset
+                qry += 'r=1&' // count true responses
                 qry += 'q=' + selectedQs[i]; // Question param
                 qry += (v ? ('&' + v) : ''); // Group param
                 qry += (f ? ('&f=' + f) : ''); // Filter param

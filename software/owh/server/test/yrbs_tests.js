@@ -3,7 +3,7 @@ var supertest = require("supertest");
 var expect = require("expect.js");
 var config = require('../config/config');
 
-describe.skip("YRBS API", function () {
+describe.only("YRBS API", function () {
     var yrbs;
     this.timeout(20000);
     beforeEach( function () {
@@ -14,7 +14,7 @@ describe.skip("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000}]}},
                         'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( [config.yrbs.queryUrl+'/national?q=qn1&v=sex,race',config.yrbs.queryUrl+'/national?q=qn2&v=sex,race',config.yrbs.queryUrl+'/national?q=qn3&v=sex,race']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn1&v=sex,race',config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn2&v=sex,race',config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn3&v=sex,race']);
 
     });
 
@@ -22,7 +22,7 @@ describe.skip("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsGrade","queryKey":"grade","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000}]}},
                         'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( [config.yrbs.queryUrl+'/national?q=qn1&v=sex,grade,race',config.yrbs.queryUrl+'/national?q=qn2&v=sex,grade,race',config.yrbs.queryUrl+'/national?q=qn3&v=sex,grade,race']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn1&v=sex,grade,race',config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn2&v=sex,grade,race',config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn3&v=sex,grade,race']);
 
     });
 
@@ -30,7 +30,7 @@ describe.skip("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000}]}},
                         'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( [config.yrbs.queryUrl+'/national?q=qn1',config.yrbs.queryUrl+'/national?q=qn2',config.yrbs.queryUrl+'/national?q=qn3']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn1',config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn2',config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn3']);
 
     });
 
@@ -38,7 +38,7 @@ describe.skip("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000}]}},
             'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'race':{value:['White', 'Black or African American']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( [config.yrbs.queryUrl+'/national?q=qn1&f=race:White,Black or African American',config.yrbs.queryUrl+'/national?q=qn2&f=race:White,Black or African American',config.yrbs.queryUrl+'/national?q=qn3&f=race:White,Black or African American']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn1&f=race:White,Black or African American',config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn2&f=race:White,Black or African American',config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn3&f=race:White,Black or African American']);
 
     });
 
@@ -47,7 +47,7 @@ describe.skip("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000}]}},
         'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'race':{value:['White', 'Black or African American']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( [config.yrbs.queryUrl+'/national?q=qn1&v=race&f=race:White,Black or African American',config.yrbs.queryUrl+'/national?q=qn2&v=race&f=race:White,Black or African American',config.yrbs.queryUrl+'/national?q=qn3&v=race&f=race:White,Black or African American']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn1&v=race&f=race:White,Black or African American',config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn2&v=race&f=race:White,Black or African American',config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn3&v=race&f=race:White,Black or African American']);
 
     });
 
@@ -55,7 +55,7 @@ describe.skip("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000}]}},
             'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'race':{value:['White', 'Black or African American']},'sex':{value:['Female']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( [config.yrbs.queryUrl+'/national?q=qn1&v=sex,race&f=race:White,Black or African American;sex:Female',config.yrbs.queryUrl+'/national?q=qn2&v=sex,race&f=race:White,Black or African American;sex:Female',config.yrbs.queryUrl+'/national?q=qn3&v=sex,race&f=race:White,Black or African American;sex:Female']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn1&v=sex,race&f=race:White,Black or African American|sex:Female',config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn2&v=sex,race&f=race:White,Black or African American|sex:Female',config.yrbs.queryUrl+'/national?d=yrbss&r=1&q=qn3&v=sex,race&f=race:White,Black or African American|sex:Female']);
 
     });
 
@@ -63,7 +63,7 @@ describe.skip("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000},{"key":"yrbsState","queryKey":"sitecode","size":100000}]}},
             'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( [config.yrbs.queryUrl+'/state?q=qn1&v=race,sitecode',config.yrbs.queryUrl+'/state?q=qn2&v=race,sitecode',config.yrbs.queryUrl+'/state?q=qn3&v=race,sitecode']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/state?d=yrbss&r=1&q=qn1&v=race,sitecode',config.yrbs.queryUrl+'/state?d=yrbss&r=1&q=qn2&v=race,sitecode',config.yrbs.queryUrl+'/state?d=yrbss&r=1&q=qn3&v=race,sitecode']);
 
     });
 
@@ -71,15 +71,15 @@ describe.skip("YRBS API", function () {
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000}]}},
             'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'sitecode':{'value':['AL', 'MN']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( [config.yrbs.queryUrl+'/state?q=qn1&v=race&f=sitecode:AL,MN',config.yrbs.queryUrl+'/state?q=qn2&v=race&f=sitecode:AL,MN',config.yrbs.queryUrl+'/state?q=qn3&v=race&f=sitecode:AL,MN']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/state?d=yrbss&r=1&q=qn1&v=race&f=sitecode:AL,MN',config.yrbs.queryUrl+'/state?d=yrbss&r=1&q=qn2&v=race&f=sitecode:AL,MN',config.yrbs.queryUrl+'/state?d=yrbss&r=1&q=qn3&v=race&f=sitecode:AL,MN']);
 
     });
 
-    it("buildYRBSQueries with state filtering and groping", function (){
+    it("buildYRBSQueries with state filtering and grouping", function (){
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000},{"key":"yrbsState","queryKey":"sitecode","size":100000}]}},
             'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}, 'sitecode':{'value':['AL', 'MN']}}};
         var result = yrbs.buildYRBSQueries(apiQuery);
-        expect(result).to.eql( [config.yrbs.queryUrl+'/state?q=qn1&v=race,sitecode&f=sitecode:AL,MN',config.yrbs.queryUrl+'/state?q=qn2&v=race,sitecode&f=sitecode:AL,MN',config.yrbs.queryUrl+'/state?q=qn3&v=race,sitecode&f=sitecode:AL,MN']);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/state?d=yrbss&r=1&q=qn1&v=race,sitecode&f=sitecode:AL,MN',config.yrbs.queryUrl+'/state?d=yrbss&r=1&q=qn2&v=race,sitecode&f=sitecode:AL,MN',config.yrbs.queryUrl+'/state?d=yrbss&r=1&q=qn3&v=race,sitecode&f=sitecode:AL,MN']);
 
     });
 
@@ -500,7 +500,7 @@ describe.skip("YRBS API", function () {
             'query': {'question.path':{ 'value': ['qn8', 'qn9', 'qn10']}}};
 
         return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
-            expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health":{"mean":"87.4","ci_l":"86.5","ci_u":"88.3","count":121103},"sex":[{"name":"Female","race":[{"name":"Am Indian / Alaska Native","mental_health":{"mean":"88.4","ci_l":"83.1","ci_u":"92.2","count":519}},{"name":"Asian","mental_health":{"mean":"76.8","ci_l":"72.9","ci_u":"80.2","count":1541}},{"name":"Black or African American","mental_health":{"mean":"92.9","ci_l":"91.5","ci_u":"94.0","count":11670}},{"name":"Hispanic/Latino","mental_health":{"mean":"89.6","ci_l":"88.5","ci_u":"90.6","count":14016}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"82.1","ci_l":"77.5","ci_u":"85.9","count":1370}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"81.3","ci_l":"72.0","ci_u":"88.1","count":274}},{"name":"White","mental_health":{"mean":"84.8","ci_l":"83.4","ci_u":"86.1","count":23714}}]},{"name":"Male","race":[{"name":"Am Indian / Alaska Native","mental_health":{"mean":"91.5","ci_l":"87.3","ci_u":"94.3","count":832}},{"name":"Asian","mental_health":{"mean":"81.3","ci_l":"78.1","ci_u":"84.1","count":2115}},{"name":"Black or African American","mental_health":{"mean":"94.4","ci_l":"93.7","ci_u":"95.1","count":13866}},{"name":"Hispanic/Latino","mental_health":{"mean":"91.5","ci_l":"90.6","ci_u":"92.3","count":17566}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"83.9","ci_l":"78.7","ci_u":"88.0","count":1509}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"81.2","ci_l":"73.2","ci_u":"87.3","count":417}},{"name":"White","mental_health":{"mean":"86.8","ci_l":"85.7","ci_u":"87.9","count":28769}}]}]},{"name":"qn9","mental_health":{"mean":"14.2","ci_l":"13.4","ci_u":"15.1","count":186154},"sex":[{"name":"Female","race":[{"name":"Am Indian / Alaska Native","mental_health":{"mean":"15.7","ci_l":"12.3","ci_u":"20.0","count":942}},{"name":"Asian","mental_health":{"mean":"9.1","ci_l":"7.7","ci_u":"10.8","count":3065}},{"name":"Black or African American","mental_health":{"mean":"15.8","ci_l":"14.5","ci_u":"17.3","count":21819}},{"name":"Hispanic/Latino","mental_health":{"mean":"11.2","ci_l":"10.1","ci_u":"12.3","count":25577}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"7.3","ci_l":"5.7","ci_u":"9.5","count":2472}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"11.1","ci_l":"7.5","ci_u":"16.2","count":492}},{"name":"White","mental_health":{"mean":"9.8","ci_l":"8.9","ci_u":"10.8","count":37544}}]},{"name":"Male","race":[{"name":"Am Indian / Alaska Native","mental_health":{"mean":"22.4","ci_l":"18.4","ci_u":"27.0","count":1158}},{"name":"Asian","mental_health":{"mean":"11.3","ci_l":"9.7","ci_u":"13.2","count":3219}},{"name":"Black or African American","mental_health":{"mean":"22.7","ci_l":"21.0","ci_u":"24.3","count":19484}},{"name":"Hispanic/Latino","mental_health":{"mean":"15.3","ci_l":"13.9","ci_u":"16.8","count":24735}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"14.0","ci_l":"11.3","ci_u":"17.1","count":2074}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"21.9","ci_l":"16.4","ci_u":"28.7","count":605}},{"name":"White","mental_health":{"mean":"16.7","ci_l":"15.4","ci_u":"18.1","count":38390}}]}]},{"name":"qn10","mental_health":{"mean":"30.3","ci_l":"29.6","ci_u":"31.0","count":187101},"sex":[{"name":"Female","race":[{"name":"Am Indian / Alaska Native","mental_health":{"mean":"31.1","ci_l":"27.2","ci_u":"35.3","count":944}},{"name":"Asian","mental_health":{"mean":"19.1","ci_l":"17.3","ci_u":"21.0","count":3083}},{"name":"Black or African American","mental_health":{"mean":"28.7","ci_l":"27.4","ci_u":"30.0","count":21781}},{"name":"Hispanic/Latino","mental_health":{"mean":"35.5","ci_l":"34.3","ci_u":"36.7","count":25532}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"25.8","ci_l":"22.6","ci_u":"29.3","count":2512}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"31.5","ci_l":"26.1","ci_u":"37.5","count":499}},{"name":"White","mental_health":{"mean":"29.6","ci_l":"28.6","ci_u":"30.7","count":38052}}]},{"name":"Male","race":[{"name":"Am Indian / Alaska Native","mental_health":{"mean":"36.8","ci_l":"32.9","ci_u":"40.9","count":1154}},{"name":"Asian","mental_health":{"mean":"21.3","ci_l":"19.1","ci_u":"23.6","count":3213}},{"name":"Black or African American","mental_health":{"mean":"30.5","ci_l":"29.1","ci_u":"31.9","count":19434}},{"name":"Hispanic/Latino","mental_health":{"mean":"35.3","ci_l":"34.0","ci_u":"36.6","count":24631}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"29.4","ci_l":"26.2","ci_u":"32.7","count":2109}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"31.7","ci_l":"26.1","ci_u":"37.8","count":606}},{"name":"White","mental_health":{"mean":"29.7","ci_l":"28.6","ci_u":"30.8","count":38931}}]}]}]}} );
+            expect(resp).to.eql(  {"table":{"question":[{"name":"qn8","mental_health":{"mean":"87.4","ci_l":"86.5","ci_u":"88.3","count":121103},"sex":[{"name":"Female","race":[{"name":"Asian","mental_health":{"mean":"76.8","ci_l":"72.9","ci_u":"80.2","count":1541}},{"name":"Black or African American","mental_health":{"mean":"92.9","ci_l":"91.5","ci_u":"94.0","count":11670}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"81.3","ci_l":"72.0","ci_u":"88.1","count":274}},{"name":"White","mental_health":{"mean":"84.8","ci_l":"83.4","ci_u":"86.1","count":23714}},{"name":"Hispanic/Latino","mental_health":{"mean":"89.6","ci_l":"88.5","ci_u":"90.6","count":14016}},{"name":"Am Indian / Alaska Native","mental_health":{"mean":"88.4","ci_l":"83.1","ci_u":"92.2","count":519}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"82.1","ci_l":"77.5","ci_u":"85.9","count":1370}}]},{"name":"Male","race":[{"name":"Hispanic/Latino","mental_health":{"mean":"91.5","ci_l":"90.6","ci_u":"92.3","count":17566}},{"name":"Am Indian / Alaska Native","mental_health":{"mean":"91.5","ci_l":"87.3","ci_u":"94.3","count":832}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"81.2","ci_l":"73.2","ci_u":"87.3","count":417}},{"name":"Black or African American","mental_health":{"mean":"94.4","ci_l":"93.7","ci_u":"95.1","count":13866}},{"name":"White","mental_health":{"mean":"86.8","ci_l":"85.7","ci_u":"87.9","count":28769}},{"name":"Asian","mental_health":{"mean":"81.3","ci_l":"78.1","ci_u":"84.1","count":2115}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"83.9","ci_l":"78.7","ci_u":"88.0","count":1509}}]}]},{"name":"qn9","mental_health":{"mean":"14.2","ci_l":"13.4","ci_u":"15.1","count":186154},"sex":[{"name":"Female","race":[{"name":"Asian","mental_health":{"mean":"9.1","ci_l":"7.7","ci_u":"10.8","count":3065}},{"name":"Black or African American","mental_health":{"mean":"15.8","ci_l":"14.5","ci_u":"17.3","count":21819}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"11.1","ci_l":"7.5","ci_u":"16.2","count":492}},{"name":"White","mental_health":{"mean":"9.8","ci_l":"8.9","ci_u":"10.8","count":37544}},{"name":"Hispanic/Latino","mental_health":{"mean":"11.2","ci_l":"10.1","ci_u":"12.3","count":25577}},{"name":"Am Indian / Alaska Native","mental_health":{"mean":"15.7","ci_l":"12.3","ci_u":"20.0","count":942}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"7.3","ci_l":"5.7","ci_u":"9.5","count":2472}}]},{"name":"Male","race":[{"name":"Hispanic/Latino","mental_health":{"mean":"15.3","ci_l":"13.9","ci_u":"16.8","count":24735}},{"name":"Am Indian / Alaska Native","mental_health":{"mean":"22.4","ci_l":"18.4","ci_u":"27.0","count":1158}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"21.9","ci_l":"16.4","ci_u":"28.7","count":605}},{"name":"Black or African American","mental_health":{"mean":"22.7","ci_l":"21.0","ci_u":"24.3","count":19484}},{"name":"White","mental_health":{"mean":"16.7","ci_l":"15.4","ci_u":"18.1","count":38390}},{"name":"Asian","mental_health":{"mean":"11.3","ci_l":"9.7","ci_u":"13.2","count":3219}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"14.0","ci_l":"11.3","ci_u":"17.1","count":2074}}]}]},{"name":"qn10","mental_health":{"mean":"30.3","ci_l":"29.6","ci_u":"31.0","count":187101},"sex":[{"name":"Female","race":[{"name":"Asian","mental_health":{"mean":"19.1","ci_l":"17.3","ci_u":"21.0","count":3083}},{"name":"Black or African American","mental_health":{"mean":"28.7","ci_l":"27.4","ci_u":"30.0","count":21781}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"31.5","ci_l":"26.1","ci_u":"37.5","count":499}},{"name":"White","mental_health":{"mean":"29.6","ci_l":"28.6","ci_u":"30.7","count":38052}},{"name":"Hispanic/Latino","mental_health":{"mean":"35.5","ci_l":"34.3","ci_u":"36.7","count":25532}},{"name":"Am Indian / Alaska Native","mental_health":{"mean":"31.1","ci_l":"27.2","ci_u":"35.3","count":944}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"25.8","ci_l":"22.6","ci_u":"29.3","count":2512}}]},{"name":"Male","race":[{"name":"Hispanic/Latino","mental_health":{"mean":"35.3","ci_l":"34.0","ci_u":"36.6","count":24631}},{"name":"Am Indian / Alaska Native","mental_health":{"mean":"36.8","ci_l":"32.9","ci_u":"40.9","count":1154}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"31.7","ci_l":"26.1","ci_u":"37.8","count":606}},{"name":"Black or African American","mental_health":{"mean":"30.5","ci_l":"29.1","ci_u":"31.9","count":19434}},{"name":"White","mental_health":{"mean":"29.7","ci_l":"28.6","ci_u":"30.8","count":38931}},{"name":"Asian","mental_health":{"mean":"21.3","ci_l":"19.1","ci_u":"23.6","count":3213}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"29.4","ci_l":"26.2","ci_u":"32.7","count":2109}}]}]}]}});
         });
     });
 
@@ -527,7 +527,7 @@ describe.skip("YRBS API", function () {
             'query': {'question.path':{ 'value': ['qn8']}, 'race':{value:['White', 'Black or African American']},'sex':{value:['Female']}}};
 
         return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
-            expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health":{"mean":"86.1","ci_l":"84.9","ci_u":"87.3","count":35384},"sex":[{"name":"Female","race":[{"name":"Black or African American","mental_health":{"mean":"92.9","ci_l":"91.5","ci_u":"94.0","count":11670}},{"name":"White","mental_health":{"mean":"84.8","ci_l":"83.4","ci_u":"86.1","count":23714}}]}]}]}} );
+            expect(resp).to.eql(   {"table":{"question":[{"name":"qn8","mental_health":{"mean":"86.1","ci_l":"84.9","ci_u":"87.3","count":35384},"sex":[{"name":"Female","race":[{"name":"White","mental_health":{"mean":"84.8","ci_l":"83.4","ci_u":"86.1","count":23714}},{"name":"Black or African American","mental_health":{"mean":"92.9","ci_l":"91.5","ci_u":"94.0","count":11670}}]}]}]}});
         });
     });
 
@@ -536,52 +536,51 @@ describe.skip("YRBS API", function () {
             'query': {'question.path':{ 'value': ['qn8']}, 'race':{value:['White', 'Black or African American']},'sitecode':{value:['VA','MO']}}};
 
         return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
-            expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health":{"mean":"86.4","ci_l":"84.7","ci_u":"87.9","count":16512},"race":[{"name":"Black or African American","sitecode":[{"name":"MO","mental_health":{"mean":"92.8","ci_l":"90.2","ci_u":"94.7","count":1395}},{"name":"VA","mental_health":{"mean":"91.1","ci_l":"88.7","ci_u":"93.1","count":2031}}]},{"name":"White","sitecode":[{"name":"MO","mental_health":{"mean":"87.8","ci_l":"85.1","ci_u":"90.1","count":8483}},{"name":"VA","mental_health":{"mean":"77.6","ci_l":"74.7","ci_u":"80.3","count":4603}}]}]}]}});
+            expect(resp).to.eql(  {"table":{"question":[{"name":"qn8","mental_health":{"mean":"86.4","ci_l":"84.7","ci_u":"87.9","count":16512},"race":[{"name":"White","mental_health":{"mean":"77.6","ci_l":"74.7","ci_u":"80.3","count":4603}},{"name":"Black or African American","mental_health":{"mean":"92.8","ci_l":"90.2","ci_u":"94.7","count":1395}}]}]}});
         });
     });
 
     it("getQuestionsTreeByYears from yrbs service using 'All'", function (){
         return yrbs.getQuestionsTreeByYears(["All"]).then(function (response) {
-            expect(response.questionTree[0].text).to.eql("Unintentional Injuries and Violence");
+            expect(response.questionTree[4].text).to.eql("Unintentional Injuries and Violence");
             //Childrens are in alphabetical order
-            expect(response.questionTree[0].children[0].text).to.eql("Attempted suicide that resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse(during the 12 months before the survey)");
-            expect(response.questionTree[0].children[1].text).to.eql("Attempted suicide(one or more times during the 12 months before the survey)");
-            expect(response.questionTree[0].children[2].text).to.eql("Carried a gun(on at least 1 day during the 30 days before the survey)");
-            expect(response.questionTree[1].text).to.eql("Tobacco Use");
-            expect(response.questionTree[2].text).to.eql("Alcohol and Other Drug Use");
-            expect(response.questionTree[3].text).to.eql("Sexual Behaviors");
-            expect(response.questionTree[4].text).to.eql("Obesity, Overweight, and Weight Control");
-            expect(response.questionTree[5].text).to.eql("Dietary Behaviors");
-            expect(response.questionTree[6].text).to.eql("Physical Activity");
-            expect(response.questionTree[7].text).to.eql("Other Health Topics");
+            expect(response.questionTree[4].children[0].text).to.eql("Attempted suicide that resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse(during the 12 months before the survey)");
+            expect(response.questionTree[4].children[1].text).to.eql("Attempted suicide(one or more times during the 12 months before the survey)");
+            expect(response.questionTree[4].children[2].text).to.eql("Carried a gun(on at least 1 day during the 30 days before the survey)");
+            expect(response.questionTree[2].text).to.eql("Tobacco Use");
+            expect(response.questionTree[1].text).to.eql("Alcohol and Other Drug Use");
+            expect(response.questionTree[0].text).to.eql("Sexual Behaviors");
+            expect(response.questionTree[7].text).to.eql("Obesity, Overweight, and Weight Control");
+            expect(response.questionTree[3].text).to.eql("Dietary Behaviors");
+            expect(response.questionTree[5].text).to.eql("Physical Activity");
+            expect(response.questionTree[6].text).to.eql("Other Health Topics");
             //Verify questionsList
-            expect(response.questionsList[0].qkey).to.eql("qn11");
-            expect(response.questionsList[0].title).to.eql("Drove when drinking alcohol(in a car or other vehicle one or more times during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
-            expect(response.questionsList[1].qkey).to.eql("qn12");
-            expect(response.questionsList[1].title).to.eql("Texted or e-mailed while driving a car or other vehicle(on at least 1 day during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
+            expect(response.questionsList[0].qkey).to.eql("qn43");
+            expect(response.questionsList[0].title).to.eql("Currently drank alcohol(at least one drink of alcohol on at least 1 day during the 30 days before the survey)");
+            expect(response.questionsList[1].qkey).to.eql("qnfrcig");
+            expect(response.questionsList[1].title).to.eql("Currently frequently smoked cigarettes(on 20 or more days during the 30 days before the survey)");
         });
     });
 
     it("getQuestionsTreeByYears from yrbs service by year", function (){
         return yrbs.getQuestionsTreeByYears(["2015"]).then(function (response) {
-            expect(response.questionTree[0].text).to.eql("Unintentional Injuries and Violence");
+            expect(response.questionTree[4].text).to.eql("Unintentional Injuries and Violence");
             //Childrens are in alphabetical order
-            expect(response.questionTree[0].children[0].text).to.eql("Attempted suicide that resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse(during the 12 months before the survey)");
-            expect(response.questionTree[0].children[1].text).to.eql("Attempted suicide(one or more times during the 12 months before the survey)");
-            expect(response.questionTree[0].children[2].text).to.eql("Carried a gun(on at least 1 day during the 30 days before the survey)");
-            expect(response.questionTree[1].text).to.eql("Tobacco Use");
-            expect(response.questionTree[2].text).to.eql("Alcohol and Other Drug Use");
-            expect(response.questionTree[3].text).to.eql("Sexual Behaviors");
-            expect(response.questionTree[4].text).to.eql("Obesity, Overweight, and Weight Control");
-            expect(response.questionTree[5].text).to.eql("Dietary Behaviors");
-            expect(response.questionTree[6].text).to.eql("Physical Activity");
-            expect(response.questionTree[7].text).to.eql("Other Health Topics");
+            expect(response.questionTree[4].children[0].text).to.eql("Attempted suicide that resulted in an injury, poisoning, or overdose that had to be treated by a doctor or nurse(during the 12 months before the survey)");
+            expect(response.questionTree[4].children[1].text).to.eql("Attempted suicide(one or more times during the 12 months before the survey)");
+            expect(response.questionTree[4].children[2].text).to.eql("Carried a gun(on at least 1 day during the 30 days before the survey)");
+            expect(response.questionTree[2].text).to.eql("Tobacco Use");
+            expect(response.questionTree[1].text).to.eql("Alcohol and Other Drug Use");
+            expect(response.questionTree[0].text).to.eql("Sexual Behaviors");
+            expect(response.questionTree[7].text).to.eql("Obesity, Overweight, and Weight Control");
+            expect(response.questionTree[3].text).to.eql("Dietary Behaviors");
+            expect(response.questionTree[5].text).to.eql("Physical Activity");
+            expect(response.questionTree[6].text).to.eql("Other Health Topics");
             //Verify questionsList
-            expect(response.questionsList[0].qkey).to.eql("qn11");
-            expect(response.questionsList[0].title).to.eql("Drove when drinking alcohol(in a car or other vehicle one or more times during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
-            expect(response.questionsList[1].qkey).to.eql("qn12");
-            expect(response.questionsList[1].title).to.eql("Texted or e-mailed while driving a car or other vehicle(on at least 1 day during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
-
+            expect(response.questionsList[0].qkey).to.eql("qn43");
+            expect(response.questionsList[0].title).to.eql("Currently drank alcohol(at least one drink of alcohol on at least 1 day during the 30 days before the survey)");
+            expect(response.questionsList[1].qkey).to.eql("qnfrcig");
+            expect(response.questionsList[1].title).to.eql("Currently frequently smoked cigarettes(on 20 or more days during the 30 days before the survey)");
         });
     });
 });
