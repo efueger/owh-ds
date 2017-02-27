@@ -1,20 +1,24 @@
-var result = require('../models/result');
 var elasticSearch = require('../models/elasticSearch');
+var Q = require('q');
 
-//**
+/**
+ * Query dsnmeatadata for the given dataset and years and return a merged set of
+ * filters and options common across the selected years
+ * @param app
+ * @param rConfig
+ */
 
-var dsmetadata = function(app, rConfig) {
-    app.get('/dsmetadata/:dataset', function(req, res) {
-        var dataset = req.params.dataset
-        var years = req.query.years?req.query.years.split(','):[];
-        new elasticSearch().getDsMetadata(dataset, years).then( function (resp) {
-            var r = processQueryResponse(resp);
-            res.send( new result('OK', r, "success") );
-        }, function (err) {
-            res.send(new result('Error retrieving dataset metadata', err, "failed"));
-        });
+function dsmetadata() {}
+
+dsmetadata.prototype.getDsMetadata = function (dataset, years) {
+    var deferred = Q.defer();
+    var self = this;
+    new elasticSearch().getDsMetadata(dataset,years).then(function (resp) {
+        deferred.resolve(self.processDsMetadataQueryResponse(resp));
     });
+    return deferred.promise;
 }
+
 
 /**
  * Process the result and created a combined filter -pv list for all the selected years
@@ -22,7 +26,7 @@ var dsmetadata = function(app, rConfig) {
  *  {'race':['Asian', 'White'], 'ethnicity':['Hispanic', Not Hispanic], 'age': null}
  * @param esResp
  */
-function  processQueryResponse(esResp) {
+dsmetadata.prototype.processDsMetadataQueryResponse = function (esResp){
     var hits = esResp.hits.hits;
     var result = {};
     var filterByYear = {};
@@ -44,10 +48,14 @@ function  processQueryResponse(esResp) {
         }
     }
 
-    // Remove all filters that are not present in all years
+    // Remove all filters that are not present in all years and filter options list empty
     for (f in result){
-        for(y in filterByYear){
-            if (filterByYear[y].indexOf(f) < 0){
+        if (result[f] && result[f].length == 0){
+            delete result[f];
+        }
+
+        for (y in filterByYear) {
+            if (filterByYear[y].indexOf(f) < 0) {
                 delete result[f];
             }
         }
@@ -55,4 +63,5 @@ function  processQueryResponse(esResp) {
 
     return result;
 }
+
 module.exports = dsmetadata;

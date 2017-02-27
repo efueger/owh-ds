@@ -254,7 +254,6 @@
                         }
                     }
                 }
-                console.log(sideFilters);
             }, function (error) {
                 console.log(error);
             });

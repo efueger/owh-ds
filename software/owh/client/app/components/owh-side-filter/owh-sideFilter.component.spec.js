@@ -2,7 +2,8 @@
 
 describe('OWH Side filter component: ', function() {
     var $rootScope, $injector, $templateCache, $scope, filters,closeDeferred, controllerProvider,
-        modalService,givenModalDefaults, ModalService,elementVisible, thenFunction;
+        modalService,givenModalDefaults, ModalService,elementVisible, thenFunction, SearchService;
+
     var $httpBackend, $compile, $http, $componentController;
 
     beforeEach(function() {
@@ -451,4 +452,87 @@ describe('OWH Side filter component: ', function() {
         expect(ctrl.onFilter).not.toHaveBeenCalled();
 
     });
+
+    it('onFilterValueChange should not call onFilter or refreshFilterOptions when runFilterchange and refreshFiltersOnChange is false ', function() {
+        var bindings = {filters : filters, onFilter: function(){}};
+        bindings.filters.selectedPrimaryFilter.runOnFilterChange = false;
+
+        var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
+        spyOn(ctrl, 'onFilter');
+        spyOn(ctrl, 'refreshFilterOptions');
+        ctrl.onFilterValueChange({refreshFiltersOnChange: false, filters:{ value: []}});
+
+        expect(ctrl.onFilter).not.toHaveBeenCalled();
+        expect(ctrl.refreshFilterOptions).not.toHaveBeenCalled();
+    });
+
+    it('onFilterValueChange should not call onFilter or refreshFilterOptions when runFilterchange and refreshFiltersOnChange is true ', function() {
+        var bindings = {filters : filters, onFilter: function(){}, runOnFilterChange:true };
+
+        var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
+        ctrl.refreshFilterOptions = function () {};
+        spyOn(ctrl, 'onFilter');
+        spyOn(ctrl, 'refreshFilterOptions');
+        ctrl.onFilterValueChange({refreshFiltersOnChange: true, filters:{ value: []}});
+
+        expect(ctrl.onFilter).toHaveBeenCalled();
+        expect(ctrl.refreshFilterOptions).toHaveBeenCalled();
+    });
+
+    it('refreshFilter options should set filter option correctly ', inject(function(SearchService) {
+        filters= { selectedPrimaryFilter: {
+            key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
+            allFilters: [], searchResults: function () {}, showMap:true,
+            countLabel: 'Number of Deaths', mapData:{}, initiated:true,
+            runOnFilterChange:true,
+            sideFilters:[
+                {
+                    filterGroup: false, collapse: false, allowGrouping: true, groupBy:"row",
+                    filters: {key: 'year', title: 'label.filter.year', queryKey:"year", primary: false, value: [2000, 2014], groupBy: 'row',
+                        type:"label.filter.group.year", showChart: true, defaultGroup:"column",
+                        autoCompleteOptions: []}
+                },
+                {
+                    filterGroup: false, collapse: false, allowGrouping: true, groupBy:false,
+                    filters: {key: 'race', title: 'label.filter.race', queryKey:"race", primary: false, value: [], groupBy: 'row',
+                        type:"label.filter.group.demographics", showChart: true, defaultGroup:"column",
+                        autoCompleteOptions: [{key:'White','title':'White'}]}
+                },
+                {
+                    filterGroup: false, collapse: true, allowGrouping: true,groupBy:true,
+                    filters: {key: 'gender', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], groupBy: 'column',
+                        type:"label.filter.group.demographics", groupByDefault: 'column', showChart: true,
+                        autoCompleteOptions: [
+                            {key:'F',title:'Female'},
+                            {key:'M',title:'Male'}
+                        ], defaultGroup:"column"
+                    }
+                },
+                {
+                    filterGroup: false, collapse: false, allowGrouping: true, groupBy:false,
+                    filters: {key: 'ethnicity', title: 'label.filter.ethnicity', queryKey:"ethnicity", primary: false, value: ['Hispanic'], groupBy: 'row',
+                        type:"label.filter.group.ethnicity", showChart: true, defaultGroup:"column",
+                        autoCompleteOptions: [{key:'Hispanic','title':'Hispanic'},{key:'Non-Hispanic','title':'Non-Hispanic'}]}
+                }
+            ]
+        }};
+
+        var bindings = {filters : filters, onFilter: function(){}, runOnFilterChange:true };
+
+        var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
+        spyOn(SearchService, 'getDsMetadata').and.returnValue(closeDeferred.promise);
+
+        ctrl.refreshFilterOptions({ queryKey: "year", value: ["2000"]});
+        expect(SearchService.getDsMetadata).toHaveBeenCalledWith("deaths","2000");
+        closeDeferred.resolve({"status":"OK","data":{"sex":["M"],"ethnicity":[]}});
+        $scope.$apply();
+        expect(filters.selectedPrimaryFilter.sideFilters[0].disabled).toBeFalsy();
+        expect(filters.selectedPrimaryFilter.sideFilters[0].groupBy).toEqual("row");
+        expect(filters.selectedPrimaryFilter.sideFilters[1].disabled).toBeTruthy();
+        expect(filters.selectedPrimaryFilter.sideFilters[1].groupBy).toBeFalsy();
+        expect(filters.selectedPrimaryFilter.sideFilters[2].disabled).toBeFalsy();
+        expect(filters.selectedPrimaryFilter.sideFilters[2].filters.autoCompleteOptions[0].disabled).toBeTruthy();
+        expect(filters.selectedPrimaryFilter.sideFilters[2].filters.autoCompleteOptions[1].disabled).toBeFalsy();
+        expect(filters.selectedPrimaryFilter.sideFilters[3].disabled).toBeFalsy();
+    }));
 });
