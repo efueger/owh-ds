@@ -58,7 +58,7 @@
         /*Show phase two implementation box*/
         function phaseTwoImpl() {
             if(ots.selectedShowFilter.key !== 'number_of_deaths') {
-                ots.selectedShowFilter = ots.showFilters[0];
+                ots.selectedShowFilter = ots.showFilters.deaths[0];
                 searchFactory.showPhaseTwoModal('label.show.impl.next');
             }
         }

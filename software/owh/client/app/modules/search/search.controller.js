@@ -52,11 +52,11 @@
 
         sc.selectedMapSize = 'small';
         sc.showMeOptions = {
-            'deaths': [
+            deaths: [
                 {key: 'number_of_deaths', title: 'Number of Deaths'},
                 {key: 'crude_death_rates', title: 'Crude Death Rates'},
                 {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}],
-            'natality': [
+            natality: [
                 {key: 'number_of_births', title: 'Number of Births'},
                 {key: 'birth_rates', title: 'Birth Rates'},
                 {key: 'fertility_rates', title: 'Fertility Rates'}]
@@ -180,7 +180,7 @@
             ]
         };
         sc.queryID = $stateParams.queryID;
-        sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
+        sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions.deaths[0].key;
         //this flags whether to cache the incoming filter query
         sc.cacheQuery = $stateParams.cacheQuery;
 
