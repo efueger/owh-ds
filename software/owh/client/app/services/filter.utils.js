@@ -174,21 +174,27 @@
 
             //prepare filter definitions
             var bridgeDataFilters = [
-                {key: 'current_year', title: 'label.filter.yearly.estimate', queryKey:"current_year", primary: false, value: ['2015'], defaultGroup:'row', groupBy: false,
-                    filterType: 'checkbox',autoCompleteOptions: angular.copy(censusYearsOptions) },
-                {key: 'sex', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    filterType: 'checkbox',autoCompleteOptions: angular.copy(censusGenderOptions)},
+                {key: 'current_year', title: 'label.filter.yearly.estimate', queryKey:"current_year",
+                    primary: false, value: ['2015'], defaultGroup:'row', groupBy: false, filterType: 'checkbox',
+                    autoCompleteOptions: angular.copy(censusYearsOptions), helpText:"label.help.text.bridged-race.year" },
+                {key: 'sex', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [],
+                    defaultGroup:'column', groupBy: 'column', filterType: 'checkbox',
+                    autoCompleteOptions: angular.copy(censusGenderOptions), helpText:"label.help.text.bridged-race.gender"},
 
-                {key: 'agegroup', title: 'label.filter.agegroup', queryKey:"age_5_interval", primary: false, value:[], groupBy: false,
-                    filterType: 'slider', autoCompleteOptions: angular.copy(censusAgeOptions),
-                    sliderOptions: ageSliderOptions, sliderValue: '-5;105', timer: undefined, defaultGroup:"row"},
+                {key: 'agegroup', title: 'label.filter.agegroup', queryKey:"age_5_interval", primary: false, value:[],
+                    groupBy: false, filterType: 'slider', autoCompleteOptions: angular.copy(censusAgeOptions),
+                    sliderOptions: ageSliderOptions, sliderValue: '-5;105', timer: undefined,
+                    defaultGroup:"row", helpText:"label.help.text.bridged-race.agegroup"},
 
-                {key: 'race', title: 'label.filter.race', queryKey:"race",primary: false, defaultGroup:'column', groupBy: 'row',
-                    filterType: 'checkbox',autoCompleteOptions: angular.copy(censusRaceOptions), value:[]},
-                {key: 'ethnicity', title: 'label.filter.hispanicOrigin', queryKey:"ethnicity_group",primary: false, defaultGroup:'row', groupBy: false,
-                    filterType: 'checkbox',autoCompleteOptions: angular.copy(censusHispanicOriginOptions), value:[]},
-                {key: 'state', title: 'label.filter.state', queryKey:"state",primary: false, value:[], defaultGroup:'row', groupBy: false,
-                    filterType: 'checkbox',autoCompleteOptions: angular.copy(censusStateOptions), displaySearchBox:true, displaySelectedFirst:true}
+                {key: 'race', title: 'label.filter.race', queryKey:"race",primary: false, defaultGroup:'column',
+                    groupBy: 'row', filterType: 'checkbox',autoCompleteOptions: angular.copy(censusRaceOptions),
+                    value:[], helpText:"label.help.text.bridged-race.race"},
+                {key: 'ethnicity', title: 'label.filter.hispanicOrigin', queryKey:"ethnicity_group",primary: false,
+                    defaultGroup:'row', groupBy: false, filterType: 'checkbox',autoCompleteOptions: angular.copy(censusHispanicOriginOptions),
+                    value:[], helpText:"label.help.text.bridged-race.ethnicity"},
+                {key: 'state', title: 'label.filter.state', queryKey:"state",primary: false, value:[], defaultGroup:'row',
+                    groupBy: false, filterType: 'checkbox',autoCompleteOptions: angular.copy(censusStateOptions),
+                    displaySearchBox:true, displaySelectedFirst:true, helpText:"label.help.text.bridged-race.state"}
             ];
 
             return bridgeDataFilters;
