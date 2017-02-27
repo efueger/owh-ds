@@ -50,11 +50,14 @@
                 <span>&lt;&lt; Hide Filters</span>
             </a>
             <div class="sort-by side-filter-padding">
-                <owh-side-filter filters="sc.filters"
-                    on-filter="sc.search(sc.filters.selectedPrimaryFilter, sc.filters, true)"
+                <owh-side-filter filters="sc.filters.selectedPrimaryFilter.sideFilters"
+                    group-options="sc.filters.groupOptions"
+                    primary-key="{{ sc.filters.selectedPrimaryFilter.key }}"
+                    on-filter="sc.search(true)"
                     sort="sc.sort[sc.filters.selectedPrimaryFilter.title]"
                     show-filters="sc.availableFilters[sc.tableView]"
                     utilities="sc.filterUtilities[sc.filters.selectedPrimaryFilter.key]"
+                    run-on-filter-change="sc.filters.selectedPrimaryFilter.runOnFilterChange"
                     ></owh-side-filter>
             </div>
         </div>

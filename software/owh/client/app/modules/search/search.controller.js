@@ -60,10 +60,12 @@
             "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
             "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'yrbsState', 'question'],
             "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'agegroup', 'race', 'ethnicity', 'state'],
-            "label.filter.natality": ['dob_yy', 'sex', 'mother_race', 'hispanic_origin', 'marital_status',
-                'mother_age', 'mother_education', 'dob_mm', 'dob_wk', 'prenatal_care',
-                'birth_weight', 'birth_plurality', 'live_birth', 'birth_place', 'delivery_method', 'medical_attendant',
-                'chronic_hypertension', 'diabetes', 'pregnancy_hypertension', 'eclampsia', 'tobacco_use']
+            "label.filter.natality": ['current_year', 'month', 'weekday', 'sex', 'gestational_age_r10', 'prenatal_care',
+                'birth_weight', 'birth_weight_r4', 'birth_weight_r12', 'birth_plurality', 'live_birth', 'birth_place',
+                'delivery_method', 'medical_attendant', 'race', 'hispanic_origin', 'marital_status',
+                'mother_age_r8', 'mother_age_r9', 'mother_age_r14', 'mother_age', 'mother_education',
+                'anemia', 'cardiac_disease', 'chronic_hypertension', 'diabetes', 'eclampsia', 'hydramnios_oligohydramnios',
+                'incompetent_cervix', 'lung_disease', 'pregnancy_hypertension', 'tobacco_use']
         };
 
         sc.optionsGroup = {
