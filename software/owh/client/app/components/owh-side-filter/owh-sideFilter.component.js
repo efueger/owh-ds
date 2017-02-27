@@ -256,9 +256,9 @@
         function refreshFilterOptions(filter) {
             var filterName = filter.queryKey;
             var filterValue = filter.value;
-            SearchService.getDsMetadata(sfc.filters.selectedPrimaryFilter.key, filterValue ? filterValue.join(',') : null).then(function (response) {
+            SearchService.getDsMetadata(sfc.primaryKey, filterValue ? filterValue.join(',') : null).then(function (response) {
                 var newFilters = response.data;
-                var sideFilters = sfc.filters.selectedPrimaryFilter.sideFilters;
+                var sideFilters = sfc.filters;
                 for (var f in sideFilters) {
                     var fkey = sideFilters[f].filters.queryKey;
                     if (fkey !== filterName) {

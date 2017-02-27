@@ -17,8 +17,7 @@
                 ng-init="group = (sideFilter.filterGroup ? sideFilter : sideFilter.filters)"
                 ng-if="categoryKey == 'undefined' || $index < 2 || sfc.filters.selectedPrimaryFilter['cat'+$parent.$index]">
 
-                <span ng-init="group = (sideFilter.filterGroup ? sideFilter : sideFilter.filters)"
-                      ng-class="{'disabled-filter': !sfc.isVisible(sideFilter) || sideFilter.disabled }">
+                <span ng-class="{'disabled-filter': !sfc.isVisible(sideFilter) || sideFilter.disabled }" ng-if="group.filterType === 'slider'">
                     <label class="side-pane-label custom-label">
                         <a href="javascript:void(0)" ng-click="sideFilter.collapse = !sideFilter.collapse"
                            class="custom-link" title="{{group.helpText | translate}}">
@@ -26,7 +25,7 @@
                             <span translate="{{group.title}}" class="filter-display-name"></span>
                         </a>
                         <owh-toggle-switch ng-if="sideFilter.allowGrouping" class="pull-right"
-                                           options="sideFilter.groupOptions ? sideFilter.groupOptions : sfc.filters.groupOptions"
+                                           options="sideFilter.groupOptions ? sideFilter.groupOptions : sfc.groupOptions"
                                            model="group.groupBy" on-change="sfc.onFilterValueChange(sideFilter)"
                                            tooltip="{{'label.group.by.tooltip' | translate}}">
                         </owh-toggle-switch>

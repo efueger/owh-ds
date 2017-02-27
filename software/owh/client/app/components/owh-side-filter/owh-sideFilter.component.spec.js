@@ -480,12 +480,7 @@ describe('OWH Side filter component: ', function() {
     });
 
     it('refreshFilter options should set filter option correctly ', inject(function(SearchService) {
-        filters= { selectedPrimaryFilter: {
-            key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
-            allFilters: [], searchResults: function () {}, showMap:true,
-            countLabel: 'Number of Deaths', mapData:{}, initiated:true,
-            runOnFilterChange:true,
-            sideFilters:[
+        filters= [
                 {
                     filterGroup: false, collapse: false, allowGrouping: true, groupBy:"row",
                     filters: {key: 'year', title: 'label.filter.year', queryKey:"year", primary: false, value: [2000, 2014], groupBy: 'row',
@@ -514,10 +509,9 @@ describe('OWH Side filter component: ', function() {
                         type:"label.filter.group.ethnicity", showChart: true, defaultGroup:"column",
                         autoCompleteOptions: [{key:'Hispanic','title':'Hispanic'},{key:'Non-Hispanic','title':'Non-Hispanic'}]}
                 }
-            ]
-        }};
+            ];
 
-        var bindings = {filters : filters, onFilter: function(){}, runOnFilterChange:true };
+        var bindings = {filters : filters, onFilter: function(){}, runOnFilterChange:true, primaryKey:'deaths' };
 
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
         spyOn(SearchService, 'getDsMetadata').and.returnValue(closeDeferred.promise);
@@ -526,13 +520,13 @@ describe('OWH Side filter component: ', function() {
         expect(SearchService.getDsMetadata).toHaveBeenCalledWith("deaths","2000");
         closeDeferred.resolve({"status":"OK","data":{"sex":["M"],"ethnicity":[]}});
         $scope.$apply();
-        expect(filters.selectedPrimaryFilter.sideFilters[0].disabled).toBeFalsy();
-        expect(filters.selectedPrimaryFilter.sideFilters[0].groupBy).toEqual("row");
-        expect(filters.selectedPrimaryFilter.sideFilters[1].disabled).toBeTruthy();
-        expect(filters.selectedPrimaryFilter.sideFilters[1].groupBy).toBeFalsy();
-        expect(filters.selectedPrimaryFilter.sideFilters[2].disabled).toBeFalsy();
-        expect(filters.selectedPrimaryFilter.sideFilters[2].filters.autoCompleteOptions[0].disabled).toBeTruthy();
-        expect(filters.selectedPrimaryFilter.sideFilters[2].filters.autoCompleteOptions[1].disabled).toBeFalsy();
-        expect(filters.selectedPrimaryFilter.sideFilters[3].disabled).toBeFalsy();
+        expect(filters[0].disabled).toBeFalsy();
+        expect(filters[0].groupBy).toEqual("row");
+        expect(filters[1].disabled).toBeTruthy();
+        expect(filters[1].groupBy).toBeFalsy();
+        expect(filters[2].disabled).toBeFalsy();
+        expect(filters[2].filters.autoCompleteOptions[0].disabled).toBeTruthy();
+        expect(filters[2].filters.autoCompleteOptions[1].disabled).toBeFalsy();
+        expect(filters[3].disabled).toBeFalsy();
     }));
 });
