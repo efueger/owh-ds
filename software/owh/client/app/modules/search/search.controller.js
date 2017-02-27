@@ -111,7 +111,6 @@
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1997','1995','1993','1991' ]
             },
             "birth_rates": {
-                "hispanicOrigin": ['Non-Hispanic', 'Hispanic', 'Unknown'],
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
             },
@@ -130,7 +129,8 @@
         //add availablefilter for birth_rates
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
-            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin']
+            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
+            'birth_rates': ['current_year', 'sex', 'race', 'hispanic_origin']
         };
 
         //functionality to be added to the side filters
@@ -315,10 +315,6 @@
                //if queryID exists in owh_querycache index, then update data that are required to display search results
                 if (response.data) {
                     var result = searchFactory.updateFiltersAndData(sc.filters.primaryFilters, response, sc.optionsGroup, sc.mapOptions);
-                    //Update this code
-                    if(result.tableView == 'natality'){
-                        sc.tableView = 'number_of_births';//result.tableView;
-                    }
                     sc.tableView = result.tableView;
                     sc.tableData = result.tableData;
                     sc.filters.selectedPrimaryFilter = result.primaryFilter;
@@ -330,6 +326,7 @@
 
 
         function changeViewFilter(selectedFilter) {
+            console.log(" selected filter key ", selectedFilter.key );
             searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);
             angular.forEach(sc.filters.selectedPrimaryFilter.allFilters, function(filter) {
                 if(filter.key === 'hispanicOrigin') {
