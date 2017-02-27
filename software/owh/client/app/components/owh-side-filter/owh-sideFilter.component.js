@@ -8,12 +8,14 @@
             controllerAs: 'sfc',
             bindings:{
                 //TODO: change to one-way binding and bubble filter changes up with event bindings
-                filters : "=",
+                filters : "<",
+                groupOptions: "<",
+                primaryKey: "@",
                 onFilter: '&',
                 sort: '<',
                 showFilters: '<',
                 utilities: '<',
-                runOnFilterChange : "<"
+                runOnFilterChange: '<'
             }
         });
 
@@ -35,6 +37,31 @@
         sfc.getShowHideOptionCount = getShowHideOptionCount;
         sfc.refreshFilterOptions = refreshFilterOptions;
         sfc.onFilterValueChange = onFilterValueChange;
+
+        sfc.$onChanges = function(changes) {
+            if(changes.filters.currentValue) {
+                angular.forEach(changes.filters.currentValue, function(filter) {
+                    //iterate through filter options and add counts
+                    angular.forEach(filter.filters.autoCompleteOptions, function(option) {
+                        option.count = getOptionCount(option);
+                        if(option.options) {
+                            angular.forEach(option.options, function(subOption) {
+                                subOption.count = getOptionCount(subOption);
+                            });
+                        }
+                    });
+                });
+
+                //categorize filters
+                sfc.categories = {};
+                angular.forEach(changes.filters.currentValue, function(filter) {
+                    if(!sfc.categories[filter.category]) {
+                        sfc.categories[filter.category] = []
+                    }
+                    sfc.categories[filter.category].push(filter);
+                });
+            }
+        };
 
         function isOptionDisabled(group, option) {
             if(group.key === 'hispanicOrigin') {
@@ -97,13 +124,13 @@
         }
 
         function getOptionCountPercentage(option) {
-            var countKey = sfc.filters.selectedPrimaryFilter.key;
+            var countKey = sfc.primaryKey;
             var countPercentKey = countKey + 'Percentage';
             return option && option[countPercentKey] ? option[countPercentKey] : 0
         }
 
         function getOptionCount(option) {
-            var countKey = sfc.filters.selectedPrimaryFilter.key;
+            var countKey = sfc.primaryKey;
             //check if group option
             if(option.options) {
                 var count = 0;

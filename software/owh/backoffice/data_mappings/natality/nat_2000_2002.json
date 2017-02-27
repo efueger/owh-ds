@@ -51,7 +51,7 @@
     }
   },
   {
-    "column":"dob_yy",
+    "column":"current_year",
     "type":"simple",
     "start": 176,
     "stop": 179,

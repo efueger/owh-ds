@@ -618,98 +618,121 @@
             //prepare filter definitions
             var natalityFilters = [
                 {key: 'hispanic_origin', title: 'label.filter.hispanicOrigin', queryKey:"hispanic_origin",
-                    primary: false, value: [], defaultGroup:'row', groupBy: false,
-                    filterType: "checkbox", autoCompleteOptions: angular.copy(hispanicOptions) },
+                    primary: false, value: [], defaultGroup:'row', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(hispanicOptions), helpText:"label.help.text.ethnicity"},
 
                 {key: 'mother_age', title: 'label.chart.mother_age.single.yr', queryKey:"mother_age", primary: false, value: [],
-                    defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(singleYearAgeOptions)},
+                    defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(singleYearAgeOptions), helpText:"label.help.text.mother.age"},
 
                 {key: 'mother_age_r9', title: 'label.chart.mother_age.r9', queryKey:"mother_age_r9", primary: false, value: [],
                     defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(ageR9Options)},
 
                 {key: 'mother_age_r8', title: 'label.filter.ageOfMother', queryKey:"mother_age_r8", primary: false, value: [],
-                    defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(ageR8Options)},
+                    defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(ageR8Options), helpText:"label.help.text.mother.age"},
 
                 {key: 'mother_age_r14', title: 'label.chart.mother_age.r12', queryKey:"mother_age_r14", primary: false, value: [],
                     defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(ageR14ptions)},
 
-                {key: 'mother_race', title: 'label.filter.race', queryKey:"mother_race", primary: false, value: [],
-                    defaultGroup:'column', groupBy: 'row', filterType: "checkbox", autoCompleteOptions: angular.copy(raceOptions)},
+                {key: 'race', title: 'label.filter.race', queryKey:"race", primary: false, value: [],
+                    defaultGroup:'column', groupBy: 'row', filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(raceOptions), helpText:"label.help.text.race"},
 
                 {key: 'marital_status', title: 'label.filter.maritalStatus', queryKey:"marital_status", primary: false,
-                    value: [], defaultGroup:'column', groupBy:false, filterType: "checkbox", autoCompleteOptions: angular.copy(maritalStatusOptions)},
+                    value: [], defaultGroup:'column', groupBy:false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(maritalStatusOptions), helpText:"label.help.text.marital.status"},
 
                 {key: 'mother_education', title: 'label.filter.education', queryKey:"mother_education", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(educationOptions)},
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(educationOptions), helpText:"label.help.text.mother.education"},
 
-                {key: 'dob_yy', title: 'label.filter.year', queryKey:"dob_yy", primary: false, value: ["2014"], defaultGroup:'column', groupBy: false,
-                    filterType: "checkbox", autoCompleteOptions: angular.copy(yearOptions)},
+                {key: 'current_year', title: 'label.filter.year', queryKey:"current_year", primary: false, value: ["2014"], defaultGroup:'column', groupBy: false,
+                    filterType: "checkbox", autoCompleteOptions: angular.copy(yearOptions), helpText:"label.help.text.year"},
 
-                {key: 'dob_mm', title: 'label.filter.month', queryKey:"dob_mm", primary: false, value: [], defaultGroup:'column', groupBy: false,
-                    filterType: "checkbox", autoCompleteOptions: angular.copy(monthOptions)},
+                {key: 'month', title: 'label.filter.month', queryKey:"month", primary: false, value: [], defaultGroup:'column', groupBy: false,
+                    filterType: "checkbox", autoCompleteOptions: angular.copy(monthOptions), helpText:"label.help.text.month"},
 
-                {key: 'dob_wk', title: 'label.filter.weekday', queryKey:"dob_wk", primary: false, value: [], defaultGroup:'column', groupBy: false,
-                    filterType: "checkbox", autoCompleteOptions: angular.copy(weekDayOptions)},
+                {key: 'weekday', title: 'label.filter.weekday', queryKey:"weekday", primary: false, value: [], defaultGroup:'column', groupBy: false,
+                    filterType: "checkbox", autoCompleteOptions: angular.copy(weekDayOptions), helpText:"label.help.text.week.day"},
 
                 {key: 'sex', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [], defaultGroup:'column', groupBy: 'column',
-                    filterType: "checkbox", autoCompleteOptions: angular.copy(genderOptions)},
+                    filterType: "checkbox", autoCompleteOptions: angular.copy(genderOptions), helpText:"label.help.text.sex"},
 
                 {key: 'gestational_age_r10', title: 'label.filter.gestational.birth.age', queryKey:"gestational_age_r10",
                     primary: false, value: [], defaultGroup:'column', groupBy: false,
-                    filterType: "checkbox", autoCompleteOptions: angular.copy(gestationalAgeAtBirth)},
+                    filterType: "checkbox", autoCompleteOptions: angular.copy(gestationalAgeAtBirth),
+                    helpText:"label.help.text.gestational.age"},
 
                 {key: 'prenatal_care', title: 'label.filter.monthPrenatalCareBegan', queryKey:"prenatal_care",
                     primary: false, value: [], defaultGroup:'column', groupBy: false,
-                    filterType: "checkbox", autoCompleteOptions: angular.copy(prenatalCareMonthOptions)},
+                    filterType: "checkbox", autoCompleteOptions: angular.copy(prenatalCareMonthOptions),
+                    helpText:"label.help.text.prenatal.care"},
 
                 {key: 'birth_weight', title: 'label.filter.birthWeight', queryKey:"birth_weight", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(birthWeightOptions)},
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(birthWeightOptions),
+                    helpText:"label.help.text.birth.weight"},
                 {key: 'birth_weight_r4', title: 'label.filter.birth_weight.r4', queryKey:"birth_weight_r4", primary: false,
                     value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(birthWeightR4Options)},
                 {key: 'birth_weight_r12', title: 'label.chart.birth_weight.r12', queryKey:"birth_weight_r12", primary: false,
                     value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(birthWeightR12Options)},
 
                 {key: 'birth_plurality', title: 'label.filter.plurality', queryKey:"birth_plurality", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(birthPluralityOptions)},
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(birthPluralityOptions), helpText:"label.help.text.birth.plurality"},
 
                 {key: 'live_birth', title: 'label.filter.liveBirthOrder', queryKey:"live_birth", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(liveBirthOrderOptions)},
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(liveBirthOrderOptions), helpText:"label.help.text.live.birth.order"},
 
                 {key: 'birth_place', title: 'label.filter.birthPlace', queryKey:"birth_place", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(birthPlaceOptions)},
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(birthPlaceOptions), helpText:"label.help.text.birth.place"},
 
                 {key: 'delivery_method', title: 'label.filter.deliveryMethod', queryKey:"delivery_method", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(deliveryMethodOptions)},
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(deliveryMethodOptions), helpText:"label.help.text.delivery.method"},
 
                 {key: 'medical_attendant', title: 'label.filter.medicalAttendant', queryKey:"medical_attendant", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(medicalAttendantOptions)},
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(medicalAttendantOptions), helpText:"label.help.text.medical.attendant"},
 
                 {key: 'anemia', title: 'label.filter.anemia', queryKey:"anemia", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(anemiaOptions)},
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(anemiaOptions),
+                    helpText:"label.help.text.anemia"},
                 {key: 'cardiac_disease', title: 'label.filter.cardiac.disease', queryKey:"cardiac_disease", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(cardiacDiseaseOptions)},
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(cardiacDiseaseOptions),
+                    helpText:"label.help.text.cardiac.disease"},
                 {key: 'chronic_hypertension', title: 'label.filter.chronicHypertension', queryKey:"chronic_hypertension", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(chronicHypertensionOptions)},
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(chronicHypertensionOptions), helpText:"label.help.text.chronic.hypertension"},
 
                 {key: 'diabetes', title: 'label.filter.diabetes', queryKey:"diabetes", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(diabetesOptions)},
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(diabetesOptions), helpText:"label.help.text.diabetes"},
 
                 {key: 'pregnancy_hypertension', title: 'label.filter.pregnancy.hypertension', queryKey:"pregnancy_hypertension", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(pregnancyHypertensionOptions)},
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(pregnancyHypertensionOptions), helpText:"label.help.text.pregnancy.hypertension"},
 
                 {key: 'eclampsia', title: 'label.filter.eclampsia', queryKey:"eclampsia", primary: false, value: [],
-                    defaultGroup:'column', groupBy: false, filterType: "checkbox",autoCompleteOptions: angular.copy(eclampsiaOptions)},
+                    defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(eclampsiaOptions), helpText:"label.help.text.eclampsia"},
 
                 {key: 'hydramnios_oligohydramnios', title: 'label.filter.hydramnios.oligohydramnios', queryKey:"hydramnios_oligohydramnios", primary: false, value: [],
-                    defaultGroup:'column', groupBy: false, filterType: "checkbox",autoCompleteOptions: angular.copy(hydraOligoOptions)},
+                    defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(hydraOligoOptions), helpText:"label.help.text.hydramnios.oligohydramnios"},
 
                 {key: 'incompetent_cervix', title: 'label.filter.incompetent.cervix', queryKey:"incompetent_cervix", primary: false, value: [],
-                    defaultGroup:'column', groupBy: false, filterType: "checkbox",autoCompleteOptions: angular.copy(incompetentCervixOptions)},
+                    defaultGroup:'column', groupBy: false, filterType: "checkbox",autoCompleteOptions: angular.copy(incompetentCervixOptions),
+                    helpText:"label.help.text.incomplete.cervix"},
                 {key: 'lung_disease', title: 'label.filter.lung.disease', queryKey:"lung_disease", primary: false, value: [],
-                    defaultGroup:'column', groupBy: false, filterType: "checkbox",autoCompleteOptions: angular.copy(lungDiseaseOptions)},
+                    defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(lungDiseaseOptions), helpText:"label.help.text.lung.disease"},
 
                 {key: 'tobacco_use', title: 'label.filter.tobacco.use', queryKey:"tobacco_use", primary: false,
-                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(tobaccoOptions)}
+                    value: [], defaultGroup:'column', groupBy: false, filterType: "checkbox",
+                    autoCompleteOptions: angular.copy(tobaccoOptions), helpText:"label.help.text.tobacco.use"}
             ];
 
             return natalityFilters;

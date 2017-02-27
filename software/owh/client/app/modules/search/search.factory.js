@@ -62,10 +62,7 @@
             updateFilterValues(primaryFilter);
             //update table headers based on cached query
             primaryFilter.headers = buildAPIQuery(primaryFilter).headers;
-            //make sure side filters are in proper order
-            angular.forEach(primaryFilter.sideFilters, function (filter) {
-                groupAutoCompleteOptions(filter.filters, groupOptions[tableView]);
-            });
+
             var tableData = {};
             if (primaryFilter.key === 'deaths') {
                 primaryFilter.data = response.data.resultData.nested.table;
@@ -111,6 +108,12 @@
                 primaryFilter.chartData = prepareChartData(primaryFilter.headers, response.data.resultData.nested, primaryFilter);
                 tableData = getMixedTable(primaryFilter, groupOptions, tableView);
             }
+            //make sure side filters are in proper order
+            angular.forEach(primaryFilter.sideFilters, function (filter) {
+                groupAutoCompleteOptions(filter.filters, groupOptions[tableView]);
+            });
+            //using extend to trigger $onChanges
+            primaryFilter.sideFilters = angular.extend([], primaryFilter.sideFilters);
             primaryFilter.initiated = true;
             return {
                 tableData: tableData,
@@ -1393,7 +1396,7 @@
 
                 /*Year and Month*/
                 //TODO: consider setting default selected years elsewhere
-                {key: 'year', title: 'label.filter.year', queryKey:"current_year",primary: false, value: ['2014'],
+                {key: 'year', title: 'label.filter.year', queryKey:"current_year",primary: false, value: [],
                     groupBy: false,type:"label.filter.group.year.month",
                     filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yearOptions),defaultGroup:"row"},
                 {key: 'month', title: 'label.filter.month', queryKey:"month_of_death", primary: false, value: [],
@@ -1601,17 +1604,17 @@
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.groupOptions,
-                            refreshFiltersOnChange: true, filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_yy'),
+                            refreshFiltersOnChange: true, filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'current_year'),
                             category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_mm'),
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'month'),
                             category: "Birth Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'dob_wk'),
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'weekday'),
                             category: "Birth Characteristics"
                         },
                         {
@@ -1671,7 +1674,7 @@
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_race'),
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'race'),
                             category: "Maternal Characteristics"
                         },
                         {

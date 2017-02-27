@@ -95,7 +95,7 @@ describe('OWH Side filter component: ', function() {
     }));
 
     it("should call getOptionCountPercent on the filter",inject( function() {
-        var bindings = { filters : filters };
+        var bindings = { filters : filters, primaryKey: 'deaths' };
 
         var ctrl = $componentController( 'owhSideFilter', { $scope: $scope }, bindings);
         expect(ctrl).toBeDefined();
@@ -206,7 +206,7 @@ describe('OWH Side filter component: ', function() {
     });
 
     it('getOptionCount should return correct total for given option', function() {
-        var bindings = { filters : filters };
+        var bindings = { filters : filters, primaryKey: 'deaths' };
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
 
         ctrl.filters = {selectedPrimaryFilter: {key: 'deaths'}};
@@ -221,7 +221,7 @@ describe('OWH Side filter component: ', function() {
     });
 
     it('getOptionCount should return correct total for given group option', function() {
-        var bindings = { filters : filters };
+        var bindings = { filters : filters, primaryKey: 'deaths' };
         var ctrl = $componentController('owhSideFilter', { $scope: $scope }, bindings);
 
         ctrl.filters = {selectedPrimaryFilter: {key: 'deaths'}};
