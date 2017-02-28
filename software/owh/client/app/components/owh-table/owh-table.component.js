@@ -199,7 +199,10 @@
             var data = [];
             if(table && table.data && table.data.length > 0) {
                 //find out how long the first merge cell is
-                var maxRowspan = table.data[0][0].rowspan;
+                var maxRowspan = 0;
+                if (Array.isArray(table.data[0])){
+                   maxRowspan = table.data[0][0].rowspan;
+                }
                 var newCells = [];
                 angular.forEach(table.data, function(eachRow, rowIndex) {
                     var row = '<tr>';
