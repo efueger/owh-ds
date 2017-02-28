@@ -307,7 +307,6 @@
 
 
         function changeViewFilter(selectedFilter) {
-            console.log(" selected filter key ", selectedFilter.key );
             searchFactory.removeDisabledFilters(sc.filters.selectedPrimaryFilter, selectedFilter.key, sc.availableFilters);
             angular.forEach(sc.filters.selectedPrimaryFilter.allFilters, function(filter) {
                 if(filter.key === 'hispanicOrigin') {
