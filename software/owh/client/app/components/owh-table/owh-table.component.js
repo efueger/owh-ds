@@ -61,7 +61,6 @@
                 prevWidth = columnsWidth;
                 //make sure scroll area is same width as other tables
                 $scroll.width($headers.width());
-                console.log('width set to ', $headers.width());
             }
         })();
 
