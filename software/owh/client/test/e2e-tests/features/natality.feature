@@ -14,7 +14,6 @@ Feature: Natality filters
 
   Scenario: Default filter state
     Then I see "Year" as first option in sidebar filters
-    And  filter "Year" and option "2014" selected
     And  I see the data table with race, female, male and total table headers
     And I see population count for "2014" option
 
@@ -32,4 +31,10 @@ Feature: Natality filters
     When I change show me dropdown option to "Birth Rates"
     Then I should see filter type "Birth Rates" selected for show me dropdown
     And the data table must show Births, Population and Birth Rates
+
+  Scenario: Disable filters when showme filter value changes
+    When I change show me dropdown option to "Birth Rates"
+    Then I see expected filters should be disabled
+
+
 
