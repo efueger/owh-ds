@@ -281,7 +281,7 @@
                 { "key": "Other and Unknown Hispanic Origin", "title": "Other and Unknown Hispanic Origin" },
                 { "key": "Non-Hispanic White", "title": "Non-Hispanic White" },
                 { "key": "Non-Hispanic Black", "title": "Non-Hispanic Black" },
-                { "key": "Non-Hispanic other races", "title": "Non-Hispanic other races" },
+                { "key": "Non-Hispanic Other Races", "title": "Non-Hispanic Other Races" },
                 { "key": "Origin unknown or not stated", "title": "Origin unknown or not stated" }
             ];
 
@@ -323,7 +323,7 @@
                 { "key": "47 years", "title": "47 years" },
                 { "key": "48 years", "title": "48 years" },
                 { "key": "49 years", "title": "49 years" },
-                { "key": "50-54 years", "title": "50-54 years"}
+                { "key": "50 years and over", "title": "50 years and over"}
             ];
 
             var ageR8Options =  [
@@ -504,8 +504,8 @@
 
             var birthWeightR4Options = [
                 {key:'1499 grams or less', title:'1499 grams or less'},
-                {key:'1500 – 2499 grams', title:'1500 – 2499 grams'},
-                {key:'2500 grams or more', title:'2500 grams or more'},
+                {key:'1500 - 2499 grams', title:'1500 - 2499 grams'},
+                {key:'2500 - 8165 grams', title:'2500 grams or more'},
                 {key:'Unknown or not stated', title:'Unknown or not stated'}
             ];
             var birthPluralityOptions = [
@@ -617,8 +617,9 @@
             var tobaccoOptions = [
                 {key:'Yes', title:'Yes'},
                 {key:'No', title:'No'},
+                {key:'Not on certificate', title:'Not on certificate'},
                 {key:'Unknown', title:'Unknown'},
-                {key:'Not on certificate', title:'Not on certificate'}
+                {key:'Unknown or not stated', title:'Unknown or not stated'}
             ];
 
             //prepare filter definitions
@@ -638,7 +639,7 @@
                     defaultGroup:'column', groupBy: false, filterType: "checkbox",
                     autoCompleteOptions: angular.copy(ageR8Options), helpText:"label.help.text.mother.age"},
 
-                {key: 'mother_age_r14', title: 'label.chart.mother_age.r12', queryKey:"mother_age_r14", primary: false, value: [],
+                {key: 'mother_age_r14', title: 'label.chart.mother_age.r14', queryKey:"mother_age_r14", primary: false, value: [],
                     defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(ageR14ptions)},
 
                 {key: 'race', title: 'label.filter.race', queryKey:"race", primary: false, value: [],

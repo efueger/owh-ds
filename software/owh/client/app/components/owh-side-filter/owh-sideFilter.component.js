@@ -60,6 +60,11 @@
                     }
                     sfc.categories[filter.category].push(filter);
                 });
+                // Update the filter options if refreshFiltersOnChange is true
+                var filter = utilService.findByKeyAndValue(sfc.filters, 'refreshFiltersOnChange', true);
+                if (filter && filter.refreshFiltersOnChange) {
+                    refreshFilterOptions(filter.filters)
+                }
             }
         };
 
@@ -242,11 +247,6 @@
 
 
         function onFilterValueChange(filter){
-            // Update the filter options if refreshFiltersOnChange is true
-            if (filter.refreshFiltersOnChange){
-                sfc.refreshFilterOptions(filter.filters);
-            }
-
             // Run the filter call back only if runOnFilterChange is true
             if(sfc.runOnFilterChange) {
                 sfc.onFilter();
@@ -260,8 +260,8 @@
                 var newFilters = response.data;
                 var sideFilters = sfc.filters;
                 for (var f in sideFilters) {
-                    var fkey = sideFilters[f].filters.queryKey;
-                    if (fkey !== filterName) {
+                    var fkey = sideFilters[f].filters? sideFilters[f].filters.queryKey: null;
+                    if (fkey && fkey !== filterName) {
                         if (fkey in newFilters) {
                             sideFilters[f].disabled = false;
                             if (newFilters[fkey]) {
