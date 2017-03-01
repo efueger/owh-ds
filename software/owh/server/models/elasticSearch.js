@@ -13,7 +13,9 @@ var mortality_type = "mortality";
 var natality_index = "owh_natality";
 var natality_type = "natality";
 var census_index="owh_census";
+var census_rates_index="owh_census_rates";
 var census_type="census";
+var census_rates_type="census_rates";
 //@TODO to work with my local ES DB I changed mapping name to 'queryResults1', revert before check in to 'queryResults'
 var _queryIndex = "owh_querycache";
 var _queryType = "queryData";
@@ -48,9 +50,9 @@ ElasticClient.prototype.getClient = function(database) {
 
 };
 
-ElasticClient.prototype.aggregateCensusDataForMortalityQuery = function(query){
+ElasticClient.prototype.aggregateCensusDataForMortalityQuery = function(query, index, type){
     var deferred = Q.defer();
-    this.executeESQuery(census_index, census_type, query).then(function (resp) {
+    this.executeESQuery(index, type, query).then(function (resp) {
         deferred.resolve(searchUtils.populateDataWithMappings(resp, 'pop'));
     });
     return deferred.promise;
@@ -74,14 +76,14 @@ ElasticClient.prototype.executeESQuery = function(index, type, query){
 };
 
 
-ElasticClient.prototype.executeMortilyQueries = function(query){
+ElasticClient.prototype.executeMortilyAndNatalityQueries = function(query, index, type){
     var deferred = Q.defer();
     var queryPromises = [];
     var aggrs = query.aggregations;
     for (var aggr in aggrs){
         var newQ = {size: 0, query: query.query, aggregations:{}};
         newQ.aggregations[aggr] = aggrs[aggr];
-        var p = this.executeESQuery(mortality_index, mortality_type, newQ);
+        var p = this.executeESQuery(index, type, newQ);
         queryPromises.push(p);
     }
 
@@ -142,8 +144,8 @@ ElasticClient.prototype.aggregateDeaths = function(query){
         logger.debug("Mortality ES Query: "+ JSON.stringify( query[0]));
         logger.debug("Census ES Query: "+ JSON.stringify( query[1]));
         var promises = [
-            this.executeMortilyQueries(query[0]),
-            this.aggregateCensusDataForMortalityQuery(query[1])
+            this.executeMortilyAndNatalityQueries(query[0], mortality_index, mortality_type),
+            this.aggregateCensusDataForMortalityQuery(query[1], census_index, census_type)
         ];
         if(query.wonderQuery) {
             promises.push(new wonder('D76').invokeWONDER(query.wonderQuery))
@@ -198,20 +200,36 @@ ElasticClient.prototype.aggregateCensusData = function(query){
  */
 ElasticClient.prototype.aggregateNatalityData = function(query){
     //get tge elastic search client for natality index
+    var self = this;
     var client = this.getClient(natality_index);
     var deferred = Q.defer();
-    //execute the search query
-    client.search({
-        index:natality_type,
-        body:query,
-        request_cache:true
-    }).then(function (resp) {
-        //parse the search results
-        deferred.resolve(searchUtils.populateDataWithMappings(resp, 'natality'));
-    }, function (err) {
-        logger.error(err.message);
-        deferred.reject(err);
-    });
+    if(query[1]) {
+        logger.debug("Natality ES Query: "+ JSON.stringify( query[0]));
+        logger.debug("Census Rates ES Query: "+ JSON.stringify( query[1]));
+        var promises = [
+            this.executeMortilyAndNatalityQueries(query[0], natality_index, natality_type),
+            this.aggregateCensusDataForMortalityQuery(query[1], census_rates_index, census_rates_type)
+        ];
+        Q.all(promises).then( function (resp) {
+
+            var data = searchUtils.populateDataWithMappings(resp[0], 'natality');
+            self.mergeWithCensusData(data, resp[1]);
+            deferred.resolve(data);
+        }, function (err) {
+            logger.error(err.message);
+            deferred.reject(err);
+        });
+    }
+    else {
+        logger.debug("Natality ES Query: "+ JSON.stringify( query[0]));
+        this.executeESQuery(natality_index, natality_type, query[0]).then(function (resp) {;
+            var data = searchUtils.populateDataWithMappings(resp, 'natality');
+            deferred.resolve(data);
+        }, function (err) {
+            logger.error(err.message);
+            deferred.reject(err);
+        });
+    }
     return deferred.promise;
 };
 
