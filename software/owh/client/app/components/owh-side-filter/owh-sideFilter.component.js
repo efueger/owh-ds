@@ -62,7 +62,7 @@
                 });
                 // Update the filter options if refreshFiltersOnChange is true
                 var filter = utilService.findByKeyAndValue(sfc.filters, 'refreshFiltersOnChange', true);
-                if (filter && filter.refreshFiltersOnChange) {
+                if (filter) {
                     refreshFilterOptions(filter.filters)
                 }
             }
