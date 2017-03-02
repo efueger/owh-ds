@@ -60,11 +60,6 @@
                     }
                     sfc.categories[filter.category].push(filter);
                 });
-                // Update the filter options if refreshFiltersOnChange is true
-                var filter = utilService.findByKeyAndValue(sfc.filters, 'refreshFiltersOnChange', true);
-                if (filter) {
-                    refreshFilterOptions(filter.filters)
-                }
             }
         };
 
@@ -247,6 +242,10 @@
 
 
         function onFilterValueChange(filter){
+            // Update the filter options if refreshFiltersOnChange is true
+            if (filter.refreshFiltersOnChange) {
+                refreshFilterOptions(filter.filters)
+            }
             // Run the filter call back only if runOnFilterChange is true
             if(sfc.runOnFilterChange) {
                 sfc.onFilter();
