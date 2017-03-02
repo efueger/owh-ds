@@ -18,6 +18,14 @@ describe.only("YRBS API", function () {
 
     });
 
+    it("buildYRBSQueries with grouping param for basic query", function (){
+        var apiQuery = {'yrbsBasic': true, 'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000}]}},
+            'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}}};
+        var result = yrbs.buildYRBSQueries(apiQuery);
+        expect(result).to.eql( [config.yrbs.queryUrl+'/national?d=yrbss&r=1&s=1&q=qn1&v=sex,race',config.yrbs.queryUrl+'/national?d=yrbss&r=1&s=1&q=qn2&v=sex,race',config.yrbs.queryUrl+'/national?d=yrbss&r=1&s=1&q=qn3&v=sex,race']);
+
+    });
+
     it("buildYRBSQueries with all grouping params", function (){
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsGrade","queryKey":"grade","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000}]}},
                         'query': {'question.path':{ 'value': ['qn1', 'qn2', 'qn3']}}};
@@ -319,6 +327,349 @@ describe.only("YRBS API", function () {
         });
     });
 
+    it("processYRBSReponses precomputed results with no groupings", function (){
+        var yrbsresp = [
+            {
+                "results": [
+                    {
+                        "ci_u": 0.0512,
+                        "count": 11597,
+                        "mean": 0.043,
+                        "q_resp": true,
+                        "method": "socrata",
+                        "ci_l": 0.0364,
+                        "q": "qn45"
+                    }
+                ],
+                "q": "qn45",
+                "question": "Reported that the largest number of drinks they had in a row was 10 or more",
+                "vars": [],
+                "response": true,
+                "filter": {
+                    "year": [
+                        "2015"
+                    ]
+                },
+                "precomputed": [],
+                "var_levels": {},
+                "is_socrata": true
+            },
+            {
+                "results": [
+                    {
+                        "ci_u": 0.4642,
+                        "count": 4436,
+                        "mean": 0.441,
+                        "q_resp": true,
+                        "method": "socrata",
+                        "ci_l": 0.419,
+                        "q": "qn46"
+                    }
+                ],
+                "q": "qn46",
+                "question": "Usually obtained the alcohol they drank by someone giving it to them",
+                "vars": [],
+                "response": true,
+                "filter": {
+                    "year": [
+                        "2015"
+                    ]
+                },
+                "precomputed": [],
+                "var_levels": {},
+                "is_socrata": true
+            }
+        ];
+
+        var result = yrbs.processYRBSReponses(yrbsresp, true);
+        expect(result).to.eql( {
+            "table":{
+                "question":[
+                    {
+                        "name":"qn45",
+                        "mental_health": {
+                            "mean": 4.3,
+                            "ci_l": 3.6,
+                            "ci_u": 5.1,
+                            "count": 11597
+                        }
+                    },
+                    {
+                        "name":"qn46",
+                        "mental_health": {
+                            "mean": 44.1,
+                            "ci_l": 41.9,
+                            "ci_u": 46.4,
+                            "count": 4436
+                        }
+                    }
+                ]
+            }
+        });
+    });
+
+    it("processYRBSReponses precomputed results with group by sex", function (){
+        var yrbsresp = [
+            {
+                "results": [
+                    {
+                        "sex": "Female",
+                        "ci_u": 0.5116,
+                        "count": 2321,
+                        "mean": 0.485,
+                        "q_resp": true,
+                        "method": "socrata",
+                        "ci_l": 0.4581,
+                        "q": "qn46"
+                    },
+                    {
+                        "sex": "Total",
+                        "ci_u": 0.4642,
+                        "count": 4436,
+                        "mean": 0.441,
+                        "q_resp": true,
+                        "method": "socrata",
+                        "ci_l": 0.419,
+                        "q": "qn46"
+                    },
+                    {
+                        "sex": "Male",
+                        "ci_u": 0.4317,
+                        "count": 2088,
+                        "mean": 0.399,
+                        "q_resp": true,
+                        "method": "socrata",
+                        "ci_l": 0.3676,
+                        "q": "qn46"
+                    }
+                ],
+                "q": "qn46",
+                "question": "Usually obtained the alcohol they drank by someone giving it to them",
+                "vars": [
+                    "sex"
+                ],
+                "response": true,
+                "filter": {
+                    "year": [
+                        "2015"
+                    ]
+                },
+                "precomputed": [],
+                "var_levels": {
+                    "sex": {
+                        "responses": [
+                            [
+                                "1",
+                                "Female"
+                            ],
+                            [
+                                "2",
+                                "Male"
+                            ]
+                        ],
+                        "is_integer": true,
+                        "question": "1=Female, 2=Male"
+                    }
+                },
+                "is_socrata": true
+            }
+        ];
+
+        var result = yrbs.processYRBSReponses(yrbsresp, true);
+        expect(result).to.eql( {
+            "table":{
+                "question":[
+                    {
+                        "name":"qn46",
+                        "mental_health": {
+                            "mean": 44.1,
+                            "ci_l": 41.9,
+                            "ci_u": 46.4,
+                            "count": 4436
+                        },
+                        sex:[
+                            {   "name":"Female",
+                                "mental_health": {
+                                    "mean": 48.5,
+                                    "ci_l": 45.8,
+                                    "ci_u": 51.2,
+                                    "count": 2321
+                                }
+                            },
+                            {   "name":"Male",
+                                "mental_health": {
+                                    "mean": 39.9,
+                                    "ci_l": 36.8,
+                                    "ci_u": 43.2,
+                                    "count": 2088
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+    });
+
+    it("processYRBSReponses precomputed results with multiple groupings result nested in order Sex, race", function (){
+        var yrbsresp = [{"results":[{"sex":"Female","ci_u":0.5116,"count":2321,"mean":0.485,"q_resp":true,"method":"socrata","ci_l":0.4581,"race":"Total","q":"qn46"},{"sex":"Male","ci_u":-1.0,"count":37,"mean":-1.0,"q_resp":true,"method":"socrata","ci_l":-1.0,"race":"Asian","q":"qn46"},{"sex":"Male","ci_u":0.527,"count":156,"mean":0.402,"q_resp":true,"method":"socrata","ci_l":0.2883,"race":"Black or African American","q":"qn46"},{"sex":"Female","ci_u":-1.0,"count":20,"mean":-1.0,"q_resp":true,"method":"socrata","ci_l":-1.0,"race":"American Indian or Alaska Native","q":"qn46"},{"sex":"Total","ci_u":-1.0,"count":25,"mean":-1.0,"q_resp":true,"method":"socrata","ci_l":-1.0,"race":"Native Hawaiian or Other Pacific Islander","q":"qn46"},{"sex":"Female","ci_u":0.5436,"count":1162,"mean":0.507,"q_resp":true,"method":"socrata","ci_l":0.4697,"race":"White","q":"qn46"},{"sex":"Female","ci_u":0.5485,"count":192,"mean":0.462,"q_resp":true,"method":"socrata","ci_l":0.3784,"race":"Black or African American","q":"qn46"},{"sex":"Male","ci_u":-1.0,"count":93,"mean":-1.0,"q_resp":true,"method":"socrata","ci_l":-1.0,"race":"Multiple Race","q":"qn46"},{"sex":"Female","ci_u":0.5456,"count":146,"mean":0.434,"q_resp":true,"method":"socrata","ci_l":0.3294,"race":"Multiple Race","q":"qn46"},{"sex":"Male","ci_u":-1.0,"count":21,"mean":-1.0,"q_resp":true,"method":"socrata","ci_l":-1.0,"race":"Native Hawaiian or Other Pacific Islander","q":"qn46"},{"sex":"Total","ci_u":0.5012,"count":241,"mean":0.407,"q_resp":true,"method":"socrata","ci_l":0.3197,"race":"Multiple Race","q":"qn46"},{"sex":"Total","ci_u":0.4642,"count":4436,"mean":0.441,"q_resp":true,"method":"socrata","ci_l":0.419,"race":"Total","q":"qn46"},{"sex":"Male","ci_u":0.4701,"count":1025,"mean":0.416,"q_resp":true,"method":"socrata","ci_l":0.3631,"race":"White","q":"qn46"},{"sex":"Female","ci_u":-1.0,"count":37,"mean":-1.0,"q_resp":true,"method":"socrata","ci_l":-1.0,"race":"Asian","q":"qn46"},{"sex":"Male","ci_u":-1.0,"count":36,"mean":-1.0,"q_resp":true,"method":"socrata","ci_l":-1.0,"race":"American Indian or Alaska Native","q":"qn46"},{"sex":"Total","ci_u":0.5127,"count":349,"mean":0.433,"q_resp":true,"method":"socrata","ci_l":0.3573,"race":"Black or African American","q":"qn46"},{"sex":"Female","ci_u":0.5026,"count":737,"mean":0.459,"q_resp":true,"method":"socrata","ci_l":0.4167,"race":"Hispanic or Latino","q":"qn46"},{"sex":"Female","ci_u":-1.0,"count":2,"mean":-1.0,"q_resp":true,"method":"socrata","ci_l":-1.0,"race":"Native Hawaiian or Other Pacific Islander","q":"qn46"},{"sex":"Male","ci_u":0.4317,"count":2088,"mean":0.399,"q_resp":true,"method":"socrata","ci_l":0.3676,"race":"Total","q":"qn46"},{"sex":"Total","ci_u":0.448,"count":1422,"mean":0.413,"q_resp":true,"method":"socrata","ci_l":0.3798,"race":"Hispanic or Latino","q":"qn46"},{"sex":"Male","ci_u":0.4138,"count":681,"mean":0.365,"q_resp":true,"method":"socrata","ci_l":0.3186,"race":"Hispanic or Latino","q":"qn46"},{"sex":"Total","ci_u":-1.0,"count":74,"mean":-1.0,"q_resp":true,"method":"socrata","ci_l":-1.0,"race":"Asian","q":"qn46"},{"sex":"Total","ci_u":0.4947,"count":2193,"mean":0.461,"q_resp":true,"method":"socrata","ci_l":0.4284,"race":"White","q":"qn46"},{"sex":"Total","ci_u":-1.0,"count":57,"mean":-1.0,"q_resp":true,"method":"socrata","ci_l":-1.0,"race":"American Indian or Alaska Native","q":"qn46"}],"q":"qn46","question":"Usually obtained the alcohol they drank by someone giving it to them","vars":["sex","race"],"response":true,"filter":{"year":["2015"]},"precomputed":[],"var_levels":{"race":{"responses":[["1","Am Indian \/ Alaska Native"],["2","Asian"],["3","Black or African American"],["4","Hispanic\/Latino"],["5","Native Hawaiian\/other PI"],["6","White"],["7","Multiple - Non-Hispanic"]],"is_integer":true,"question":"7-level race variable"},"sex":{"responses":[["1","Female"],["2","Male"]],"is_integer":true,"question":"1=Female, 2=Male"}},"is_socrata":true}];
+        var result = yrbs.processYRBSReponses(yrbsresp,true);
+        expect(result).to.eql( {
+            "table":{
+                "question":[
+                    {
+                        "name":"qn46",
+                        "mental_health": {
+                            "mean": "44.1",
+                            "ci_l": "41.9",
+                            "ci_u": "46.4",
+                            "count": 4436
+                        },
+                        "sex":[
+                            {
+                                "name":"Male",
+                                "race":[
+                                    {
+                                    "name":"Asian",
+                                    "mental_health": {
+                                        "mean": "-100.0",
+                                        "ci_l": "-100.0",
+                                        "ci_u": "-100.0",
+                                        "count": 37
+                                    }
+                                    },
+
+                                    {
+                                        "name":"Black or African American",
+                                        "mental_health": {
+                                            "mean": "40.2",
+                                            "ci_l": "28.8",
+                                            "ci_u": "52.7",
+                                            "count": 156
+                                        }
+                                    },
+                                    {
+                                        "name":"Multiple Race",
+                                        "mental_health": {
+                                            "mean": "-100.0",
+                                            "ci_l": "-100.0",
+                                            "ci_u": "-100.0",
+                                            "count": 93
+                                        }
+                                    },
+                                    {
+                                        "name":"Native Hawaiian or Other Pacific Islander",
+                                        "mental_health": {
+                                            "mean": "-100.0",
+                                            "ci_l": "-100.0",
+                                            "ci_u": "-100.0",
+                                            "count": 21
+                                        }
+                                    },
+                                    {
+                                        "name":"White",
+                                        "mental_health": {
+                                            "mean": "41.6",
+                                            "ci_l": "36.3",
+                                            "ci_u": "47.0",
+                                            "count": 1025
+                                        }
+                                    },
+                                    {
+                                        "name":"American Indian or Alaska Native",
+                                        "mental_health": {
+                                            "mean": "-100.0",
+                                            "ci_l": "-100.0",
+                                            "ci_u": "-100.0",
+                                            "count": 36
+                                        }
+                                    },
+                                    {
+                                        "name":"Hispanic or Latino",
+                                        "mental_health": {
+                                            "mean": "36.5",
+                                            "ci_l": "31.9",
+                                            "ci_u": "41.4",
+                                            "count": 681
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "name":"Female",
+                                "race":[
+                                    {
+                                        "name":"American Indian or Alaska Native",
+                                        "mental_health": {
+                                            "mean": "-100.0",
+                                            "ci_l": "-100.0",
+                                            "ci_u": "-100.0",
+                                            "count": 20
+                                        }
+                                    },
+                                    {
+                                        "name":"White",
+                                        "mental_health": {
+                                            "mean": "50.7",
+                                            "ci_l": "47.0",
+                                            "ci_u": "54.4",
+                                            "count": 1162
+                                        }
+                                    },
+                                    {
+                                        "name":"Black or African American",
+                                        "mental_health": {
+                                            "mean": "46.2",
+                                            "ci_l": "37.8",
+                                            "ci_u": "54.9",
+                                            "count": 192
+                                        }
+                                    },
+                                    {
+                                        "name":"Multiple Race",
+                                        "mental_health": {
+                                            "mean": "43.4",
+                                            "ci_l": "32.9",
+                                            "ci_u": "54.6",
+                                            "count": 146
+                                        }
+                                    },
+                                    {
+                                        "name":"Asian",
+                                        "mental_health": {
+                                            "mean": "-100.0",
+                                            "ci_l": "-100.0",
+                                            "ci_u": "-100.0",
+                                            "count": 37
+                                        }
+                                    },
+                                    {
+                                        "name":"Hispanic or Latino",
+                                        "mental_health": {
+                                            "mean": "45.9",
+                                            "ci_l": "41.7",
+                                            "ci_u": "50.3",
+                                            "count": 737
+                                        }
+                                    },
+                                    {
+                                        "name":"Native Hawaiian or Other Pacific Islander",
+                                        "mental_health": {
+                                            "mean": "-100.0",
+                                            "ci_l": "-100.0",
+                                            "ci_u": "-100.0",
+                                            "count": 2
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+    });
+
     it("processYRBSReponses with multiple groupings result nested in order Sex, race", function (){
         var yrbsresp = [{"q":"qn41","results":[{"mean":0.6325,"level":0,"se":0.013,"ci_u":0.6584,"count":15049.0,"ci_l":0.6058},{"sex":"Female","q_resp":true,"level":2,"q":"qn41","se":0.073,"race":"Am Indian \/ Alaska Native","mean":0.6174,"ci_l":0.4551,"count":63.0,"ci_u":0.7572},{"sex":"Male","q_resp":true,"level":2,"q":"qn41","se":0.0678,"race":"Am Indian \/ Alaska Native","mean":0.7752,"ci_l":0.6081,"count":92.0,"ci_u":0.8846},{"sex":"Female","q_resp":true,"level":2,"q":"qn41","se":0.0372,"race":"Asian","mean":0.4449,"ci_l":0.3704,"count":302.0,"ci_u":0.522},{"sex":"Male","q_resp":true,"level":2,"q":"qn41","se":0.0371,"race":"Asian","mean":0.4212,"ci_l":0.3477,"count":308.0,"ci_u":0.4984},{"sex":"Female","q_resp":true,"level":2,"q":"qn41","se":0.0326,"race":"Black or African American","mean":0.579,"ci_l":0.5115,"count":776.0,"ci_u":0.6436},{"sex":"Male","q_resp":true,"level":2,"q":"qn41","se":0.0308,"race":"Black or African American","mean":0.5103,"ci_l":0.4479,"count":776.0,"ci_u":0.5723},{"sex":"Female","q_resp":true,"level":2,"q":"qn41","se":0.0177,"race":"Hispanic \/ Latino","mean":0.6521,"ci_l":0.6149,"count":1150.0,"ci_u":0.6875},{"sex":"Male","q_resp":true,"level":2,"q":"qn41","se":0.0257,"race":"Hispanic \/ Latino","mean":0.6087,"ci_l":0.5553,"count":1134.0,"ci_u":0.6597},{"sex":"Female","q_resp":true,"level":2,"q":"qn41","se":0.0182,"race":"Multiple - Hispanic","mean":0.7141,"ci_l":0.6759,"count":1323.0,"ci_u":0.7495},{"sex":"Male","q_resp":true,"level":2,"q":"qn41","se":0.0157,"race":"Multiple - Hispanic","mean":0.6546,"ci_l":0.6223,"count":1296.0,"ci_u":0.6856},{"sex":"Female","q_resp":true,"level":2,"q":"qn41","se":0.0333,"race":"Multiple - Non-Hispanic","mean":0.7523,"ci_l":0.6788,"count":376.0,"ci_u":0.8135},{"sex":"Male","q_resp":true,"level":2,"q":"qn41","se":0.0356,"race":"Multiple - Non-Hispanic","mean":0.6618,"ci_l":0.5863,"count":331.0,"ci_u":0.7298},{"sex":"Female","q_resp":true,"level":2,"q":"qn41","se":0.1282,"race":"Native Hawaiian\/other PI","mean":0.3912,"ci_l":0.1525,"count":22.0,"ci_u":0.6965},{"sex":"Male","q_resp":true,"level":2,"q":"qn41","se":0.0587,"race":"Native Hawaiian\/other PI","mean":0.73,"ci_l":0.5927,"count":71.0,"ci_u":0.834},{"sex":"Female","q_resp":true,"level":2,"q":"qn41","se":0.0295,"race":"White","mean":0.6672,"ci_l":0.6051,"count":3386.0,"ci_u":0.7239},{"sex":"Male","q_resp":true,"level":2,"q":"qn41","se":0.0151,"race":"White","mean":0.6402,"ci_l":0.6092,"count":3266.0,"ci_u":0.67}],"response":true,"question":"Ever drank alcohol","var_levels":{"sex":{"question":"What is your sex","responses":[["1","Female"],["2","Male"]]},"race":{"question":"Race\/Ethnicity","responses":[["1","Am Indian \/ Alaska Native"],["2","Asian"],["3","Black or African American"],["4","Native Hawaiian\/other PI"],["5","White"],["6","Hispanic \/ Latino"],["7","Multiple - Hispanic"],["8","Multiple - Non-Hispanic"]]}},"vars":["race","sex"]}];
         var result = yrbs.processYRBSReponses(yrbsresp);
@@ -334,6 +685,7 @@ describe.only("YRBS API", function () {
                             "count": 15049
                         },
                         "sex":[
+
                             {
                                 "name":"Female",
                                 "race":[
