@@ -22,19 +22,42 @@
         return service;
 
         function horizontalStack(filter1, filter2, data, primaryFilter, postFixToTooltip) {
-            return horizontalChart(filter1, filter2, data, primaryFilter, true, postFixToTooltip);
+            var horizontalStackCss = {
+                cssClassName: 'usa-width-two-thirds horizontalStack',
+                top: 50
+            };
+            return horizontalChart(filter1, filter2, data, primaryFilter, true, postFixToTooltip, horizontalStackCss);
         }
 
         function verticalStack(filter1, filter2, data, primaryFilter) {
-            return verticalChart(filter1, filter2, data, primaryFilter, true);
+            var verticalStackCss = {
+                cssClassName: 'usa-width-one-whole verticalStack',
+                top: 100,
+                height: 600,
+                bottom: 150
+            };
+            return verticalChart(filter1, filter2, data, primaryFilter, true, verticalStackCss);
         }
 
         function horizontalBar(filter1, filter2, data, primaryFilter, postFixToTooltip) {
-            return horizontalChart(filter1, filter2, data, primaryFilter, false, postFixToTooltip);
+            var horizontalBarCss = {
+                cssClassName: 'usa-width-one-whole horizontalBar',
+                top: 50,
+                height: 500,
+                bottom: 150
+            };
+
+            return horizontalChart(filter1, filter2, data, primaryFilter, false, postFixToTooltip, horizontalBarCss);
         }
 
         function verticalBar(filter1, filter2, data, primaryFilter) {
-            return verticalChart(filter1, filter2, data, primaryFilter, false);
+            var verticalBarCss = {
+                cssClassName: 'usa-width-two-thirds verticalBar',
+                height: 500,
+                top: 50,
+                bottom: 150
+            };
+            return verticalChart(filter1, filter2, data, primaryFilter, false, verticalBarCss);
         }
 
         /*function bulletBar(filter1, filter2, data, primaryFilter) {
@@ -42,25 +65,25 @@
         }*/
 
         /*Multi Bar Horizontal Chart*/
-        function horizontalChart(filter1, filter2, data, primaryFilter, stacked, postFixToTooltip) {
+        function horizontalChart(filter1, filter2, data, primaryFilter, stacked, postFixToTooltip, cssDetails) {
             postFixToTooltip = postFixToTooltip ? postFixToTooltip : '';
             var chartData = {
                 data: [],
                 title: "label.title."+filter1.key+"."+filter2.key,
+                cssClass: cssDetails.cssClassName,
                 options: {
                     "chart": {
                         "type": "multiBarHorizontalChart",
-                        "height": 250,
-                        "width": 350,
+                        "height": cssDetails.height?cssDetails.height:350,
                         "margin": {
-                            "top": 5,
-                            "right": 5,
-                            "bottom": 45,
-                            "left": 45
+                            "top": cssDetails.top?cssDetails.top:5,
+                            "right": 50,
+                            "bottom": cssDetails.bottom?cssDetails.bottom:45,
+                            "left": 150
                         },
                         showLegend: true,
                         showControls: true,
-                        showValues: true,
+                        showValues: false,
                         showXAxis:true,
                         showYAxis:true,
                         stacked: stacked,
@@ -68,13 +91,13 @@
                         x: function(d){return d.label;},
                         y: function(d){return d.value;},
                         "xAxis": {
-                            "axisLabelDistance": -20,
+                            "axisLabelDistance": 50,
                             "axisLabel": $translate.instant(filter2.title),
-                            "showMaxMin": true
+                            "showMaxMin": false
                         },
                         "yAxis": {
                             "axisLabel": primaryFilter.chartAxisLabel,
-                            "showMaxMin": true
+                            "showMaxMin": false
                         },
                         valueFormat:function (n){
                             if(isNaN(n)){ return n; }
@@ -179,20 +202,20 @@
         }
 
         /*Vertical Stacked Chart*/
-        function verticalChart(filter1, filter2, data, primaryFilter, stacked) {
+        function verticalChart(filter1, filter2, data, primaryFilter, stacked, cssDetails) {
             var chartData = {
                 data: [],
                 title: "label.title."+filter1.key+"."+filter2.key,
+                cssClass: cssDetails.cssClassName,
                 options: {
                     "chart": {
                         "type": "multiBarChart",
-                        "height": 250,
-                        "width": 0,
+                        "height": cssDetails.height?cssDetails.height:350,
                         "margin": {
-                            "top": 5,
-                            "right": 5,
-                            "bottom": 45,
-                            "left": 45
+                            "top": cssDetails.top?cssDetails.top:5,
+                            "right": 50,
+                            "bottom": cssDetails.bottom?cssDetails.bottom:45,
+                            "left": 150
                         },
                         showMaxMin: true,
                         showLegend: true,
@@ -214,14 +237,16 @@
                         "duration": 500,
                         "stacked": stacked,
                         "xAxis": {
-                            "axisLabelDistance": -20,
+                            "axisLabelDistance": 50,
+                            "showMaxMin": false,
                             "axisLabel": $translate.instant(filter2.title),
                             margin: {
                                 top:60
                             }
                         },
                         "yAxis": {
-                            "axisLabelDistance": -20,
+                            "axisLabelDistance": 50,
+                            "showMaxMin": false,
                             "axisLabel": primaryFilter.chartAxisLabel
                         },
                         valueFormat:function (n){
@@ -285,6 +310,7 @@
             var chartData = {
                 data: [],
                 title: "label.graph."+filter.key,
+                cssClass: "usa-width-one-third",
                 options: {
                     "chart": {
                         "type": "lineChart",
@@ -374,6 +400,7 @@
             var chartData = {
                 data: [],
                 title: "label.graph."+filter.key,
+                cssClass: "usa-width-one-third",
                 options: {
                     chart: {
                         type: 'pieChart',
