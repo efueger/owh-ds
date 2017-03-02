@@ -86,7 +86,7 @@
             "gender&placeofdeath": "verticalStack",
             //natality
             "hispanic_origin&race": "horizontalBar",
-            "sex&race": "horizontalBar",
+            "sex&race": "horizontalStack",
             "hispanic_origin&marital_status": "horizontalBar",
             "race&marital_status": "horizontalBar",
             "race&mother_age": "horizontalBar",

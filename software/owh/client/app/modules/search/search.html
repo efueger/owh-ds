@@ -67,7 +67,7 @@
                 <div class="usa-width-one-whole">
                     <div ng-repeat="startChartData in sc.filters.selectedPrimaryFilter.chartData" ng-init="parentIndex = $index">
                         <div ng-repeat="chartData in startChartData"
-                             ng-class="!chartData.isMap || sc.mapOptions.selectedMapSize==='small'? chartData.cssClass +' graph-box':'usa-width-one-whole margin-bottom-20'">
+                             ng-class="!chartData.isMap ? chartData.cssClass +' graph-box':'usa-width-one-half graph-box'">
                             <!-- Map -->
                             <div id="chart_us_map" ng-if="chartData.isMap && sc.filters.selectedPrimaryFilter.showMap && sc.filters.selectedPrimaryFilter.maps">
                                 <leaflet  lf-center="chartData.usa" markers="chartData.markers" events="chartData.events" geojson="chartData.geojson"

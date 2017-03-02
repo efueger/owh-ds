@@ -22,9 +22,11 @@
         return service;
 
         function horizontalStack(filter1, filter2, data, primaryFilter, postFixToTooltip) {
+            var height = (filter1.key == 'state' || filter2.key == 'state')? 600 : 350
             var horizontalStackCss = {
                 cssClassName: 'usa-width-two-thirds horizontalStack',
-                top: 50
+                top: 50,
+                height: height
             };
             return horizontalChart(filter1, filter2, data, primaryFilter, true, postFixToTooltip, horizontalStackCss);
         }
@@ -51,8 +53,9 @@
         }
 
         function verticalBar(filter1, filter2, data, primaryFilter) {
+            var cssClassName = (filter1.key == 'state' || filter2.key == 'state') ? 'usa-width-one-hole verticalBar': 'usa-width-two-thirds verticalBar'
             var verticalBarCss = {
-                cssClassName: 'usa-width-two-thirds verticalBar',
+                cssClassName: cssClassName,
                 height: 500,
                 top: 50,
                 bottom: 150
@@ -91,7 +94,7 @@
                         x: function(d){return d.label;},
                         y: function(d){return d.value;},
                         "xAxis": {
-                            "axisLabelDistance": 50,
+                            "axisLabelDistance": 80,
                             "axisLabel": $translate.instant(filter2.title),
                             "showMaxMin": false
                         },
