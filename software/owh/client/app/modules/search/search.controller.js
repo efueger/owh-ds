@@ -25,6 +25,7 @@
         sc.skipRefresh = false;
         sc.switchToYRBSBasic = switchToYRBSBasic;
         sc.switchToYRBSAdvanced = switchToYRBSAdvanced;
+        sc.showFbDialog = showFbDialog;
 
         var root = document.getElementsByTagName( 'html' )[0]; // '0' to assign the first (and only `HTML` tag)
         root.removeAttribute('class');
@@ -51,18 +52,26 @@
         }
 
         sc.selectedMapSize = 'small';
-        sc.showMeOptions = [
-            {key: 'number_of_deaths', title: 'Number of Deaths'},
-            {key: 'crude_death_rates', title: 'Crude Death Rates'},
-            {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}
-        ];
+        sc.showMeOptions = {
+            deaths: [
+                {key: 'number_of_deaths', title: 'Number of Deaths'},
+                {key: 'crude_death_rates', title: 'Crude Death Rates'},
+                {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}],
+            natality: [
+                {key: 'number_of_births', title: 'Number of Births'},
+                {key: 'birth_rates', title: 'Birth Rates'},
+                {key: 'fertility_rates', title: 'Fertility Rates'}]
+        };
         sc.sort = {
             "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
             "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'yrbsState', 'question'],
             "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'agegroup', 'race', 'ethnicity', 'state'],
-            "label.filter.natality": ['dob_yy', 'dob_mm', 'dob_wk', 'sex', 'prenatal_care', 'birth_weight', 'birth_plurality',
-                'live_birth', 'birth_place', 'delivery_method', 'medical_attendant', 'mother_race', 'hispanic_origin', 'marital_status',
-                'mother_age', 'mother_education', 'chronic_hypertension', 'diabetes', 'eclampsia', 'pregnancy_hypertension', 'tobacco_use']
+            "label.filter.natality": ['current_year', 'month', 'weekday', 'sex', 'gestational_age_r10', 'prenatal_care',
+                'birth_weight', 'birth_weight_r4', 'birth_weight_r12', 'birth_plurality', 'live_birth', 'birth_place',
+                'delivery_method', 'medical_attendant', 'race', 'hispanic_origin', 'marital_status',
+                'mother_age_r8', 'mother_age_r9', 'mother_age_r14', 'mother_age', 'mother_education',
+                'anemia', 'cardiac_disease', 'chronic_hypertension', 'diabetes', 'eclampsia', 'hydramnios_oligohydramnios',
+                'incompetent_cervix', 'lung_disease', 'pregnancy_hypertension', 'tobacco_use']
         };
 
         sc.optionsGroup = {
@@ -89,14 +98,21 @@
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
             },
+            number_of_births: {},
+            birth_rates: {},
+            fertility_rates: {},
             bridge_race:{},
             mental_health:{},
-            natality:{}
+            natality:{
+
+            }
         };
         //show certain filters for different table views
+        //add availablefilter for birth_rates
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
-            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin']
+            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
+            'birth_rates': ['current_year', 'sex', 'race']
         };
 
         //functionality to be added to the side filters
@@ -146,7 +162,7 @@
             ]
         };
         sc.queryID = $stateParams.queryID;
-        sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
+        sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions.deaths[0].key;
         //this flags whether to cache the incoming filter query
         sc.cacheQuery = $stateParams.cacheQuery;
 
@@ -315,6 +331,7 @@
                     }
                 }
             });
+            //we can change mapping here
             sc.filters.selectedPrimaryFilter.tableView = selectedFilter.key;
             sc.search(true);
             sc.tableView = selectedFilter.key;
@@ -436,6 +453,13 @@
             sc.filters.selectedPrimaryFilter.allFilters = sc.filters.yrbsAdvancedFilters;
             sc.filters.selectedPrimaryFilter.sideFilters = sc.filters.search[1].advancedSideFilters;
             sc.search(true);
+        }
+
+        /**
+         * Shows facebook share dialog box
+         */
+        function showFbDialog(svgIndex, title, data) {
+            shareUtilService.shareOnFb(svgIndex, title, undefined, undefined, data);
         }
     }
 }());

@@ -50,8 +50,10 @@
                 <span>&lt;&lt; Hide Filters</span>
             </a>
             <div class="sort-by side-filter-padding">
-                <owh-side-filter filters="sc.filters"
-                    on-filter="sc.search(sc.filters.selectedPrimaryFilter, sc.filters, true)"
+                <owh-side-filter filters="sc.filters.selectedPrimaryFilter.sideFilters"
+                    group-options="sc.filters.groupOptions"
+                    primary-key="{{ sc.filters.selectedPrimaryFilter.key }}"
+                    on-filter="sc.search(true)"
                     sort="sc.sort[sc.filters.selectedPrimaryFilter.title]"
                     show-filters="sc.availableFilters[sc.tableView]"
                     utilities="sc.filterUtilities[sc.filters.selectedPrimaryFilter.key]"
@@ -83,7 +85,7 @@
                                     </a>
                                     <a name="share_fb" ng-click="sc.showFbDialog('chart_'+parentIndex+'_'+$index, chartData.title)"
                                        class="cursor-pointer">
-                                        &nbsp; <i class="fa fa-share-alt" title="Share on facebook"></i>
+                                        &nbsp; <i class="fa fa-share-alt" title="{{'label.share.on.fb' | translate}}"></i>
                                     </a>
                                 </div>
                                 <nvd3 id="chart_{{parentIndex}}_{{$index}}" options='chartData.options' data='chartData.data' api="chartData.api" on-ready="sc.updateCharts()"></nvd3>

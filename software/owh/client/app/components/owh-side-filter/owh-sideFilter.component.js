@@ -8,18 +8,20 @@
             controllerAs: 'sfc',
             bindings:{
                 //TODO: change to one-way binding and bubble filter changes up with event bindings
-                filters : "=",
+                filters : "<",
+                groupOptions: "<",
+                primaryKey: "@",
                 onFilter: '&',
                 sort: '<',
                 showFilters: '<',
                 utilities: '<',
-                runOnFilterChange : "<"
+                runOnFilterChange: '<'
             }
         });
 
-    sideFilterController.$inject=['ModalService', 'utilService', 'searchFactory'];
+    sideFilterController.$inject=['ModalService', 'utilService', 'searchFactory', 'SearchService'];
 
-    function sideFilterController(ModalService, utilService, searchFactory){
+    function sideFilterController(ModalService, utilService, searchFactory, SearchService){
         var sfc = this;
         sfc.getOptionCountPercentage = getOptionCountPercentage;
         sfc.getOptionCount = getOptionCount;
@@ -33,6 +35,33 @@
         sfc.isOptionDisabled = isOptionDisabled;
         sfc.isOptionSelected = isOptionSelected;
         sfc.getShowHideOptionCount = getShowHideOptionCount;
+        sfc.refreshFilterOptions = refreshFilterOptions;
+        sfc.onFilterValueChange = onFilterValueChange;
+
+        sfc.$onChanges = function(changes) {
+            if(changes.filters.currentValue) {
+                angular.forEach(changes.filters.currentValue, function(filter) {
+                    //iterate through filter options and add counts
+                    angular.forEach(filter.filters.autoCompleteOptions, function(option) {
+                        option.count = getOptionCount(option);
+                        if(option.options) {
+                            angular.forEach(option.options, function(subOption) {
+                                subOption.count = getOptionCount(subOption);
+                            });
+                        }
+                    });
+                });
+
+                //categorize filters
+                sfc.categories = {};
+                angular.forEach(changes.filters.currentValue, function(filter) {
+                    if(!sfc.categories[filter.category]) {
+                        sfc.categories[filter.category] = []
+                    }
+                    sfc.categories[filter.category].push(filter);
+                });
+            }
+        };
 
         function isOptionDisabled(group, option) {
             if(group.key === 'hispanicOrigin') {
@@ -49,7 +78,7 @@
                     }
                 }
             }
-            return false;
+            return false || option.disabled;
         }
 
         function filterGroup(option, group) {
@@ -95,13 +124,13 @@
         }
 
         function getOptionCountPercentage(option) {
-            var countKey = sfc.filters.selectedPrimaryFilter.key;
+            var countKey = sfc.primaryKey;
             var countPercentKey = countKey + 'Percentage';
             return option && option[countPercentKey] ? option[countPercentKey] : 0
         }
 
         function getOptionCount(option) {
-            var countKey = sfc.filters.selectedPrimaryFilter.key;
+            var countKey = sfc.primaryKey;
             //check if group option
             if(option.options) {
                 var count = 0;
@@ -190,7 +219,8 @@
         }
 
         //remove all elements from array for all select
-        function updateGroupValue(group) {
+        function updateGroupValue(sideFilter) {
+            var group = sideFilter.filterGroup ? sideFilter : sideFilter.filters;
             if(group.filterType === 'checkbox'){
                 if ( group.allChecked === false ) {
                     // When All is unchecked, select all other values
@@ -206,10 +236,54 @@
                     group.value = '';
                 }
             }
-            //  Run the filter call back only if runOnFilterChange is true
+
+            sfc.onFilterValueChange(sideFilter);
+        }
+
+
+        function onFilterValueChange(filter){
+            // Update the filter options if refreshFiltersOnChange is true
+            if (filter.refreshFiltersOnChange){
+                sfc.refreshFilterOptions(filter.filters);
+            }
+
+            // Run the filter call back only if runOnFilterChange is true
             if(sfc.runOnFilterChange) {
                 sfc.onFilter();
             }
+        }
+
+        function refreshFilterOptions(filter) {
+            var filterName = filter.queryKey;
+            var filterValue = filter.value;
+            SearchService.getDsMetadata(sfc.primaryKey, filterValue ? filterValue.join(',') : null).then(function (response) {
+                var newFilters = response.data;
+                var sideFilters = sfc.filters;
+                for (var f in sideFilters) {
+                    var fkey = sideFilters[f].filters.queryKey;
+                    if (fkey !== filterName) {
+                        if (fkey in newFilters) {
+                            sideFilters[f].disabled = false;
+                            if (newFilters[fkey]) {
+                                var fopts = sideFilters[f].filters.autoCompleteOptions;
+                                for (var opt in fopts) {
+                                    if (newFilters[fkey].indexOf(fopts[opt].key) >= 0) {
+                                        fopts[opt].disabled = false;
+                                    } else {
+                                        fopts[opt].disabled = true;
+                                    }
+                                }
+                            }
+                        } else {
+                            sideFilters[f].filters.value = [];
+                            sideFilters[f].filters.groupBy = false;
+                            sideFilters[f].disabled = true;
+                        }
+                    }
+                }
+            }, function (error) {
+                console.log(error);
+            });
         }
 
         //called to determine order of side filters, looks at sort array passed in

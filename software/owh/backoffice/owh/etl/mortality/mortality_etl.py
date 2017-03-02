@@ -67,6 +67,8 @@ class MortalityIndexer (ETL):
             else:
                 logger.warn("No mapping available for data file %s, skipping", file_path)
                 continue
+            # load dataset metadata
+            self.loadDataSetMetaData('deaths', str(year), config_file)
             # delete records for the year if action is update
             # FIXME: The delete function is not working as expected, the results vary by ES version
             # in 1.5.x, the delete action doesn't work at all, in 2.4.x it delete more records than specified
@@ -108,6 +110,7 @@ class MortalityIndexer (ETL):
             self.refresh_index()
         self.metrics.insertCount=recordCount
         self.metrics.deleteCount=deleteCount
+
 
     def validate_etl(self):
         """ Validate the ETL"""

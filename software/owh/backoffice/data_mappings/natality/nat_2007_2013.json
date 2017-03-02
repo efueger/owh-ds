@@ -1,26 +1,20 @@
 [
   {
-    "column":"current_year",
-    "type":"simple",
-    "start": 15,
-    "stop": 18,
-    "field": "Birth Year",
-    "mappings": {}
-  },
-  {
     "column":"hispanic_origin",
     "type":"map",
-    "start": 148,
-    "stop": 148,
+    "start": 149,
+    "stop": 149,
     "field": "Mother’s Hispanic Origin",
     "mappings": {
-      "0": "Non-Hispanic",
       "1": "Mexican",
       "2": "Puerto Rican",
       "3": "Cuban",
       "4": "Central and South American",
       "5": "Other and Unknown Hispanic Origin",
-      "9": "Hispanic origin not stated"
+      "6": "Non-Hispanic White",
+      "7": "Non-Hispanic Black",
+      "8": "Non-Hispanic Other Races",
+      "9": "Origin unknown or not stated"
     }
   },
   {
@@ -28,7 +22,7 @@
     "type":"map",
     "start": 89,
     "stop": 90,
-    "field": "Mother’s Age Recode 14",
+    "field": "Mother’s Single Year of Age",
     "mappings": {
       "12": "10-12 years",
       "13": "13 years",
@@ -68,7 +62,7 @@
       "47": "47 years",
       "48": "48 years",
       "49": "49 years",
-      "50": "50 years and over"
+      "50": "50-54 years"
     }
   },
   {
@@ -112,7 +106,7 @@
     }
   },
   {
-    "column": "mother_race",
+    "column": "race",
     "type":"map",
     "start": 143,
     "stop": 143,
@@ -156,7 +150,7 @@
     }
   },
   {
-    "column":"dob_yy",
+    "column":"current_year",
     "type":"simple",
     "start": 15,
     "stop": 18,
@@ -164,7 +158,7 @@
     "mappings": {}
   },
   {
-    "column":"dob_mm",
+    "column":"month",
     "type":"map",
     "start": 19,
     "stop": 20,
@@ -185,7 +179,7 @@
     }
   },
   {
-    "column":"dob_wk",
+    "column":"weekday",
     "type":"map",
     "start": 29,
     "stop": 29,
