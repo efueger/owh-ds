@@ -1451,6 +1451,28 @@
 
             filters.censusFilters = filterUtils.getBridgeDataFilters();
             filters.natalityFilters = filterUtils.getNatalityDataFilters();
+
+            filters.pramsTopicOptions = [
+
+            ];
+
+            filters.pramsYearOptions = [
+
+            ];
+
+            filters.pramsBreakoutOptions = [
+
+            ];
+
+            filters.pramsFilters = [
+                {key: 'topic', title: 'label.prams.filter.topic', queryKey:"topic",primary: false, value: [], groupBy: false,
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.pramsTopicOptions), doNotShowAll: true},
+                {key: 'year', title: 'label.prams.filter.year', queryKey:"year",primary: false, value: [], groupBy: false,
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.pramsYearOptions), doNotShowAll: true},
+                {key: 'breakout', title: 'label.prams.filter.breakout', queryKey:"breakout",primary: false, value: [], groupBy: false,
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.pramsBreakoutOptions), doNotShowAll: true}
+            ];
+
             filters.search = [
                 {
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
@@ -1762,6 +1784,13 @@
                             category: "Maternal Risk Factors"
                         }
                     ]
+                },
+                {
+                    key: 'prams', title: 'label.prams.title', primary: true, value:[], header:"Pregnancy Risk Assessment",
+                    searchResults: searchPRAMSResults, dontShowInlineCharting: true,
+                    additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total', tableView:'prams',
+                    chartAxisLabel:'Percentage',
+                    showBasicSearchSideMenu: true, runOnFilterChange: true, allFilters: filters.pramsFilters // Default to basic filter
                 }
             ];
 

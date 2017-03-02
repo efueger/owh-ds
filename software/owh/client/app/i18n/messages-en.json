@@ -246,5 +246,7 @@
   "label.help.text.bridged-race.race": "This field contains values for the four bridged-race categories: American Indian or Alaskan Native, Asian or Pacific Islander, Black or African American, White.",
   "label.help.text.bridged-race.ethnicity": "This field indicates values of Ethnicities of the population.",
   "label.help.text.bridged-race.state": "This field indicates the State to be included in the data request.",
-  "label.help.text.bridged-race.region": "This field indicates the Region to be included in the data request."
+  "label.help.text.bridged-race.region": "This field indicates the Region to be included in the data request.",
+
+  "label.prams.title": "PRAMS"
 }
