@@ -392,6 +392,11 @@ function buildAPIQuery(primaryFilter) {
         apiQuery = primaryFilter;
     }
     //var defaultHeaders = [];
+
+    // For YRBS query capture the basisc/advanced search view
+    if(primaryFilter.key === 'mental_health' && primaryFilter.showBasicSearchSideMenu) {
+        apiQuery.yrbsBasic =  true;
+    }
     var sortedFilters = sortByKey(clone(primaryFilter.allFilters), getAutoCompleteOptionsLength);
     sortedFilters.forEach  (function(eachFilter) {
         if(eachFilter.groupBy) {
