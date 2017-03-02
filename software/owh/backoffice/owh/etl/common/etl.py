@@ -37,6 +37,7 @@ class ETL :
         """Initialize the ETL"""
         self.metrics = ETLMetrics()
         self.config = yaml.safe_load(configFile)
+        logging.getLogger('elasticsearch').setLevel("WARN") # To avoid too many logs from elasticsearch module
         logger.debug("Loaded configuration: %s", yaml.dump(self.config))
         if 'elastic_search' in self.config and 'bulk_load_size' in self.config['elastic_search']:
             self.esRepository = ElasticSearchRepository(self.config['elastic_search'])
