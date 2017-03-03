@@ -243,8 +243,8 @@
 
         function onFilterValueChange(filter){
             // Update the filter options if refreshFiltersOnChange is true
-            if (filter.refreshFiltersOnChange) {
-                refreshFilterOptions(filter.filters)
+            if (filter.refreshFiltersOnChange){
+                sfc.refreshFilterOptions(filter.filters);
             }
             // Run the filter call back only if runOnFilterChange is true
             if(sfc.runOnFilterChange) {
@@ -259,8 +259,8 @@
                 var newFilters = response.data;
                 var sideFilters = sfc.filters;
                 for (var f in sideFilters) {
-                    var fkey = sideFilters[f].filters? sideFilters[f].filters.queryKey: null;
-                    if (fkey && fkey !== filterName) {
+                    var fkey = sideFilters[f].filters.queryKey;
+                    if (fkey !== filterName) {
                         if (fkey in newFilters) {
                             sideFilters[f].disabled = false;
                             if (newFilters[fkey]) {
