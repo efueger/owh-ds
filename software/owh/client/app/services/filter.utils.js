@@ -278,7 +278,7 @@
                 { "key": "Puerto Rican", "title": "Puerto Rican" },
                 { "key": "Cuban", "title": "Cuban" },
                 { "key": "Central and South American", "title": "Central and South American" },
-                { "key": "Other and Unknown Hispanic Origin", "title": "Other and Unknown Hispanic Origin" },
+                { "key": "Other and Unknown Hispanic", "title": "Other and Unknown Hispanic" },
                 { "key": "Non-Hispanic White", "title": "Non-Hispanic White" },
                 { "key": "Non-Hispanic Black", "title": "Non-Hispanic Black" },
                 { "key": "Non-Hispanic Other Races", "title": "Non-Hispanic Other Races" },
