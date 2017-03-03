@@ -39,6 +39,27 @@ yrbs.prototype.invokeYRBSService = function(apiQuery){
     return deferred.promise;
 };
 
+yrbs.prototype.invokeYRBSServiceSerial = function(apiQuery){
+    var self = this;
+    var yrbsquery = this.buildYRBSQueries(apiQuery);
+    var deferred = Q.defer();
+    var queryPromises = [];
+    var startTime = new Date().getTime();
+    logger.info("Invoking YRBS service for "+yrbsquery.length+" questions");
+    for (var q in yrbsquery){
+        queryPromises.push(invokeYRBS(yrbsquery[q]));
+    }
+    Q.all(queryPromises).then(function(resp){
+        var duration = new Date().getTime() - startTime;
+        logger.info("YRBS service response received for all "+yrbsquery.length+" questions, duration(s)="+ duration/1000);
+        deferred.resolve(self.processYRBSReponses(resp, apiQuery.yrbsBasic));
+    }, function (error) {
+        deferred.reject(error);
+    });
+
+    return deferred.promise;
+};
+
 /**
  * Build query for YRBS service.
  * YRBS service takes only one question at a time, so this method builds one query per each question selected
@@ -72,7 +93,6 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
     }
     if(aggrsKeys.indexOf('sitecode') >= 0){
         sortedKeys.push('sitecode');
-        useStateDataset = true;
     }
     var v = null;
     if (sortedKeys.length > 0) {
@@ -84,9 +104,6 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
         var f = '';
         for (q in apiQuery.query){
             if(q != 'question.path' && 'value' in  apiQuery.query[q] && apiQuery.query[q].value) {
-                if(q == 'sitecode'){
-                    useStateDataset = true;
-                }
                 f += (q + ':');
                 if(apiQuery.query[q].value instanceof  Array) {
                     f += apiQuery.query[q].value.join(',') + '|';
@@ -100,7 +117,7 @@ yrbs.prototype.buildYRBSQueries = function (apiQuery){
         if('question.path' in apiQuery.query) {
             var selectedQs = apiQuery.query['question.path'].value;
             for (var i = 0; i < selectedQs.length; i++) {
-                var qry = config.yrbs.queryUrl+ (useStateDataset?'/state':'/national') + '?'; //Base url
+                var qry = config.yrbs.queryUrl+'?'; //Base url
                 qry += 'd=yrbss&' // yrbs dataset
                 qry += 'r=1&' // count true responses
                 if(apiQuery.yrbsBasic){
@@ -231,7 +248,11 @@ function resultCellObject (response) {
 
 function toRoundedPercentage(num, prec){
     if (!isNaN(num)){
-        return (num * 100).toFixed(prec);
+        if(num > 0) {
+            return (num * 100).toFixed(prec);
+        }else {
+            return '0';
+        }
     }else {
         return num;
     }
@@ -313,9 +334,12 @@ function prepareQuestionTreeForYears(questions, years) {
     }
 
     for (var category in qCategoryMap) {
+       // Sort questions alphabetically
        qCategoryMap[category].children = sortByKey(qCategoryMap[category].children, 'text', true);
        questionTree.push(qCategoryMap[category]);
     }
+    // Sort the categories in the tree
+    questionTree = sortByKey(questionTree,"text",true);
     return {questionTree:questionTree, questionsList: questionsList};
 }
 
