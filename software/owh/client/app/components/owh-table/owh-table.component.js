@@ -59,6 +59,8 @@
                     });
                 });
                 prevWidth = columnsWidth;
+                //make sure scroll area is same width as other tables
+                $scroll.width($headers.width());
             }
         })();
 
