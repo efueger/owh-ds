@@ -319,6 +319,7 @@ function prepareQuestionTreeForYears(questions, years) {
     }
     // Sort the categories in the tree
     questionTree = sortByKey(questionTree,"text",true);
+    questionsList = sortByKey(questionsList,"qkey",true);
     return {questionTree:questionTree, questionsList: questionsList};
 }
 
