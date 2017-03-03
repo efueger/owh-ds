@@ -15,7 +15,6 @@
             addCountsToAutoCompleteOptions: addCountsToAutoCompleteOptions,
             searchMortalityResults: searchMortalityResults,
             showPhaseTwoModal: showPhaseTwoModal,
-            uploadImage: uploadImage,
             updateFilterValues: updateFilterValues,
             generateHashCode: generateHashCode,
             buildAPIQuery: buildAPIQuery,
@@ -1472,7 +1471,7 @@
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
-                            filters: utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'year')
+                            refreshFiltersOnChange: true, filters: utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'year')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true,
@@ -1583,7 +1582,7 @@
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'current_year')
+                            refreshFiltersOnChange: true, filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'current_year')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
@@ -1610,12 +1609,12 @@
                 {
                     key: 'natality', title: 'label.filter.natality', primary: true, value:[], header:"Natality",
                     allFilters: filters.natalityFilters, searchResults: searchNatality, dontShowInlineCharting: true,
-                    chartAxisLabel:'Population', countLabel: 'Total', tableView:'natality',
+                    chartAxisLabel:'Population', countLabel: 'Total',  countQueryKey: 'pop', tableView:'number_of_births',
                     runOnFilterChange: true,
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'current_year'),
+                            refreshFiltersOnChange: true, filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'current_year'),
                             category: "Birth Characteristics"
                         },
                         {
@@ -1799,19 +1798,6 @@
                     modal.element.hide();
                 });
             });
-        }
-
-        /**
-         * Uploads png image to server
-         * @param data
-         * @returns {*}
-         */
-        function uploadImage(data) {
-            var deferred = $q.defer();
-            SearchService.uploadImage(data).then(function(response){
-                deferred.resolve(response.data);
-            });
-            return deferred.promise;
         }
     }
 

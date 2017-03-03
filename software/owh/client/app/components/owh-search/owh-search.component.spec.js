@@ -27,19 +27,19 @@ describe('OWH search component: ', function() {
     });
 
     it('Should have controller', inject(function ($httpBackend, $location) {
-        var showMeOptions = [
-            {key:'number_of_deaths',title:'Number of Deaths'}
-        ];
+        var showMeOptions = {
+            deaths: [{key: 'number_of_deaths', title: 'Number of Deaths'}]
+        };
         var bindings = {showFilters:showMeOptions};
         var ctrl = $componentController('owhSearch', null, bindings);
         expect(ctrl).toBeDefined();
     }));
 
     it('Should show phase two impl', inject(function ($httpBackend, $location) {
-        var showMeOptions = [
-            {key:'crude_death_rates',title:'Crude Death Rates'}
-        ];
-        var bindings = {showFilters:showMeOptions, tableView: 'crude_death_rates'};
+        var showMeOptions = {
+            deaths: [{key: 'crude_death_rates', title: 'Crude Death Rates'}]
+        };
+        var bindings = {showFilters:showMeOptions, tableView: 'crude_death_rates', selectedShowFilter:showMeOptions.deaths[0].key};
         var ctrl = $componentController('owhSearch', null, bindings);
         ctrl.$onChanges();
         expect(ctrl).toBeDefined();
@@ -48,9 +48,9 @@ describe('OWH search component: ', function() {
     }));
 
     it('Should not show phase two popup for deaths', inject(function ($httpBackend, $location) {
-        var showMeOptions = [
-            {key:'number_of_deaths',title:'Number of Deaths'}
-        ];
+        var showMeOptions = {
+            deaths: [{key: 'number_of_deaths', title: 'Number of Deaths'}]
+        };
         var bindings = {showFilters:showMeOptions, tableView: 'number_of_deaths'};
         var ctrl = $componentController('owhSearch', null, bindings);
         ctrl.$onChanges();
@@ -77,9 +77,9 @@ describe('OWH search component: ', function() {
             countLabel: 'Number of Deaths', mapData:{}, initiated:true }
         };
 
-        var showMeOptions = [
-            {key:'crude_death_rates',title:'Crude Death Rates'}
-        ];
+        var showMeOptions = {
+            deaths: [{key: 'crude_death_rates', title: 'Crude Death Rates'}]
+        };
 
 
         var bindings = {showFilters:showMeOptions, filters:filters, searchResults:searchResults, tableView: 'crude_death_rates' };
@@ -109,10 +109,9 @@ describe('OWH search component: ', function() {
             countLabel: 'Number of Deaths', mapData:{}, initiated:false }
         };
 
-        var showMeOptions = [
-            {key:'crude_death_rates',title:'Crude Death Rates'}
-        ];
-
+        var showMeOptions = {
+            deaths: [{key: 'crude_death_rates', title: 'Crude Death Rates'}]
+        };
         var bindings = {showFilters:showMeOptions, filters:filters, searchResults:searchResults, tableView: 'crude_death_rates' };
         var ctrl = $componentController('owhSearch', null, bindings);
         ctrl.$onChanges();

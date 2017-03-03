@@ -19,9 +19,9 @@
             }
         });
 
-    sideFilterController.$inject=['ModalService', 'utilService', 'searchFactory'];
+    sideFilterController.$inject=['ModalService', 'utilService', 'searchFactory', 'SearchService'];
 
-    function sideFilterController(ModalService, utilService, searchFactory){
+    function sideFilterController(ModalService, utilService, searchFactory, SearchService){
         var sfc = this;
         sfc.getOptionCountPercentage = getOptionCountPercentage;
         sfc.getOptionCount = getOptionCount;
@@ -35,6 +35,8 @@
         sfc.isOptionDisabled = isOptionDisabled;
         sfc.isOptionSelected = isOptionSelected;
         sfc.getShowHideOptionCount = getShowHideOptionCount;
+        sfc.refreshFilterOptions = refreshFilterOptions;
+        sfc.onFilterValueChange = onFilterValueChange;
 
         sfc.$onChanges = function(changes) {
             if(changes.filters.currentValue) {
@@ -76,7 +78,7 @@
                     }
                 }
             }
-            return false;
+            return false || option.disabled;
         }
 
         function filterGroup(option, group) {
@@ -217,7 +219,8 @@
         }
 
         //remove all elements from array for all select
-        function updateGroupValue(group) {
+        function updateGroupValue(sideFilter) {
+            var group = sideFilter.filterGroup ? sideFilter : sideFilter.filters;
             if(group.filterType === 'checkbox'){
                 if ( group.allChecked === false ) {
                     // When All is unchecked, select all other values
@@ -233,10 +236,54 @@
                     group.value = '';
                 }
             }
-            //  Run the filter call back only if runOnFilterChange is true
+
+            sfc.onFilterValueChange(sideFilter);
+        }
+
+
+        function onFilterValueChange(filter){
+            // Update the filter options if refreshFiltersOnChange is true
+            if (filter.refreshFiltersOnChange){
+                sfc.refreshFilterOptions(filter.filters);
+            }
+
+            // Run the filter call back only if runOnFilterChange is true
             if(sfc.runOnFilterChange) {
                 sfc.onFilter();
             }
+        }
+
+        function refreshFilterOptions(filter) {
+            var filterName = filter.queryKey;
+            var filterValue = filter.value;
+            SearchService.getDsMetadata(sfc.primaryKey, filterValue ? filterValue.join(',') : null).then(function (response) {
+                var newFilters = response.data;
+                var sideFilters = sfc.filters;
+                for (var f in sideFilters) {
+                    var fkey = sideFilters[f].filters.queryKey;
+                    if (fkey !== filterName) {
+                        if (fkey in newFilters) {
+                            sideFilters[f].disabled = false;
+                            if (newFilters[fkey]) {
+                                var fopts = sideFilters[f].filters.autoCompleteOptions;
+                                for (var opt in fopts) {
+                                    if (newFilters[fkey].indexOf(fopts[opt].key) >= 0) {
+                                        fopts[opt].disabled = false;
+                                    } else {
+                                        fopts[opt].disabled = true;
+                                    }
+                                }
+                            }
+                        } else {
+                            sideFilters[f].filters.value = [];
+                            sideFilters[f].filters.groupBy = false;
+                            sideFilters[f].disabled = true;
+                        }
+                    }
+                }
+            }, function (error) {
+                console.log(error);
+            });
         }
 
         //called to determine order of side filters, looks at sort array passed in
