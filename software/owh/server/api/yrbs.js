@@ -39,27 +39,6 @@ yrbs.prototype.invokeYRBSService = function(apiQuery){
     return deferred.promise;
 };
 
-yrbs.prototype.invokeYRBSServiceSerial = function(apiQuery){
-    var self = this;
-    var yrbsquery = this.buildYRBSQueries(apiQuery);
-    var deferred = Q.defer();
-    var queryPromises = [];
-    var startTime = new Date().getTime();
-    logger.info("Invoking YRBS service for "+yrbsquery.length+" questions");
-    for (var q in yrbsquery){
-        queryPromises.push(invokeYRBS(yrbsquery[q]));
-    }
-    Q.all(queryPromises).then(function(resp){
-        var duration = new Date().getTime() - startTime;
-        logger.info("YRBS service response received for all "+yrbsquery.length+" questions, duration(s)="+ duration/1000);
-        deferred.resolve(self.processYRBSReponses(resp, apiQuery.yrbsBasic));
-    }, function (error) {
-        deferred.reject(error);
-    });
-
-    return deferred.promise;
-};
-
 /**
  * Build query for YRBS service.
  * YRBS service takes only one question at a time, so this method builds one query per each question selected
