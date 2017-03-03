@@ -10,7 +10,7 @@
       "2": "Puerto Rican",
       "3": "Cuban",
       "4": "Central and South American",
-      "5": "Other and Unknown Hispanic Origin",
+      "5": "Other and Unknown Hispanic",
       "6": "Non-Hispanic White",
       "7": "Non-Hispanic Black",
       "8": "Non-Hispanic Other Races",
@@ -80,7 +80,7 @@
       "07": "19 years",
       "08": "20-24 years",
       "09": "25-29 years",
-      "10": "30-44 years",
+      "10": "30-34 years",
       "11": "35-39 years",
       "12": "40-44 years",
       "13": "45-49 years",
@@ -229,7 +229,7 @@
   },
   {
     "column":"birth_weight",
-    "type":"map",
+    "type":"range",
     "start": 463,
     "stop": 466,
     "field": "Birth Weight",
@@ -258,7 +258,7 @@
       "2200-2299": "2200 - 2299 grams",
       "2300-2399": "2300 - 2399 grams",
       "2400-2499": "2400 - 2499 grams",
-      "2500-2599":" 2500 - 2599 grams",
+      "2500-2599": "2500 - 2599 grams",
       "2600-2699": "2600 - 2699 grams",
       "2700-2799": "2700 - 2799 grams",
       "2800-2899": "2800 - 2899 grams",
@@ -347,7 +347,7 @@
     "field": "Birth Weight Recode 4",
     "mappings": {
       "1": "1499 grams or less",
-      "2": "1500 – 2499 grams",
+      "2": "1500 - 2499 grams",
       "3": "2500 - 8165 grams",
       "4": "Unknown or not stated"
     }
