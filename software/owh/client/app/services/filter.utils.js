@@ -267,7 +267,7 @@
             ];
 
             var raceOptions =  [
-                { "key": "American Indian or Alaska Native", "title": "American Indian" },
+                { "key": "American Indian or Alaska Native", "title": "American Indian or Alaska Native" },
                 { "key": "Asian or Pacific Islander", "title": "Asian or Pacific Islander" },
                 { "key": "Black", "title": "Black or African American" },
                 { "key": "White", "title": "White" }
@@ -323,7 +323,7 @@
                 { "key": "47 years", "title": "47 years" },
                 { "key": "48 years", "title": "48 years" },
                 { "key": "49 years", "title": "49 years" },
-                { "key": "50 years and over", "title": "50 years and over"}
+                { "key": "50-54 years", "title": "50 years and over"}
             ];
 
             var ageR8Options =  [
@@ -335,7 +335,7 @@
                 { "key": "35-39 years", "title": "35-39 years" },
                 { "key": "40-44 year", "title": "40-44 year" },
                 { "key": "45-49 years", "title": "45-49 years" },
-                { "key": "50-54 years", "title": "50-54 years" }
+                { "key": "50-54 years", "title": "50 years and over" }
             ];
             var ageR9Options =  [
                 { "key": "Under 15 years", "title": "Under 15 years" },
@@ -346,7 +346,7 @@
                 { "key": "35-39 years", "title": "35-39 years" },
                 { "key": "40-44 year", "title": "40-44 year" },
                 { "key": "45-49 years", "title": "45-49 years" },
-                { "key": "50-54 years", "title": "50-54 years" }
+                { "key": "50-54 years", "title": "50 years and over" }
             ];
 
             var ageR14ptions =  [
@@ -362,7 +362,7 @@
                 { "key": "35-39 years", "title": "35-39 years" },
                 { "key": "40-44 years", "title": "40-44 years" },
                 { "key": "45-49 years", "title": "45-49 years" },
-                { "key": "50-54 years", "title": "50-54 years" }
+                { "key": "50-54 years", "title": "50 years and over" }
             ];
 
             var gestationalAgeAtBirth =  [
@@ -370,7 +370,7 @@
                 { "key": "20 - 27 weeks", "title": "20 - 27 weeks" },
                 { "key": "28 - 31 weeks", "title": "28 - 31 weeks" },
                 { "key": "32 - 35 weeks", "title": "32 - 35 weeks" },
-                { "key": "36 weeks", "title": "30-34 years" },
+                { "key": "36 weeks", "title": "36 weeks" },
                 { "key": "37 - 39 weeks", "title": "37 - 39 weeks" },
                 { "key": "40 weeks", "title": "40 weeks" },
                 { "key": "41 weeks", "title": "41 weeks" },
