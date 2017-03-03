@@ -295,7 +295,7 @@ yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
         logger.info("Returning cached questions");
         deferred.resolve(cahcedQuestions);
     } else {
-        invokeYRBS(config.yrbs.questionsUrl).then(function (response) {
+        invokeYRBS(config.yrbs.questionsUrl + "?d=yrbss").then(function (response) {
             logger.info("Getting questions from yrbs service");
             var data = prepareQuestionTreeForYears(response, yearList);
             cahcedQuestions = {questionTree: data.questionTree, questionsList: data.questionsList}
