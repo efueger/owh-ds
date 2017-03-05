@@ -849,10 +849,21 @@ describe("YRBS API", function () {
 
     it("invokeYRBS service group by race and sex", function (){
         var apiQuery = {'aggregations':{'nested':{'table':[{"key":"question","queryKey":"question.key","size":100000},{"key":"yrbsRace","queryKey":"race","size":100000},{"key":"yrbsSex","queryKey":"sex","size":100000}]}},
-            'query': {'question.path':{ 'value': ['qn8', 'qn9', 'qn10']}}};
+            'query': {'question.path':{ 'value': ['qn8', 'qn9']}}};
 
         return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
-            expect(resp).to.eql(  {"table":{"question":[{"name":"qn8","mental_health":{"mean":"87.4","ci_l":"86.5","ci_u":"88.3","count":121103},"sex":[{"name":"Female","race":[{"name":"Am Indian / Alaska Native","mental_health":{"mean":"88.4","ci_l":"83.1","ci_u":"92.2","count":519}},{"name":"Black or African American","mental_health":{"mean":"92.9","ci_l":"91.5","ci_u":"94.0","count":11670}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"82.1","ci_l":"77.5","ci_u":"85.9","count":1370}},{"name":"Hispanic/Latino","mental_health":{"mean":"89.6","ci_l":"88.5","ci_u":"90.6","count":14016}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"81.3","ci_l":"72.0","ci_u":"88.1","count":274}},{"name":"White","mental_health":{"mean":"84.8","ci_l":"83.4","ci_u":"86.1","count":23714}},{"name":"Asian","mental_health":{"mean":"76.8","ci_l":"72.9","ci_u":"80.2","count":1541}}]},{"name":"Male","race":[{"name":"Black or African American","mental_health":{"mean":"94.4","ci_l":"93.7","ci_u":"95.1","count":13866}},{"name":"Am Indian / Alaska Native","mental_health":{"mean":"91.5","ci_l":"87.3","ci_u":"94.3","count":832}},{"name":"Asian","mental_health":{"mean":"81.3","ci_l":"78.1","ci_u":"84.1","count":2115}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"81.2","ci_l":"73.2","ci_u":"87.3","count":417}},{"name":"White","mental_health":{"mean":"86.8","ci_l":"85.7","ci_u":"87.9","count":28769}},{"name":"Hispanic/Latino","mental_health":{"mean":"91.5","ci_l":"90.6","ci_u":"92.3","count":17566}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"83.9","ci_l":"78.7","ci_u":"88.0","count":1509}}]}]},{"name":"qn9","mental_health":{"mean":"14.2","ci_l":"13.4","ci_u":"15.1","count":186154},"sex":[{"name":"Female","race":[{"name":"Am Indian / Alaska Native","mental_health":{"mean":"15.7","ci_l":"12.3","ci_u":"20.0","count":942}},{"name":"Black or African American","mental_health":{"mean":"15.8","ci_l":"14.5","ci_u":"17.3","count":21819}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"7.3","ci_l":"5.6","ci_u":"9.5","count":2472}},{"name":"Hispanic/Latino","mental_health":{"mean":"11.2","ci_l":"10.1","ci_u":"12.3","count":25577}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"11.1","ci_l":"7.5","ci_u":"16.2","count":492}},{"name":"White","mental_health":{"mean":"9.8","ci_l":"8.9","ci_u":"10.8","count":37544}},{"name":"Asian","mental_health":{"mean":"9.1","ci_l":"7.6","ci_u":"10.8","count":3065}}]},{"name":"Male","race":[{"name":"Black or African American","mental_health":{"mean":"22.7","ci_l":"21.0","ci_u":"24.4","count":19484}},{"name":"Am Indian / Alaska Native","mental_health":{"mean":"22.4","ci_l":"18.4","ci_u":"27.1","count":1158}},{"name":"Asian","mental_health":{"mean":"11.3","ci_l":"9.7","ci_u":"13.2","count":3219}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"21.9","ci_l":"16.4","ci_u":"28.7","count":605}},{"name":"White","mental_health":{"mean":"16.7","ci_l":"15.4","ci_u":"18.1","count":38390}},{"name":"Hispanic/Latino","mental_health":{"mean":"15.3","ci_l":"13.9","ci_u":"16.8","count":24735}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"14.0","ci_l":"11.3","ci_u":"17.2","count":2074}}]}]},{"name":"qn10","mental_health":{"mean":"30.3","ci_l":"29.6","ci_u":"31.0","count":187101},"sex":[{"name":"Female","race":[{"name":"Am Indian / Alaska Native","mental_health":{"mean":"31.1","ci_l":"27.2","ci_u":"35.3","count":944}},{"name":"Black or African American","mental_health":{"mean":"28.7","ci_l":"27.4","ci_u":"30.0","count":21781}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"25.8","ci_l":"22.6","ci_u":"29.3","count":2512}},{"name":"Hispanic/Latino","mental_health":{"mean":"35.5","ci_l":"34.3","ci_u":"36.7","count":25532}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"31.5","ci_l":"26.1","ci_u":"37.5","count":499}},{"name":"White","mental_health":{"mean":"29.6","ci_l":"28.5","ci_u":"30.7","count":38052}},{"name":"Asian","mental_health":{"mean":"19.1","ci_l":"17.3","ci_u":"21.0","count":3083}}]},{"name":"Male","race":[{"name":"Black or African American","mental_health":{"mean":"30.5","ci_l":"29.1","ci_u":"31.9","count":19434}},{"name":"Am Indian / Alaska Native","mental_health":{"mean":"36.8","ci_l":"32.9","ci_u":"40.9","count":1154}},{"name":"Asian","mental_health":{"mean":"21.3","ci_l":"19.1","ci_u":"23.6","count":3213}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"31.7","ci_l":"26.1","ci_u":"37.8","count":606}},{"name":"White","mental_health":{"mean":"29.7","ci_l":"28.6","ci_u":"30.8","count":38931}},{"name":"Hispanic/Latino","mental_health":{"mean":"35.3","ci_l":"34.0","ci_u":"36.6","count":24631}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"29.4","ci_l":"26.2","ci_u":"32.7","count":2109}}]}]}]}});
+            var q0=resp.table.question[0];
+            var q1=resp.table.question[1];
+            expect(q0.mental_health).to.eql({"mean":"87.4","ci_l":"86.5","ci_u":"88.3","count":121103});
+            expect(q1.mental_health).to.eql({"mean":"14.2","ci_l":"13.4","ci_u":"15.1","count":186154});
+            var sex = sortByKey(q0.sex,'name',true);
+            expect(sex.length).to.eql(2);
+            expect(sex[0].name).to.eql("Female");
+            expect(sex[1].name).to.eql("Male");
+            var female = sortByKey(sex[0].race, 'name', true);
+            expect(female).to.eql([{"name":"Am Indian / Alaska Native","mental_health":{"mean":"88.4","ci_l":"83.1","ci_u":"92.2","count":519}},{"name":"Asian","mental_health":{"mean":"76.8","ci_l":"72.9","ci_u":"80.2","count":1541}},{"name":"Black or African American","mental_health":{"mean":"92.9","ci_l":"91.5","ci_u":"94.0","count":11670}},{"name":"Hispanic/Latino","mental_health":{"mean":"89.6","ci_l":"88.5","ci_u":"90.6","count":14016}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"82.1","ci_l":"77.5","ci_u":"85.9","count":1370}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"81.3","ci_l":"72.0","ci_u":"88.1","count":274}},{"name":"White","mental_health":{"mean":"84.8","ci_l":"83.4","ci_u":"86.1","count":23714}}]);
+            var male = sortByKey(sex[1].race, 'name', true);
+            expect(male).to.eql([{"name":"Am Indian / Alaska Native","mental_health":{"mean":"91.5","ci_l":"87.3","ci_u":"94.3","count":832}},{"name":"Asian","mental_health":{"mean":"81.3","ci_l":"78.1","ci_u":"84.1","count":2115}},{"name":"Black or African American","mental_health":{"mean":"94.4","ci_l":"93.7","ci_u":"95.1","count":13866}},{"name":"Hispanic/Latino","mental_health":{"mean":"91.5","ci_l":"90.6","ci_u":"92.3","count":17566}},{"name":"Multiple - Non-Hispanic","mental_health":{"mean":"83.9","ci_l":"78.7","ci_u":"88.0","count":1509}},{"name":"Native Hawaiian/other PI","mental_health":{"mean":"81.2","ci_l":"73.2","ci_u":"87.3","count":417}},{"name":"White","mental_health":{"mean":"86.8","ci_l":"85.7","ci_u":"87.9","count":28769}}]);
         });
     });
 
@@ -870,7 +881,12 @@ describe("YRBS API", function () {
             'query': {'question.path':{ 'value': ['qn8']}, 'race':{value:['White', 'Black or African American']},'sex':{value:['Female']}}};
 
         return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
-            expect(resp).to.eql({"table":{"question":[{"name":"qn8","mental_health":{"mean":"86.1","ci_l":"84.9","ci_u":"87.3","count":35384},"sex":[{"name":"Female","race":[{"name":"White","mental_health":{"mean":"84.8","ci_l":"83.4","ci_u":"86.1","count":23714}},{"name":"Black or African American","mental_health":{"mean":"92.9","ci_l":"91.5","ci_u":"94.0","count":11670}}]}]}]}});
+            var q0=resp.table.question[0];
+            expect(q0.mental_health).to.eql({"mean":"86.1","ci_l":"84.9","ci_u":"87.3","count":35384});
+            expect(q0.sex.length).to.eql(1);
+            expect(q0.sex[0].name).to.eql("Female");
+            var race = sortByKey(q0.sex[0].race, 'name', true);
+            expect(race).to.eql([{"name":"Black or African American","mental_health":{"mean":"92.9","ci_l":"91.5","ci_u":"94.0","count":11670}},{"name":"White","mental_health":{"mean":"84.8","ci_l":"83.4","ci_u":"86.1","count":23714}}]);
         });
     });
 
@@ -879,7 +895,15 @@ describe("YRBS API", function () {
             'query': {'question.path':{ 'value': ['qn8']}, 'race':{value:['White', 'Black or African American']},'sitecode':{value:['VA','MO']}}};
 
         return yrbs.invokeYRBSService(apiQuery).then( function (resp) {
-            expect(resp).to.eql( {"table":{"question":[{"name":"qn8","mental_health":{"mean":"86.4","ci_l":"84.7","ci_u":"87.9","count":16512},"race":[{"name":"Black or African American","mental_health":{"mean":"92.8","ci_l":"90.2","ci_u":"94.7","count":1395}},{"name":"White","mental_health":{"mean":"87.8","ci_l":"85.1","ci_u":"90.1","count":8483}}]}]}});
+            var q0=resp.table.question[0];
+            expect(q0.mental_health).to.eql({"mean":"86.4","ci_l":"84.7","ci_u":"87.9","count":16512});
+            var race = sortByKey(q0.race,'name',true);
+            expect(race[0].name).to.eql("Black or African American");
+            expect(race[1].name).to.eql("White");
+            var b = sortByKey(race[0].sitecode, 'name', true);
+            expect(b).to.eql([{"name":"MO","mental_health":{"mean":"92.8","ci_l":"90.2","ci_u":"94.7","count":1395}},{"name":"VA","mental_health":{"mean":"91.1","ci_l":"88.7","ci_u":"93.1","count":2031}}]);
+            var w = sortByKey(race[1].sitecode, 'name', true);
+            expect(w).to.eql([{"name":"MO","mental_health":{"mean":"87.8","ci_l":"85.1","ci_u":"90.1","count":8483}},{"name":"VA","mental_health":{"mean":"77.6","ci_l":"74.7","ci_u":"80.3","count":4603}}]);
         });
     });
 
@@ -945,4 +969,16 @@ describe("YRBS API", function () {
             expect(response.questionsList[1].title).to.eql("Drove when drinking alcohol(in a car or other vehicle one or more times during the 30 days before the survey, among students who had driven a car or other vehicle during the 30 days before the survey)");
         });
     });
+
+    function sortByKey(array, key, asc) {
+        return array.sort(function(a, b) {
+            var x = typeof(key) === 'function' ? key(a) : a[key];
+            var y = typeof(key) === 'function' ? key(b) : b[key];
+            if(asc===undefined || asc === true) {
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            }else {
+                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+            }
+        });
+    }
 });
