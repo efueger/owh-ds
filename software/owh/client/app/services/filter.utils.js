@@ -203,22 +203,23 @@
         function getNatalityDataFilters() {
             //filter options
             var yearOptions = [
-                { "key": "2014", "title": "2014" },
-                { "key": "2013", "title": "2013" },
-                { "key": "2012", "title": "2012" },
-                { "key": "2011", "title": "2011" },
-                { "key": "2010", "title": "2010" },
-                { "key": "2009", "title": "2009" },
-                { "key": "2008", "title": "2008" },
-                { "key": "2007", "title": "2007" },
-                { "key": "2006", "title": "2006" },
-                { "key": "2005", "title": "2005" },
-                { "key": "2004", "title": "2004" },
-                { "key": "2003", "title": "2003" },
-                { "key": "2002", "title": "2002" },
-                { "key": "2001", "title": "2001" },
-                { "key": "2000", "title": "2000" }
+                { "key": "2014", "title": "2014", "calculateRate": true },
+                { "key": "2013", "title": "2013", "calculateRate": true },
+                { "key": "2012", "title": "2012", "calculateRate": true },
+                { "key": "2011", "title": "2011", "calculateRate": true },
+                { "key": "2010", "title": "2010", "calculateRate": true },
+                { "key": "2009", "title": "2009", "calculateRate": true },
+                { "key": "2008", "title": "2008", "calculateRate": true },
+                { "key": "2007", "title": "2007", "calculateRate": true },
+                { "key": "2006", "title": "2006", "calculateRate": true },
+                { "key": "2005", "title": "2005", "calculateRate": true },
+                { "key": "2004", "title": "2004", "calculateRate": true },
+                { "key": "2003", "title": "2003", "calculateRate": true },
+                { "key": "2002", "title": "2002", "calculateRate": true },
+                { "key": "2001", "title": "2001", "calculateRate": true },
+                { "key": "2000", "title": "2000", "calculateRate": true }
             ];
+
 
             var monthOptions = [
                 { "key": "January", "title": "January" },

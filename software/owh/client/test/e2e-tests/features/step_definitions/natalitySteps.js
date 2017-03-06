@@ -50,30 +50,17 @@ var natalityStepsDefinitionWrapper = function () {
         natalityPage.getTableRowData(0).then(function(firstRowData){
             expect(firstRowData[0]).to.equals('American Indian');
             expect(firstRowData[1]).to.contains('Rate');
-            expect(firstRowData[1]).to.contains('984.0');
+            expect(firstRowData[1]).to.contains('995.0');
             expect(firstRowData[1]).to.contains('Births');
-            expect(firstRowData[1]).to.contains('22,141');
+            expect(firstRowData[1]).to.contains('44,962');
             expect(firstRowData[1]).to.contains('Population');
-            expect(firstRowData[2]).to.contains('1,005.8');
-            expect(firstRowData[2]).to.contains('Births');
-            expect(firstRowData[2]).to.contains('22,821');
-            expect(firstRowData[2]).to.contains('Population');
-            expect(firstRowData[2]).to.contains('2,268,973');
-            expect(firstRowData[3]).to.contains('995.0');
-            expect(firstRowData[3]).to.contains('44,962');
-            expect(firstRowData[3]).to.contains('4,518,981');
+            expect(firstRowData[1]).to.contains('4,518,981');
         });
         natalityPage.getTableRowData(1).then(function(firstRowData){
             expect(firstRowData[0]).to.equals('Asian or Pacific Islander');
-            expect(firstRowData[1]).to.contains('1,357.2');
-            expect(firstRowData[1]).to.contains('137,265');
-            expect(firstRowData[1]).to.contains('10,113,992');
-            expect(firstRowData[2]).to.contains('1,570.9');
-            expect(firstRowData[2]).to.contains('145,846');
-            expect(firstRowData[2]).to.contains('9,284,222');
-            expect(firstRowData[3]).to.contains('1,459.5');
-            expect(firstRowData[3]).to.contains('283,111');
-            expect(firstRowData[3]).to.contains('19,398,214');
+            expect(firstRowData[1]).to.contains('1,459.5');
+            expect(firstRowData[1]).to.contains('283,111');
+            expect(firstRowData[1]).to.contains('19,398,214')
         });
     });
 
@@ -86,9 +73,23 @@ var natalityStepsDefinitionWrapper = function () {
         var allElements = element.all(by.css('cursor-not-allowed')).all(by.css('custom-link'));
         allElements.getText().then(function (filters) {
             filters.forEach(function (filter) {
-                expect(["Month","Weekday","Gestational Age at Birth","Month Prenatal Care Began","Birth Weight","Birth Weight 4","Birth Weight 12","Plurality or Multiple Birth","Live Birth Order","Birth Place","Delivery Method","Medical Attendant","Ethinicity","Marital Status","Age of Mother","Mother's Age 9","Mother's Age 12","Mother's Single Year of Age","Education",
+                expect(["Month","Weekday", "Sex", "Gestational Age at Birth","Month Prenatal Care Began","Birth Weight","Birth Weight 4","Birth Weight 12","Plurality or Multiple Birth","Live Birth Order","Birth Place","Delivery Method","Medical Attendant","Ethinicity","Marital Status","Age of Mother","Mother's Age 9","Mother's Age 12","Mother's Single Year of Age","Education",
                     "Anemia","Cardiac Disease","Chronic Hypertension","Diabetes","Eclampsia","Hydramnios / Oligohydramnios","Incompetent Cervix","Lung disease","Pregnancy-associated Hypertension","Tobacco Use"]).to.include(filter);
             });
+        });
+    });
+
+    this.Then(/^all years should be enabled in Year filter$/, function () {
+         var yearsList = ["2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005", "2004", "2003", "2002", "2001", "2000"];
+         yearsList.forEach(function(year){
+            expect(element(by.id("natality_current_year_"+year)).getAttribute("disabled")).to.eventually.equal(null);
+         });
+    });
+
+    this.Then(/^years "([^"]*)", "([^"]*)", "([^"]*)" should be disabled for Year filter$/, function (arg1, arg2, arg3) {
+        var yearsList = [arg1, arg2, arg3];
+        yearsList.forEach(function(year){
+            expect(element(by.id("natality_current_year_"+year)).getAttribute("disabled")).to.eventually.equal('true');
         });
     });
 };

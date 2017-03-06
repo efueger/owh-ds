@@ -11,6 +11,8 @@ Feature: Natality filters
     When I change 'I'm interested in' dropdown value to "Natality"
     Then I should see filter type "Natality" selected
     And I should see filter type "Number of Births" selected for show me dropdown
+    And user clicks on "+ 12 more" more link for "Year" filter
+    And all years should be enabled in Year filter
 
   Scenario: Default filter state
     Then I see "Year" as first option in sidebar filters
@@ -35,6 +37,7 @@ Feature: Natality filters
   Scenario: Disable filters when showme filter value changes
     When I change show me dropdown option to "Birth Rates"
     Then I see expected filters should be disabled
+    And years "2000", "2001", "2002" should be disabled for Year filter
 
 
 
