@@ -13,7 +13,7 @@
             </div>
             <!--iterate over filters of a category-->
             <li class="accordion" ng-repeat="sideFilter in category | orderBy: sfc.getFilterOrder"
-                ng-class="{'cursor-not-allowed': !sfc.isVisible(sideFilter) || sideFilter.disabled }"
+                ng-class="{'cursor-not-allowed disabled-filter': !sfc.isVisible(sideFilter) || sideFilter.disabled }"
                 ng-init="group = (sideFilter.filterGroup ? sideFilter : sideFilter.filters)"
                 ng-if="categoryKey == 'undefined' || $index < 2 || sfc.filters.selectedPrimaryFilter['cat'+$parent.$index]">
 

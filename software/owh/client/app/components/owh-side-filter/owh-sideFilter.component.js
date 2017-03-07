@@ -246,7 +246,6 @@
             if (filter.refreshFiltersOnChange){
                 sfc.refreshFilterOptions(filter.filters);
             }
-
             // Run the filter call back only if runOnFilterChange is true
             if(sfc.runOnFilterChange) {
                 sfc.onFilter();
