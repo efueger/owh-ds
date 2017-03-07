@@ -48,7 +48,7 @@ var natalityStepsDefinitionWrapper = function () {
 
     this.Then(/^the data table must show Births, Population and Birth Rates$/, function () {
         natalityPage.getTableRowData(0).then(function(firstRowData){
-            expect(firstRowData[0]).to.equals('American Indian');
+            expect(firstRowData[0]).to.equals('American Indian or Alaska Native');
             expect(firstRowData[1]).to.contains('Rate');
             expect(firstRowData[1]).to.contains('995.0');
             expect(firstRowData[1]).to.contains('Births');

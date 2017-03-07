@@ -302,10 +302,10 @@ describe("Search controller: ", function () {
 
         angular.forEach(selectedYears.autoCompleteOptions, function(eachObject){
             if(eachObject.key == '2000' || eachObject.key == '2001' || eachObject.key == '2002') {
-                expect(eachObject.calculateRate).toEqual(false);
+                expect(eachObject.disabled).toEqual(true);
             }
             else {
-                expect(eachObject.calculateRate).toEqual(true);
+                expect(eachObject.disabled).toEqual(false);
             }
         });
     });

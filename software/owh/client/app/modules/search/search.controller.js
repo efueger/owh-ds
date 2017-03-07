@@ -337,7 +337,7 @@
             if(selectedYears != null) {
                 //Always set calculateRate to true, because when user switches view from 'show me' drop down, values get reset.
                 angular.forEach(selectedYears.autoCompleteOptions, function (eachObject) {
-                    eachObject.calculateRate = true;
+                    eachObject.disabled = false;
                 });
                 //Check if user selected year's 2000, 2001, 2002 and remove these years from selected year's list
                 //And disable these years in side filters
@@ -352,7 +352,7 @@
                     //Disable 2000, 2001, 2002 in side filters
                     angular.forEach(selectedYears.autoCompleteOptions, function (eachObject) {
                         if (sc.filters.selectedPrimaryFilter.birthRatesDisabledYears.indexOf(eachObject.key) !== -1) {
-                            eachObject.calculateRate = false;
+                            eachObject.disabled = true;
                         }
                     });
                 }
