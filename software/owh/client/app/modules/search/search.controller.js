@@ -112,7 +112,7 @@
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
             'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
-            'birth_rates': ['current_year', 'sex', 'race']
+            'birth_rates': ['current_year', 'race']
         };
 
         //functionality to be added to the side filters
@@ -333,6 +333,40 @@
             });
             //we can change mapping here
             sc.filters.selectedPrimaryFilter.tableView = selectedFilter.key;
+            var selectedYears = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters,'key', 'current_year');
+            if(selectedYears != null) {
+                //Always set calculateRate to true, because when user switches view from 'show me' drop down, values get reset.
+                angular.forEach(selectedYears.autoCompleteOptions, function (eachObject) {
+                    eachObject.disabled = false;
+                });
+                //Check if user selected year's 2000, 2001, 2002 and remove these years from selected year's list
+                //And disable these years in side filters
+                if (sc.filters.selectedPrimaryFilter.tableView == 'birth_rates') {
+                    //Remove years 2000, 2001, 2002 from selected lists
+                    angular.forEach(sc.filters.selectedPrimaryFilter.birthRatesDisabledYears, function (year) {
+                        var index = selectedYears.value.indexOf(year);
+                        if (index >= 0) {
+                            selectedYears.value.splice(index, 1);
+                        }
+                    });
+                    //Disable 2000, 2001, 2002 in side filters
+                    angular.forEach(selectedYears.autoCompleteOptions, function (eachObject) {
+                        if (sc.filters.selectedPrimaryFilter.birthRatesDisabledYears.indexOf(eachObject.key) !== -1) {
+                            eachObject.disabled = true;
+                        }
+                    });
+                }
+                /**
+                 * When user switch back from birth_rates to number_of_births view,
+                 * we need to enable Sex filter with group by 'column'
+                 * Why only 'sex' ? because for 'number_of_births' view we have enabled group by for year, race, sex
+                 * when user switch to 'brith_rates' we are disabling 'sex' filter(not year, race), so we need enable sex filter group when
+                 * user switch to 'number_of_births' view.
+                 */
+                if(sc.filters.selectedPrimaryFilter.tableView == 'number_of_births') {
+                   searchFactory.setFilterGroupBy(sc.filters.selectedPrimaryFilter.allFilters, 'sex', 'column');
+                }
+            }
             sc.search(true);
             sc.tableView = selectedFilter.key;
         }

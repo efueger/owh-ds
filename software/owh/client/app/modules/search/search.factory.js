@@ -29,7 +29,8 @@
             prepareQuestionChart: prepareQuestionChart,
             populateSideFilterTotals: populateSideFilterTotals,
             updateFiltersAndData: updateFiltersAndData,
-            getMixedTable: getMixedTable
+            getMixedTable: getMixedTable,
+            setFilterGroupBy: setFilterGroupBy
         };
         return service;
 
@@ -1611,10 +1612,11 @@
                     allFilters: filters.natalityFilters, searchResults: searchNatality, dontShowInlineCharting: true,
                     chartAxisLabel:'Population', countLabel: 'Total',  countQueryKey: 'pop', tableView:'number_of_births',
                     runOnFilterChange: true,
+                    birthRatesDisabledYears: ['2000', '2001', '2002'],
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.groupOptions,
-                            refreshFiltersOnChange: true, filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'current_year'),
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'current_year'),
                             category: "Birth Characteristics"
                         },
                         {
@@ -1799,6 +1801,18 @@
                 });
             });
         }
+
+        /**
+         * To set filter groupBy to given filter value
+         * @param allFilters
+         * @param filterValue
+         * @param filterGroupType
+         */
+        function setFilterGroupBy(allFilters, filterValue, filterGroupType){
+            var filter = utilService.findByKeyAndValue(allFilters,'key', filterValue);
+            filter.groupBy = filterGroupType;
+        }
+
     }
 
 }());

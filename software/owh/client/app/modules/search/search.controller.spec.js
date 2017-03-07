@@ -288,8 +288,31 @@ describe("Search controller: ", function () {
         expect(searchController.filters.selectedPrimaryFilter.allFilters[0].autoCompleteOptions[1].key).toEqual('Dominican');
     });
 
+    it('changeViewFilter should disable 2000, 2001, 2002 years for birth_rates', function() {
+        var searchController= $controller('SearchController',{$scope:$scope});
+        spyOn(searchController, 'search');
+        var filterUtils = $injector.get('filterUtils');
+        var utilService = $injector.get('utilService');
+        var yearFilters = utilService.findByKeyAndValue(filterUtils.getNatalityDataFilters(), 'key', 'current_year')
+
+        searchController.filters = {selectedPrimaryFilter: {birthRatesDisabledYears: ['2000', '2001', '2002'], tableView:'birth_rates', data: {}, allFilters: [yearFilters], sideFilters: []}};
+        searchController.changeViewFilter({key: 'birth_rates'});
+
+        var selectedYears = utilService.findByKeyAndValue(searchController.filters.selectedPrimaryFilter.allFilters,'key', 'current_year');
+
+        angular.forEach(selectedYears.autoCompleteOptions, function(eachObject){
+            if(eachObject.key == '2000' || eachObject.key == '2001' || eachObject.key == '2002') {
+                expect(eachObject.disabled).toEqual(true);
+            }
+            else {
+                expect(eachObject.disabled).toEqual(false);
+            }
+        });
+    });
+
     it('filterUtilities for yrbs should perform proper functions', function() {
         var searchController= $controller('SearchController',{$scope:$scope});
+
 
         searchController.filterUtilities['mental_health'][0].options[0].onChange(true);
 

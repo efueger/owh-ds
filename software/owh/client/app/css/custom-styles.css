@@ -970,4 +970,8 @@ ul.custom-nav-tabs {
 	margin-left: 10px;
 }
 
+.disable-click {
+	cursor: not-allowed;
+}
+
 /*Custom tab css*/
