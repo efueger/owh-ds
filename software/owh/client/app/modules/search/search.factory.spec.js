@@ -631,6 +631,15 @@ describe('search factory ', function(){
             var result = searchFactory.updateFiltersAndData([primaryFilter], response, {'natality': {}}, 'natality');
             expect(JSON.stringify(result.primaryFilter.data)).toEqual(JSON.stringify(response.data.resultData.nested.table));
         });
+
+        it('set filter group type', function(){
+            var allFilters = angular.copy(filters.search[3].allFilters);
+            //set sex groupBy off
+            var sexFilter = utils.findByKeyAndValue(allFilters, 'key', 'sex');
+            sexFilter.groupBy = false;
+            searchFactory.setFilterGroupBy(allFilters, 'sex', 'column');
+            expect(sexFilter.groupBy).toEqual('column');
+        });
     });
     
 });

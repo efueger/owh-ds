@@ -356,6 +356,16 @@
                         }
                     });
                 }
+                /**
+                 * When user switch back from birth_rates to number_of_births view,
+                 * we need to enable Sex filter with group by 'column'
+                 * Why only 'sex' ? because for 'number_of_births' view we have enabled group by for year, race, sex
+                 * when user switch to 'brith_rates' we are disabling 'sex' filter(not year, race), so we need enable sex filter group when
+                 * user switch to 'number_of_births' view.
+                 */
+                if(sc.filters.selectedPrimaryFilter.tableView == 'number_of_births') {
+                   searchFactory.setFilterGroupBy(sc.filters.selectedPrimaryFilter.allFilters, 'sex', 'column');
+                }
             }
             sc.search(true);
             sc.tableView = selectedFilter.key;

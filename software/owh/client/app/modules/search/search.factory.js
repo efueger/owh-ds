@@ -29,7 +29,8 @@
             prepareQuestionChart: prepareQuestionChart,
             populateSideFilterTotals: populateSideFilterTotals,
             updateFiltersAndData: updateFiltersAndData,
-            getMixedTable: getMixedTable
+            getMixedTable: getMixedTable,
+            setFilterGroupBy: setFilterGroupBy
         };
         return service;
 
@@ -1789,6 +1790,18 @@
                 });
             });
         }
+
+        /**
+         * To set filter groupBy to given filter value
+         * @param allFilters
+         * @param filterValue
+         * @param filterGroupType
+         */
+        function setFilterGroupBy(allFilters, filterValue, filterGroupType){
+            var filter = utilService.findByKeyAndValue(allFilters,'key', filterValue);
+            filter.groupBy = filterGroupType;
+        }
+
     }
 
 }());
