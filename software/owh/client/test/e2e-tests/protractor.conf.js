@@ -6,7 +6,7 @@ exports.config = {
   frameworkPath: require.resolve('protractor-cucumber-framework'),
 
   specs: [
-    'features/natality.feature'
+    'features/*.feature'
   ],
 
   cucumberOpts: {
