@@ -4,6 +4,7 @@ var config = require('../config/config');
 var request = require('request');
 
 var cahcedQuestions = null;
+var cachedPramsQuestions = null;
 function yrbs() {
 }
 
@@ -246,6 +247,26 @@ yrbs.prototype.getQuestionsTreeByYears = function (yearList) {
             var data = prepareQuestionTreeForYears(response, yearList);
             cahcedQuestions = {questionTree: data.questionTree, questionsList: data.questionsList}
             deferred.resolve(cahcedQuestions);
+        });
+    }
+    return deferred.promise;
+};
+
+/**
+ * Get questions for PRAMS
+ * @returns {*\promise}
+ */
+yrbs.prototype.getPramsQuestionsTree = function () {
+    var deferred = Q.defer();
+    if(cachedPramsQuestions) {
+        logger.info("Returning cached PRAMS questions");
+        deferred.resolve(cachedPramsQuestions);
+    } else {
+        invokeYRBS(config.yrbs.questionsUrl + '?d=prams').then(function(response) {
+            logger.info("Getting PRAMS questions from YRBS service");
+            var data = prepareQuestionTreeForYears(response);
+            cachedPramsQuestions = {questionTree: data.questionTree, questionsList: data.questionsList};
+            deferred.resolve(cachedPramsQuestions);
         });
     }
     return deferred.promise;
