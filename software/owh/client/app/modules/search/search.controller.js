@@ -52,11 +52,16 @@
         }
 
         sc.selectedMapSize = 'small';
-        sc.showMeOptions = [
-            {key: 'number_of_deaths', title: 'Number of Deaths'},
-            {key: 'crude_death_rates', title: 'Crude Death Rates'},
-            {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}
-        ];
+        sc.showMeOptions = {
+            deaths: [
+                {key: 'number_of_deaths', title: 'Number of Deaths'},
+                {key: 'crude_death_rates', title: 'Crude Death Rates'},
+                {key: 'age-adjusted_death_rates', title: 'Age Adjusted Death Rates'}],
+            natality: [
+                {key: 'number_of_births', title: 'Number of Births'},
+                {key: 'birth_rates', title: 'Birth Rates'},
+                {key: 'fertility_rates', title: 'Fertility Rates'}]
+        };
         sc.sort = {
             "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
             "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'yrbsState', 'question'],
@@ -94,15 +99,20 @@
                 "race": ['American Indian', 'Asian or Pacific Islander', 'Black', 'White', 'Other (Puerto Rico only)'],
                 "year": ['2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000']
             },
+            number_of_births: {},
+            birth_rates: {},
+            fertility_rates: {},
             bridge_race:{},
             mental_health:{},
             natality:{},
             prams:{}
         };
         //show certain filters for different table views
+        //add availablefilter for birth_rates
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
-            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin']
+            'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
+            'birth_rates': ['current_year', 'race']
         };
 
         //functionality to be added to the side filters
@@ -152,7 +162,7 @@
             ]
         };
         sc.queryID = $stateParams.queryID;
-        sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions[0].key;
+        sc.tableView = $stateParams.tableView ? $stateParams.tableView : sc.showMeOptions.deaths[0].key;
         //this flags whether to cache the incoming filter query
         sc.cacheQuery = $stateParams.cacheQuery;
 
@@ -321,7 +331,42 @@
                     }
                 }
             });
+            //we can change mapping here
             sc.filters.selectedPrimaryFilter.tableView = selectedFilter.key;
+            var selectedYears = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters,'key', 'current_year');
+            if(selectedYears != null) {
+                //Always set calculateRate to true, because when user switches view from 'show me' drop down, values get reset.
+                angular.forEach(selectedYears.autoCompleteOptions, function (eachObject) {
+                    eachObject.disabled = false;
+                });
+                //Check if user selected year's 2000, 2001, 2002 and remove these years from selected year's list
+                //And disable these years in side filters
+                if (sc.filters.selectedPrimaryFilter.tableView == 'birth_rates') {
+                    //Remove years 2000, 2001, 2002 from selected lists
+                    angular.forEach(sc.filters.selectedPrimaryFilter.birthRatesDisabledYears, function (year) {
+                        var index = selectedYears.value.indexOf(year);
+                        if (index >= 0) {
+                            selectedYears.value.splice(index, 1);
+                        }
+                    });
+                    //Disable 2000, 2001, 2002 in side filters
+                    angular.forEach(selectedYears.autoCompleteOptions, function (eachObject) {
+                        if (sc.filters.selectedPrimaryFilter.birthRatesDisabledYears.indexOf(eachObject.key) !== -1) {
+                            eachObject.disabled = true;
+                        }
+                    });
+                }
+                /**
+                 * When user switch back from birth_rates to number_of_births view,
+                 * we need to enable Sex filter with group by 'column'
+                 * Why only 'sex' ? because for 'number_of_births' view we have enabled group by for year, race, sex
+                 * when user switch to 'brith_rates' we are disabling 'sex' filter(not year, race), so we need enable sex filter group when
+                 * user switch to 'number_of_births' view.
+                 */
+                if(sc.filters.selectedPrimaryFilter.tableView == 'number_of_births') {
+                   searchFactory.setFilterGroupBy(sc.filters.selectedPrimaryFilter.allFilters, 'sex', 'column');
+                }
+            }
             sc.search(true);
             sc.tableView = selectedFilter.key;
         }

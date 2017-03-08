@@ -176,7 +176,7 @@
             var bridgeDataFilters = [
                 {key: 'current_year', title: 'label.filter.yearly.estimate', queryKey:"current_year",
                     primary: false, value: ['2015'], defaultGroup:'row', groupBy: false, filterType: 'checkbox',
-                    autoCompleteOptions: angular.copy(censusYearsOptions), helpText:"label.help.text.bridged-race.year" },
+                    autoCompleteOptions: angular.copy(censusYearsOptions), refreshFiltersOnChange: true, helpText:"label.help.text.bridged-race.year" },
                 {key: 'sex', title: 'label.filter.gender', queryKey:"sex", primary: false, value: [],
                     defaultGroup:'column', groupBy: 'column', filterType: 'checkbox',
                     autoCompleteOptions: angular.copy(censusGenderOptions), helpText:"label.help.text.bridged-race.gender"},
@@ -203,22 +203,23 @@
         function getNatalityDataFilters() {
             //filter options
             var yearOptions = [
-                { "key": "2014", "title": "2014" },
-                { "key": "2013", "title": "2013" },
-                { "key": "2012", "title": "2012" },
-                { "key": "2011", "title": "2011" },
-                { "key": "2010", "title": "2010" },
-                { "key": "2009", "title": "2009" },
-                { "key": "2008", "title": "2008" },
-                { "key": "2007", "title": "2007" },
-                { "key": "2006", "title": "2006" },
-                { "key": "2005", "title": "2005" },
-                { "key": "2004", "title": "2004" },
-                { "key": "2003", "title": "2003" },
-                { "key": "2002", "title": "2002" },
-                { "key": "2001", "title": "2001" },
-                { "key": "2000", "title": "2000" }
+                { "key": "2014", "title": "2014"},
+                { "key": "2013", "title": "2013"},
+                { "key": "2012", "title": "2012"},
+                { "key": "2011", "title": "2011"},
+                { "key": "2010", "title": "2010"},
+                { "key": "2009", "title": "2009"},
+                { "key": "2008", "title": "2008"},
+                { "key": "2007", "title": "2007"},
+                { "key": "2006", "title": "2006"},
+                { "key": "2005", "title": "2005"},
+                { "key": "2004", "title": "2004"},
+                { "key": "2003", "title": "2003"},
+                { "key": "2002", "title": "2002"},
+                { "key": "2001", "title": "2001"},
+                { "key": "2000", "title": "2000"}
             ];
+
 
             var monthOptions = [
                 { "key": "January", "title": "January" },
@@ -267,7 +268,7 @@
             ];
 
             var raceOptions =  [
-                { "key": "American Indian or Alaska Native", "title": "American Indian" },
+                { "key": "American Indian or Alaska Native", "title": "American Indian or Alaska Native" },
                 { "key": "Asian or Pacific Islander", "title": "Asian or Pacific Islander" },
                 { "key": "Black", "title": "Black or African American" },
                 { "key": "White", "title": "White" }
@@ -278,10 +279,10 @@
                 { "key": "Puerto Rican", "title": "Puerto Rican" },
                 { "key": "Cuban", "title": "Cuban" },
                 { "key": "Central and South American", "title": "Central and South American" },
-                { "key": "Other and Unknown Hispanic Origin", "title": "Other and Unknown Hispanic Origin" },
+                { "key": "Other and Unknown Hispanic", "title": "Other and Unknown Hispanic" },
                 { "key": "Non-Hispanic White", "title": "Non-Hispanic White" },
                 { "key": "Non-Hispanic Black", "title": "Non-Hispanic Black" },
-                { "key": "Non-Hispanic other races", "title": "Non-Hispanic other races" },
+                { "key": "Non-Hispanic Other Races", "title": "Non-Hispanic Other Races" },
                 { "key": "Origin unknown or not stated", "title": "Origin unknown or not stated" }
             ];
 
@@ -323,7 +324,7 @@
                 { "key": "47 years", "title": "47 years" },
                 { "key": "48 years", "title": "48 years" },
                 { "key": "49 years", "title": "49 years" },
-                { "key": "50-54 years", "title": "50-54 years"}
+                { "key": "50-54 years", "title": "50 years and over"}
             ];
 
             var ageR8Options =  [
@@ -335,7 +336,7 @@
                 { "key": "35-39 years", "title": "35-39 years" },
                 { "key": "40-44 year", "title": "40-44 year" },
                 { "key": "45-49 years", "title": "45-49 years" },
-                { "key": "50-54 years", "title": "50-54 years" }
+                { "key": "50-54 years", "title": "50 years and over" }
             ];
             var ageR9Options =  [
                 { "key": "Under 15 years", "title": "Under 15 years" },
@@ -346,7 +347,7 @@
                 { "key": "35-39 years", "title": "35-39 years" },
                 { "key": "40-44 year", "title": "40-44 year" },
                 { "key": "45-49 years", "title": "45-49 years" },
-                { "key": "50-54 years", "title": "50-54 years" }
+                { "key": "50-54 years", "title": "50 years and over" }
             ];
 
             var ageR14ptions =  [
@@ -362,7 +363,7 @@
                 { "key": "35-39 years", "title": "35-39 years" },
                 { "key": "40-44 years", "title": "40-44 years" },
                 { "key": "45-49 years", "title": "45-49 years" },
-                { "key": "50-54 years", "title": "50-54 years" }
+                { "key": "50-54 years", "title": "50 years and over" }
             ];
 
             var gestationalAgeAtBirth =  [
@@ -370,7 +371,7 @@
                 { "key": "20 - 27 weeks", "title": "20 - 27 weeks" },
                 { "key": "28 - 31 weeks", "title": "28 - 31 weeks" },
                 { "key": "32 - 35 weeks", "title": "32 - 35 weeks" },
-                { "key": "36 weeks", "title": "30-34 years" },
+                { "key": "36 weeks", "title": "36 weeks" },
                 { "key": "37 - 39 weeks", "title": "37 - 39 weeks" },
                 { "key": "40 weeks", "title": "40 weeks" },
                 { "key": "41 weeks", "title": "41 weeks" },
@@ -504,8 +505,8 @@
 
             var birthWeightR4Options = [
                 {key:'1499 grams or less', title:'1499 grams or less'},
-                {key:'1500 – 2499 grams', title:'1500 – 2499 grams'},
-                {key:'2500 grams or more', title:'2500 grams or more'},
+                {key:'1500 - 2499 grams', title:'1500 - 2499 grams'},
+                {key:'2500 - 8165 grams', title:'2500 grams or more'},
                 {key:'Unknown or not stated', title:'Unknown or not stated'}
             ];
             var birthPluralityOptions = [
@@ -617,8 +618,9 @@
             var tobaccoOptions = [
                 {key:'Yes', title:'Yes'},
                 {key:'No', title:'No'},
+                {key:'Not on certificate', title:'Not on certificate'},
                 {key:'Unknown', title:'Unknown'},
-                {key:'Not on certificate', title:'Not on certificate'}
+                {key:'Unknown or not stated', title:'Unknown or not stated'}
             ];
 
             //prepare filter definitions
@@ -638,7 +640,7 @@
                     defaultGroup:'column', groupBy: false, filterType: "checkbox",
                     autoCompleteOptions: angular.copy(ageR8Options), helpText:"label.help.text.mother.age"},
 
-                {key: 'mother_age_r14', title: 'label.chart.mother_age.r12', queryKey:"mother_age_r14", primary: false, value: [],
+                {key: 'mother_age_r14', title: 'label.chart.mother_age.r14', queryKey:"mother_age_r14", primary: false, value: [],
                     defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(ageR14ptions)},
 
                 {key: 'race', title: 'label.filter.race', queryKey:"race", primary: false, value: [],

@@ -341,7 +341,7 @@ h4.section-banner-title {
 	background-image: url(../images/custom/family-related.jpg);
 }
 .health-related-section-banner:after, .youth-related-section-banner:after, .housing-related-section-banner:after, .family-related-section-banner:after {
-	background: #0071bc;
+	background: #5c2d83;
 }
 .women-health-mortality-section-banner {
 	background-image: url(../images/custom/smoking.jpg);
@@ -481,7 +481,7 @@ h4.section-banner-title {
 .usa-width-one-sixth.sp-icon-div {
 	margin-right: 20px;
 	width: auto;
-	padding-right: 30px;
+	padding-right: 25px;
 	border-color: rgba(255,255,255,0.3);
 }
 .sp-icon-div img {
@@ -968,6 +968,10 @@ ul.custom-nav-tabs {
 }
 .yrbs_search_links {
 	margin-left: 10px;
+}
+
+.disable-click {
+	cursor: not-allowed;
 }
 
 /*Custom tab css*/

@@ -48,8 +48,12 @@
         url: '/yrbsQuestionsTree/:years'
       },
       'getPRAMSQuestionsTree': {
-        method: 'GET',
-        url: '/pramsQuestionsTree'
+          method: 'GET',
+          url: '/pramsQuestionsTree'
+      },
+      'getDsMetadata' : {
+        method : 'GET',
+        url: '/dsmetadata/:dataset'
       }
     }
   }

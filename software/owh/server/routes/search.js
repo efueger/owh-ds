@@ -6,6 +6,7 @@ var yrbs = require("../api/yrbs");
 var searchUtils = require('../api/utils');
 var logger = require('../config/logging')
 var qc = require('../api/queryCache');
+var dsmetadata = require('../api/dsmetadata');
 var Q = require('q');
 
 var queryCache = new qc();
@@ -55,6 +56,16 @@ var searchRouter = function(app, rConfig) {
     app.get('/pramsQuestionsTree', function (req, res) {
         new yrbs().getPramsQuestionsTree().then(function(response) {
             res.send(new result('OK', response, "success"));
+        });
+    });
+
+    app.get('/dsmetadata/:dataset', function(req, res) {
+        var dataset = req.params.dataset
+        var years = req.query.years?req.query.years.split(','):[];
+        new dsmetadata().getDsMetadata(dataset, years).then( function (resp) {
+            res.send( new result('OK', resp, "success") );
+        }, function (err) {
+            res.send(new result('Error retrieving dataset metadata', err, "failed"));
         });
     });
 };
@@ -121,8 +132,8 @@ function search(q) {
         finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
 
         var sideFilterQuery = queryBuilder.buildSearchQuery(queryBuilder.addCountsToAutoCompleteOptions(q), true);
-        new elasticSearch().aggregateNatalityData(sideFilterQuery[0]).then(function (sideFilterResults) {
-            new elasticSearch().aggregateNatalityData(finalQuery[0]).then(function (response) {
+        new elasticSearch().aggregateNatalityData(sideFilterQuery).then(function (sideFilterResults) {
+            new elasticSearch().aggregateNatalityData(finalQuery).then(function (response) {
                 var resData = {};
                 resData.queryJSON = q;
                 resData.resultData = response.data;

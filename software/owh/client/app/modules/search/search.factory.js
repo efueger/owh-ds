@@ -29,7 +29,8 @@
             prepareQuestionChart: prepareQuestionChart,
             populateSideFilterTotals: populateSideFilterTotals,
             updateFiltersAndData: updateFiltersAndData,
-            getMixedTable: getMixedTable
+            getMixedTable: getMixedTable,
+            setFilterGroupBy: setFilterGroupBy
         };
         return service;
 
@@ -44,20 +45,6 @@
             //sets tableView
             var tableView = response.data.queryJSON.tableView;
 
-            //populate side filters based on cached query filters
-            if (response.data.queryJSON) {
-                angular.forEach(response.data.queryJSON.sideFilters, function (filter, index) {
-                    primaryFilter.sideFilters[index].filters.value = filter.filters.value;
-                    primaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
-                    if(filter.filters.selectedNodes != undefined ) {
-                        primaryFilter.sideFilters[index].filters.selectedNodes = filter.filters.selectedNodes;
-                    }
-                    //To un-select selected nodes when user go back from current page
-                    else if(primaryFilter.sideFilters[index].filters.selectedNodes != undefined) {
-                        primaryFilter.sideFilters[index].filters.selectedNodes.length = 0;
-                    }
-                });
-            }
             updateFilterValues(primaryFilter);
             //update table headers based on cached query
             primaryFilter.headers = buildAPIQuery(primaryFilter).headers;
@@ -67,6 +54,9 @@
                 primaryFilter.data = response.data.resultData.nested.table;
                 primaryFilter.searchCount = response.pagination.total;
                 tableData = getMixedTable(primaryFilter, groupOptions, tableView);
+                if(response.data.queryJSON) {
+                    populateSelectedFilters(primaryFilter, response.data.queryJSON.sideFilters);
+                }
                 populateSideFilterTotals(primaryFilter, response.data);
                 prepareMortalityResults(primaryFilter, response.data);
                 primaryFilter.chartData = prepareChartData(primaryFilter.headers, response.data.resultData.nested, primaryFilter);
@@ -80,10 +70,10 @@
                 primaryFilter.showBasicSearchSideMenu = response.data.queryJSON.showBasicSearchSideMenu;
                 primaryFilter.runOnFilterChange = response.data.queryJSON.runOnFilterChange;
                 if(primaryFilter.showBasicSearchSideMenu) {
-                    primaryFilter.sideFilters = response.data.queryJSON.basicSideFilters;
+                    populateSelectedFilters(primaryFilter, response.data.queryJSON.basicSideFilters);
                 }
                 else {
-                    primaryFilter.sideFilters = response.data.queryJSON.advancedSideFilters;
+                    populateSelectedFilters(primaryFilter, response.data.queryJSON.advancedSideFilters);
                 }
 
                 angular.forEach(response.data.queryJSON.sideFilters, function (filter, index) {
@@ -94,6 +84,9 @@
             if (primaryFilter.key === 'bridge_race') {
                 primaryFilter.data = response.data.resultData.nested.table;
                 tableData = getMixedTable(primaryFilter, groupOptions, tableView);
+                if(response.data.queryJSON) {
+                    populateSelectedFilters(primaryFilter, response.data.queryJSON.sideFilters);
+                }
                 populateSideFilterTotals(primaryFilter, response.data);
                 primaryFilter.headers = tableData.headers;
                 primaryFilter.data = tableData.data;
@@ -103,6 +96,9 @@
             }
             else if (response.data.queryJSON.key == 'natality') {
                 primaryFilter.data = response.data.resultData.nested.table;
+                if(response.data.queryJSON) {
+                    populateSelectedFilters(primaryFilter, response.data.queryJSON.sideFilters);
+                }
                 populateSideFilterTotals(primaryFilter, response.data);
                 primaryFilter.chartData = prepareChartData(primaryFilter.headers, response.data.resultData.nested, primaryFilter);
                 tableData = getMixedTable(primaryFilter, groupOptions, tableView);
@@ -119,6 +115,21 @@
                 tableView: tableView,
                 primaryFilter: primaryFilter
             };
+        }
+
+        function populateSelectedFilters(primaryFilter, updatedSideFilters) {
+            //populate side filters based on cached query filters
+            angular.forEach(updatedSideFilters, function (filter, index) {
+                primaryFilter.sideFilters[index].filters.value = filter.filters.value;
+                primaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
+                if(filter.filters.selectedNodes != undefined ) {
+                    primaryFilter.sideFilters[index].filters.selectedNodes = filter.filters.selectedNodes;
+                }
+                //To un-select selected nodes when user go back from current page
+                else if(primaryFilter.sideFilters[index].filters.selectedNodes != undefined) {
+                    primaryFilter.sideFilters[index].filters.selectedNodes.length = 0;
+                }
+            });
         }
 
         /*
@@ -591,6 +602,7 @@
         }
 
         function generateHashCode(primaryFilter) {
+            console.log('primaryFilter', primaryFilter);
             var deferred = $q.defer();
             var hashQuery = buildHashcodeQuery(primaryFilter);
             SearchService.generateHashCode(hashQuery).then(function(response) {
@@ -1554,7 +1566,7 @@
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
-                            filters: utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'year')
+                            refreshFiltersOnChange: true, filters: utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'year')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true,
@@ -1665,7 +1677,7 @@
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
-                            filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'current_year')
+                            refreshFiltersOnChange: true, filters: utilService.findByKeyAndValue(filters.censusFilters, 'key', 'current_year')
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
@@ -1692,8 +1704,9 @@
                 {
                     key: 'natality', title: 'label.filter.natality', primary: true, value:[], header:"Natality",
                     allFilters: filters.natalityFilters, searchResults: searchNatality, dontShowInlineCharting: true,
-                    chartAxisLabel:'Population', countLabel: 'Total', tableView:'natality',
+                    chartAxisLabel:'Population', countLabel: 'Total',  countQueryKey: 'pop', tableView:'number_of_births',
                     runOnFilterChange: true,
+                    birthRatesDisabledYears: ['2000', '2001', '2002'],
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.groupOptions,
@@ -1907,6 +1920,18 @@
                 });
             });
         }
+
+        /**
+         * To set filter groupBy to given filter value
+         * @param allFilters
+         * @param filterValue
+         * @param filterGroupType
+         */
+        function setFilterGroupBy(allFilters, filterValue, filterGroupType){
+            var filter = utilService.findByKeyAndValue(allFilters,'key', filterValue);
+            filter.groupBy = filterGroupType;
+        }
+
     }
 
 }());
