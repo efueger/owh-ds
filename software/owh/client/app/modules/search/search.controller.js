@@ -66,7 +66,8 @@
                 'delivery_method', 'medical_attendant', 'race', 'hispanic_origin', 'marital_status',
                 'mother_age_r8', 'mother_age_r9', 'mother_age_r14', 'mother_age', 'mother_education',
                 'anemia', 'cardiac_disease', 'chronic_hypertension', 'diabetes', 'eclampsia', 'hydramnios_oligohydramnios',
-                'incompetent_cervix', 'lung_disease', 'pregnancy_hypertension', 'tobacco_use']
+                'incompetent_cervix', 'lung_disease', 'pregnancy_hypertension', 'tobacco_use'],
+            "label.prams.title": []
         };
 
         sc.optionsGroup = {
@@ -95,7 +96,8 @@
             },
             bridge_race:{},
             mental_health:{},
-            natality:{}
+            natality:{},
+            prams:{}
         };
         //show certain filters for different table views
         sc.availableFilters = {

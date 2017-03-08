@@ -291,6 +291,14 @@
             return deferred.promise;
         }
 
+        function searchPRAMSResults( primaryFilter, queryID ) {
+            var deferred = $q.defer();
+            queryYRBSAPI(primaryFilter, queryID ).then(function(response){
+                deferred.resolve(response);
+            });
+            return deferred.promise;
+        }
+
         //Query YRBS API
         function queryYRBSAPI( primaryFilter, queryID ) {
             var deferred = $q.defer();
@@ -1456,8 +1464,63 @@
 
             ];
 
-            filters.pramsYearOptions = [
+            filters.pramsStateOptions =  [
+                { "key": "AL", "title": "Alabama" },
+                { "key": "AK", "title": "Alaska" },
+                { "key": "AZB", "title": "Arizona" },
+                { "key": "AR", "title": "Arkansas" },
+                { "key": "CA", "title": "California" },
+                { "key": "CO", "title": "Colorado" },
+                { "key": "CT", "title": "Connecticut" },
+                { "key": "DE", "title": "Delaware" },
+                //{ "key": "", "title": "District of Columbia" },
+                { "key": "FL", "title": "Florida" },
+                { "key": "GA", "title": "Georgia" },
+                { "key": "HI", "title": "Hawaii" },
+                { "key": "ID", "title": "Idaho" },
+                { "key": "IL", "title": "Illinois" },
+                { "key": "IN", "title": "Indiana"},
+                { "key": "IA", "title": "Iowa" },
+                { "key": "KS", "title": "Kansas" },
+                { "key": "KY", "title": "Kentucky" },
+                { "key": "LA", "title": "Louisiana" },
+                { "key": "ME", "title": "Maine" },
+                { "key": "MD", "title": "Maryland" },
+                { "key": "MA", "title": "Massachusetts" },
+                { "key": "MI", "title": "Michigan" },
+                { "key": "MS", "title": "Mississippi" },
+                { "key": "MO", "title": "Missouri" },
+                { "key": "MT", "title": "Montana" },
+                { "key": "NE", "title": "Nebraska" },
+                { "key": "NV", "title": "Nevada" },
+                { "key": "NH", "title": "New Hampshire" },
+                { "key": "NJ", "title": "New Jersey" },
+                { "key": "NM", "title": "New Mexico" },
+                { "key": "NY", "title": "New York" },
+                { "key": "NC", "title": "North Carolina" },
+                { "key": "ND", "title": "North Dakota" },
+                { "key": "OH", "title": "Ohio" },
+                { "key": "OK", "title": "Oklahoma" },
+                { "key": "PA", "title": "Pennsylvania" },
+                { "key": "RI", "title": "Rhode Island" },
+                { "key": "SC", "title": "South Carolina" },
+                { "key": "SD", "title": "South Dakota" },
+                { "key": "TN", "title": "Tennessee" },
+                { "key": "TX", "title": "Texas" },
+                { "key": "UT", "title": "Utah" },
+                { "key": "VT", "title": "Vermont" },
+                { "key": "VA", "title": "Virginia" },
+                { "key": "WV", "title": "West Virginia" },
+                { "key": "WI", "title": "Wisconsin" },
+                { "key": "WY", "title": "Wyoming" }
+            ];
 
+            filters.pramsYearOptions = [
+                { "key": "2011", "title": "2011" },
+                { "key": "2009", "title": "2009" },
+                { "key": "2007", "title": "2007" },
+                { "key": "2005", "title": "2005" },
+                { "key": "2003", "title": "2003" }
             ];
 
             filters.pramsBreakoutOptions = [
@@ -1467,10 +1530,19 @@
             filters.pramsFilters = [
                 {key: 'topic', title: 'label.prams.filter.topic', queryKey:"topic",primary: false, value: [], groupBy: false,
                     filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.pramsTopicOptions), doNotShowAll: true},
-                {key: 'year', title: 'label.prams.filter.year', queryKey:"year",primary: false, value: [], groupBy: false,
+                {key: 'year', title: 'label.prams.filter.year', queryKey:"year",primary: false, value: ['2011'], groupBy: false,
                     filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.pramsYearOptions), doNotShowAll: true},
                 {key: 'breakout', title: 'label.prams.filter.breakout', queryKey:"breakout",primary: false, value: [], groupBy: false,
-                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.pramsBreakoutOptions), doNotShowAll: true}
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.pramsBreakoutOptions), doNotShowAll: true},
+                {key: 'state', title: 'label.prams.filter.state', queryKey:"state",primary: false, value: [], groupBy: 'column',
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.pramsStateOptions), doNotShowAll: true},
+                { key: 'question', title: 'label.prams.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
+                    filterType: 'tree', autoCompleteOptions: $rootScope.pramsQuestionsList, donotshowOnSearch:true,
+                    selectTitle: 'select.label.yrbs.filter.question', updateTitle: 'update.label.yrbs.filter.question',  iconClass: 'fa fa-pie-chart purple-text',
+                    onIconClick: function(question) {
+                        showChartForQuestion(filters.selectedPrimaryFilter, question);
+                    }
+                }
             ];
 
             filters.search = [
@@ -1790,7 +1862,25 @@
                     searchResults: searchPRAMSResults, dontShowInlineCharting: true,
                     additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total', tableView:'prams',
                     chartAxisLabel:'Percentage',
-                    showBasicSearchSideMenu: true, runOnFilterChange: true, allFilters: filters.pramsFilters // Default to basic filter
+                    showBasicSearchSideMenu: true, runOnFilterChange: true, allFilters: filters.pramsFilters, // Default to basic filter
+                    sideFilters:[
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.pramsFilters, 'key', 'topic')
+                        },
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.pramsFilters, 'key', 'year')
+                        },
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.pramsFilters, 'key', 'state')
+                        },
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: false,
+                            filters: utilService.findByKeyAndValue(filters.pramsFilters, 'key', 'question')
+                        }
+                    ]
                 }
             ];
 
