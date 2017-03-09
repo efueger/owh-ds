@@ -122,6 +122,9 @@
             angular.forEach(updatedSideFilters, function (filter, index) {
                 primaryFilter.sideFilters[index].filters.value = filter.filters.value;
                 primaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
+                if(primaryFilter.sideFilters[index].refreshFiltersOnChange){
+                     utilService.refreshFilterAndOptions(primaryFilter.sideFilters[index].filters, primaryFilter.sideFilters, primaryFilter.key);
+                }
                 if(filter.filters.selectedNodes != undefined ) {
                     primaryFilter.sideFilters[index].filters.selectedNodes = filter.filters.selectedNodes;
                 }
@@ -1617,7 +1620,8 @@
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.groupOptions,
                             filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'current_year'),
-                            category: "Birth Characteristics"
+                            category: "Birth Characteristics",
+                            refreshFiltersOnChange: true
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,

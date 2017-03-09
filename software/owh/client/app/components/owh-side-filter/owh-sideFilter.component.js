@@ -35,7 +35,6 @@
         sfc.isOptionDisabled = isOptionDisabled;
         sfc.isOptionSelected = isOptionSelected;
         sfc.getShowHideOptionCount = getShowHideOptionCount;
-        sfc.refreshFilterOptions = refreshFilterOptions;
         sfc.onFilterValueChange = onFilterValueChange;
 
         sfc.$onChanges = function(changes) {
@@ -244,7 +243,7 @@
         function onFilterValueChange(filter){
             // Update the filter options if refreshFiltersOnChange is true
             if (filter.refreshFiltersOnChange){
-                sfc.refreshFilterOptions(filter.filters);
+                utilService.refreshFilterAndOptions(filter.filters,sfc.sideFilters, sfc.primaryKey);
             }
             // Run the filter call back only if runOnFilterChange is true
             if(sfc.runOnFilterChange) {
@@ -252,38 +251,7 @@
             }
         }
 
-        function refreshFilterOptions(filter) {
-            var filterName = filter.queryKey;
-            var filterValue = filter.value;
-            SearchService.getDsMetadata(sfc.primaryKey, filterValue ? filterValue.join(',') : null).then(function (response) {
-                var newFilters = response.data;
-                var sideFilters = sfc.filters;
-                for (var f in sideFilters) {
-                    var fkey = sideFilters[f].filters.queryKey;
-                    if (fkey !== filterName) {
-                        if (fkey in newFilters) {
-                            sideFilters[f].disabled = false;
-                            if (newFilters[fkey]) {
-                                var fopts = sideFilters[f].filters.autoCompleteOptions;
-                                for (var opt in fopts) {
-                                    if (newFilters[fkey].indexOf(fopts[opt].key) >= 0) {
-                                        fopts[opt].disabled = false;
-                                    } else {
-                                        fopts[opt].disabled = true;
-                                    }
-                                }
-                            }
-                        } else {
-                            sideFilters[f].filters.value = [];
-                            sideFilters[f].filters.groupBy = false;
-                            sideFilters[f].disabled = true;
-                        }
-                    }
-                }
-            }, function (error) {
-                console.log(error);
-            });
-        }
+
 
         //called to determine order of side filters, looks at sort array passed in
         function getFilterOrder(filter) {
