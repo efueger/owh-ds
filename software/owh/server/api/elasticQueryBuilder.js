@@ -392,7 +392,6 @@ function buildAPIQuery(primaryFilter) {
     if(primaryFilter.searchFor) {
         apiQuery = primaryFilter;
     }
-    //var defaultHeaders = [];
 
     // For YRBS query capture the basisc/advanced search view
     if(primaryFilter.key === 'mental_health' && primaryFilter.showBasicSearchSideMenu) {
@@ -476,7 +475,6 @@ function buildFilterQuery(filter) {
 }
 
 function getFilterQuery(filter) {
-    var values = [];
     return {
         key: filter.key,
         queryKey: filter.queryKey,
@@ -525,6 +523,21 @@ function prepareChartAggregations(headers, countKey) {
         chartHeaders: chartHeaders,
         chartAggregations: chartAggregations
     }
+}
+
+function addMorthersAgeFilterToCensusRatesQuery(topLevelQuery) {
+
+    var query = topLevelQuery.query.filtered.filter;
+    var ageValues = ["15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "37", "38", "39", "40", "41", "42", "43", "44"];
+    var ageQuery = buildBoolQuery("age", ageValues, false);
+    var sexQuery = buildBoolQuery("sex", 'Female', false);
+    if(!isEmptyObject(ageQuery)) {
+        query.bool.must.push(ageQuery);
+    }
+    if(!isEmptyObject(sexQuery)) {
+        query.bool.must.push(sexQuery);
+    }
+    return topLevelQuery;
 }
 
 var chartMappings = {
@@ -794,5 +807,6 @@ module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;
 module.exports.buildAPIQuery = buildAPIQuery;
+module.exports.addMorthersAgeFilterToCensusRatesQuery = addMorthersAgeFilterToCensusRatesQuery;
 // module.exports.buildQueryForYRBS = buildQueryForYRBS;
 module.exports.addCountsToAutoCompleteOptions = addCountsToAutoCompleteOptions;
