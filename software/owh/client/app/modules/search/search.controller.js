@@ -63,7 +63,7 @@
                 {key: 'fertility_rates', title: 'Fertility Rates'}]
         };
         sc.sort = {
-            "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
+            "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'state', 'ucd-filters', 'mcd-filters'],
             "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'yrbsState', 'question'],
             "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'agegroup', 'race', 'ethnicity', 'state'],
             "label.filter.natality": ['current_year', 'month', 'weekday', 'sex', 'gestational_age_r10', 'prenatal_care',

@@ -1100,6 +1100,60 @@
                 {key:'U',title:'Marital Status unknown'}
             ];
 
+            filters.stateOptions =  [
+                { "key": "Alabama", "title": "Alabama" },
+                { "key": "Alaska", "title": "Alaska" },
+                { "key": "Arizona", "title": "Arizona" },
+                { "key": "Arkansas", "title": "Arkansas" },
+                { "key": "California", "title": "California" },
+                { "key": "Colorado", "title": "Colorado" },
+                { "key": "Connecticut", "title": "Connecticut" },
+                { "key": "Delaware", "title": "Delaware" },
+                { "key": "District of Columbia", "title": "District of Columbia" },
+                { "key": "Florida", "title": "Florida" },
+                { "key": "Georgia", "title": "Georgia" },
+                { "key": "Hawaii", "title": "Hawaii" },
+                { "key": "Idaho", "title": "Idaho" },
+                { "key": "Illinois", "title": "Illinois" },
+                { "key": "Indiana", "title": "Indiana"},
+                { "key": "Iowa", "title": "Iowa" },
+                { "key": "Kansas", "title": "Kansas" },
+                { "key": "Kentucky", "title": "Kentucky" },
+                { "key": "Louisiana", "title": "Louisiana" },
+                { "key": "Maine", "title": "Maine" },
+                { "key": "Maryland", "title": "Maryland" },
+                { "key": "Massachusetts", "title": "Massachusetts" },
+                { "key": "Michigan", "title": "Michigan" },
+                { "key": "Minnesota", "title": "Minnesota" },
+                { "key": "Mississippi", "title": "Mississippi" },
+                { "key": "Missouri", "title": "Missouri" },
+                { "key": "Montana", "title": "Montana" },
+                { "key": "Nebraska", "title": "Nebraska" },
+                { "key": "Nevada", "title": "Nevada" },
+                { "key": "New Hampshire", "title": "New Hampshire" },
+                { "key": "New Jersey", "title": "New Jersey" },
+                { "key": "New Mexico", "title": "New Mexico" },
+                { "key": "New York", "title": "New York" },
+                { "key": "North Carolina", "title": "North Carolina" },
+                { "key": "North Dakota", "title": "North Dakota" },
+                { "key": "Ohio", "title": "Ohio" },
+                { "key": "Oklahoma", "title": "Oklahoma" },
+                { "key": "Oregon", "title": "Oregon" },
+                { "key": "Pennsylvania", "title": "Pennsylvania" },
+                { "key": "Rhode Island", "title": "Rhode Island" },
+                { "key": "South Carolina", "title": "South Carolina" },
+                { "key": "South Dakota", "title": "South Dakota" },
+                { "key": "Tennessee", "title": "Tennessee" },
+                { "key": "Texas", "title": "Texas" },
+                { "key": "Utah", "title": "Utah" },
+                { "key": "Vermont", "title": "Vermont" },
+                { "key": "Virginia", "title": "Virginia" },
+                { "key": "Washington", "title": "Washington" },
+                { "key": "West Virginia", "title": "West Virginia" },
+                { "key": "Wisconsin", "title": "Wisconsin" },
+                { "key": "Wyoming", "title": "Wyoming" }
+            ];
+
             filters.ageOptions = [
                 {key:'0-4years',title:'0 - 4 years', min: 1, max: 5},
                 {key:'5-9years',title:'5 - 9 years', min: 6, max: 10},
@@ -1426,6 +1480,11 @@
                     primary: false, value:  [], groupBy: false,type:"label.filter.group.weekday.autopsy.pod",
                     filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.podOptions), defaultGroup:"row"},
 
+                {key: 'state', title: 'label.filter.state', queryKey:"state", primary: false, value:  [],
+                    groupBy: false, type:"label.filter.group.location", filterType: 'checkbox',
+                    autoCompleteOptions: angular.copy(filters.stateOptions), defaultGroup:"column",
+                    displaySearchBox:true, displaySelectedFirst:true},
+
                 /*Underlying Cause of Death*/
                 {key: 'ucd-chapter-10', title: 'label.filter.ucd.icd.chapter', queryKey:"ICD_10_code.path",
                     primary: true, value: [], groupBy: false,type:"label.filter.group.ucd", groupKey:"ucd",
@@ -1505,6 +1564,10 @@
                         {
                             filterGroup: false, collapse: true, allowGrouping: true,
                             filters: utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'month')
+                        },
+                        {
+                            filterGroup: false, collapse: true, allowGrouping: true,
+                            filters: utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'state')
                         },
                         {
                             filterGroup: false, collapse: true,

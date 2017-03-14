@@ -86,6 +86,7 @@
   "label.filter.mcd.drug":"MCD - Drug/Alcohol Induced Causes",
   "label.filter.deaths":"Deaths",
   "label.filter.group.demographics":"Demographics",
+  "label.filter.group.location":"Location",
   "label.filter.group.year.month":"Year and Month",
   "label.filter.group.weekday.autopsy.pod":"Weekday, Autopsy, Place of Death",
   "label.filter.group.ucd":"Underlying Cause of Death",
