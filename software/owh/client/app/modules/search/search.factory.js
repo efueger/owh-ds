@@ -1350,18 +1350,18 @@
 
             filters.yrbsAdvancedFilters = [
                 {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: ['2015'], groupBy: false,
-                    filterType: 'checkbox', autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true },
+                    filterType: 'checkbox', autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), donotshowOnSearch:true, helpText:"label.help.text.yrbs.year" },
                 { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: [], groupBy: false,
-                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column", helpText:"label.help.text.yrbs.sex" },
                 { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"grade", primary: false, value: [], groupBy: false,
-                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column" },
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column", helpText:"label.help.text.yrbs.grade"},
                 { key: 'yrbsState', title: 'label.yrbs.filter.state', queryKey:"sitecode", primary: false, value: [], groupBy: false,
                     filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsAdvancedStateFilters), defaultGroup:"column",
-                    displaySearchBox:true, displaySelectedFirst:true },
+                    displaySearchBox:true, displaySelectedFirst:true, helpText:"label.help.text.yrbs.state" },
                 { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race", primary: false, value: [], groupBy: 'column',
-                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column"},
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column", helpText:"label.help.text.yrbs.race.ethnicity"},
                 { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
-                    filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
+                    filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true, helpText:"label.help.text.yrbs.question",
                     selectTitle: 'select.label.yrbs.filter.question', updateTitle: 'update.label.yrbs.filter.question',  iconClass: 'fa fa-pie-chart purple-text',
                     onIconClick: function(question) {
                         showChartForQuestion(filters.selectedPrimaryFilter, question);
@@ -1371,18 +1371,18 @@
 
             filters.yrbsBasicFilters = [
                 {key: 'year', title: 'label.yrbs.filter.year', queryKey:"year",primary: false, value: '2015', groupBy: false,
-                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), doNotShowAll: true, donotshowOnSearch:true },
+                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsYearsOptions), doNotShowAll: true, donotshowOnSearch:true, helpText:"label.help.text.yrbs.year" },
                 { key: 'yrbsSex', title: 'label.yrbs.filter.sex', queryKey:"sex", primary: false, value: '', groupBy: false,
-                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column" },
+                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsGenderOptions), defaultGroup:"column", helpText:"label.help.text.yrbs.sex" },
                 { key: 'yrbsGrade', title: 'label.yrbs.filter.grade', queryKey:"grade", primary: false, value: '', groupBy: false,
-                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column" },
+                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsGradeOptions), defaultGroup:"column", helpText:"label.help.text.yrbs.grade" },
                 { key: 'yrbsState', title: 'label.yrbs.filter.state', queryKey:"sitecode", primary: false, value: '', groupBy: false,
                     filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsBasicStateFilters), defaultGroup:"column",
-                    displaySearchBox:true, displaySelectedFirst:true },
+                    displaySearchBox:true, displaySelectedFirst:true, helpText:"label.help.text.yrbs.state" },
                 { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race", primary: false, value:'', groupBy: 'column',
-                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column"},
+                    filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column", helpText:"label.help.text.yrbs.race.ethnicity"},
                 { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
-                    filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true,
+                    filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true, helpText:"label.help.text.yrbs.question",
                     selectTitle: 'select.label.yrbs.filter.question', updateTitle: 'update.label.yrbs.filter.question',  iconClass: 'fa fa-pie-chart purple-text',
                     onIconClick: function(question) {
                         showChartForQuestion(filters.selectedPrimaryFilter, question);
