@@ -253,6 +253,5 @@
   "label.help.text.yrbs.race.ethnicity": "This field indicates the Race/Ethnicity of the students who participated in the YRBS National Survey",
   "label.help.text.yrbs.grade": "This field indicates the grade of the students of the participating schools in the national survey",
   "label.help.text.yrbs.question": "This field indicates the questions which were asked in the survey questionnaire. 'Students' refers to those who participated in the YRBS National Survey",
-  "label.help.text.yrbs.state": "This field indicates the State to be included in the data request",
-  "label.help.text.yrbs.variance": "This field indicates the variance to be included in the data request"
+  "label.help.text.yrbs.state": "This field indicates the State that participated in the YRBS National Survey"
 }

@@ -120,7 +120,6 @@
             'mental_health': [
                 {
                     title: 'Variance',
-                    helpText: 'label.help.text.yrbs.variance',
                     options: [
                         {
                             title: 'Confidence Intervals',
