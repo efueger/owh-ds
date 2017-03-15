@@ -246,5 +246,12 @@
   "label.help.text.bridged-race.race": "This field contains values for the four bridged-race categories: American Indian or Alaskan Native, Asian or Pacific Islander, Black or African American, White.",
   "label.help.text.bridged-race.ethnicity": "This field indicates values of Ethnicities of the population.",
   "label.help.text.bridged-race.state": "This field indicates the State to be included in the data request.",
-  "label.help.text.bridged-race.region": "This field indicates the Region to be included in the data request."
+  "label.help.text.bridged-race.region": "This field indicates the Region to be included in the data request.",
+
+  "label.help.text.yrbs.year": "This field indicates year of the Youth Risk Behavior Survey (YRBS).",
+  "label.help.text.yrbs.sex": "This field indicates the sex of the students who participated in the YRBS National Survey.",
+  "label.help.text.yrbs.race.ethnicity": "This field indicates the Race/Ethnicity of the students who participated in the YRBS National Survey.",
+  "label.help.text.yrbs.grade": "This field indicates the grade of the students of the participating schools in the national survey.",
+  "label.help.text.yrbs.question": "This field indicates the questions which were asked in the survey questionnaire. 'Students' refers to those who participated in the YRBS National Survey.",
+  "label.help.text.yrbs.state": "This field indicates the State that participated in the YRBS National Survey."
 }
