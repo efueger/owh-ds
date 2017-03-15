@@ -1188,6 +1188,7 @@
             ];
 
             filters.yearOptions = [
+                {key: '2015', title: '2015'},
                 {key: '2014', title: '2014'},
                 {key: '2013', title: '2013'},
                 {key: '2012', title: '2012'},
