@@ -974,4 +974,8 @@ ul.custom-nav-tabs {
 	cursor: not-allowed;
 }
 
+.yearGroupToggle {
+	font-size: 2rem !important;
+}
+
 /*Custom tab css*/

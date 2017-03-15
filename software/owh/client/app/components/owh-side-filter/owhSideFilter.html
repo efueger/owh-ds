@@ -323,6 +323,89 @@
                 </span>
                 <!-- end checkbox filter -->
 
+                <span ng-class="{'disabled-filter': !sfc.isVisible(sideFilter)}" ng-if="group.filterType === 'ageGroup'">
+                     <label class="side-pane-label custom-label">
+                        <a href="javascript:void(0)" ng-click="sideFilter.collapse = !sideFilter.collapse"
+                           title="{{'label.chart.mother_age' | translate}}" class="custom-link">
+                            <i class="fa" ng-class="sideFilter.collapse?'fa-chevron-right':'fa-chevron-down'"></i>
+                            <span translate="{{'label.chart.mother_age' | translate}}" class="filter-display-name"></span>
+                        </a>
+
+                            <ul class="usa-unstyled-list group-options" ng-if="!group.filterGroup" ng-hide="sideFilter.collapse">
+
+                                 <a class="active-link custom-link yearGroupToggle" href="javascript:void(0)" ng-repeat="eachOption in group.yearGroupOptions"
+                                       ng-class="{'selected': selectedYearGroup == category[$parent.$index + $index].filters.key }" ng-click="showHideYearGroupFilter(category[$parent.$index + $index])" title="{{eachOption.tooltip}}">
+
+                                        <span ng-bind="eachOption.title | translate"></span>
+                                    </a>
+
+                              <br/>
+
+
+
+                         <div ng-repeat="group in [category[$index].filters, category[$index + 1].filters]">
+
+
+                                   <!-- Five year filters start -->
+
+                                    <div id="five_year_filter" ng-show="selectedYearGroup === group.key">
+                                        <owh-toggle-switch ng-if=" category[$parent.$index + $index].allowGrouping" class="pull-right"
+                                                           options=" category[$parent.$index + $index].groupOptions ?  category[$parent.$index + $index].groupOptions : sfc.groupOptions"
+                                                           model="group.groupBy" on-change="sfc.runOnFilterChange && sfc.onFilter()"
+                                                           tooltip="{{'label.group.by.tooltip' | translate}}">
+                        </owh-toggle-switch>
+
+
+                                        <!--Check box filter-->
+                                        <!-- show All --->
+                                    <li class="group-option" ng-if="!group.doNotShowAll"
+                                        ng-class="{'thin-border-top': (group.value.length > 0 && group.displaySelectedFirst)}">
+                                        <input type="checkbox" id="{{group.queryKey}}_all" name="{{group.queryKey}}_all" ng-checked="group.value.length === 0"
+                                               ng-click="sfc.updateGroupValue(sideFilter);" ng-model="group.allChecked" ng-init="group.allChecked = group.value.length === 0"
+                                               ng-show="group.filterType === 'checkbox'" >
+                                        <label for="{{group.queryKey}}_all" class="custom-label">
+                                            <span>All</span>
+                                        </label>
+                                    </li>
+
+
+                                        <!--show options-->
+                                    <li ng-repeat="option in group.autoCompleteOptions | filter:search as filteredOptions"
+                                        ng-init="$outerIndex = $index"
+                                        class="group-option" ng-if="$index < 3 || category[$parent.$index + $index].showAll || ($index < (3+ group.value.length) && group.displaySelectedFirst)">
+
+
+
+
+                                       <div ng-if="!option.group && (group.displaySelectedFirst?!sfc.isOptionSelected(option, group.value):true)">
+                                            <input id="{{sfc.primaryKey}}_{{group.key}}_{{option.key}}" type="checkbox"
+                                                   checklist-model="group.value" checklist-value="option.key" ng-disabled="(sfc.isOptionDisabled(group, option))" ng-click="sfc.onFilterValueChange(category[$parent.$index + $index])">
+                                            <label for="{{sfc.primaryKey}}_{{group.key}}_{{option.key}}" class="custom-label"
+                                                   ng-init="title = option.title">
+                                                <span ng-class="option.disabled?'disable-click':'count-label'" translate="{{title}}"></span>
+                                                <span class="pull-right count-value" ng-if="!category[$parent.$index + $index].dontShowCounts" ng-bind="option.count | number"></span>
+                                            </label>
+                                        </div>
+                                        <!-- Option groups -->
+                                    </li>
+                                        <!-- end checkbox filter -->
+                                     <li class="group-option more-options" ng-if="filteredOptions.length > 3">
+                                        <a ng-show="!category[$parent.$index + $index].showAll" class="custom-link" translate="label.show.more"
+                                           translate-values="{showLength: sfc.getShowHideOptionCount(group, filteredOptions)}"
+                                           ng-click="category[$parent.$index + $index].showAll = !category[$parent.$index + $index].showAll" href="javascript:void(0)"></a>
+                                        <a ng-show="category[$parent.$index + $index].showAll" class="custom-link" translate="label.hide.more"
+                                           translate-values="{hideLength: sfc.getShowHideOptionCount(group, filteredOptions)}"
+                                           ng-click="category[$parent.$index + $index].showAll = !category[$parent.$index + $index].showAll" href="javascript:void(0)"></a>
+                                    </li>
+
+                                    </div>
+
+
+                           </div>
+                            </ul>
+
+                    </label>
+                </span>
 
                 <!-- radio filter -->
                 <span ng-class="{'disabled-filter': !sfc.isVisible(sideFilter)}" ng-if="group.filterType === 'radio'">

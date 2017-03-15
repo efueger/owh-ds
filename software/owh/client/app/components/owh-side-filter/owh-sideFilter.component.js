@@ -19,9 +19,9 @@
             }
         });
 
-    sideFilterController.$inject=['ModalService', 'utilService', 'searchFactory', 'SearchService'];
+    sideFilterController.$inject=['ModalService', 'utilService', 'searchFactory', 'SearchService', '$scope'];
 
-    function sideFilterController(ModalService, utilService, searchFactory, SearchService){
+    function sideFilterController(ModalService, utilService, searchFactory, SearchService, $scope){
         var sfc = this;
         sfc.getOptionCountPercentage = getOptionCountPercentage;
         sfc.getOptionCount = getOptionCount;
@@ -36,6 +36,14 @@
         sfc.isOptionSelected = isOptionSelected;
         sfc.getShowHideOptionCount = getShowHideOptionCount;
         sfc.onFilterValueChange = onFilterValueChange;
+
+        $scope.selectedYearGroup = 'mother_age_r9';
+        $scope.showHideYearGroupFilter = function (sideFilter) {
+            console.log("sidfilters............", JSON.stringify(sideFilter));
+                $scope.selectedYearGroup = sideFilter.filters.key;
+                sfc.sideFilters = sideFilter;
+                sfc.onFilter();
+        };
 
         sfc.$onChanges = function(changes) {
             if(changes.filters.currentValue) {

@@ -623,6 +623,11 @@
                 {key:'Unknown or not stated', title:'Unknown or not stated'}
             ];
 
+            var yearGroupOptions = [
+                {key:'five_year',title:'5-Year Age Groups', tooltip:'Select to view filters as 5-Year Age Groups'},
+                {key:'one_year',title:'1-Year Age Groups', tooltip:'Select to view filters as 1-Year Age Groups'}
+            ];
+
             //prepare filter definitions
             var natalityFilters = [
                 {key: 'hispanic_origin', title: 'label.filter.hispanicOrigin', queryKey:"hispanic_origin",
@@ -630,18 +635,19 @@
                     autoCompleteOptions: angular.copy(hispanicOptions), helpText:"label.help.text.ethnicity"},
 
                 {key: 'mother_age', title: 'label.chart.mother_age.single.yr', queryKey:"mother_age", primary: false, value: [],
-                    defaultGroup:'column', groupBy: false, filterType: "checkbox",
-                    autoCompleteOptions: angular.copy(singleYearAgeOptions), helpText:"label.help.text.mother.age"},
+                    defaultGroup:'column', groupBy: false, filterType: "unknown",
+                    autoCompleteOptions: angular.copy(singleYearAgeOptions), helpText:"label.help.text.mother.age", yearGroupOptions:yearGroupOptions},
 
                 {key: 'mother_age_r9', title: 'label.chart.mother_age.r9', queryKey:"mother_age_r9", primary: false, value: [],
-                    defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(ageR9Options)},
+                    defaultGroup:'column', groupBy: false, filterType: "ageGroup", autoCompleteOptions: angular.copy(ageR9Options), yearGroupOptions:yearGroupOptions},
 
+                /*
                 {key: 'mother_age_r8', title: 'label.filter.ageOfMother', queryKey:"mother_age_r8", primary: false, value: [],
                     defaultGroup:'column', groupBy: false, filterType: "checkbox",
                     autoCompleteOptions: angular.copy(ageR8Options), helpText:"label.help.text.mother.age"},
 
                 {key: 'mother_age_r14', title: 'label.chart.mother_age.r14', queryKey:"mother_age_r14", primary: false, value: [],
-                    defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(ageR14ptions)},
+                    defaultGroup:'column', groupBy: false, filterType: "checkbox", autoCompleteOptions: angular.copy(ageR14ptions)},*/
 
                 {key: 'race', title: 'label.filter.race', queryKey:"race", primary: false, value: [],
                     defaultGroup:'column', groupBy: 'row', filterType: "checkbox",

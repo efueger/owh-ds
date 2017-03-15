@@ -1703,17 +1703,18 @@
                             filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'marital_status'),
                             category: "Maternal Characteristics"
                         },
-                        {
-                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_age'),
+
+                       {
+                            filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions, yearGroupOptions: filters.natalityFilters.yearGroupOptions,
+                            yearGroupBy: 'five_year', filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_age_r9'),
                             category: "Maternal Characteristics"
                         },
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
-                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_age_r9'),
-                            category: "Maternal Characteristics"
+                            filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_age'), yearGroupOptions: filters.natalityFilters.yearGroupOptions,
+                            yearGroupBy: 'one_year', category: "Maternal Characteristics"
                         },
-                        {
+                        /*  {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
                             filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_age_r8'),
                             category: "Maternal Characteristics"
@@ -1722,7 +1723,7 @@
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
                             filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_age_r14'),
                             category: "Maternal Characteristics"
-                        },
+                        },*/
                         {
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
                             filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'mother_education'),
