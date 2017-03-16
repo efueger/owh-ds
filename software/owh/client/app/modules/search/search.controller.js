@@ -297,7 +297,7 @@
             return searchFactory.getQueryResults(queryID).then(function (response) {
                //if queryID exists in owh_querycache index, then update data that are required to display search results
                 if (response.data) {
-                    var result = searchFactory.updateFiltersAndData(sc.filters.primaryFilters, response, sc.optionsGroup, sc.mapOptions);
+                    var result = searchFactory.updateFiltersAndData(sc.filters, response, sc.optionsGroup, sc.mapOptions);
                     sc.tableView = result.tableView;
                     sc.tableData = result.tableData;
                     sc.filters.selectedPrimaryFilter = result.primaryFilter;
@@ -407,7 +407,7 @@
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             return sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
-                var result = searchFactory.updateFiltersAndData(sc.filters.primaryFilters, response, sc.optionsGroup, sc.mapOptions);
+                var result = searchFactory.updateFiltersAndData(sc.filters, response, sc.optionsGroup, sc.mapOptions);
                 sc.tableView = result.tableView;
                 sc.tableData = result.tableData;
                 sc.filters.selectedPrimaryFilter = result.primaryFilter;

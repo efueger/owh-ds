@@ -71,7 +71,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^the percentages are shown for each row are displayed by default$/, function () {
         mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[1]).to.equal('98,769 (45.5%)');
+            expect(value[1]).to.equal('8,179 (45.4%)');
         });
     });
 
@@ -85,7 +85,7 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^data table is updated and the number of deaths and percentages are updated too$/, function () {
         mortalityPage.getTableRowData(0).then(function (value) {
-            expect(value[1]).to.equal('8,677 (4.0%)');
+            expect(value[1]).to.equal('896 (5.0%)');
         });
     });
 
@@ -96,8 +96,8 @@ var mortalityStepDefinitionsWrapper = function () {
     this.Then(/^the percentages get re\-calculated based on all the information displayed in a given row$/, function () {
         browser.sleep(300);
         browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
-        mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('985 (14.3%)');
+        mortalityPage.getTableRowData(9).then(function(value){
+            expect(value[1]).to.equal('90 (9.1%)');
         });
     });
 
@@ -110,8 +110,8 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^percentages are displayed in the same column\/cell in parenthesis$/, function () {
         browser.actions().mouseMove(element(by.tagName('owh-table'))).perform();
-        mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('985 (14.3%)');
+        mortalityPage.getTableRowData(9).then(function(value){
+            expect(value[1]).to.equal('90 (9.1%)');
         });
     });
 
@@ -164,8 +164,8 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^when that option is toggled, the percentages are either displayed\/hidden$/, function () {
         mortalityPage.hidePecentageButton.click();
-        mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('985');
+        mortalityPage.getTableRowData(9).then(function(value){
+            expect(value[1]).to.equal('90');
         });
     });
 
@@ -185,8 +185,8 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the Rates and Percentages should have a one decimal precision$/, function () {
-        mortalityPage.getTableRowData(0).then(function(value){
-            expect(value[2]).to.equal('985 (14.3%)');
+        mortalityPage.getTableRowData(9).then(function(value){
+            expect(value[1]).to.equal('90 (9.1%)');
         });
     });
 
@@ -211,7 +211,9 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^I should be redirected to YRBS page$/, function () {
-        browser.sleep(60000); // yrbs page takes around a min to load
+        //for first time yrbs page takes time to load but from second time page should load quickly
+        //so changed sleep time from 60000 to 300 seconds
+        browser.sleep(300);
         var text = mortalityPage.sideMenu.getText();
         expect(text).to.eventually.contains("Question");
         //expect(text).to.eventually.contains("Select Questions");
@@ -219,15 +221,18 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.When(/^the user chooses the option 'Death Rates'$/, function () {
-        browser.sleep(30000);
+        browser.sleep(300);
          mortalityPage.deathRatesOption.click();
     });
 
-    this.Then(/^the rates are shown for each row \(with the Total population, from Bridge Race Estimates, as the denominator\) \- and not the total number of deaths shown in the table$/, function () {
-        //  mortalityPage.getTableRowData(0).then(function(text){
-              //TODO: replace when hooked up to real data
-              // expect(text[1]).to.equal('Rate\n885.4\nDeaths\n8,185\nPopulation\n924,416');
-        //  });
+    this.Then(/^the rates and population are shown for each row in 'Death Rates' view$/, function () {
+        mortalityPage.getTableRowData(0).then(function(text){
+            //TODO: replace when hooked up to real data
+            expect(text[1]).to.equal('Rate\n363.5\nDeaths\n8,179\nPopulation\n2,250,008');
+            expect(text[2]).to.equal('Rate\n433.2\nDeaths\n9,829\nPopulation\n2,268,973');
+            expect(text[3]).to.equal('Rate\n398.5\nDeaths\n18,008\nPopulation\n4,518,981');
+
+        });
     });
 
     this.Then(/^dropdown is in the main search bar$/, function () {
@@ -235,8 +240,10 @@ var mortalityStepDefinitionsWrapper = function () {
     });
 
     this.Then(/^the Percentages should have a one decimal precision$/, function () {
-          mortalityPage.getTableRowData(1).then(function(text) {
-              expect(text[1]).to.equal('336,172 (47.8%)');
+          mortalityPage.getTableRowData(0).then(function(text) {
+              expect(text[1]).to.equal('8,179 (45.4%)');
+              expect(text[2]).to.equal('9,829 (54.6%)');
+              expect(text[3]).to.equal('18,008');
           });
     });
 
@@ -305,22 +312,22 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^years should be in descending order$/, function () {
         mortalityPage.getOptions('Year').then(function(elements) {
-            expect(elements[0].getText()).to.eventually.contains('All');
-            expect(elements[1].getText()).to.eventually.contains('2014');
-            expect(elements[2].getText()).to.eventually.contains('2013');
-            expect(elements[3].getText()).to.eventually.contains('2012');
-            expect(elements[4].getText()).to.eventually.contains('2011');
-            expect(elements[5].getText()).to.eventually.contains('2010');
-            expect(elements[6].getText()).to.eventually.contains('2009');
-            expect(elements[7].getText()).to.eventually.contains('2008');
-            expect(elements[8].getText()).to.eventually.contains('2007');
-            expect(elements[9].getText()).to.eventually.contains('2006');
-            expect(elements[10].getText()).to.eventually.contains('2005');
-            expect(elements[11].getText()).to.eventually.contains('2004');
-            expect(elements[12].getText()).to.eventually.contains('2003');
-            expect(elements[13].getText()).to.eventually.contains('2002');
-            expect(elements[14].getText()).to.eventually.contains('2001');
-            expect(elements[15].getText()).to.eventually.contains('2000');
+            expect(elements[1].getText()).to.eventually.contains('All');
+            expect(elements[2].getText()).to.eventually.contains('2014');
+            expect(elements[3].getText()).to.eventually.contains('2013');
+            expect(elements[4].getText()).to.eventually.contains('2012');
+            expect(elements[5].getText()).to.eventually.contains('2011');
+            expect(elements[6].getText()).to.eventually.contains('2010');
+            expect(elements[7].getText()).to.eventually.contains('2009');
+            expect(elements[8].getText()).to.eventually.contains('2008');
+            expect(elements[9].getText()).to.eventually.contains('2007');
+            expect(elements[10].getText()).to.eventually.contains('2006');
+            expect(elements[11].getText()).to.eventually.contains('2005');
+            expect(elements[12].getText()).to.eventually.contains('2004');
+            expect(elements[13].getText()).to.eventually.contains('2003');
+            expect(elements[14].getText()).to.eventually.contains('2002');
+            expect(elements[15].getText()).to.eventually.contains('2001');
+            expect(elements[16].getText()).to.eventually.contains('2000');
         });
     });
 
@@ -332,8 +339,8 @@ var mortalityStepDefinitionsWrapper = function () {
 
     this.Then(/^user should see two subcategories\- Hispanic and NonHispanic$/, function () {
         mortalityPage.getOptions('Ethnicity').then(function(elements) {
-            expect(elements[1].getText()).to.eventually.contains('Hispanic');
-            expect(elements[13].getText()).to.eventually.contains('Non-Hispanic');
+            expect(elements[2].getText()).to.eventually.contains('Non-Hispanic');
+            expect(elements[3].getText()).to.eventually.contains('Hispanic');
         });
     });
 
@@ -556,7 +563,5 @@ var mortalityStepDefinitionsWrapper = function () {
             })
         });
     });
-
-
 };
 module.exports = mortalityStepDefinitionsWrapper;

@@ -145,7 +145,7 @@ ElasticClient.prototype.aggregateDeaths = function(query){
         logger.debug("Census ES Query: "+ JSON.stringify( query[1]));
         var promises = [
             this.executeMortilyAndNatalityQueries(query[0], mortality_index, mortality_type),
-            this.aggregateCensusDataForMortalityQuery(query[1], census_index, census_type)
+            this.aggregateCensusDataForMortalityQuery(query[1], census_rates_index, census_rates_type)
         ];
         if(query.wonderQuery) {
             promises.push(new wonder('D76').invokeWONDER(query.wonderQuery))
