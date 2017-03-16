@@ -1490,10 +1490,12 @@
                     displaySearchBox:true, displaySelectedFirst:true},
 
                 /*Underlying Cause of Death*/
-                {key: 'ucd-chapter-10', title: 'label.filter.ucd.icd.chapter', queryKey:"ICD_10_code.path",
-                    primary: true, value: [], groupBy: false,type:"label.filter.group.ucd", groupKey:"ucd",
-                    autoCompleteOptions: $rootScope.conditionsListICD10,
-                    aggregationKey:"ICD_10_code.code"},
+                {key: 'ucd-chapter-10', title: 'label.filter.ucd', queryKey:"ICD_10_code",
+                    primary: true, value: [], groupBy: false, type:"label.filter.group.ucd", groupKey:"ucd",
+                    autoCompleteOptions: $rootScope.conditionsListICD10, filterType: 'conditions',
+                    selectTitle: 'select.label.filter.ucd', updateTitle: 'update.label.filter.ucd',
+                    aggregationKey:"ICD_10_code.path", groupOptions: filters.conditionGroupOptions},
+
                 {key: 'ucd-icd-10-113', title: 'label.filter.icd10.113', queryKey:"ICD_113_code",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.ucd", groupKey:"ucd",
                     autoCompleteOptions: $rootScope.conditionsListICD10113, disableFilter: true},
@@ -1575,7 +1577,7 @@
                         },
                         {
                             filterGroup: false, collapse: true,
-                            filters: utilService.findByKeyAndValue(filters.ucdMcdFilters, 'key', 'ucd-filters')
+                            filters: utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'ucd-chapter-10')
                         },
                         {
                             filterGroup: false, collapse: true,
