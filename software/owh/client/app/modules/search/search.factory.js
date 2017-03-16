@@ -15,7 +15,6 @@
             addCountsToAutoCompleteOptions: addCountsToAutoCompleteOptions,
             searchMortalityResults: searchMortalityResults,
             showPhaseTwoModal: showPhaseTwoModal,
-            updateFilterValues: updateFilterValues,
             generateHashCode: generateHashCode,
             buildAPIQuery: buildAPIQuery,
             sortAutoCompleteOptions: sortAutoCompleteOptions,
@@ -38,25 +37,26 @@
          * Using search results response update filters, table headers and data for search page
          * @param response
          */
-        function updateFiltersAndData(primaryFilters, response, groupOptions, mapOptions) {
+        function updateFiltersAndData(filters, response, groupOptions, mapOptions) {
+            var primaryFilters = filters.primaryFilters;    
             //sets primary filter
             var primaryFilter = utilService.findByKeyAndValue(primaryFilters, 'key', response.data.queryJSON.key);
-
+            if(primaryFilter.key === 'mental_health' && !response.data.queryJSON.showBasicSearchSideMenu) {
+                    primaryFilter.allFilters = filters.yrbsAdvancedFilters;
+                    primaryFilter.sideFilters = primaryFilter.advancedSideFilters;
+            }
             //sets tableView
             var tableView = response.data.queryJSON.tableView;
+            var tableData = {};
 
-            updateFilterValues(primaryFilter);
+            populateSelectedFilters(primaryFilter, response.data.queryJSON.sideFilters);
             //update table headers based on cached query
             primaryFilter.headers = buildAPIQuery(primaryFilter).headers;
 
-            var tableData = {};
             if (primaryFilter.key === 'deaths') {
                 primaryFilter.data = response.data.resultData.nested.table;
                 primaryFilter.searchCount = response.pagination.total;
                 tableData = getMixedTable(primaryFilter, groupOptions, tableView);
-                if(response.data.queryJSON) {
-                    populateSelectedFilters(primaryFilter, response.data.queryJSON.sideFilters);
-                }
                 populateSideFilterTotals(primaryFilter, response.data);
                 prepareMortalityResults(primaryFilter, response.data);
                 primaryFilter.chartData = prepareChartData(primaryFilter.headers, response.data.resultData.nested, primaryFilter);
@@ -69,24 +69,11 @@
                 tableData.data = categorizeQuestions(tableData.data);
                 primaryFilter.showBasicSearchSideMenu = response.data.queryJSON.showBasicSearchSideMenu;
                 primaryFilter.runOnFilterChange = response.data.queryJSON.runOnFilterChange;
-                if(primaryFilter.showBasicSearchSideMenu) {
-                    populateSelectedFilters(primaryFilter, response.data.queryJSON.basicSideFilters);
-                }
-                else {
-                    populateSelectedFilters(primaryFilter, response.data.queryJSON.advancedSideFilters);
-                }
-
-                angular.forEach(response.data.queryJSON.sideFilters, function (filter, index) {
-                    primaryFilter.sideFilters[index].filters.value = filter.filters.value;
-                    primaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
-                });
+               
             }
             if (primaryFilter.key === 'bridge_race') {
                 primaryFilter.data = response.data.resultData.nested.table;
                 tableData = getMixedTable(primaryFilter, groupOptions, tableView);
-                if(response.data.queryJSON) {
-                    populateSelectedFilters(primaryFilter, response.data.queryJSON.sideFilters);
-                }
                 populateSideFilterTotals(primaryFilter, response.data);
                 primaryFilter.headers = tableData.headers;
                 primaryFilter.data = tableData.data;
@@ -96,9 +83,6 @@
             }
             else if (response.data.queryJSON.key == 'natality') {
                 primaryFilter.data = response.data.resultData.nested.table;
-                if(response.data.queryJSON) {
-                    populateSelectedFilters(primaryFilter, response.data.queryJSON.sideFilters);
-                }
                 populateSideFilterTotals(primaryFilter, response.data);
                 primaryFilter.chartData = prepareChartData(primaryFilter.headers, response.data.resultData.nested, primaryFilter);
                 tableData = getMixedTable(primaryFilter, groupOptions, tableView);
@@ -311,78 +295,9 @@
             var apiQuery = buildQueryForYRBS(primaryFilter, true);
             var headers = apiQuery.headers;
             SearchService.searchResults(primaryFilter, queryID).then(function(response) {
-                /*var yearsFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
-                if(!yearsFilter.autoCompleteOptions[0][primaryFilter.key]) {
-                    var total = 0;
-                    angular.forEach(response.data, function(eachYearData){
-                        total += eachYearData.length;
-                    });
-                    primaryFilter.count = total;
-                    angular.forEach(yearsFilter.autoCompleteOptions, function(eachYearOption){
-                        eachYearOption[primaryFilter.key] = response.data[eachYearOption.key] ? response.data[eachYearOption.key].length : 0;
-                        eachYearOption[primaryFilter.key + 'Percentage'] = Number(((eachYearOption[primaryFilter.key] / primaryFilter.count) * 100).toFixed(2));
-                    });
-                }*/
-                /*var genderFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'yrbsSex');
-                var raceFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'yrbsRace');
-                var chartFilters = [genderFilter, raceFilter];
-                var resultFilter = apiQuery.resultFilter;
-                apiQuery.dataKeys = utilService.findAllNotContainsKeyAndValue(resultFilter.autoCompleteOptions, 'isAllOption', true);
-                query.aggregations.nested.table = [];
-                angular.forEach(chartFilters, function(eachFilter) {
-                    var groupQuery = getGroupQuery(eachFilter);
-                    groupQuery.isPrimary = eachFilter.key === resultFilter.key;
-                    groupQuery.getCount = true;
-                    query.aggregations.nested.table.push(groupQuery);
-                    if(eachFilter.key !== resultFilter.key && eachFilter.key !== 'question') {
-                        var allValues = utilService.findAllByKeyAndValue(eachFilter.autoCompleteOptions, 'isAllOption', true);
-                        if(!query.query[eachFilter.queryKey] || allValues.indexOf(query.query[eachFilter.queryKey].value)) {
-                            query.query[eachFilter.queryKey] = getFilterQuery(eachFilter);
-                            query.query[eachFilter.queryKey].value = utilService.getValuesByKeyExcludingKeyAndValue(eachFilter.autoCompleteOptions, 'key', 'isAllOption', true);
-                        }
-                    }
-                });
-                query.query['question.key'] = response.data.maxQuestion;
-                var chartDataFromAPI = {};
-                var chartData = [];
-                SearchService.searchResults(query).then(function(chartResponse) {
-                    chartDataFromAPI = chartResponse.data.table;
-                    chartData = [chartUtilService.horizontalStack(genderFilter, raceFilter, chartDataFromAPI, primaryFilter)];
-                    deferred.resolve({
-                        data: response.data,
-                        chartData: [chartData],
-                        headers : headers
-                    });
-                });*/
-                //console.log(yearsFilter.autoCompleteOptions);
-                /*var preparedData = utilService.prepareYRBSTableData(
-                    response.data,
-                    angular.copy(primaryFilter.additionalHeaders),
-                    angular.copy(primaryFilter.value[0]),
-                    angular.copy(yearsFilter)
-                );*/
-
-                /*var questionsFilter = utilService.findByKeyAndValue(primaryFilter.allFilters, 'key', 'question');
-                if(!questionsFilter.autoCompleteOptions || questionsFilter.autoCompleteOptions.length === 0) {
-                    questionsFilter.autoCompleteOptions = $rootScope.questionsList;
-                }*/
                 deferred.resolve(response);
             });
             return deferred.promise;
-        }
-
-        function updateFilterValues(primaryFilter) {
-            angular.forEach(primaryFilter.sideFilters, function(filter) {
-                var group =  (filter.filterGroup ? filter : filter.filters);
-                if(group.filters) {
-                    angular.forEach(group.filters, function(eachFilter) {
-                        eachFilter.groupBy = group.groupBy;
-                        addOrFilterToPrimaryFilterValue(eachFilter, primaryFilter);
-                    });
-                } else {
-                    addOrFilterToPrimaryFilterValue(group, primaryFilter);
-                }
-            });
         }
 
         function addOrFilterToPrimaryFilterValue(filter, primaryFilter) {
