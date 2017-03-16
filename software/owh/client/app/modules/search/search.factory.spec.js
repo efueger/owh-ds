@@ -361,7 +361,7 @@ describe('search factory ', function(){
             deferred.resolve(countsMortalityAutoCompletes);
             $scope.$apply();
             var yearFilter = utils.findByKeyAndValue(primaryFilter.allFilters, 'key', 'year');
-            expect(yearFilter.autoCompleteOptions.length).toEqual(15);
+            expect(yearFilter.autoCompleteOptions.length).toEqual(16);
             expect(yearFilter.autoCompleteOptions[0].count).toEqual(2630800);
         });
 
