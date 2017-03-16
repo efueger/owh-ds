@@ -41,9 +41,14 @@
             var primaryFilters = filters.primaryFilters;    
             //sets primary filter
             var primaryFilter = utilService.findByKeyAndValue(primaryFilters, 'key', response.data.queryJSON.key);
-            if(primaryFilter.key === 'mental_health' && !response.data.queryJSON.showBasicSearchSideMenu) {
+            if(primaryFilter.key == 'mental_health') {
+                if (response.data.queryJSON.showBasicSearchSideMenu) {
+                    primaryFilter.allFilters = filters.yrbsBasicFilters;
+                    primaryFilter.sideFilters = primaryFilter.basicSideFilters;
+                } else {
                     primaryFilter.allFilters = filters.yrbsAdvancedFilters;
                     primaryFilter.sideFilters = primaryFilter.advancedSideFilters;
+                }
             }
             //sets tableView
             var tableView = response.data.queryJSON.tableView;
