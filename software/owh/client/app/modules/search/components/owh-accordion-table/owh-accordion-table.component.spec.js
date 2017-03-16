@@ -121,4 +121,19 @@ describe('owhAccordionTable component: ', function() {
         expect(list[1][0].title).toEqual('Currently Use');
     });
 
+    it('question category and help text map should present', function() {
+        var questionCategoryHelpTextMap = {
+            "Tobacco Use": "label.help.text.question.tobacco.use",
+            "Unintentional Injuries and Violence": "label.help.text.question.unintentional.injuries.violence",
+            "Alcohol and Other Drug Use": "label.help.text.question.alcohol.other.drug.use",
+            "Sexual Behaviors": "label.help.text.question.sexua.behaviors",
+            "Physical Activity": "label.help.text.question.physical.activity",
+            "Obesity, Overweight, and Weight Control": "label.help.text.question.obesity.overweight.weight.control",
+            "Dietary Behaviors": "label.help.text.question.dietary.behaviors",
+            "Other Health Topics": "label.help.text.question.other.health.topics"
+        };
+        var ctrl = $componentController('owhAccordionTable');
+        expect(ctrl.qCategoryHelpTextMap).toEqual(questionCategoryHelpTextMap);
+    });
+
 });
