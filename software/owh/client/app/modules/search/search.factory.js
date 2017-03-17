@@ -1496,30 +1496,13 @@
                     selectTitle: 'select.label.filter.ucd', updateTitle: 'update.label.filter.ucd',
                     aggregationKey:"ICD_10_code.path", groupOptions: filters.conditionGroupOptions},
 
-                {key: 'ucd-icd-10-113', title: 'label.filter.icd10.113', queryKey:"ICD_113_code",
-                    primary: false, value: [], groupBy: false,type:"label.filter.group.ucd", groupKey:"ucd",
-                    autoCompleteOptions: $rootScope.conditionsListICD10113, disableFilter: true},
-                {key: 'ucd-icd-10-130', title: 'label.filter.icd10.130', queryKey:"ICD_130_code",
-                    primary: false, value: [], groupBy: false,type:"label.filter.group.ucd", groupKey:"ucd",
-                    autoCompleteOptions: $rootScope.conditionsListICD10130, disableFilter: true},
-
                 /*Multiple Cause of death*/
                 {key: 'mcd-chapter-10', title: 'label.filter.mcd.icd.chapter', queryKey:"record_axis_condn",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.mcd", groupKey:"mcd",
-                    autoCompleteOptions: $rootScope.conditionsListICD10, disableFilter: true},
-                {key: 'mcd-icd-10-113', title: 'label.filter.mcd.cause.list', queryKey:"record_axis_condn",
-                    primary: false, value: [], groupBy: false,type:"label.filter.group.mcd", groupKey:"mcd",
-                    autoCompleteOptions: $rootScope.conditionsListICD10113, disableFilter: true},
-                {key: 'mcd-icd-10-130', title: 'label.filter.mcd.cause.list.infant', queryKey:"record_axis_condn",
-                    primary: false, value: [], groupBy: false,type:"label.filter.group.mcd", groupKey:"mcd",
-                    autoCompleteOptions: $rootScope.conditionsListICD10130, disableFilter: true}
+                    autoCompleteOptions: $rootScope.conditionsListICD10, disableFilter: true}
             ];
 
             filters.ucdMcdFilters = [
-                {key: 'ucd-filters', title: 'label.filter.ucd', selectTitle: 'select.label.filter.ucd', updateTitle: 'update.label.filter.ucd', queryKey:"",
-                    primary: false, value: [], groupBy: false,type:"label.filter.group.ucd",
-                    filterType: 'conditions', groupOptions: filters.conditionGroupOptions,
-                    autoCompleteOptions: utilService.findAllByKeyAndValue(filters.allMortalityFilters, 'key', 'ucd-chapter-10')},
                 {key: 'mcd-filters', title: 'label.filter.mcd', selectTitle: 'select.label.filter.mcd', updateTitle: 'update.label.filter.mcd',  queryKey:"",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.mcd",
                     filterType: 'conditions', groupOptions: [],
