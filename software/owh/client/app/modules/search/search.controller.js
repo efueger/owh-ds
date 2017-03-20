@@ -175,7 +175,7 @@
         function setDefaults() {
             sc.filters.selectedPrimaryFilter = mortalityFilter;
             var yearFilter = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters, 'key', 'year');
-            yearFilter.value.push('2014');
+            yearFilter.value.push('2015');
         }
 
         if(sc.queryID === '') {
