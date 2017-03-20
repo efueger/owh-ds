@@ -1023,6 +1023,60 @@
                 {key:'U',title:'Marital Status unknown'}
             ];
 
+            filters.stateOptions =  [
+                { "key": "AL", "title": "Alabama" },
+                { "key": "AK", "title": "Alaska" },
+                { "key": "AZ", "title": "Arizona" },
+                { "key": "AR", "title": "Arkansas" },
+                { "key": "CA", "title": "California" },
+                { "key": "CO", "title": "Colorado" },
+                { "key": "CT", "title": "Connecticut" },
+                { "key": "DE", "title": "Delaware" },
+                { "key": "DC", "title": "District of Columbia" },
+                { "key": "FL", "title": "Florida" },
+                { "key": "GA", "title": "Georgia" },
+                { "key": "HI", "title": "Hawaii" },
+                { "key": "ID", "title": "Idaho" },
+                { "key": "IL", "title": "Illinois" },
+                { "key": "IN", "title": "Indiana"},
+                { "key": "IA", "title": "Iowa" },
+                { "key": "KS", "title": "Kansas" },
+                { "key": "KY", "title": "Kentucky" },
+                { "key": "LA", "title": "Louisiana" },
+                { "key": "ME", "title": "Maine" },
+                { "key": "MD", "title": "Maryland" },
+                { "key": "MA", "title": "Massachusetts" },
+                { "key": "MI", "title": "Michigan" },
+                { "key": "MN", "title": "Minnesota" },
+                { "key": "MS", "title": "Mississippi" },
+                { "key": "MO", "title": "Missouri" },
+                { "key": "MT", "title": "Montana" },
+                { "key": "NE", "title": "Nebraska" },
+                { "key": "NV", "title": "Nevada" },
+                { "key": "NH", "title": "New Hampshire" },
+                { "key": "NJ", "title": "New Jersey" },
+                { "key": "NM", "title": "New Mexico" },
+                { "key": "NY", "title": "New York" },
+                { "key": "NC", "title": "North Carolina" },
+                { "key": "ND", "title": "North Dakota" },
+                { "key": "OH", "title": "Ohio" },
+                { "key": "OK", "title": "Oklahoma" },
+                { "key": "OR", "title": "Oregon" },
+                { "key": "PA", "title": "Pennsylvania" },
+                { "key": "RI", "title": "Rhode Island" },
+                { "key": "SC", "title": "South Carolina" },
+                { "key": "SD", "title": "South Dakota" },
+                { "key": "TN", "title": "Tennessee" },
+                { "key": "TX", "title": "Texas" },
+                { "key": "UT", "title": "Utah" },
+                { "key": "VT", "title": "Vermont" },
+                { "key": "VA", "title": "Virginia" },
+                { "key": "WA", "title": "Washington" },
+                { "key": "WA", "title": "West Virginia" },
+                { "key": "WI", "title": "Wisconsin" },
+                { "key": "WY", "title": "Wyoming" }
+            ];
+
             filters.ageOptions = [
                 {key:'0-4years',title:'0 - 4 years', min: 1, max: 5},
                 {key:'5-9years',title:'5 - 9 years', min: 6, max: 10},
@@ -1054,6 +1108,7 @@
             ];
 
             filters.yearOptions = [
+                {key: '2015', title: '2015'},
                 {key: '2014', title: '2014'},
                 {key: '2013', title: '2013'},
                 {key: '2012', title: '2012'},
@@ -1349,35 +1404,25 @@
                     primary: false, value:  [], groupBy: false,type:"label.filter.group.weekday.autopsy.pod",
                     filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.podOptions), defaultGroup:"row"},
 
+                {key: 'state', title: 'label.filter.state', queryKey:"state", primary: false, value:  [],
+                    groupBy: false, type:"label.filter.group.location", filterType: 'checkbox',
+                    autoCompleteOptions: angular.copy(filters.stateOptions), defaultGroup:"column",
+                    displaySearchBox:true, displaySelectedFirst:true},
+
                 /*Underlying Cause of Death*/
-                {key: 'ucd-chapter-10', title: 'label.filter.ucd.icd.chapter', queryKey:"ICD_10_code.path",
-                    primary: true, value: [], groupBy: false,type:"label.filter.group.ucd", groupKey:"ucd",
-                    autoCompleteOptions: $rootScope.conditionsListICD10,
-                    aggregationKey:"ICD_10_code.code"},
-                {key: 'ucd-icd-10-113', title: 'label.filter.icd10.113', queryKey:"ICD_113_code",
-                    primary: false, value: [], groupBy: false,type:"label.filter.group.ucd", groupKey:"ucd",
-                    autoCompleteOptions: $rootScope.conditionsListICD10113, disableFilter: true},
-                {key: 'ucd-icd-10-130', title: 'label.filter.icd10.130', queryKey:"ICD_130_code",
-                    primary: false, value: [], groupBy: false,type:"label.filter.group.ucd", groupKey:"ucd",
-                    autoCompleteOptions: $rootScope.conditionsListICD10130, disableFilter: true},
+                {key: 'ucd-chapter-10', title: 'label.filter.ucd', queryKey:"ICD_10_code",
+                    primary: true, value: [], groupBy: false, type:"label.filter.group.ucd", groupKey:"ucd",
+                    autoCompleteOptions: $rootScope.conditionsListICD10, filterType: 'conditions',
+                    selectTitle: 'select.label.filter.ucd', updateTitle: 'update.label.filter.ucd',
+                    aggregationKey:"ICD_10_code.path", groupOptions: filters.conditionGroupOptions},
 
                 /*Multiple Cause of death*/
                 {key: 'mcd-chapter-10', title: 'label.filter.mcd.icd.chapter', queryKey:"record_axis_condn",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.mcd", groupKey:"mcd",
-                    autoCompleteOptions: $rootScope.conditionsListICD10, disableFilter: true},
-                {key: 'mcd-icd-10-113', title: 'label.filter.mcd.cause.list', queryKey:"record_axis_condn",
-                    primary: false, value: [], groupBy: false,type:"label.filter.group.mcd", groupKey:"mcd",
-                    autoCompleteOptions: $rootScope.conditionsListICD10113, disableFilter: true},
-                {key: 'mcd-icd-10-130', title: 'label.filter.mcd.cause.list.infant', queryKey:"record_axis_condn",
-                    primary: false, value: [], groupBy: false,type:"label.filter.group.mcd", groupKey:"mcd",
-                    autoCompleteOptions: $rootScope.conditionsListICD10130, disableFilter: true}
+                    autoCompleteOptions: $rootScope.conditionsListICD10, disableFilter: true}
             ];
 
             filters.ucdMcdFilters = [
-                {key: 'ucd-filters', title: 'label.filter.ucd', selectTitle: 'select.label.filter.ucd', updateTitle: 'update.label.filter.ucd', queryKey:"",
-                    primary: false, value: [], groupBy: false,type:"label.filter.group.ucd",
-                    filterType: 'conditions', groupOptions: filters.conditionGroupOptions,
-                    autoCompleteOptions: utilService.findAllByKeyAndValue(filters.allMortalityFilters, 'key', 'ucd-chapter-10')},
                 {key: 'mcd-filters', title: 'label.filter.mcd', selectTitle: 'select.label.filter.mcd', updateTitle: 'update.label.filter.mcd',  queryKey:"",
                     primary: false, value: [], groupBy: false,type:"label.filter.group.mcd",
                     filterType: 'conditions', groupOptions: [],
@@ -1430,8 +1475,12 @@
                             filters: utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'month')
                         },
                         {
+                            filterGroup: false, collapse: true, allowGrouping: true,
+                            filters: utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'state')
+                        },
+                        {
                             filterGroup: false, collapse: true,
-                            filters: utilService.findByKeyAndValue(filters.ucdMcdFilters, 'key', 'ucd-filters')
+                            filters: utilService.findByKeyAndValue(filters.allMortalityFilters, 'key', 'ucd-chapter-10')
                         },
                         {
                             filterGroup: false, collapse: true,
