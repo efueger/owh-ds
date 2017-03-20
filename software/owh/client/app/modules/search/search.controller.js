@@ -63,7 +63,7 @@
                 {key: 'fertility_rates', title: 'Fertility Rates'}]
         };
         sc.sort = {
-            "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
+            "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'state', 'ucd-chapter-10', 'mcd-filters'],
             "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'yrbsState', 'question'],
             "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'agegroup', 'race', 'ethnicity', 'state'],
             "label.filter.natality": ['current_year', 'month', 'weekday', 'sex', 'gestational_age_r10', 'prenatal_care',
@@ -175,7 +175,7 @@
         function setDefaults() {
             sc.filters.selectedPrimaryFilter = mortalityFilter;
             var yearFilter = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters, 'key', 'year');
-            yearFilter.value.push('2014');
+            yearFilter.value.push('2015');
         }
 
         if(sc.queryID === '') {
@@ -296,7 +296,7 @@
             return searchFactory.getQueryResults(queryID).then(function (response) {
                //if queryID exists in owh_querycache index, then update data that are required to display search results
                 if (response.data) {
-                    var result = searchFactory.updateFiltersAndData(sc.filters.primaryFilters, response, sc.optionsGroup, sc.mapOptions);
+                    var result = searchFactory.updateFiltersAndData(sc.filters, response, sc.optionsGroup, sc.mapOptions);
                     sc.tableView = result.tableView;
                     sc.tableData = result.tableData;
                     sc.filters.selectedPrimaryFilter = result.primaryFilter;
@@ -406,7 +406,7 @@
         function primaryFilterChanged(newFilter, queryID) {
             utilService.updateAllByKeyAndValue(sc.filters.search, 'initiated', false);
             return sc.filters.selectedPrimaryFilter.searchResults(sc.filters.selectedPrimaryFilter, queryID).then(function(response) {
-                var result = searchFactory.updateFiltersAndData(sc.filters.primaryFilters, response, sc.optionsGroup, sc.mapOptions);
+                var result = searchFactory.updateFiltersAndData(sc.filters, response, sc.optionsGroup, sc.mapOptions);
                 sc.tableView = result.tableView;
                 sc.tableData = result.tableData;
                 sc.filters.selectedPrimaryFilter = result.primaryFilter;

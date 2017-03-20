@@ -475,7 +475,7 @@ function getFilterQuery(filter) {
     var values = [];
     return {
         key: filter.key,
-        queryKey: filter.queryKey,
+        queryKey: filter.aggregationKey ? filter.aggregationKey : filter.queryKey,
         value: filter.value,
         primary: filter.primary
     };

@@ -149,7 +149,7 @@
                     clearSelection(eachFilter)
                 }
             });
-            var showTree = selectedFilter.key ==='ucd-filters' || selectedFilter.key === 'question';
+            var showTree = selectedFilter.key ==='ucd-chapter-10' || selectedFilter.key === 'question';
             if(!showTree) {
                 searchFactory.showPhaseTwoModal('label.mcd.impl.next');
             }else {
@@ -160,7 +160,7 @@
                     controller: function ($scope, close) {
                         var mc = this;
                         mc.codeKey = selectedFilter.key;
-                        mc.entityName = selectedFilter.key === 'question' ? 'Question' : 'Disease';
+                        mc.entityName = selectedFilter.key === 'question' ? 'Question' : 'Cause(s) of Death';
                         mc.modelHeader = selectedFilter.key === 'question' ? 'label.select.question' : 'label.cause.death';
                         mc.optionValues = selectedFilter.selectedNodes ? selectedFilter.selectedNodes : selectedFilter.selectedValues;
                         mc.close = close;
