@@ -466,28 +466,79 @@
                 var eachHeaderData = data[eachHeader.key];
                 angular.forEach(eachHeader.autoCompleteOptions, function(matchedOption, index) {
 
-                    var key = (countKey === 'mental_health')?matchedOption.qkey:matchedOption.key;
+                    var key = (countKey === 'mental_health' || countKey === 'prams')?matchedOption.qkey:matchedOption.key;
                     var eachData = findByKeyAndValue(eachHeaderData, 'name', key);
+                    if(countKey === 'prams') {
+                        eachData = findAllByKeyAndValue(eachHeaderData, 'name', key);
+                        if(eachData.length === 0) {
+                            return;
+                        }
+                        var questionCellAdded = false;
+                        angular.forEach(eachData, function(eachPramsData) {
+                            var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachPramsData, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKeys);
+                            if(rowHeaders.length > 1 && calculateRowTotal) {
+                                childTableData.push(prepareTotalRow(eachPramsData, countKey, childTableData[0].length, totalCount, secondaryCountKeys));
+                            }
+                            var responseCell = {
+                                title: eachPramsData.response,
+                                rowspan: 1,
+                                colspan: 1,
+                                isCount: false
+                            };
+                            if(!questionCellAdded) {
+                                var eachTableRow = {
+                                    title: matchedOption.title,
+                                    isCount: false,
+                                    rowspan: eachData.length,
+                                    colspan: 1,
+                                    key: matchedOption.key,
+                                    qkey: matchedOption.qkey,
+                                    iconClass: eachHeader.iconClass,
+                                    onIconClick: eachHeader.onIconClick
+                                };
+                                childTableData[0].unshift(responseCell);
+                                childTableData[0].unshift(eachTableRow);
+                                tableData = tableData.concat(childTableData);
+                                questionCellAdded = true;
+                            } else {
+                                var eachTableRow = {
+                                    title: '',
+                                    isCount: false,
+                                    rowspan: 1,
+                                    colspan: 1,
+                                    key: matchedOption.key,
+                                    qkey: matchedOption.qkey,
+                                    style: {
+                                        display: "none"
+                                    }
+                                };
+                                childTableData[0].unshift(responseCell);
+                                childTableData[0].unshift(eachTableRow);
+                                tableData = tableData.concat(childTableData);
+                            }
+                        });
+                    } else {
+                        if(!eachData) {
+                            return;
+                        }
+                        var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachData, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKeys);
+                        if(rowHeaders.length > 1 && calculateRowTotal) {
+                            childTableData.push(prepareTotalRow(eachData, countKey, childTableData[0].length, totalCount, secondaryCountKeys));
+                        }
+                        var eachTableRow = {
+                            title: matchedOption.title,
+                            isCount: false,
+                            rowspan: childTableData.length,
+                            colspan: 1,
+                            key: matchedOption.key,
+                            qkey: matchedOption.qkey,
+                            iconClass: eachHeader.iconClass,
+                            onIconClick: eachHeader.onIconClick
+                        };
+                        childTableData[0].unshift(eachTableRow);
+                        tableData = tableData.concat(childTableData);
+                    }
 
-                    if(!eachData) {
-                        return;
-                    }
-                    var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachData, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKeys);
-                    if(rowHeaders.length > 1 && calculateRowTotal) {
-                        childTableData.push(prepareTotalRow(eachData, countKey, childTableData[0].length, totalCount, secondaryCountKeys));
-                    }
-                    var eachTableRow = {
-                        title: matchedOption.title,
-                        isCount: false,
-                        rowspan: childTableData.length,
-                        colspan: 1,
-                        key: matchedOption.key,
-                        qkey: matchedOption.qkey,
-                        iconClass: eachHeader.iconClass,
-                        onIconClick: eachHeader.onIconClick
-                    };
-                    childTableData[0].unshift(eachTableRow);
-                    tableData = tableData.concat(childTableData);
                 });
             }
             /**
@@ -579,7 +630,6 @@
             }
             if(columnHeaders && columnHeaders.length > 0) {
                 var eachColumnHeader = columnHeaders[0];
-
 
                 var eachHeaderData = data[eachColumnHeader.key]?data[eachColumnHeader.key]:data[eachColumnHeader.queryKey];
                 var eachOptionLength = 0;
