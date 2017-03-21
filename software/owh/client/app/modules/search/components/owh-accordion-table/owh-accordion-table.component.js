@@ -11,7 +11,8 @@
                 headers: '<',
                 showCi: '<',
                 showUf: '<',
-                showCharts:'<'
+                showCharts:'<',
+                primaryKey: '@'
             }
         });
     OWHAccordionTableController.$inject = ['$scope', 'utilService', '$rootScope'];
@@ -70,29 +71,32 @@
 
         oatc.listRows = function(catagory) {
             var rows = [], firstRow = null;
+            if(oatc.primaryKey === 'mental_health') {
+                if (catagory.title in questionDefaults) {
 
-            if (catagory.title in questionDefaults) {
 
+                    for (var i = 0; i < catagory.questions.length; i++) {
+                        var question = catagory.questions[i],
+                            defaults = questionDefaults[catagory.title];
 
-                for (var i = 0; i < catagory.questions.length; i++) {
-                    var question = catagory.questions[i],
-                        defaults = questionDefaults[catagory.title];
+                        if (question[0].title.search(defaults[0]) == 0) {
+                            firstRow = question;
 
-                    if (question[0].title.search(defaults[0]) == 0) {
-                        firstRow = question;
+                        } else if (question[0].title.search(defaults[1]) == 0) {
+                            rows.splice(0, 0, question);
 
-                    } else if (question[0].title.search(defaults[1]) == 0) {
-                        rows.splice(0, 0, question);
-
-                    } else {
-                        rows.push(question);
+                        } else {
+                            rows.push(question);
+                        }
                     }
                 }
+                if (firstRow != null) {
+                    rows.splice(0, 0, firstRow);
+                }
+                return rows;
+            } else {
+                return catagory.questions;
             }
-            if (firstRow != null) {
-                rows.splice(0, 0, firstRow);
-            }
-            return rows;
         };
 
     }
