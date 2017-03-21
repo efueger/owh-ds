@@ -46,7 +46,7 @@ Scenario: Display show/hide percentage button only on mortality page
 Scenario: Death Rates
   Given I am on search page
   When the user chooses the option 'Death Rates'
-  Then the rates are shown for each row (with the Total population, from Bridge Race Estimates, as the denominator) - and not the total number of deaths shown in the table
+  Then the rates and population are shown for each row in 'Death Rates' view
 
 Scenario: Dropdown Location
   Given I am on search page
@@ -90,7 +90,7 @@ Scenario: Quick visualizations
 Scenario: Help Message above the quick visualization pane
   Given I am on search page
   When the user chooses the option 'Death Rates'
-  Then the following message should be displayed stating that population data is being retrieved from Census "Population details from NCHS Bridge Race Estimates is used to calculate Death Rates (per 100,000)"
+  Then the following message should be displayed stating that population data is being retrieved from Census "Population details from NCHS Bridged-Race Estimates is used to calculate Death Rates (per 100,000)"
 
 Scenario: Years are supposed to be in descending order
   Given I am on search page

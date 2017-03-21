@@ -4,8 +4,8 @@ var MortalitySearchPage = function() {
     msp.chartDataDiv = element(by.repeater('chartData in startChartData'));
     msp.expandVisualizationLink = element(by.css('a[name=expand_graph]'));
     msp.sideMenu = element(by.className('owh-side-menu'));
-    msp.hideFiltersBtn = element(by.className('owh-side-menu__handle'));
-    msp.showFiltersBtn = element(by.className('owh-side-menu__handle--collapsed'));
+    msp.hideFiltersBtn = element(by.cssContainingText('a', '<< Hide Filters'));
+    msp.showFiltersBtn = element(by.cssContainingText('a', 'Show Filters >>'));
     msp.owhTable = element(by.tagName('owh-table'));
     msp.showOrHidePecentageDiv = element(by.id('togglePercentage'));
     msp.showPecentageButton = element(by.id('togglePercentage')).element(by.cssContainingText('a', 'Show'));
@@ -47,8 +47,8 @@ var MortalitySearchPage = function() {
     msp.getAxisLabelsForMinimizedVisualization= function () {
         //Verify Visualization has 'nv-axislabel' css class for both axis
         //minimized visualization has id starts with '.chart_'
-        var axis_x_label = element(by.id('chart_0_1')).element(by.css('.nvd3.nv-wrap.nv-multiBarHorizontalChart')).element(by.css('.nv-x.nv-axis')).element(by.css('.nv-axislabel'));
-        var axis_y_label = element(by.id('chart_0_1')).element(by.css('.nvd3.nv-wrap.nv-multiBarHorizontalChart')).element(by.css('.nv-y.nv-axis')).element(by.css('.nv-axislabel'));
+        var axis_x_label = element(by.id('chart_0_0')).element(by.css('.nvd3.nv-wrap.nv-multiBarHorizontalChart')).element(by.css('.nv-x.nv-axis')).element(by.css('.nv-axislabel'));
+        var axis_y_label = element(by.id('chart_0_0')).element(by.css('.nvd3.nv-wrap.nv-multiBarHorizontalChart')).element(by.css('.nv-y.nv-axis')).element(by.css('.nv-axislabel'));
         return [axis_x_label, axis_y_label];
     };
     msp.getAxisLabelsForExpandedVisualization= function () {

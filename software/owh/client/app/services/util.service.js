@@ -5,9 +5,9 @@
         .module('owh.services')
         .service('utilService', utilService);
 
-    utilService.$inject = ['$dateParser', '$filter', '$translate', '$rootScope'];
+    utilService.$inject = ['$dateParser', '$filter', '$translate', '$rootScope', 'SearchService'];
 
-    function utilService($dateParser, $filter, $translate, $rootScope){
+    function utilService($dateParser, $filter, $translate, $rootScope, SearchService){
 
         var service = {
             isValueNotEmpty : isValueNotEmpty,
@@ -38,7 +38,8 @@
             generateMapLegendRanges : generateMapLegendRanges,
             getMinAndMaxValue : getMinAndMaxValue,
             getSelectedAutoCompleteOptions: getSelectedAutoCompleteOptions,
-            clone: clone
+            clone: clone,
+            refreshFilterAndOptions: refreshFilterAndOptions
         };
 
         return service;
@@ -830,6 +831,42 @@
             return labels;
         }
 
+        /**
+         * Enables/disables side filters and filter options based on the dataser metadata
+         * @param filter filter to be used for the querying ds metadata
+         * @param sideFilters sidefilters to be updated
+         * @param datasetname name of dataset          */
+        function refreshFilterAndOptions(filter, sideFilters, datasetname) {
+            var filterName = filter.queryKey;
+            var filterValue = filter.value;
+            SearchService.getDsMetadata(datasetname, filterValue ? filterValue.join(',') : null).then(function (response) {
+                var newFilters = response.data;
+                for (var f=0; f < sideFilters.length; f++) {
+                    var fkey = sideFilters[f].filters.queryKey;
+                    if (fkey !== filterName) {
+                        if (fkey in newFilters) {
+                            sideFilters[f].disabled = false;
+                            if (newFilters[fkey]) {
+                                var fopts = sideFilters[f].filters.autoCompleteOptions;
+                                for (var opt in fopts) {
+                                    if (newFilters[fkey].indexOf(fopts[opt].key) >= 0) {
+                                        fopts[opt].disabled = false;
+                                    } else {
+                                        fopts[opt].disabled = true;
+                                    }
+                                }
+                            }
+                        } else {
+                            sideFilters[f].filters.value = [];
+                            sideFilters[f].filters.groupBy = false;
+                            sideFilters[f].disabled = true;
+                        }
+                    }
+                }
+            }, function (error) {
+                console.log(error);
+            });
+        }
 
         function clone (a) {
             return JSON.parse(JSON.stringify(a));

@@ -31,6 +31,17 @@
             "Other Health Topics": [/^Did Not H/, /^Did Not S/]
         };
 
+        oatc.qCategoryHelpTextMap = {
+             "Tobacco Use": "label.help.text.question.tobacco.use",
+             "Unintentional Injuries and Violence": "label.help.text.question.unintentional.injuries.violence",
+             "Alcohol and Other Drug Use": "label.help.text.question.alcohol.other.drug.use",
+             "Sexual Behaviors": "label.help.text.question.sexua.behaviors",
+             "Physical Activity": "label.help.text.question.physical.activity",
+             "Obesity, Overweight, and Weight Control": "label.help.text.question.obesity.overweight.weight.control",
+             "Dietary Behaviors": "label.help.text.question.dietary.behaviors",
+             "Other Health Topics": "label.help.text.question.other.health.topics"
+        };
+
         oatc.collapseRow = function(row) {
             row.collapse = true;
         };

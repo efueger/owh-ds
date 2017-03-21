@@ -450,17 +450,13 @@ function sortByKey(array, key, asc) {
     });
 }
 
-
-function getGroupQuery(filter/*, isPrimary*/) {
+var getGroupQuery = function (filter){
     var groupQuery = {
         key: filter.key,
         queryKey: filter.aggregationKey ? filter.aggregationKey : filter.queryKey,
         getPercent: filter.getPercent,
-        size: 100000
-    };/*
-     if(isPrimary) {
-     groupQuery.isPrimary = true;
-     }*/
+        size: 0
+    };
     return groupQuery;
 }
 
@@ -484,7 +480,7 @@ function getFilterQuery(filter) {
     var values = [];
     return {
         key: filter.key,
-        queryKey: filter.queryKey,
+        queryKey: filter.aggregationKey ? filter.aggregationKey : filter.queryKey,
         value: filter.value,
         primary: filter.primary
     };
@@ -760,17 +756,17 @@ var chartMappings = {
     "eclampsia&tobacco_use": "horizontalStack"
 };
 
-function prepareMapAggregations() {
+var prepareMapAggregations = function() {
     var chartAggregations = [];
     var primaryGroupQuery = {
         key: "states",
         queryKey: "state",
-        size: 100000
+        size: 0
     };
     var secondaryGroupQuery = {
         key: "sex",
         queryKey: "sex",
-        size: 100000
+        size: 0
     };
     chartAggregations.push([primaryGroupQuery, secondaryGroupQuery]);
     return chartAggregations;
@@ -801,3 +797,5 @@ module.exports.isEmptyObject = isEmptyObject;
 module.exports.buildAPIQuery = buildAPIQuery;
 // module.exports.buildQueryForYRBS = buildQueryForYRBS;
 module.exports.addCountsToAutoCompleteOptions = addCountsToAutoCompleteOptions;
+module.exports.prepareMapAggregations = prepareMapAggregations;
+module.exports.getGroupQuery = getGroupQuery;
