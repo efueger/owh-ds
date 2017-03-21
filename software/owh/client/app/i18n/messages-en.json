@@ -249,6 +249,13 @@
   "label.help.text.bridged-race.state": "This field indicates the State to be included in the data request.",
   "label.help.text.bridged-race.region": "This field indicates the Region to be included in the data request.",
 
+  "label.prams.title": "PRAMS",
+  "label.prams.filter.year": "Year",
+  "label.prams.filter.topic": "Topic",
+  "label.prams.filter.state": "State",
+  "label.prams.filter.question": "Question",
+  "label.prams.class": "Class",
+
   "label.help.text.yrbs.year": "This field indicates year of the Youth Risk Behavior Survey (YRBS).",
   "label.help.text.yrbs.sex": "This field indicates the sex of the students who participated in the YRBS National Survey.",
   "label.help.text.yrbs.race.ethnicity": "This field indicates the Race/Ethnicity of the students who participated in the YRBS National Survey.",

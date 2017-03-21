@@ -71,10 +71,26 @@
                 primaryFilter.data = response.data.resultData.table;
                 tableData = getMixedTable(primaryFilter, groupOptions, tableView);
                 primaryFilter.headers = buildQueryForYRBS(primaryFilter, true).headers;
-                tableData.data = categorizeQuestions(tableData.data);
+                tableData.data = categorizeQuestions(tableData.data, $rootScope.questions);
                 primaryFilter.showBasicSearchSideMenu = response.data.queryJSON.showBasicSearchSideMenu;
                 primaryFilter.runOnFilterChange = response.data.queryJSON.runOnFilterChange;
                
+            }
+            if (primaryFilter.key === 'prams') {
+                primaryFilter.data = response.data.resultData.table;
+                tableData = getMixedTable(primaryFilter, groupOptions, tableView);
+                tableData.headers[0].splice(1, 0, {colspan: 1, rowspan: tableData.headers.length, title: "Response"});
+                primaryFilter.headers = buildQueryForYRBS(primaryFilter, true).headers;
+                tableData.data = categorizeQuestions(tableData.data, $rootScope.pramsQuestions);
+                primaryFilter.showBasicSearchSideMenu = response.data.queryJSON.showBasicSearchSideMenu;
+                primaryFilter.runOnFilterChange = response.data.queryJSON.runOnFilterChange;
+                if(response.data.queryJSON) {
+                    populateSelectedFilters(primaryFilter, response.data.queryJSON.sideFilters);
+                }
+                angular.forEach(response.data.queryJSON.sideFilters, function (filter, index) {
+                    primaryFilter.sideFilters[index].filters.value = filter.filters.value;
+                    primaryFilter.sideFilters[index].filters.groupBy = filter.filters.groupBy;
+                });
             }
             if (primaryFilter.key === 'bridge_race') {
                 primaryFilter.data = response.data.resultData.nested.table;
@@ -129,6 +145,21 @@
          */
         function getMixedTable(selectedFilter, groupOptions, tableView){
             var file = selectedFilter.data ? selectedFilter.data : {};
+
+            if(selectedFilter.key === 'prams') {
+                var questions = [];
+                angular.forEach(file.question, function(question) {
+                    angular.forEach(question, function(response, key) {
+                        if(key !== 'name') {
+                            responseRow = response;
+                            responseRow.name = question.name;
+                            responseRow.response = key;
+                            questions.push(responseRow);
+                        }
+                    });
+                });
+                file = {question: questions};
+            }
             var headers = selectedFilter.headers ? selectedFilter.headers : {columnHeaders: [], rowHeaders: []};
             //make sure row/column headers are in proper order
             angular.forEach(headers.rowHeaders, function(header) {
@@ -148,9 +179,9 @@
         }
 
         //takes mixedTable and returns categories array for use with owhAccordionTable
-        function categorizeQuestions(data) {
+        function categorizeQuestions(data, questions) {
             var categories = [];
-            angular.forEach($rootScope.questions, function(questionCategory){
+            angular.forEach(questions, function(questionCategory){
                 var category = {title: questionCategory.text, questions: [], hide: true};
                 angular.forEach(questionCategory.children, function(categoryChild) {
                     angular.forEach(data, function(row) {
@@ -287,6 +318,14 @@
 
         //Search for YRBS data
         function searchYRBSResults( primaryFilter, queryID ) {
+            var deferred = $q.defer();
+            queryYRBSAPI(primaryFilter, queryID ).then(function(response){
+                deferred.resolve(response);
+            });
+            return deferred.promise;
+        }
+
+        function searchPRAMSResults( primaryFilter, queryID ) {
             var deferred = $q.defer();
             queryYRBSAPI(primaryFilter, queryID ).then(function(response){
                 deferred.resolve(response);
@@ -517,7 +556,6 @@
         }
 
         function generateHashCode(primaryFilter) {
-            console.log('primaryFilter', primaryFilter);
             var deferred = $q.defer();
             var hashQuery = buildHashcodeQuery(primaryFilter);
             SearchService.generateHashCode(hashQuery).then(function(response) {
@@ -1357,6 +1395,8 @@
                 { key: 'yrbsRace', title: 'label.yrbs.filter.race', queryKey:"race", primary: false, value:'', groupBy: 'column',
                     filterType: 'radio',autoCompleteOptions: angular.copy(filters.yrbsRaceOptions), defaultGroup:"column", helpText:"label.help.text.yrbs.race.ethnicity"},
                 { key: 'question', title: 'label.yrbs.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
+                    //questions to pass into owh-tree
+                    questions: $rootScope.questions,
                     filterType: 'tree', autoCompleteOptions: $rootScope.questionsList, donotshowOnSearch:true, helpText:"label.help.text.yrbs.question",
                     selectTitle: 'select.label.yrbs.filter.question', updateTitle: 'update.label.yrbs.filter.question',  iconClass: 'fa fa-pie-chart purple-text',
                     onIconClick: function(question) {
@@ -1431,6 +1471,136 @@
 
             filters.censusFilters = filterUtils.getBridgeDataFilters();
             filters.natalityFilters = filterUtils.getNatalityDataFilters();
+
+            filters.pramsTopicOptions = [
+                {"key": "cat_41", "title": "Delivery Method"},
+                {"key": "cat_19", "title": "Delivery Payment"},
+                {"key": "cat_17", "title": "Hospital Length of Stay"},
+                {"key": "cat_14", "title": "Household Characteristics"},
+                {"key": "cat_13", "title": "Income"},
+                {"key": "cat_38", "title": "Assisted Reproduction"},
+                {"key": "cat_16", "title": "Contraception - Conception"},
+                {"key": "cat_18", "title": "Contraception - Postpartum"},
+                {"key": "cat_15", "title": "Pregnancy Intention"},
+                {"key": "cat_42", "title": "Flu - H1N1"},
+                {"key": "cat_45", "title": "Flu - Seasonal"},
+                {"key": "cat_44", "title": "Flu - H1N1 + Seasonal"},
+                {"key": "cat_43", "title": "Flu - Morbidity"},
+                {"key": "cat_24", "title": "Breastfeeding"},
+                {"key": "cat_20", "title": "Infant Health Care"},
+                {"key": "cat_32", "title": "Injury Prevention"},
+                {"key": "cat_21", "title": "Morbidity - Infant"},
+                {"key": "cat_25", "title": "Pregnancy Outcome"},
+                {"key": "cat_22", "title": "Sleep Behaviors"},
+                {"key": "cat_23", "title": "Smoke Exposure"},
+                {"key": "cat_29", "title": "Alcohol Use"},
+                {"key": "cat_35", "title": "HIV Test"},
+                {"key": "cat_34", "title": "Maternal Health Care"},
+                {"key": "cat_37", "title": "Mental Health"},
+                {"key": "cat_26", "title": "Morbidity - Maternal"},
+                {"key": "cat_28", "title": "Multivitamin Use"},
+                {"key": "cat_31", "title": "Obesity"},
+                {"key": "cat_33", "title": "Oral Health"},
+                {"key": "cat_39", "title": "Preconception Health"},
+                {"key": "cat_36", "title": "Preconception Morbidity"},
+                {"key": "cat_27", "title": "Pregnancy History"},
+                {"key": "cat_30", "title": "Tobacco Use"},
+                {"key": "cat_11", "title": "Abuse - Physical"},
+                {"key": "cat_40", "title": "Abuse - Mental"},
+                {"key": "cat_12", "title": "Pregnancy Recognition"},
+                {"key": "cat_10", "title": "Stress"},
+                {"key": "cat_9", "title": "Prenatal Care - Barriers"},
+                {"key": "cat_4", "title": "Prenatal Care - Content"},
+                {"key": "cat_5", "title": "Prenatal Care - Initiation"},
+                {"key": "cat_7", "title": "Prenatal Care - Location"},
+                {"key": "cat_8", "title": "Prenatal Care - Payment"},
+                {"key": "cat_6", "title": "Prenatal Care - Provider"},
+                {"key": "cat_0", "title": "Prenatal Care - Visits"},
+                {"key": "cat_3", "title": "Insurance Coverage"},
+                {"key": "cat_1", "title": "Medicaid"},
+                {"key": "cat_2", "title": "WIC"}
+            ];
+
+            filters.pramsStateOptions =  [
+                { "key": "AL", "title": "Alabama" },
+                { "key": "AK", "title": "Alaska" },
+                { "key": "AZB", "title": "Arizona" },
+                { "key": "AR", "title": "Arkansas" },
+                { "key": "CA", "title": "California" },
+                { "key": "CO", "title": "Colorado" },
+                { "key": "CT", "title": "Connecticut" },
+                { "key": "DE", "title": "Delaware" },
+                //{ "key": "", "title": "District of Columbia" },
+                { "key": "FL", "title": "Florida" },
+                { "key": "GA", "title": "Georgia" },
+                { "key": "HI", "title": "Hawaii" },
+                { "key": "ID", "title": "Idaho" },
+                { "key": "IL", "title": "Illinois" },
+                { "key": "IN", "title": "Indiana"},
+                { "key": "IA", "title": "Iowa" },
+                { "key": "KS", "title": "Kansas" },
+                { "key": "KY", "title": "Kentucky" },
+                { "key": "LA", "title": "Louisiana" },
+                { "key": "ME", "title": "Maine" },
+                { "key": "MD", "title": "Maryland" },
+                { "key": "MA", "title": "Massachusetts" },
+                { "key": "MI", "title": "Michigan" },
+                { "key": "MS", "title": "Mississippi" },
+                { "key": "MO", "title": "Missouri" },
+                { "key": "MT", "title": "Montana" },
+                { "key": "NE", "title": "Nebraska" },
+                { "key": "NV", "title": "Nevada" },
+                { "key": "NH", "title": "New Hampshire" },
+                { "key": "NJ", "title": "New Jersey" },
+                { "key": "NM", "title": "New Mexico" },
+                { "key": "NY", "title": "New York" },
+                { "key": "NC", "title": "North Carolina" },
+                { "key": "ND", "title": "North Dakota" },
+                { "key": "OH", "title": "Ohio" },
+                { "key": "OK", "title": "Oklahoma" },
+                { "key": "PA", "title": "Pennsylvania" },
+                { "key": "RI", "title": "Rhode Island" },
+                { "key": "SC", "title": "South Carolina" },
+                { "key": "SD", "title": "South Dakota" },
+                { "key": "TN", "title": "Tennessee" },
+                { "key": "TX", "title": "Texas" },
+                { "key": "UT", "title": "Utah" },
+                { "key": "VT", "title": "Vermont" },
+                { "key": "VA", "title": "Virginia" },
+                { "key": "WV", "title": "West Virginia" },
+                { "key": "WI", "title": "Wisconsin" },
+                { "key": "WY", "title": "Wyoming" }
+            ];
+
+            filters.pramsYearOptions = [
+                { "key": "2009", "title": "2009" },
+                { "key": "2007", "title": "2007" },
+            ];
+
+            filters.pramsBreakoutOptions = [
+
+            ];
+
+            filters.pramsFilters = [
+                {key: 'topic', title: 'label.prams.filter.topic', queryKey:"topic",primary: false, value: [], groupBy: false,
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.pramsTopicOptions), doNotShowAll: true},
+                {key: 'year', title: 'label.prams.filter.year', queryKey:"year",primary: false, value: ['2009'], groupBy: false,
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.pramsYearOptions), doNotShowAll: false},
+                {key: 'breakout', title: 'label.prams.filter.breakout', queryKey:"breakout",primary: false, value: [], groupBy: false,
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.pramsBreakoutOptions), doNotShowAll: true},
+                {key: 'state', title: 'label.prams.filter.state', queryKey:"sitecode",primary: false, value: [], groupBy: 'column',
+                    filterType: 'checkbox',autoCompleteOptions: angular.copy(filters.pramsStateOptions), doNotShowAll: true},
+                { key: 'question', title: 'label.prams.filter.question', queryKey:"question.path", aggregationKey:"question.key", primary: false, value: [], groupBy: 'row',
+                    filterType: 'tree', autoCompleteOptions: $rootScope.pramsQuestionsList, donotshowOnSearch:true,
+                    //add questions property to pass into owh-tree component
+                    questions: $rootScope.pramsQuestions,
+                    selectTitle: 'select.label.yrbs.filter.question', updateTitle: 'update.label.yrbs.filter.question',  iconClass: 'fa fa-pie-chart purple-text',
+                    onIconClick: function(question) {
+                        showChartForQuestion(filters.selectedPrimaryFilter, question);
+                    }
+                }
+            ];
+
             filters.search = [
                 {
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
@@ -1746,6 +1916,31 @@
                             filterGroup: false, collapse: true, allowGrouping: true, groupOptions: filters.groupOptions,
                             filters: utilService.findByKeyAndValue(filters.natalityFilters, 'key', 'tobacco_use'),
                             category: "Maternal Risk Factors"
+                        }
+                    ]
+                },
+                {
+                    key: 'prams', title: 'label.prams.title', primary: true, value:[], header:"Pregnancy Risk Assessment",
+                    searchResults: searchPRAMSResults, dontShowInlineCharting: true,
+                    additionalHeaders:filters.yrbsAdditionalHeaders, countLabel: 'Total', tableView:'delivery',
+                    chartAxisLabel:'Percentage',
+                    showBasicSearchSideMenu: true, runOnFilterChange: true, allFilters: filters.pramsFilters, // Default to basic filter
+                    sideFilters:[
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.pramsFilters, 'key', 'topic')
+                        },
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.pramsFilters, 'key', 'year')
+                        },
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.columnGroupOptions, dontShowCounts: true,
+                            filters: utilService.findByKeyAndValue(filters.pramsFilters, 'key', 'state')
+                        },
+                        {
+                            filterGroup: false, collapse: false, allowGrouping: false,
+                            filters: utilService.findByKeyAndValue(filters.pramsFilters, 'key', 'question')
                         }
                     ]
                 }

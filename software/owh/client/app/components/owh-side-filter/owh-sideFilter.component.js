@@ -163,6 +163,7 @@
                         mc.entityName = selectedFilter.key === 'question' ? 'Question' : 'Cause(s) of Death';
                         mc.modelHeader = selectedFilter.key === 'question' ? 'label.select.question' : 'label.cause.death';
                         mc.optionValues = selectedFilter.selectedNodes ? selectedFilter.selectedNodes : selectedFilter.selectedValues;
+                        mc.questions = selectedFilter.questions;
                         mc.close = close;
                     }
                 }).then(function (modal) {
