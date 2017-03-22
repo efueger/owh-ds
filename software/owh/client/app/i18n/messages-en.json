@@ -86,6 +86,7 @@
   "label.filter.mcd.drug":"MCD - Drug/Alcohol Induced Causes",
   "label.filter.deaths":"Deaths",
   "label.filter.group.demographics":"Demographics",
+  "label.filter.group.location":"Location",
   "label.filter.group.year.month":"Year and Month",
   "label.filter.group.weekday.autopsy.pod":"Weekday, Autopsy, Place of Death",
   "label.filter.group.ucd":"Underlying Cause of Death",
@@ -247,6 +248,13 @@
   "label.help.text.bridged-race.ethnicity": "This field indicates values of Ethnicities of the population.",
   "label.help.text.bridged-race.state": "This field indicates the State to be included in the data request.",
   "label.help.text.bridged-race.region": "This field indicates the Region to be included in the data request.",
+
+  "label.prams.title": "PRAMS",
+  "label.prams.filter.year": "Year",
+  "label.prams.filter.topic": "Topic",
+  "label.prams.filter.state": "State",
+  "label.prams.filter.question": "Question",
+  "label.prams.class": "Class",
 
   "label.help.text.yrbs.year": "This field indicates year of the Youth Risk Behavior Survey (YRBS).",
   "label.help.text.yrbs.sex": "This field indicates the sex of the students who participated in the YRBS National Survey.",

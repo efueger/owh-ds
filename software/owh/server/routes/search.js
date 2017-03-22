@@ -53,6 +53,12 @@ var searchRouter = function(app, rConfig) {
         });
     });
 
+    app.get('/pramsQuestionsTree', function (req, res) {
+        new yrbs().getPramsQuestionsTree().then(function(response) {
+            res.send(new result('OK', response, "success"));
+        });
+    });
+
     app.get('/dsmetadata/:dataset', function(req, res) {
         var dataset = req.params.dataset
         var years = req.query.years?req.query.years.split(','):[];
@@ -85,6 +91,16 @@ function search(q) {
             });
         });
     } else if (preparedQuery.apiQuery.searchFor === "mental_health") {
+        preparedQuery['pagination'] = {from: 0, size: 10000};
+        preparedQuery.apiQuery['pagination'] = {from: 0, size: 10000};
+        new yrbs().invokeYRBSService(preparedQuery.apiQuery).then(function (response) {
+            var resData = {};
+            resData.queryJSON = q;
+            resData.resultData = response;
+            resData.sideFilterResults = [];
+            deferred.resolve(resData);
+        });
+    } else if(preparedQuery.apiQuery.searchFor === "prams") {
         preparedQuery['pagination'] = {from: 0, size: 10000};
         preparedQuery.apiQuery['pagination'] = {from: 0, size: 10000};
         new yrbs().invokeYRBSService(preparedQuery.apiQuery).then(function (response) {

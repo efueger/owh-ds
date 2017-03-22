@@ -144,7 +144,9 @@
                                table-view="{{sc.tableView}}"
                                rowspan-threshold="50"></owh-table>
                     <owh-accordion-table headers="sc.tableData.headers" data="sc.tableData.data"
-                                ng-if="sc.filters.selectedPrimaryFilter.key === 'mental_health'"
+                                ng-if="sc.filters.selectedPrimaryFilter.key === 'mental_health' ||
+                                    sc.filters.selectedPrimaryFilter.key === 'prams'"
+                                primary-key="sc.filters.selectedPrimaryFilter.key"
                                 show-ci="sc.showConfidenceIntervals"
                                 show-uf="sc.showUnweightedFrequency"
                                 show-charts = "sc.filters.selectedPrimaryFilter.value.length > 1">

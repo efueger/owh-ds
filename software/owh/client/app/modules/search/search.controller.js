@@ -60,18 +60,29 @@
             natality: [
                 {key: 'number_of_births', title: 'Number of Births'},
                 {key: 'birth_rates', title: 'Birth Rates'},
-                {key: 'fertility_rates', title: 'Fertility Rates'}]
+                {key: 'fertility_rates', title: 'Fertility Rates'}],
+            prams: [
+                {key: 'delivery', title: 'Delivery'},
+                {key: 'demographics', title: 'Demographics'},
+                {key: 'family_planning', title: 'Family Planning'},
+                {key: 'flu', title: 'Flu'},
+                {key: 'infant_health', title: 'Infant Health'},
+                {key: 'maternal_behavior', title: 'Maternal Behavior/Health'},
+                {key: 'maternal_experiences', title: 'Maternal Experiences'},
+                {key: 'prenatal_care', title: 'Prenatal Care'},
+                {key: 'insurance_medicaid_services', title: 'Insurance/Medicaid/Services'}]
         };
         sc.sort = {
-            "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'ucd-filters', 'mcd-filters'],
+            "label.filter.mortality": ['year', 'gender', 'race', 'hispanicOrigin', 'agegroup', 'autopsy', 'placeofdeath', 'weekday', 'month', 'state', 'ucd-chapter-10', 'mcd-filters'],
             "label.risk.behavior": ['year', 'yrbsSex', 'yrbsRace', 'yrbsGrade', 'yrbsState', 'question'],
-            "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'agegroup', 'race', 'ethnicity', 'state'],
+            "label.census.bridge.race.pop.estimate": ['current_year', 'sex', 'race', 'ethnicity', 'agegroup', 'state'],
             "label.filter.natality": ['current_year', 'month', 'weekday', 'sex', 'gestational_age_r10', 'prenatal_care',
                 'birth_weight', 'birth_weight_r4', 'birth_weight_r12', 'birth_plurality', 'live_birth', 'birth_place',
                 'delivery_method', 'medical_attendant', 'race', 'hispanic_origin', 'marital_status',
                 'mother_age_r8', 'mother_age_r9', 'mother_age_r14', 'mother_age', 'mother_education',
                 'anemia', 'cardiac_disease', 'chronic_hypertension', 'diabetes', 'eclampsia', 'hydramnios_oligohydramnios',
-                'incompetent_cervix', 'lung_disease', 'pregnancy_hypertension', 'tobacco_use']
+                'incompetent_cervix', 'lung_disease', 'pregnancy_hypertension', 'tobacco_use'],
+            "label.prams.title": []
         };
 
         sc.optionsGroup = {
@@ -103,8 +114,34 @@
             fertility_rates: {},
             bridge_race:{},
             mental_health:{},
-            natality:{
-
+            natality:{},
+            prams:{},
+            delivery: {
+                "topic": ['cat_41', 'cat_19', 'cat_17']
+            },
+            demographics: {
+                "topic": ['cat_14', 'cat_13']
+            },
+            family_planning: {
+                "topic": ['cat_38', 'cat_16', 'cat_18', 'cat_15']
+            },
+            flu: {
+                "topic": ['cat_42', 'cat_45', 'cat_44', 'cat_43']
+            },
+            infant_health: {
+                "topic": ['cat_24', 'cat_20', 'cat_32', 'cat_21', 'cat_25', 'cat_22', 'cat_23']
+            },
+            maternal_behavior: {
+                "topic": ['cat_29', 'cat_35', 'cat_34', 'cat_37', 'cat_26', 'cat_28', 'cat_31', 'cat_33', 'cat_39', 'cat_36', 'cat_27', 'cat_30']
+            },
+            maternal_experiences: {
+                "topic": ['cat_11', 'cat_40', 'cat_12', 'cat_10']
+            },
+            prenatal_care: {
+                "topic": ['cat_35', 'cat_9', 'cat_4', 'cat_5', 'cat_7', 'cat_8', 'cat_6', 'cat_0']
+            },
+            insurance_medicaid_services: {
+                "topic": ['cat_3', 'cat_1', 'cat_2']
             }
         };
         //show certain filters for different table views
@@ -176,7 +213,15 @@
         function setDefaults() {
             sc.filters.selectedPrimaryFilter = mortalityFilter;
             var yearFilter = utilService.findByKeyAndValue(sc.filters.selectedPrimaryFilter.allFilters, 'key', 'year');
-            yearFilter.value.push('2014');
+            yearFilter.value.push('2015');
+
+            var pramsFilter = utilService.findByKeyAndValue(sc.filters.primaryFilters, 'key', 'prams');
+            angular.forEach(pramsFilter.sideFilters, function(filter){
+                if(filter.filters.key === 'topic') {
+                    filter.filters.autoCompleteOptions = sc.filters.pramsTopicOptions;
+                    searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup['delivery']);
+                }
+            });
         }
 
         if(sc.queryID === '') {
@@ -208,6 +253,34 @@
         }
 
         function search(isFilterChanged) {
+            if(sc.filters.selectedPrimaryFilter.key === 'prams') {
+                angular.forEach(sc.filters.selectedPrimaryFilter.sideFilters, function(filter) {
+                    if(filter.filters.key === 'topic') {
+                        filter.filters.questions = [];
+                        if(filter.filters.value.length === 0) {
+                            angular.forEach(filter.filters.autoCompleteOptions, function (option) {
+                                angular.forEach($rootScope.pramsQuestions, function(pramsCat) {
+                                    if(option.key === pramsCat.id) {
+                                        angular.forEach(pramsCat.children, function(question) {
+                                            filter.filters.questions.push(question.id);
+                                        });
+                                    }
+                                });
+                            });
+                        } else {
+                            angular.forEach(filter.filters.value, function(cat) {
+                                angular.forEach($rootScope.pramsQuestions, function(pramsCat) {
+                                    if(cat === pramsCat.id) {
+                                        angular.forEach(pramsCat.children, function(question) {
+                                            filter.filters.questions.push(question.id);
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                    }
+                });
+            }
             //TODO: $rootScope.requestProcessing is keeping this from running on initialization, do we need that check?
             // if(isFilterChanged && !$rootScope.requestProcessing) {
             if(isFilterChanged) {
@@ -235,6 +308,10 @@
         $scope.$on('yrbsQuestionsLoadded', function() {
             sc.filters.yrbsBasicFilters[4].autoCompleteOptions = $rootScope.questionsList;
             sc.filters.yrbsAdvancedFilters[4].autoCompleteOptions = $rootScope.questionsList;
+        });
+
+        $scope.$on('pramsQuestionsLoaded', function() {
+            sc.filters.pramsFilters[4].autoCompleteOptions = $rootScope.pramsQuestionsList;
         });
 
 
@@ -330,6 +407,10 @@
                         filter.filters.queryKey = 'hispanic_origin';
                         filter.filters.autoCompleteOptions = sc.filters.hispanicOptions;
                     }
+                }
+                if(filter.filters.key === 'topic') {
+                    filter.filters.autoCompleteOptions = sc.filters.pramsTopicOptions;
+                    searchFactory.groupAutoCompleteOptions(filter.filters, sc.optionsGroup[selectedFilter.key]);
                 }
             });
             //we can change mapping here

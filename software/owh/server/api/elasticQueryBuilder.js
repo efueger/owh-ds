@@ -415,6 +415,11 @@ function buildAPIQuery(primaryFilter) {
             apiQuery.query[eachFilter.queryKey] = eachFilterQuery;
         }
     });
+    primaryFilter.sideFilters.forEach(function(filter) {
+       if(filter.filters.key === 'topic') {
+           apiQuery.query['question.path'].value = filter.filters.questions;
+       }
+    });
     apiQuery.aggregations.nested.table = rowAggregations.concat(columnAggregations);
     var result = prepareChartAggregations(headers.rowHeaders.concat(headers.columnHeaders), apiQuery.searchFor);
     headers.chartHeaders = result.chartHeaders;
@@ -473,7 +478,7 @@ function buildFilterQuery(filter) {
 function getFilterQuery(filter) {
     return {
         key: filter.key,
-        queryKey: filter.queryKey,
+        queryKey: filter.aggregationKey ? filter.aggregationKey : filter.queryKey,
         value: filter.value,
         primary: filter.primary
     };
