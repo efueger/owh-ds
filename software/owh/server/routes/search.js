@@ -120,7 +120,7 @@ function search(q) {
             if(q.tableView === 'fertility_rates' && finalQuery[1]) {
                 var query1 = JSON.stringify(finalQuery[1]);
                 //For Natality Fertility Rates add mother's age filter
-                finalQuery[1] = queryBuilder.addMorthersAgeFilterToCensusRatesQuery(JSON.parse(query1));
+                finalQuery[1] = queryBuilder.addFiltersToCalcFertilityRates(JSON.parse(query1));
             }
             new elasticSearch().aggregateNatalityData(finalQuery).then(function (response) {
                 var resData = {};

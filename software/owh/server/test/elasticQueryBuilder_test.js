@@ -147,4 +147,59 @@ describe("Build elastic search queries", function(){
         should(query == [{ key: 'states', queryKey: 'state', size: 0 },{ key: 'sex', queryKey: 'sex', size: 0 }]).be.ok;
         done()
     });
+
+    it("add filters to calculate fertility rates", function(done){
+        var topLevelQuery = {
+            "size":0,"aggregations":{"group_table_race":{"terms":{"field":"race","size":0},"aggregations":{"pop":{"sum":{"field":"pop"}}}}},
+            "query":{
+                "filtered":{
+                    "query":{"bool":{"must":[]}},
+                    "filter":{"bool":{"must":[{"bool":{"should":[{"term":{"current_year":"2011"}}]}}]}}
+                }
+            }
+        };
+        var expectedQuery = {"size":0,"aggregations":{"group_table_race":{"terms":{"field":"race","size":0},"aggregations":{"pop":{"sum":{"field":"pop"}}}}},
+                                "query":{
+                                    "filtered":
+                                    {
+                                        "query":{"bool":{"must":[]}},
+                                        "filter":{"bool":{"must":[{"bool":{"should":[{"term":{"current_year":"2011"}}]}},
+                                                                  {"bool":{"should":[{"term":{"age":"15"}},{"term":{"age":"16"}},{"term":{"age":"17"}},{"term":{"age":"18"}},{"term":{"age":"19"}},{"term":{"age":"20"}},{"term":{"age":"21"}},{"term":{"age":"22"}},{"term":{"age":"23"}},{"term":{"age":"24"}},{"term":{"age":"25"}},{"term":{"age":"26"}},{"term":{"age":"27"}},{"term":{"age":"28"}},{"term":{"age":"29"}},{"term":{"age":"30"}},{"term":{"age":"31"}},{"term":{"age":"32"}},{"term":{"age":"33"}},{"term":{"age":"34"}},{"term":{"age":"35"}},{"term":{"age":"36"}},{"term":{"age":"37"}},{"term":{"age":"38"}},{"term":{"age":"37"}},{"term":{"age":"38"}},{"term":{"age":"39"}},{"term":{"age":"40"}},{"term":{"age":"41"}},{"term":{"age":"42"}},{"term":{"age":"43"}},{"term":{"age":"44"}}]}},
+                                                                  {"bool":{"should":[{"term":{"sex":"Female"}}]}}]}
+                                        }
+                                    }
+                                }
+                            };
+        var updatedQuery = elasticQueryBuilder.addFiltersToCalcFertilityRates(topLevelQuery);
+        expect(JSON.stringify(updatedQuery)).equal(JSON.stringify(expectedQuery));
+        done()
+    });
+
+    it("add filters to calculate fertility rates with mother_age_r9 filter", function(done){
+        var topLevelQuery = {
+            "size":0,"aggregations":{"group_table_race":{"terms":{"field":"race","size":0},"aggregations":{"pop":{"sum":{"field":"pop"}}}}},
+            "query":{
+                "filtered":{
+                    "query":{"bool":{"must":[]}},
+                    "filter":{"bool":{"must":[{"bool":{"should":[{"term":{"current_year":"2011"}}]}},
+                                              {"bool":{"should":[{"term":{"mother_age_r9":"15-19 years"}}]}}]}}
+                }
+            }
+        };
+        var expectedQuery = {"size":0,"aggregations":{"group_table_race":{"terms":{"field":"race","size":0},"aggregations":{"pop":{"sum":{"field":"pop"}}}}},
+                                    "query":
+                                        {
+                                          "filtered":
+                                                {
+                                                    "query":
+                                                        {"bool":{"must":[]}},"filter":{"bool":{"must":[{"bool":{"should":[{"term":{"current_year":"2011"}}]}},
+                                                                                      {"bool":{"should":[{"term":{"mother_age_r9":"15-19 years"}}]}},
+                                                                                      {"bool":{"should":[{"term":{"sex":"Female"}}]}}]}}
+                                                }
+                                        }
+                            };
+        var updatedQuery = elasticQueryBuilder.addFiltersToCalcFertilityRates(topLevelQuery);
+        expect(JSON.stringify(updatedQuery)).equal(JSON.stringify(expectedQuery));
+        done()
+    });
 });

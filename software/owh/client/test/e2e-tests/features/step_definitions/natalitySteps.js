@@ -92,6 +92,46 @@ var natalityStepsDefinitionWrapper = function () {
             expect(element(by.id("natality_current_year_"+year)).getAttribute("disabled")).to.eventually.equal('true');
         });
     });
+
+    this.Then(/^the data table must show Births, Female Population and Birth Rates$/, function () {
+        natalityPage.getTableRowData(0).then(function(firstRowData){
+            expect(firstRowData[0]).to.equals('American Indian or Alaska Native');
+            expect(firstRowData[1]).to.contains('Rate');
+            expect(firstRowData[1]).to.contains('4,486.8');
+            expect(firstRowData[1]).to.contains('Births');
+            expect(firstRowData[1]).to.contains('44,962');
+            expect(firstRowData[1]).to.contains('Female Population');
+            expect(firstRowData[1]).to.contains('1,002,104');
+        });
+        natalityPage.getTableRowData(1).then(function(firstRowData){
+            expect(firstRowData[0]).to.equals('Asian or Pacific Islander');
+            expect(firstRowData[1]).to.contains('6,078.1');
+            expect(firstRowData[1]).to.contains('283,111');
+            expect(firstRowData[1]).to.contains('4,657,922')
+        });
+    });
+
+    this.Then(/^the data table should display values filtered by age selected$/, function () {
+        natalityPage.getTableRowData(0).then(function(firstRowData){
+            expect(firstRowData[0]).to.equals('American Indian or Alaska Native');
+            expect(firstRowData[1]).to.contains('Rate');
+            expect(firstRowData[1]).to.contains('2,733.9');
+            expect(firstRowData[1]).to.contains('Births');
+            expect(firstRowData[1]).to.contains('5,006');
+            expect(firstRowData[1]).to.contains('Female Population');
+            expect(firstRowData[1]).to.contains('183,109');
+        });
+        natalityPage.getTableRowData(1).then(function(firstRowData){
+            expect(firstRowData[0]).to.equals('Asian or Pacific Islander');
+            expect(firstRowData[1]).to.contains('771.9');
+            expect(firstRowData[1]).to.contains('4,641');
+            expect(firstRowData[1]).to.contains('601,244')
+        });
+    });
+
+    this.Then(/^I click on "([^"]*)"$/, function (arg1) {
+        element(by.cssContainingText('a', arg1)).click();
+    });
 };
 
 module.exports = natalityStepsDefinitionWrapper;
