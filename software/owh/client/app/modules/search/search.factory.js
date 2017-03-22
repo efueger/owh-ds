@@ -137,6 +137,7 @@
                 else if(primaryFilter.sideFilters[index].filters.selectedNodes != undefined) {
                     primaryFilter.sideFilters[index].filters.selectedNodes.length = 0;
                 }
+                addOrFilterToPrimaryFilterValue(filter.filters, primaryFilter);
             });
         }
 
