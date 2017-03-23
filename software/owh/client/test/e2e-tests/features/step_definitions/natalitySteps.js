@@ -65,7 +65,7 @@ var natalityStepsDefinitionWrapper = function () {
     });
 
 
-    this.Then(/^I see expected filters should be disabled$/, function () {
+    this.Then(/^I see expected filters should be disabled for Birth Rates$/, function () {
         //Expand all filters
         element(by.className('show-more-0')).click();
         element(by.className('show-more-1')).click();
@@ -131,6 +131,19 @@ var natalityStepsDefinitionWrapper = function () {
 
     this.Then(/^I click on "([^"]*)"$/, function (arg1) {
         element(by.cssContainingText('a', arg1)).click();
+    });
+
+    this.Then(/^I see expected filters should be disabled for Fertility Rates$/, function () {
+        element(by.className('show-more-0')).click();
+        element(by.className('show-more-1')).click();
+        element(by.className('show-more-2')).click();
+        var allElements = element.all(by.css('cursor-not-allowed')).all(by.css('custom-link'));
+        allElements.getText().then(function (filters) {
+            filters.forEach(function (filter) {
+                expect(["Month","Weekday", "Sex", "Gestational Age at Birth","Month Prenatal Care Began","Birth Weight","Birth Weight 4","Birth Weight 12","Plurality or Multiple Birth","Live Birth Order","Birth Place","Delivery Method","Medical Attendant","Ethinicity","Marital Status","Age of Mother","Education",
+                    "Anemia","Cardiac Disease","Chronic Hypertension","Diabetes","Eclampsia","Hydramnios / Oligohydramnios","Incompetent Cervix","Lung disease","Pregnancy-associated Hypertension","Tobacco Use"]).to.include(filter);
+            });
+        });
     });
 };
 
