@@ -26,7 +26,7 @@
         ots.goBackward = goBackward;
         ots.$onChanges = function() {
             var filters = [];
-            if(ots.filters.selectedPrimaryFilter.key === 'prams') {
+            if(ots.filters && ots.filters.selectedPrimaryFilter.key === 'prams') {
                 filters = ots.showFilters.prams;
             }
             else if(['number_of_deaths', 'crude_death_rates', 'age-adjusted_death_rates'].indexOf(ots.tableView) !== -1) {
