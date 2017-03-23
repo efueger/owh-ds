@@ -46,6 +46,13 @@ class NatalityETL (ETL):
                 record  = natality_parser.parseNextLine()
                 if not record:
                     break
+
+                if record['residence'] == '4':
+                    logger.info("Skipping foreign resident")
+                    continue
+
+                del record['residence']
+
                 record_count += 1
                 self.batchRepository.persist({"index": {"_index": self.config['elastic_search']['index'],
                                                         "_type": self.config['elastic_search']['type'],

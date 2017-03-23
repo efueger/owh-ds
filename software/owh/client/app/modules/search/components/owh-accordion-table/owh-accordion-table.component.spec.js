@@ -31,6 +31,7 @@ describe('owhAccordionTable component: ', function() {
         $httpBackend.whenGET('app/modules/search/components/owh-accordion-table/owhAccordionTable.html').respond( $templateCache.get('app/modules/search/components/owh-accordion-table/owhAccordionTable.html'));
         $httpBackend.whenGET('/getFBAppID').respond({data: { fbAppID: 1111111111111111}});
         $httpBackend.whenGET('/yrbsQuestionsTree/2015').respond({data: {}});
+        $httpBackend.whenGET('/pramsQuestionsTree').respond({data: { }});
     });
 
     it('should have a row of headers for each column header', function() {
@@ -105,7 +106,8 @@ describe('owhAccordionTable component: ', function() {
         var data = [{questions: [{}, {}]}, {questions: []}]
         var bindings = {
             data: data,
-            headers: [[{}, {}], [{}, {}]]
+            headers: [[{}, {}], [{}, {}]],
+            primaryKey: 'mental_health'
         };
         var ctrl = $componentController('owhAccordionTable', null, bindings);
         var category = {title: 'Alcohol and Other Drug Use', questions: [

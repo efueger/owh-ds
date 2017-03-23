@@ -37,6 +37,7 @@ describe('search factory ', function(){
         $httpBackend.whenGET('/getFBAppID').respond({data: { fbAppID: 1111111111111111}});
         questionsTreeJson = __fixtures__['app/modules/search/fixtures/search.factory/questionsTree'];
         $httpBackend.whenGET('/yrbsQuestionsTree/2015').respond(questionsTreeJson);
+        $httpBackend.whenGET('/pramsQuestionsTree').respond({data: { }});
         $rootScope.questionsList = questionsTreeJson.questionsList;
         filters = searchFactory.getAllFilters();
         filters.primaryFilters = utils.findAllByKeyAndValue(filters.search, 'primary', true);
