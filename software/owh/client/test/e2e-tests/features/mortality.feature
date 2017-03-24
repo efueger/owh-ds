@@ -136,6 +136,21 @@ Scenario: Autopsy options should be in proper order
   Then user expands autopsy filter
   Then autopsy options should be in proper order
 
+  Scenario: verify Place of Death filter options
+    Given I am on search page
+    When user sees side filter
+    Then user expands placeOfDeath filter
+    And user clicks on "+ 6 more" more link for "Place of Death" filter
+    Then placeofDeath filter options should be in proper order
+
+  Scenario: filter data with Hospice Facility
+    Given I am on search page
+    When user sees side filter
+    Then user expands placeOfDeath filter
+    And user clicks on "+ 6 more" more link for "Place of Death" filter
+    When user select "Hospice facility" option in "Place of Death" filter
+    Then data table should display right Number of Deaths
+
 
 #Scenario: Suppressed
 #  When counts fall below the determined "cut-off" value and the conditions for suppression are met
