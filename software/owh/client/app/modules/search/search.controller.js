@@ -149,7 +149,8 @@
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
             'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
-            'birth_rates': ['current_year', 'race']
+            'birth_rates': ['current_year', 'race'],
+            'fertility_rates': ['current_year', 'race', 'mother_age_r8', 'mother_age_r14', 'mother_age_r9', 'mother_age' ]
         };
 
         //functionality to be added to the side filters

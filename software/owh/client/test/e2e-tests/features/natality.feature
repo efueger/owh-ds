@@ -34,10 +34,23 @@ Feature: Natality filters
     Then I should see filter type "Birth Rates" selected for show me dropdown
     And the data table must show Births, Population and Birth Rates
 
-  Scenario: Disable filters when showme filter value changes
+  Scenario: Disable filters when show me filter value changes
     When I change show me dropdown option to "Birth Rates"
     Then I see expected filters should be disabled
     And years "2000", "2001", "2002" should be disabled for Year filter
+
+  Scenario: Fertility rates
+    When I change show me dropdown option to "Fertility Rates"
+    Then I should see filter type "Fertility Rates" selected for show me dropdown
+    And the data table must show Births, Female Population and Birth Rates
+
+  Scenario: Fertility rates for Mother's age 9
+    When I change show me dropdown option to "Fertility Rates"
+    Then I click on "6 more filters"
+    And I expand "Mother’s Age 9" filter section
+    And  filter "Mother’s Age 9" and option "15-19 years" selected
+    And the data table should display values filtered by age selected
+
 
 
 

@@ -392,7 +392,6 @@ function buildAPIQuery(primaryFilter) {
     if(primaryFilter.searchFor) {
         apiQuery = primaryFilter;
     }
-    //var defaultHeaders = [];
 
     // For YRBS query capture the basisc/advanced search view
     if(primaryFilter.key === 'mental_health' && primaryFilter.showBasicSearchSideMenu) {
@@ -477,7 +476,6 @@ function buildFilterQuery(filter) {
 }
 
 function getFilterQuery(filter) {
-    var values = [];
     return {
         key: filter.key,
         queryKey: filter.aggregationKey ? filter.aggregationKey : filter.queryKey,
@@ -526,6 +524,34 @@ function prepareChartAggregations(headers, countKey) {
         chartHeaders: chartHeaders,
         chartAggregations: chartAggregations
     }
+}
+
+/**
+ * To calculate Fertility Rates, Filter census rates query with
+ * Age filter (15 to 44 years) and Gender (Female)
+ * If user don't select any option for Age group related filters in Natality - Fertility Rates page, then Fertility Rates calculation consider
+ * all female with age 15 to 44 years population
+ * @param topLevelQuery
+ * @returns {*}
+ */
+function addFiltersToCalcFertilityRates(topLevelQuery) {
+
+    var query = topLevelQuery.query.filtered.filter;
+    var queryString = JSON.stringify(query);
+    //if(['mother_age', 'mother_age_r14', 'mother_age_r8', 'mother_age_r9'].indexOf(queryString) < 0) {
+    if(queryString.indexOf('mother_age') < 0 && queryString.indexOf('mother_age_r14') < 0 && queryString.indexOf('mother_age_r8') < 0 && queryString.indexOf('mother_age_r9') < 0 ) {
+        var ageValues = ["15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "37", "38", "39", "40", "41", "42", "43", "44"];
+        var ageQuery = buildBoolQuery("age", ageValues, false);
+        if(!isEmptyObject(ageQuery)) {
+            query.bool.must.push(ageQuery);
+        }
+    }
+    var sexQuery = buildBoolQuery("sex", 'Female', false);
+    if(!isEmptyObject(sexQuery)) {
+        query.bool.must.push(sexQuery);
+    }
+    topLevelQuery.query.filtered.filter = query;
+    return topLevelQuery;
 }
 
 var chartMappings = {
@@ -795,6 +821,7 @@ module.exports.prepareAggregationQuery = prepareAggregationQuery;
 module.exports.buildSearchQuery = buildSearchQuery;
 module.exports.isEmptyObject = isEmptyObject;
 module.exports.buildAPIQuery = buildAPIQuery;
+module.exports.addFiltersToCalcFertilityRates = addFiltersToCalcFertilityRates;
 // module.exports.buildQueryForYRBS = buildQueryForYRBS;
 module.exports.addCountsToAutoCompleteOptions = addCountsToAutoCompleteOptions;
 module.exports.prepareMapAggregations = prepareMapAggregations;

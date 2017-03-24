@@ -1,5 +1,4 @@
 var qc = require('../api/queryCache');
-var should = require('should');
 var expect = require("expect.js");
 
 describe("Query Cache", function () {
