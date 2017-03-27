@@ -1756,7 +1756,7 @@
                     allFilters: filters.natalityFilters, searchResults: searchNatality, dontShowInlineCharting: true,
                     chartAxisLabel:'Population', countLabel: 'Total',  countQueryKey: 'pop', tableView:'number_of_births',
                     runOnFilterChange: true,
-                    birthRatesDisabledYears: ['2000', '2001', '2002'],
+                    birthAndFertilityRatesDisabledYears: ['2000', '2001', '2002'],
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true, groupOptions: filters.groupOptions,

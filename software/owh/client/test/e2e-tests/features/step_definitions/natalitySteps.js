@@ -65,7 +65,7 @@ var natalityStepsDefinitionWrapper = function () {
     });
 
 
-    this.Then(/^I see expected filters should be disabled$/, function () {
+    this.Then(/^I see expected filters should be disabled for Birth Rates$/, function () {
         //Expand all filters
         element(by.className('show-more-0')).click();
         element(by.className('show-more-1')).click();
@@ -90,6 +90,59 @@ var natalityStepsDefinitionWrapper = function () {
         var yearsList = [arg1, arg2, arg3];
         yearsList.forEach(function(year){
             expect(element(by.id("natality_current_year_"+year)).getAttribute("disabled")).to.eventually.equal('true');
+        });
+    });
+
+    this.Then(/^the data table must show Births, Female Population and Birth Rates$/, function () {
+        natalityPage.getTableRowData(0).then(function(firstRowData){
+            expect(firstRowData[0]).to.equals('American Indian or Alaska Native');
+            expect(firstRowData[1]).to.contains('Rate');
+            expect(firstRowData[1]).to.contains('4,486.8');
+            expect(firstRowData[1]).to.contains('Births');
+            expect(firstRowData[1]).to.contains('44,962');
+            expect(firstRowData[1]).to.contains('Female Population');
+            expect(firstRowData[1]).to.contains('1,002,104');
+        });
+        natalityPage.getTableRowData(1).then(function(firstRowData){
+            expect(firstRowData[0]).to.equals('Asian or Pacific Islander');
+            expect(firstRowData[1]).to.contains('6,078.1');
+            expect(firstRowData[1]).to.contains('283,111');
+            expect(firstRowData[1]).to.contains('4,657,922')
+        });
+    });
+
+    this.Then(/^the data table should display values filtered by age selected$/, function () {
+        natalityPage.getTableRowData(0).then(function(firstRowData){
+            expect(firstRowData[0]).to.equals('American Indian or Alaska Native');
+            expect(firstRowData[1]).to.contains('Rate');
+            expect(firstRowData[1]).to.contains('2,733.9');
+            expect(firstRowData[1]).to.contains('Births');
+            expect(firstRowData[1]).to.contains('5,006');
+            expect(firstRowData[1]).to.contains('Female Population');
+            expect(firstRowData[1]).to.contains('183,109');
+        });
+        natalityPage.getTableRowData(1).then(function(firstRowData){
+            expect(firstRowData[0]).to.equals('Asian or Pacific Islander');
+            expect(firstRowData[1]).to.contains('771.9');
+            expect(firstRowData[1]).to.contains('4,641');
+            expect(firstRowData[1]).to.contains('601,244')
+        });
+    });
+
+    this.Then(/^I click on "([^"]*)"$/, function (arg1) {
+        element(by.cssContainingText('a', arg1)).click();
+    });
+
+    this.Then(/^I see expected filters should be disabled for Fertility Rates$/, function () {
+        element(by.className('show-more-0')).click();
+        element(by.className('show-more-1')).click();
+        element(by.className('show-more-2')).click();
+        var allElements = element.all(by.css('cursor-not-allowed')).all(by.css('custom-link'));
+        allElements.getText().then(function (filters) {
+            filters.forEach(function (filter) {
+                expect(["Month","Weekday", "Sex", "Gestational Age at Birth","Month Prenatal Care Began","Birth Weight","Birth Weight 4","Birth Weight 12","Plurality or Multiple Birth","Live Birth Order","Birth Place","Delivery Method","Medical Attendant","Ethinicity","Marital Status","Age of Mother","Education",
+                    "Anemia","Cardiac Disease","Chronic Hypertension","Diabetes","Eclampsia","Hydramnios / Oligohydramnios","Incompetent Cervix","Lung disease","Pregnancy-associated Hypertension","Tobacco Use"]).to.include(filter);
+            });
         });
     });
 };

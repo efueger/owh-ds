@@ -149,7 +149,8 @@
         sc.availableFilters = {
             'crude_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
             'age-adjusted_death_rates': ['year', 'gender', 'race', 'hispanicOrigin'],
-            'birth_rates': ['current_year', 'race']
+            'birth_rates': ['current_year', 'race'],
+            'fertility_rates': ['current_year', 'race', 'mother_age_r8', 'mother_age_r14', 'mother_age_r9', 'mother_age' ]
         };
 
         //functionality to be added to the side filters
@@ -421,10 +422,10 @@
                     eachObject.disabled = false;
                 });
                 //Check if user selected year's 2000, 2001, 2002 and remove these years from selected year's list
-                //And disable these years in side filters
-                if (sc.filters.selectedPrimaryFilter.tableView == 'birth_rates') {
+                //And disable these years in side filters for birth_rates and fertility_rates
+                if (sc.filters.selectedPrimaryFilter.tableView == 'birth_rates' || sc.filters.selectedPrimaryFilter.tableView == 'fertility_rates') {
                     //Remove years 2000, 2001, 2002 from selected lists
-                    angular.forEach(sc.filters.selectedPrimaryFilter.birthRatesDisabledYears, function (year) {
+                    angular.forEach(sc.filters.selectedPrimaryFilter.birthAndFertilityRatesDisabledYears, function (year) {
                         var index = selectedYears.value.indexOf(year);
                         if (index >= 0) {
                             selectedYears.value.splice(index, 1);
@@ -432,7 +433,7 @@
                     });
                     //Disable 2000, 2001, 2002 in side filters
                     angular.forEach(selectedYears.autoCompleteOptions, function (eachObject) {
-                        if (sc.filters.selectedPrimaryFilter.birthRatesDisabledYears.indexOf(eachObject.key) !== -1) {
+                        if (sc.filters.selectedPrimaryFilter.birthAndFertilityRatesDisabledYears.indexOf(eachObject.key) !== -1) {
                             eachObject.disabled = true;
                         }
                     });
