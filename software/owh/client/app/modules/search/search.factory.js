@@ -1050,6 +1050,7 @@
                 {key:'Hospital, clinic or Medical Center - Inpatient',title:'Hospital, clinic or Medical Center-  Inpatient'},
                 {key:'Hospital, Clinic or Medical Center - Outpatient or admitted to Emergency Room',title:'Hospital, Clinic or Medical Center-  Outpatient or admitted to Emergency Room'},
                 {key:'Nursing home/long term care',title:'Nursing home/long term care'},
+                {key:'Hospice facility',title:'Hospice facility'},
                 {key:'Place of death unknown',title:'Place of death unknown'},
                 {key:'Other',title:'Other'}
             ];

@@ -12,6 +12,7 @@ var MortalitySearchPage = function() {
     msp.hidePecentageButton = element(by.id('togglePercentage')).element(by.cssContainingText('a', 'Hide'));
     msp.raceOptionsLink = element(by.partialLinkText('Race'));
     msp.autopsyOptionsLink = element(by.partialLinkText('Autopsy'));
+    msp.placeOfDeathOptionsLink = element(by.partialLinkText('Place of Death'));
     msp.raceOption2Link = element(by.cssContainingText('label', 'White'));
     msp.raceOption2 = element(by.cssContainingText('a', 'Race')).element(by.xpath('ancestor::label')).element(by.xpath('following-sibling::ul')).all(by.tagName('li')).get(3);
     msp.interestedInSelectBox = element(by.id('interestedIn'));

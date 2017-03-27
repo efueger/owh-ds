@@ -563,5 +563,49 @@ var mortalityStepDefinitionsWrapper = function () {
             })
         });
     });
+
+    this.Then(/^user expands placeOfDeath filter$/, function () {
+        mortalityPage.placeOfDeathOptionsLink.click();
+    });
+
+    this.Then(/^placeofDeath filter options should be in proper order$/, function () {
+        mortalityPage.getOptions('Place of Death').then(function(elements) {
+            expect(elements[1].getText()).to.eventually.contains('All');
+            expect(elements[2].getText()).to.eventually.contains('Decedent’s home');
+            expect(elements[3].getText()).to.eventually.contains('Hospital, clinic or Medical Center- Patient status unknown');
+            expect(elements[4].getText()).to.eventually.contains('Hospital, Clinic or Medical Center- Dead on Arrival');
+            expect(elements[5].getText()).to.eventually.contains('Hospital, clinic or Medical Center- Inpatient');
+            expect(elements[6].getText()).to.eventually.contains('Hospital, Clinic or Medical Center- Outpatient or admitted to Emergency Room');
+            expect(elements[7].getText()).to.eventually.contains('Nursing home/long term care');
+            expect(elements[8].getText()).to.eventually.contains('Hospice facility');
+            expect(elements[9].getText()).to.eventually.contains('Place of death unknown');
+            expect(elements[10].getText()).to.eventually.contains('Other');
+        });
+    });
+
+    this.When(/^user select "([^"]*)" option in "([^"]*)" filter$/, function (arg1, arg2) {
+        var filter = element(by.className('side-filters')).element(by.xpath('.//*[.="'+arg2+'"]'));
+        var filterParentElement = filter.element(by.xpath('..')).element(by.tagName('i')).element(by.xpath('..')).element(by.xpath('..')).element(by.xpath('..'));
+        filterParentElement.element(by.xpath('.//*[.="'+arg1+'"]')).click();
+    });
+
+    this.Then(/^data table should display right Number of Deaths$/, function () {
+        mortalityPage.getTableRowData(0).then(function(rowdata){
+            expect(rowdata[0]).to.equals('American Indian');
+            expect(rowdata[3]).to.contains('875');
+        });
+        mortalityPage.getTableRowData(1).then(function(rowdata){
+            expect(rowdata[0]).to.equals('Asian or Pacific Islander');
+            expect(rowdata[3]).to.contains('3,100');
+        });
+        mortalityPage.getTableRowData(2).then(function(rowdata){
+            expect(rowdata[0]).to.equals('Black');
+            expect(rowdata[3]).to.contains('22,147');
+        });
+        mortalityPage.getTableRowData(3).then(function(rowdata){
+            expect(rowdata[0]).to.equals('White');
+            expect(rowdata[3]).to.contains('183,453');
+        });
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;
