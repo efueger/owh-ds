@@ -261,7 +261,8 @@
                                 <label for="{{sfc.primaryKey}}_{{group.key}}_{{option.key}}" class="custom-label"
                                        ng-init="title = option.title">
                                     <span class="count-label" translate="{{title}}"></span>
-                                    <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts" ng-bind="option.count | number"></span>
+                                    <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts && option.count != 'suppressed'" ng-bind="option.count | number"></span>
+                                    <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts && option.count === 'suppressed'">Suppressed</span>
                                 </label>
                             </div>
                         </li>
@@ -276,7 +277,8 @@
                                 <label for="{{sfc.primaryKey}}_{{group.key}}_{{option.key}}" class="custom-label"
                                        ng-init="title = option.title">
                                     <span ng-class="option.disabled?'disable-click':'count-label'" translate="{{title}}"></span>
-                                    <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts" ng-bind="option.count | number"></span>
+                                    <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts && option.count != 'suppressed'" ng-bind="option.count | number"></span>
+                                    <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts && option.count === 'suppressed'">Suppressed</span>
                                 </label>
                             </div>
 
@@ -302,7 +304,8 @@
                                         <label for="{{sfc.primaryKey}}_{{group.key}}_{{subOption.key}}" class="custom-label"
                                                ng-init="title = subOption.title">
                                             <span class="count-label" translate="{{title}}"></span>
-                                            <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts" ng-bind="subOption.count | number"></span>
+                                            <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts && subOption.count != 'suppressed'" ng-bind="subOption.count | number"></span>
+                                            <span class="pull-right count-value" ng-if="!sideFilter.dontShowCounts && subOption.count === 'suppressed'">Suppressed</span>
                                         </label>
                                     </li>
                                 </ul>

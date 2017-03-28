@@ -169,6 +169,9 @@ ElasticClient.prototype.aggregateDeaths = function(query, isStateSelected){
         logger.debug("Mortality ES Query: "+ JSON.stringify( query[0]));
         this.executeESQuery(mortality_index, mortality_type,query[0]).then(function (resp) {
             var data = searchUtils.populateDataWithMappings(resp, 'deaths');
+            if (isStateSelected) {
+                searchUtils.applySuppressions(data, 'deaths');
+            }
             deferred.resolve(data);
         }, function (err) {
             logger.error(err.message);

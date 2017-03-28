@@ -86,7 +86,6 @@ function search(q) {
         finalQuery.wonderQuery = preparedQuery.apiQuery;
         new elasticSearch().aggregateDeaths(sideFilterQuery, isStateSelected).then(function (sideFilterResults) {
             new elasticSearch().aggregateDeaths(finalQuery, isStateSelected).then(function (response) {
-                searchUtils.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
                 var resData = {};
                 resData.queryJSON = q;
                 resData.resultData = response.data;
