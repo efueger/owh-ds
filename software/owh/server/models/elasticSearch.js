@@ -148,6 +148,7 @@ ElasticClient.prototype.aggregateDeaths = function(query){
             this.aggregateCensusDataForMortalityQuery(query[1], census_rates_index, census_rates_type)
         ];
         if(query.wonderQuery) {
+            logger.debug("Wonder ES Query: "+ JSON.stringify(query.wonderQuery));
             promises.push(new wonder('D76').invokeWONDER(query.wonderQuery))
         }
         Q.all(promises).then( function (resp) {

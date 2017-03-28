@@ -607,5 +607,48 @@ var mortalityStepDefinitionsWrapper = function () {
             expect(rowdata[3]).to.contains('183,453');
         });
     });
+
+    this.Then(/^I should see Crude Deth Rates page$/, function () {
+        expect(mortalityPage.deathRateDisclaimer.getText()).to.eventually.equal("Population details from NCHS Bridged-Race Estimates is used to calculate Death Rates (per 100,000)");
+    });
+
+    this.Then(/^I select "([^"]*)" value "([^"]*)"$/, function (arg1, arg2) {
+        mortalityPage.getOptions(arg1).then(function(elements) {
+            elements[2015 - arg2 + 2].click();
+        });
+    });
+
+    this.Then(/^I un\-select "([^"]*)" value "([^"]*)"$/, function (arg1, arg2) {
+        mortalityPage.getOptions(arg1).then(function(elements) {
+            elements[2015 - arg2 + 2].click();
+        });
+    });
+
+    this.Then(/^data table should display right population count for Crude Death Rates$/, function () {
+        mortalityPage.getTableRowData(0).then(function(rowdata){
+            expect(rowdata[0]).to.equals('American Indian');
+            //Female
+            expect(rowdata[1]).to.contains('Rate');
+            expect(rowdata[1]).to.contains('346.1');
+            expect(rowdata[1]).to.contains('Deaths');
+            expect(rowdata[1]).to.contains('5,178');
+            expect(rowdata[1]).to.contains('Population');
+            expect(rowdata[1]).to.contains('1,496,044');
+            //Male
+            expect(rowdata[2]).to.contains('Rate');
+            expect(rowdata[2]).to.contains('415.6');
+            expect(rowdata[2]).to.contains('Deaths');
+            expect(rowdata[2]).to.contains('6,185');
+            expect(rowdata[2]).to.contains('Population');
+            expect(rowdata[2]).to.contains('1,488,106');
+            //Number of deaths
+            expect(rowdata[3]).to.contains('Rate');
+            expect(rowdata[3]).to.contains('380.8');
+            expect(rowdata[3]).to.contains('Deaths');
+            expect(rowdata[3]).to.contains('11,363');
+            expect(rowdata[3]).to.contains('Population');
+            expect(rowdata[3]).to.contains('2,984,150');
+        });
+    });
 };
 module.exports = mortalityStepDefinitionsWrapper;
