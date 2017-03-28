@@ -47,13 +47,13 @@ describe("Elastic Search", function () {
         new elasticSearch().aggregateNatalityData(query).then(function (resp) {
             var  data = resp.data.nested.table.race;
             expect(data[0].name).equal('American Indian or Alaska Native');
-            expect(data[0].natality).equal(44962);
+            expect(data[0].natality).equal(44928);
             var  nestedData = data[0].sex;
             expect(nestedData[0].name).equal('Female');
-            expect(nestedData[0].natality).equal(22141);
+            expect(nestedData[0].natality).equal(22120);
             expect(nestedData[0].pop).equal(23068743);
             expect(nestedData[1].name).equal('Male');
-            expect(nestedData[1].natality).equal(22821);
+            expect(nestedData[1].natality).equal(22808);
             expect(nestedData[1].pop).equal(21240651);
             done();
         })
