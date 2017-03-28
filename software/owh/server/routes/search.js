@@ -75,13 +75,17 @@ function search(q) {
     var deferred = Q.defer();
     var preparedQuery = queryBuilder.buildAPIQuery(q);
     var finalQuery = '';
+    var stateFilter = queryBuilder.findFilterByKeyAndValue(q.sideFilters, 'key', 'state');
+
+    var isStateSelected = queryBuilder.isFilterApplied(stateFilter);
+
     logger.debug("Incoming query: ", JSON.stringify(preparedQuery));
     if (preparedQuery.apiQuery.searchFor === "deaths") {
         finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
         var sideFilterQuery = queryBuilder.buildSearchQuery(queryBuilder.addCountsToAutoCompleteOptions(q), true);
         finalQuery.wonderQuery = preparedQuery.apiQuery;
         new elasticSearch().aggregateDeaths(sideFilterQuery).then(function (sideFilterResults) {
-            new elasticSearch().aggregateDeaths(finalQuery).then(function (response) {
+            new elasticSearch().aggregateDeaths(finalQuery, isStateSelected).then(function (response) {
                 searchUtils.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
                 var resData = {};
                 resData.queryJSON = q;

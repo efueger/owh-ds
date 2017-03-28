@@ -179,11 +179,13 @@
                         } else if(otc.tableView === 'number_of_deaths') {
                             if(column.title === 'suppressed') {
                                 cell += '<span>Suppressed</span>';
-                            } else {
+                            } else if(column.title) {
                                 cell += '<span class="count-value">' + $filter('number')(column.title) + '</span>';
                                 if(colIndex !== row.length - 1 && column.percentage  > 0 && otc.showPercentage) {
                                     cell += '<span class="count-value"> (' + $filter('number')(column.percentage, 1) + '%)</span>';
                                 }
+                            } else {
+                                cell += '<span>Not Available</span>';
                             }
                         } else if(otc.tableView === 'bridge_race') {
                             cell += '<span class="count-value">' + $filter('number')(column.title) + '</span>';

@@ -136,7 +136,7 @@ function mergeCensusRecursively(mort, census) {
 }
 
 
-ElasticClient.prototype.aggregateDeaths = function(query){
+ElasticClient.prototype.aggregateDeaths = function(query, isStateSelected){
     var self = this;
     var client = this.getClient(mortality_index);
     var deferred = Q.defer();
@@ -154,6 +154,11 @@ ElasticClient.prototype.aggregateDeaths = function(query){
             var data = searchUtils.populateDataWithMappings(resp[0], 'deaths');
             self.mergeWithCensusData(data, resp[1]);
             searchUtils.mergeAgeAdjustedRates(data.data.nested.table, resp[2]);
+
+            if (isStateSelected) {
+                searchUtils.applySuppressions(data, 'deaths')
+            }
+
             deferred.resolve(data);
         }, function (err) {
             logger.error(err.message);
