@@ -114,6 +114,7 @@ function applySuppressions(obj, countKey) {
             if (property === 'name') {
                 continue;
             }
+            //keep the track of data types
             if (['table', 'charts', 'maps'].indexOf(property) != -1) {
                 dataType = property;
             }
@@ -125,9 +126,9 @@ function applySuppressions(obj, countKey) {
                     suppressCounts(arrObj, countKey);
                 });
             } else if(obj[countKey] && obj[countKey] < 10) {
-                if(dataType == 'table') {
+                if(dataType == 'table') {//for table data set to suppressed
                     obj[countKey] = 'suppressed';
-                } else {
+                } else {//for chart and map set suppressed values to 0
                     obj[countKey] = 0;
                 }
             }
@@ -161,9 +162,9 @@ function applySuppressions(obj, countKey) {
             } else if (obj[property].constructor === Array) {
                 obj[property].forEach(function(arrObj) {
                     if (obj[countKey] && JSON.stringify(obj).indexOf('suppressed') != -1 ) {
-                        if(dataType == 'table') {
+                        if(dataType == 'table') {//for table data set to suppressed
                             obj[countKey] = 'suppressed';
-                        } else {
+                        } else {//for chart and map set suppressed values to 0
                             obj[countKey] = 0;
                         }
                     }
