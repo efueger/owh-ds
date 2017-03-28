@@ -84,7 +84,7 @@ function search(q) {
         finalQuery = queryBuilder.buildSearchQuery(preparedQuery.apiQuery, true);
         var sideFilterQuery = queryBuilder.buildSearchQuery(queryBuilder.addCountsToAutoCompleteOptions(q), true);
         finalQuery.wonderQuery = preparedQuery.apiQuery;
-        new elasticSearch().aggregateDeaths(sideFilterQuery).then(function (sideFilterResults) {
+        new elasticSearch().aggregateDeaths(sideFilterQuery, isStateSelected).then(function (sideFilterResults) {
             new elasticSearch().aggregateDeaths(finalQuery, isStateSelected).then(function (response) {
                 searchUtils.suppressSideFilterTotals(sideFilterResults.data.simple, response.data.nested.table);
                 var resData = {};
@@ -122,8 +122,8 @@ function search(q) {
         sideFilterTotalCountQuery.countQueryKey = 'pop';
         var sideFilterQuery = queryBuilder.buildSearchQuery(sideFilterTotalCountQuery, true);
 
-        new elasticSearch().aggregateCensusData(sideFilterQuery[0]).then(function (sideFilterResults) {
-            new elasticSearch().aggregateCensusData(finalQuery[0]).then(function (response) {
+        new elasticSearch().aggregateCensusData(sideFilterQuery[0], isStateSelected).then(function (sideFilterResults) {
+            new elasticSearch().aggregateCensusData(finalQuery[0], isStateSelected).then(function (response) {
                 var resData = {};
                 resData.queryJSON = q;
                 resData.resultData = response.data;

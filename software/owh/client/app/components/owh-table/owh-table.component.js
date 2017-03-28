@@ -188,7 +188,13 @@
                                 }
                             }
                         } else if(otc.tableView === 'bridge_race') {
-                            cell += '<span class="count-value">' + $filter('number')(column.title) + '</span>';
+                            if(column.title === 'suppressed') {
+                                cell += '<span>Suppressed</span>';
+                            } else if(column.title === 'Not Available') {
+                                cell += '<span>Not Available</span>';
+                            } else {
+                                cell += '<span class="count-value">' + $filter('number')(column.title) + '</span>';
+                            }
                         } else if(otc.tableView === 'number_of_births') {
                             cell += '<span class="count-value">' + $filter('number')(column.title) + '</span>';
                         }
