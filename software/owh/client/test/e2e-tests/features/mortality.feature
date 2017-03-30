@@ -136,20 +136,29 @@ Scenario: Autopsy options should be in proper order
   Then user expands autopsy filter
   Then autopsy options should be in proper order
 
-  Scenario: verify Place of Death filter options
-    Given I am on search page
-    When user sees side filter
-    Then user expands placeOfDeath filter
-    And user clicks on "+ 6 more" more link for "Place of Death" filter
-    Then placeofDeath filter options should be in proper order
+Scenario: verify Place of Death filter options
+  Given I am on search page
+  When user sees side filter
+  Then user expands placeOfDeath filter
+  And user clicks on "+ 6 more" more link for "Place of Death" filter
+  Then placeofDeath filter options should be in proper order
 
-  Scenario: filter data with Hospice Facility
-    Given I am on search page
-    When user sees side filter
-    Then user expands placeOfDeath filter
-    And user clicks on "+ 6 more" more link for "Place of Death" filter
-    When user select "Hospice facility" option in "Place of Death" filter
-    Then data table should display right Number of Deaths
+Scenario: filter data with Hospice Facility
+  Given I am on search page
+  When user sees side filter
+  Then user expands placeOfDeath filter
+  And user clicks on "+ 6 more" more link for "Place of Death" filter
+  When user select "Hospice facility" option in "Place of Death" filter
+  Then data table should display right Number of Deaths
+
+Scenario: Crude Death rates population count should match with CDC for year 2000
+  Given I am on search page
+  When I choose the option "Crude Death Rates"
+  Then I should see Crude Deth Rates page
+  And user clicks on "+ 13 more" more link for "Year" filter
+  Then I select "Year" value "2000"
+  And I un-select "Year" value "2015"
+  And data table should display right population count for Crude Death Rates
 
 
 #Scenario: Suppressed
