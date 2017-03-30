@@ -1036,7 +1036,6 @@
                 {key: false,title:'Off', tooltip:'Select to hide inline charts'}
             ];
             filters.allowInlineCharting = false;
-            //TODO check with @Gopal why mapping json don't have 'Other'
             filters.races = [
                 {key: 'American Indian', title: 'American Indian or Alaska Native'},
                 {key: 'Asian or Pacific Islander',title: 'Asian or Pacific Islander'},
