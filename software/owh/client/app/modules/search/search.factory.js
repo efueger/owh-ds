@@ -1038,9 +1038,9 @@
             filters.allowInlineCharting = false;
             //TODO check with @Gopal why mapping json don't have 'Other'
             filters.races = [
-                {key: 'American Indian',title: 'American Indian'},
+                {key: 'American Indian', title: 'American Indian or Alaska Native'},
                 {key: 'Asian or Pacific Islander',title: 'Asian or Pacific Islander'},
-                {key: 'Black',title: 'Black'},
+                {key: 'Black',title: 'Black or African American'},
                 {key: 'Other (Puerto Rico only)',title: 'Other (Puerto Rico only)'},
                 {key: 'White',title: 'White'}
             ];
