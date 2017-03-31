@@ -851,7 +851,10 @@
                                 for (var opt in fopts) {
                                     if (newFilters[fkey].indexOf(fopts[opt].key) >= 0) {
                                         fopts[opt].disabled = false;
-                                    } else {
+                                    }
+                                    //below condition only disable filters which are not parent(with no child filters) and
+                                    // not found in response metadata.
+                                    else if(!fopts[opt].group) {
                                         fopts[opt].disabled = true;
                                     }
                                 }
