@@ -45,9 +45,6 @@
         function horizontalChart(filter1, filter2, data, primaryFilter, stacked, postFixToTooltip) {
             postFixToTooltip = postFixToTooltip ? postFixToTooltip : '';
 
-            var stateFilter = utilService.findFilterByKeyAndValue(primaryFilter.sideFilters, 'key', 'state');
-            var isStateFilter = utilService.isFilterApplied(stateFilter);
-
             var chartData = {
                 data: [],
                 title: "label.title."+filter1.key+"."+filter2.key,
@@ -103,7 +100,7 @@
                                     d.series.forEach(function(elem){
                                         html += "<i class='fa fa-square' style='color:"+elem.color+"'></i>" +
                                             "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"
-                                            + getCount(elem.value, isStateFilter, primaryFilter.applySuppression) + postFixToTooltip + "</div>";
+                                            + getCount(elem.value, primaryFilter) + postFixToTooltip + "</div>";
                                     });
                                     html += "</div>";
                                 return html;
@@ -191,9 +188,6 @@
         /*Vertical Stacked Chart*/
         function verticalChart(filter1, filter2, data, primaryFilter, stacked) {
 
-            var stateFilter = utilService.findFilterByKeyAndValue(primaryFilter.sideFilters, 'key', 'state');
-            var isStateFilter = utilService.isFilterApplied(stateFilter);
-
             var chartData = {
                 data: [],
                 title: "label.title."+filter1.key+"."+filter2.key,
@@ -257,7 +251,7 @@
                                 d.series.forEach(function(elem){
                                     html += "<i class='fa fa-square' style='color:"+elem.color+"'></i>" +
                                         "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"
-                                        +getCount(elem.value, isStateFilter, primaryFilter.applySuppression)+"</div>";
+                                        +getCount(elem.value, primaryFilter)+"</div>";
                                 });
                                 html += "</div>";
                                 return html;
@@ -303,8 +297,6 @@
         }
 
         function lineChart(data, filter, primaryFilter) {
-            var stateFilter = utilService.findFilterByKeyAndValue(primaryFilter.sideFilters, 'key', 'state');
-            var isStateFilter = utilService.isFilterApplied(stateFilter);
 
             var chartData = {
                 data: [],
@@ -366,7 +358,7 @@
                                 d.series.forEach(function(elem){
                                     html += "<i class='fa fa-square' style='color:"+elem.color+"'></i>" +
                                         "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"
-                                        +getCount(elem.value, isStateFilter, primaryFilter.applySuppression) + "</div>";
+                                        +getCount(elem.value, primaryFilter) + "</div>";
                                 });
                                 html += "</div>";
                                 return html;
@@ -401,9 +393,6 @@
         /*Prepare pie chart for single filter*/
         function pieChart( data, filter, primaryFilter, postFixToTooltip ) {
             postFixToTooltip = postFixToTooltip ? postFixToTooltip : '';
-
-            var stateFilter = utilService.findFilterByKeyAndValue(primaryFilter.sideFilters, 'key', 'state');
-            var isStateFilter = utilService.isFilterApplied(stateFilter);
 
             var color = d3.scale.category20();
             var chartData = {
@@ -454,7 +443,7 @@
                                 d.series.forEach(function(elem){
                                     html += "<i class='fa fa-square' style='color:"+elem.color+"'></i>" +
                                         "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"
-                                        +getCount(elem.value, isStateFilter, primaryFilter.applySuppression) + postFixToTooltip + "</div>";
+                                        +getCount(elem.value, primaryFilter) + postFixToTooltip + "</div>";
                                 });
                                 html += "</div>";
                                 return html;
@@ -619,9 +608,11 @@
          * If state filter is selected and count is equals 0- return Suppressed
          * Else return actual count
          */
-        function getCount(count, isStateFilter, applySuppression) {
-            if (count == 0 && applySuppression && isStateFilter) {
-                return 'Suppressed';
+        function getCount(count, primaryFilter) {
+            if (count == 0 && primaryFilter.applySuppression) {
+                var stateFilter = utilService.findFilterByKeyAndValue(primaryFilter.sideFilters, 'key', 'state');
+                var isStateFilter = utilService.isFilterApplied(stateFilter);
+                return isStateFilter? 'Suppressed': $filter('number')(count);
             }
             return $filter('number')(count);
         }
