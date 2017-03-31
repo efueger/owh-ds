@@ -344,6 +344,7 @@ function prepareQuestionTreeForYears(questions, years, prams) {
     var questionTree = [];
     var questionsList = [];
     var catCount = 0;
+    var questionKeys = [];
     //iterate through questions
     for (var qKey in questions) {
         var quesObj = questions[qKey];
@@ -358,9 +359,14 @@ function prepareQuestionTreeForYears(questions, years, prams) {
                 //capture all questions into questionsList
                 questionsList.push({key : quesObj.question, qkey : qKey, title : quesObj.question +"("+quesObj.description+")"});
             } else if(prams) {
-                var question = {text:quesObj.question, id: 'qn' + qKey};
+                //skip duplicate question keys
+                if(questionKeys.indexOf(quesObj.questionid) >= 0) {
+                    continue;
+                }
+                var question = {text:quesObj.question, id: quesObj.questionid};
                 qCategoryMap[qCategory].children.push(question);
-                questionsList.push({key: quesObj.question, qkey: 'qn' + qKey, title: quesObj.question});
+                questionsList.push({key: quesObj.question, qkey: quesObj.questionid, title: quesObj.question});
+                questionKeys.push(quesObj.questionid);
             }
         }
     }

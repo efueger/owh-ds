@@ -300,7 +300,7 @@
                                     <li ng-repeat="subOption in option.options"
                                         class="group-option">
                                         <input id="{{sfc.primaryKey}}_{{group.key}}_{{subOption.key}}" name="{{group.queryKey}}" type="checkbox"
-                                               ng-show="group.filterType === 'checkbox'"  checklist-model="group.value" checklist-value="option.key" ng-disabled="sfc.isOptionDisabled(group, subOption)" ng-click="sfc.onFilterValueChange(sideFilter)">
+                                               ng-show="group.filterType === 'checkbox'"  checklist-model="group.value" checklist-value="subOption.key" ng-disabled="sfc.isOptionDisabled(group, subOption)" ng-click="sfc.onFilterValueChange(sideFilter)">
                                         <label for="{{sfc.primaryKey}}_{{group.key}}_{{subOption.key}}" class="custom-label"
                                                ng-init="title = subOption.title">
                                             <span class="count-label" translate="{{title}}"></span>
