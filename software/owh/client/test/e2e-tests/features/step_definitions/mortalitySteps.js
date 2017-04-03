@@ -417,7 +417,6 @@ var mortalityStepDefinitionsWrapper = function () {
             expect(elements[3].getText()).to.eventually.contains('Asian or Pacific Islander');
             expect(elements[4].getText()).to.eventually.contains('Black');
             expect(elements[5].getText()).to.eventually.contains('White');
-            expect(elements[6].getText()).to.eventually.contains('Other (Puerto Rico only');
         });
     });
 

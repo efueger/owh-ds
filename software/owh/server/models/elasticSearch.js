@@ -136,7 +136,7 @@ function mergeCensusRecursively(mort, census) {
 }
 
 
-ElasticClient.prototype.aggregateDeaths = function(query){
+ElasticClient.prototype.aggregateDeaths = function(query, isStateSelected){
     var self = this;
     var client = this.getClient(mortality_index);
     var deferred = Q.defer();
@@ -155,6 +155,11 @@ ElasticClient.prototype.aggregateDeaths = function(query){
             var data = searchUtils.populateDataWithMappings(resp[0], 'deaths');
             self.mergeWithCensusData(data, resp[1]);
             searchUtils.mergeAgeAdjustedRates(data.data.nested.table, resp[2]);
+
+            if (isStateSelected) {
+                searchUtils.applySuppressions(data, 'deaths');
+            }
+
             deferred.resolve(data);
         }, function (err) {
             logger.error(err.message);
@@ -165,6 +170,9 @@ ElasticClient.prototype.aggregateDeaths = function(query){
         logger.debug("Mortality ES Query: "+ JSON.stringify( query[0]));
         this.executeESQuery(mortality_index, mortality_type,query[0]).then(function (resp) {
             var data = searchUtils.populateDataWithMappings(resp, 'deaths');
+            if (isStateSelected) {
+                searchUtils.applySuppressions(data, 'deaths');
+            }
             deferred.resolve(data);
         }, function (err) {
             logger.error(err.message);
@@ -177,7 +185,7 @@ ElasticClient.prototype.aggregateDeaths = function(query){
 /**
  * This method is used to get the bridge race data(census) based on passed in query
  */
-ElasticClient.prototype.aggregateCensusData = function(query){
+ElasticClient.prototype.aggregateCensusData = function(query, isStateSelected){
     //get tge elasic search client for census index
     var client = this.getClient(census_index);
     var deferred = Q.defer();
@@ -188,7 +196,11 @@ ElasticClient.prototype.aggregateCensusData = function(query){
         request_cache:true
     }).then(function (resp) {
         //parse the search results
-        deferred.resolve(searchUtils.populateDataWithMappings(resp, 'bridge_race', 'pop'))
+        var results = searchUtils.populateDataWithMappings(resp, 'bridge_race', 'pop');
+        if (isStateSelected) {
+            searchUtils.applySuppressions(results, 'bridge_race');
+        }
+        deferred.resolve(results);
     }, function (err) {
         logger.error(err.message);
         deferred.reject(err);
