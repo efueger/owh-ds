@@ -1003,7 +1003,6 @@
                 {key: 'American Indian',title: 'American Indian'},
                 {key: 'Asian or Pacific Islander',title: 'Asian or Pacific Islander'},
                 {key: 'Black',title: 'Black'},
-                {key: 'Other (Puerto Rico only)',title: 'Other (Puerto Rico only)'},
                 {key: 'White',title: 'White'}
             ];
             filters.hispanicOptions = [
@@ -1608,7 +1607,7 @@
                     key: 'deaths', title: 'label.filter.mortality', primary: true, value: [], header:"Mortality",
                     allFilters: filters.allMortalityFilters, searchResults: searchMortalityResults, showMap: false,
                     chartAxisLabel:'Deaths', countLabel: 'Number of Deaths', mapData:{}, tableView:'number_of_deaths',
-                    runOnFilterChange: true,
+                    runOnFilterChange: true, applySuppression:true,
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
@@ -1723,7 +1722,7 @@
                     key: 'bridge_race', title: 'label.census.bridge.race.pop.estimate', primary: true, value:[], header:"Bridged-Race Population Estimates",
                     allFilters: filters.censusFilters, searchResults: searchCensusInfo, dontShowInlineCharting: true, showMap: true,
                     chartAxisLabel:'Population', countLabel: 'Total', countQueryKey: 'pop', tableView:'bridge_race', mapData: {},
-                    runOnFilterChange: true,
+                    runOnFilterChange: true, applySuppression:true,
                     sideFilters:[
                         {
                             filterGroup: false, collapse: false, allowGrouping: true,
