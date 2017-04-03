@@ -154,29 +154,31 @@
         };
 
         //functionality to be added to the side filters
+        var confidenceIntervalOption = {
+            title: 'Confidence Intervals',
+            type: 'toggle',
+            value: false,
+            onChange: function(value) {
+                sc.showConfidenceIntervals = value;
+            },
+            options: [
+                {
+                    title: 'label.mortality.search.table.show.percentage.button',
+                    key: true
+                },
+                {
+                    title: 'label.mortality.search.table.hide.percentage.button',
+                    key: false
+                }
+            ]
+        };
+
         sc.filterUtilities = {
             'mental_health': [
                 {
                     title: 'Variance',
                     options: [
-                        {
-                            title: 'Confidence Intervals',
-                            type: 'toggle',
-                            value: false,
-                            onChange: function(value) {
-                                sc.showConfidenceIntervals = value;
-                            },
-                            options: [
-                                {
-                                    title: 'label.mortality.search.table.show.percentage.button',
-                                    key: true
-                                },
-                                {
-                                    title: 'label.mortality.search.table.hide.percentage.button',
-                                    key: false
-                                }
-                            ]
-                        },
+                        confidenceIntervalOption,
                         {
                             title: 'Unweighted Frequency',
                             type: 'toggle',
@@ -195,6 +197,14 @@
                                 }
                             ]
                         }
+                    ]
+                }
+            ],
+            'prams' : [
+                {
+                    title: 'Variance',
+                    options: [
+                        confidenceIntervalOption
                     ]
                 }
             ]

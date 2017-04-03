@@ -390,7 +390,8 @@
                 "yrbsGrade&yrbsRace": "horizontalBar",
                 "yrbsSex": "horizontalBar",
                 "yrbsRace": "horizontalBar",
-                "yrbsGrade": "horizontalBar"
+                "yrbsGrade": "horizontalBar",
+                "state": "horizontalBar"
             };
 
             var chartTypes = [];

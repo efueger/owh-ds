@@ -83,7 +83,7 @@
                         },
                         valueFormat:function (n){
                             if(isNaN(n)){ return n; }
-                            else if (primaryFilter.key == 'mental_health') {
+                            else if (primaryFilter.key == 'mental_health' || primaryFilter.key === 'prams') {
                                 return d3.format(',.1f')(n);(n);
                             } else {
                                 return d3.format('d')(n);
@@ -109,11 +109,11 @@
             };
             var multiChartBarData = [];
 
-            if (primaryFilter.key == 'mental_health') {
+            if (primaryFilter.key == 'mental_health' || primaryFilter.key === 'prams') {
 
                 var getBarValues = function (barData, filter) {
                     var barValues = [];
-                    angular.forEach(utilService.getSelectedAutoCompleteOptions(filter), function (option,index) {
+                    angular.forEach(utilService.getSelectedAutoCompleteOptions(filter, primaryFilter.key === 'prams'), function (option,index) {
                         //get data for series
                         var eachPrimaryData = utilService.findByKeyAndValue(barData, 'name', option.key);
                         //set data to series values
@@ -130,12 +130,34 @@
                     //series name
                     seriesDataObj["key"] = primaryFilter.chartAxisLabel;
                     //collect series values
-                    seriesDataObj["values"] = getBarValues(data.question[0][filter1.queryKey], filter1);
+                    var question = data.question[0];
+                    if(primaryFilter.key === 'prams') {
+                        question = data.question[1][0];
+                        angular.forEach(data.question[1], function(response) {
+                            if(typeof response === 'object') {
+                                question = response;
+                            }
+                        });
+                    }
+
+                    seriesDataObj["values"] = getBarValues(question[filter1.queryKey], filter1);
                     multiChartBarData.push(seriesDataObj);
                 } else {//for two filters
                     angular.forEach(utilService.getSelectedAutoCompleteOptions(filter1), function (primaryOption,index) {
                         var seriesDataObj = {};
-                        var eachPrimaryData = utilService.findByKeyAndValue(data.question[0][filter1.queryKey], 'name', primaryOption.key);
+                        var question = data.question[0];
+                        if(primaryFilter.key === 'prams') {
+                            question = data.question[1][0];
+                            angular.forEach(data.question[1], function(response) {
+                                if(typeof response === 'object') {
+                                    question = response;
+                                }
+                            });
+                        }
+                        var eachPrimaryData = utilService.findByKeyAndValue(question[filter1.queryKey], 'name', primaryOption.key);
+                        if(!eachPrimaryData) {
+                            return;
+                        }
                         //Set name to series
                         seriesDataObj["key"] = primaryOption.title;
                         if(filter1.queryKey === 'sex') {
