@@ -180,6 +180,10 @@ Scenario: Crude Death rates population count should match with CDC for year 2000
   And I un-select "Year" value "2015"
   And data table should display right population count for Crude Death Rates
 
+Scenario: Select 'All' years
+  Given I am on search page
+  When user select "All" option in "Year" filter
+  Then data table should display right population count for year 'All' filter
 
 #Scenario: Suppressed
 #  When counts fall below the determined "cut-off" value and the conditions for suppression are met
