@@ -39,7 +39,9 @@
             getMinAndMaxValue : getMinAndMaxValue,
             getSelectedAutoCompleteOptions: getSelectedAutoCompleteOptions,
             clone: clone,
-            refreshFilterAndOptions: refreshFilterAndOptions
+            refreshFilterAndOptions: refreshFilterAndOptions,
+            findFilterByKeyAndValue: findFilterByKeyAndValue,
+            isFilterApplied: isFilterApplied
         };
 
         return service;
@@ -91,6 +93,37 @@
                 }
             }
             return null;
+        }
+
+        /**
+         * Find the filter in array by key and value
+         * @param a
+         * @param key
+         * @param value
+         * @returns {*}
+         */
+        function findFilterByKeyAndValue(a, key, value) {
+            if (a) {
+                for (var i = 0; i < a.length; i++) {
+                    var filter = a[i].filters;
+                    if ( filter[key] && filter[key] === value ) {return a[i];}
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Finds if the specified filter is applied or not
+         * @param a
+         * @param key
+         * @param value
+         * @returns {*}
+         */
+        function isFilterApplied(a) {
+            if (a && a.filters) {
+                return a.filters.value.length > 0;
+            }
+            return false;
         }
 
         /**
@@ -650,7 +683,7 @@
                         if(eachOptionLength <= 0) {
                             eachOptionLength = getOptionDataLength(columnHeaders.slice(1));
                         }
-                        tableData = tableData.concat(getArrayWithDefaultValue(eachOptionLength, {title: 0, percentage: percentage , isCount: true}));
+                        tableData = tableData.concat(getArrayWithDefaultValue(eachOptionLength, {title: 'Not Available', percentage: percentage , isCount: true}));
                     }
                 });
             }
