@@ -508,7 +508,7 @@
                             return;
                         }
                         var questionCellAdded = false;
-                        angular.forEach(eachData, function(eachPramsData) {
+                        angular.forEach(eachData, function(eachPramsData, eachDataIndex) {
                             var childTableData = prepareMixedTableRowData(rowHeaders.slice(1), columnHeaders, eachPramsData, countKey, totalCount, calculatePercentage, calculateRowTotal, secondaryCountKeys);
                             if(rowHeaders.length > 1 && calculateRowTotal) {
                                 childTableData.push(prepareTotalRow(eachPramsData, countKey, childTableData[0].length, totalCount, secondaryCountKeys));
@@ -517,8 +517,14 @@
                                 title: eachPramsData.response,
                                 rowspan: 1,
                                 colspan: 1,
-                                isCount: false
+                                isCount: false,
+                                style: {
+                                    color: '#833eb0'
+                                }
                             };
+                            // if(eachDataIndex < eachData.length - 1) {
+                            //     responseCell.style['border-bottom'] = 'white';
+                            // }
                             if(!questionCellAdded) {
                                 var eachTableRow = {
                                     title: matchedOption.title,
