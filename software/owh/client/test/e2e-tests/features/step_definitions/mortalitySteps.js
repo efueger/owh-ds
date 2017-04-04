@@ -417,7 +417,6 @@ var mortalityStepDefinitionsWrapper = function () {
             expect(elements[3].getText()).to.eventually.contains('Asian or Pacific Islander');
             expect(elements[4].getText()).to.eventually.contains('Black');
             expect(elements[5].getText()).to.eventually.contains('White');
-            expect(elements[6].getText()).to.eventually.contains('Other (Puerto Rico only');
         });
     });
 
@@ -724,6 +723,31 @@ var mortalityStepDefinitionsWrapper = function () {
         mortalityPage.getTableRowData(7).then(function(rowdata) {
             expect(rowdata[0]).to.equals('Total');
             expect(rowdata[1]).to.equals('608');
+        });
+    });
+
+    this.Then(/^data table should display right population count for year 'All' filter$/, function () {
+        //Right now for year '2014' showing zero deaths, once this issue fixed then
+        //update death values and percentages
+        mortalityPage.getTableRowData(0).then(function(rowdata) {
+            //Race
+            expect(rowdata[0]).to.equals('American Indian');
+            //Female
+            expect(rowdata[1]).to.equals('99,155 (45.4%)');
+            //Male
+            expect(rowdata[2]).to.equals('119,034 (54.6%)');
+            //Number of Deaths
+            expect(rowdata[3]).to.equals('218,189');
+        });
+        mortalityPage.getTableRowData(1).then(function(rowdata) {
+            //Race
+            expect(rowdata[0]).to.equals('Asian or Pacific Islander');
+            //Female
+            expect(rowdata[1]).to.equals('338,862 (47.8%)');
+            //Male
+            expect(rowdata[2]).to.equals('370,091 (52.2%)');
+            //Number of Deaths
+            expect(rowdata[3]).to.equals('708,953');
         });
     });
 };

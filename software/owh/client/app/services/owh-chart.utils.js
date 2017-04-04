@@ -44,6 +44,7 @@
         /*Multi Bar Horizontal Chart*/
         function horizontalChart(filter1, filter2, data, primaryFilter, stacked, postFixToTooltip) {
             postFixToTooltip = postFixToTooltip ? postFixToTooltip : '';
+
             var chartData = {
                 data: [],
                 title: "label.title."+filter1.key+"."+filter2.key,
@@ -98,7 +99,8 @@
                                     "<div class='usa-width-one-whole nvtooltip-value'>";
                                     d.series.forEach(function(elem){
                                         html += "<i class='fa fa-square' style='color:"+elem.color+"'></i>" +
-                                            "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"+$filter('number')(elem.value) + postFixToTooltip + "</div>";
+                                            "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"
+                                            + getCount(elem.value, primaryFilter) + postFixToTooltip + "</div>";
                                     });
                                     html += "</div>";
                                 return html;
@@ -220,6 +222,7 @@
 
         /*Vertical Stacked Chart*/
         function verticalChart(filter1, filter2, data, primaryFilter, stacked) {
+
             var chartData = {
                 data: [],
                 title: "label.title."+filter1.key+"."+filter2.key,
@@ -282,7 +285,8 @@
                                     "<div class='usa-width-one-whole nvtooltip-value'>";
                                 d.series.forEach(function(elem){
                                     html += "<i class='fa fa-square' style='color:"+elem.color+"'></i>" +
-                                        "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"+$filter('number')(elem.value)+"</div>";
+                                        "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"
+                                        +getCount(elem.value, primaryFilter)+"</div>";
                                 });
                                 html += "</div>";
                                 return html;
@@ -328,6 +332,7 @@
         }
 
         function lineChart(data, filter, primaryFilter) {
+
             var chartData = {
                 data: [],
                 title: "label.graph."+filter.key,
@@ -387,7 +392,8 @@
                                     "<div class='usa-width-one-whole nvtooltip-value'>";
                                 d.series.forEach(function(elem){
                                     html += "<i class='fa fa-square' style='color:"+elem.color+"'></i>" +
-                                        "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"+$filter('number')(elem.value) + "</div>";
+                                        "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"
+                                        +getCount(elem.value, primaryFilter) + "</div>";
                                 });
                                 html += "</div>";
                                 return html;
@@ -422,6 +428,7 @@
         /*Prepare pie chart for single filter*/
         function pieChart( data, filter, primaryFilter, postFixToTooltip ) {
             postFixToTooltip = postFixToTooltip ? postFixToTooltip : '';
+
             var color = d3.scale.category20();
             var chartData = {
                 data: [],
@@ -470,7 +477,8 @@
                                     "<div class='usa-width-one-whole nvtooltip-value'>";
                                 d.series.forEach(function(elem){
                                     html += "<i class='fa fa-square' style='color:"+elem.color+"'></i>" +
-                                        "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"+$filter('number')(elem.value) + postFixToTooltip + "</div>";
+                                        "&nbsp;&nbsp;&nbsp;"+elem.key+"&nbsp;&nbsp;&nbsp;"
+                                        +getCount(elem.value, primaryFilter) + postFixToTooltip + "</div>";
                                 });
                                 html += "</div>";
                                 return html;
@@ -629,6 +637,19 @@
                     modal.element.hide();
                 });
             });
+        }
+
+        /**
+         * If state filter is selected and count is equals 0- return Suppressed
+         * Else return actual count
+         */
+        function getCount(count, primaryFilter) {
+            if (count == 0 && primaryFilter.applySuppression) {
+                var stateFilter = utilService.findFilterByKeyAndValue(primaryFilter.sideFilters, 'key', 'state');
+                var isStateFilter = utilService.isFilterApplied(stateFilter);
+                return isStateFilter? 'Suppressed': $filter('number')(count);
+            }
+            return $filter('number')(count);
         }
     }
 }());
