@@ -15,7 +15,7 @@ cache:
 
 addons:
   code_climate:
-    repo_token: aa4bb84528f703e93a68f03079e9870898d452659e9498bbba8fb043c66e3083
+    repo_token: 93b5f633a4ddcc18c05836556de9a242e774a129479002530b93aa824a6d11ef
 
 env:
   global:
