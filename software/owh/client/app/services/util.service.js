@@ -378,12 +378,18 @@
             return tableData;
         }
 
-        function getSelectedAutoCompleteOptions(filter) {
+        function getSelectedAutoCompleteOptions(filter, queryKey) {
             var filterValue = filter.value;
             if(angular.isArray(filterValue)) {
-                return isValueNotEmpty(filterValue)
-                    ? findAllByKeyAndValuesArray(filter.autoCompleteOptions, 'key', filter.value)
-                    : filter.autoCompleteOptions
+                if(queryKey) {
+                    return isValueNotEmpty(filterValue)
+                        ? findAllByKeyAndValuesArray(filter.autoCompleteOptions, 'qkey', filter.value)
+                        : filter.autoCompleteOptions
+                } else {
+                    return isValueNotEmpty(filterValue)
+                        ? findAllByKeyAndValuesArray(filter.autoCompleteOptions, 'key', filter.value)
+                        : filter.autoCompleteOptions
+                }
             } else {
                 var selectedOption = findByKeyAndValue(filter.autoCompleteOptions, 'key', filterValue);
                 return selectedOption ? [selectedOption]: filter.autoCompleteOptions;
