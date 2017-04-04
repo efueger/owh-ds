@@ -118,6 +118,10 @@
                     angular.forEach(utilService.getSelectedAutoCompleteOptions(filter, primaryFilter.key === 'prams'), function (option,index) {
                         //get data for series
                         var eachPrimaryData = utilService.findByKeyAndValue(barData, 'name', option.key);
+                        //skip missing data for prams chart
+                        if(primaryFilter.key === 'prams' && !eachPrimaryData) {
+                            return;
+                        }
                         //set data to series values
                         barValues.push({"label":option.title, "value":
                             (eachPrimaryData &&  eachPrimaryData[primaryFilter.key]) ?
