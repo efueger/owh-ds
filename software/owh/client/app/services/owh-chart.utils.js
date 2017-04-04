@@ -132,16 +132,29 @@
                     //collect series values
                     var question = data.question[0];
                     if(primaryFilter.key === 'prams') {
-                        question = data.question[1][0];
-                        angular.forEach(data.question[1], function(response) {
-                            if(typeof response === 'object') {
-                                question = response;
+                        var questionArray = [];
+                        angular.forEach(data.question, function(pramsQuestion) {
+                            if(pramsQuestion.name === primaryFilter.allFilters[4].value[0]) {
+                                question = pramsQuestion;
                             }
                         });
+                        // question = data.question[1][0];
+                        // questionArray = question[0];
+                        angular.forEach(question, function(response, responseKey) {
+                            if(typeof response === 'object') {
+                                question = response;
+                                var seriesDataObj = {};
+                                seriesDataObj["key"] = primaryFilter.chartAxisLabel;
+                                seriesDataObj["key"] += ' - ' + responseKey;
+                                seriesDataObj["values"] = getBarValues(question[filter1.queryKey], filter1);
+                                multiChartBarData.push(seriesDataObj);
+                            }
+                        });
+                    } else {
+                        seriesDataObj["values"] = getBarValues(question[filter1.queryKey], filter1);
+                        multiChartBarData.push(seriesDataObj);
                     }
 
-                    seriesDataObj["values"] = getBarValues(question[filter1.queryKey], filter1);
-                    multiChartBarData.push(seriesDataObj);
                 } else {//for two filters
                     angular.forEach(utilService.getSelectedAutoCompleteOptions(filter1), function (primaryOption,index) {
                         var seriesDataObj = {};
