@@ -81,7 +81,8 @@ class NatalityETL (ETL):
         self.loadDataSetMetaData('natality', '2011', os.path.join(self.dataDirectory, 'data_mapping', 'nat_2007_2013.json'))
         self.loadDataSetMetaData('natality', '2012', os.path.join(self.dataDirectory, 'data_mapping', 'nat_2007_2013.json'))
         self.loadDataSetMetaData('natality', '2013', os.path.join(self.dataDirectory, 'data_mapping', 'nat_2007_2013.json'))
-        self.loadDataSetMetaData('natality', '2014', os.path.join(self.dataDirectory, 'data_mapping', 'nat_2014.json'))
+        self.loadDataSetMetaData('natality', '2014', os.path.join(self.dataDirectory, 'data_mapping', 'nat_2014_2015.json'))
+        self.loadDataSetMetaData('natality', '2015', os.path.join(self.dataDirectory, 'data_mapping', 'nat_2014_2015.json'))
 
     def validate_etl(self):
         """ Validate the ETL"""
